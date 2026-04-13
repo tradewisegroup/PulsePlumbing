@@ -2,7 +2,7 @@
 import { defineConfig }    from 'astro/config';
 import sitemap             from '@astrojs/sitemap';
 import react               from '@astrojs/react';
-import cloudflare          from '@astrojs/cloudflare';
+import vercel              from '@astrojs/vercel';
 import { statSync }        from 'fs';
 import { resolve, join }   from 'path';
 import { fileURLToPath }   from 'url';
@@ -158,18 +158,15 @@ export default defineConfig({
   site: 'https://pulseqld.com.au',
 
   // ── Output mode ───────────────────────────────────────────────────────────
-  // In Astro 6, output: 'static' is the correct equivalent of the old
-  // 'hybrid' mode. Static pages pre-render at build time by default; individual
-  // routes can opt out with `export const prerender = false` (used by all
-  // /api/* routes). The 'hybrid' option was removed in Astro 5 — attempting to
-  // set it triggers a hard error.
+  // 'static' pre-renders all pages at build time by default. Individual routes
+  // opt into SSR with `export const prerender = false` (used by /api/* routes,
+  // deployed as Vercel Serverless Functions). 'hybrid' was removed in Astro 6.
   output: 'static',
 
-  // ── Cloudflare Pages adapter ──────────────────────────────────────────────
-  // imageService: 'cloudflare' delegates <Image> optimisation to Cloudflare's
-  // image resizing service. Requires the Cloudflare Images feature to be
-  // enabled on the Pages project (free on most plans).
-  adapter: cloudflare({ imageService: 'cloudflare' }),
+  // ── Vercel adapter ────────────────────────────────────────────────────────
+  // Handles static pages at build time; API routes with prerender = false
+  // are deployed as Vercel Serverless Functions automatically.
+  adapter: vercel(),
 
   // ── Integrations ──────────────────────────────────────────────────────────
   integrations: [
