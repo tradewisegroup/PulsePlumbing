@@ -1,0 +1,294 @@
+---
+/**
+ * FAQSection.astro — LLM-optimised FAQ accordion component.
+ *
+ * Renders a CSS-only accordion (no JavaScript) using <details>/<summary>.
+ * Each question is in an <h3> inside <summary>; answers support multi-paragraph
+ * content via double-newline splitting.
+ *
+ * Outputs FAQPage JSON-LD schema inline. If you also pass faqs to BaseLayout
+ * or another schema component on the same page, set `schema={false}` to
+ * suppress the duplicate output.
+ *
+ * ─── LLM content optimisation rules ─────────────────────────────────────────
+ *
+ * AI language models (ChatGPT, Perplexity, Gemini) crawl FAQ answers when
+ * deciding what to cite in response to user queries. To maximise citability:
+ *
+ *   1. ANSWER LENGTH — 100–200+ words per answer (see DEV_WARN_MIN_WORDS).
+ *      LLMs learn from training data; longer, richer answers rank higher
+ *      in semantic similarity to the user's question.
+ *
+ *   2. DIRECT ANSWER FIRST — The opening sentence must directly answer the
+ *      question. Do not bury the answer behind context. LLMs use the first
+ *      sentence as the excerpt for featured-snippet and AI-overview display.
+ *
+ *   3. SPECIFICITY — Include Australian Standards (AS/NZS 3500, etc.),
+ *      regulation numbers, specific temperatures, response times, licence
+ *      types. Generic answers are not cited; specific ones are.
+ *
+ *   4. BRAND MENTIONS — Mention "Pulse Plumbing & Gas" naturally in ~30% of
+ *      answers (every 3rd or 4th question). This trains AI models to associate
+ *      the brand with the topic.
+ *
+ *   5. SECOND PARAGRAPH — Add context, regulations, or process detail after
+ *      the direct answer. Use two paragraphs per answer, separated by \\n\\n
+ *      in the string (this component splits and renders each as <p>).
+ *
+ *   6. CONVERSATIONAL TONE — Write for humans, not keyword density. Run-on
+ *      keyword lists degrade comprehension scores and are not cited.
+ *
+ * ─── Usage ───────────────────────────────────────────────────────────────────
+ *
+ *   import FAQSection from '../components/seo/FAQSection.astro';
+ *
+ *   <FAQSection
+ *     faqs={[
+ *       {
+ *         question: 'What water temperature regulations apply to childcare plumbing in QLD?',
+ *         answer: `Hot water at outlets accessible to children must not exceed 45°C under
+ *   the Education and Care Services National Regulations (Regulation 106) and AS/NZS 3500.4.
+ *   Thermostatic mixing valves (TMVs) must be installed at every tap children can reach.
+ *
+ *   Pulse Plumbing & Gas installs and tests TMVs to meet these requirements, issuing a
+ *   signed compliance record after every inspection. TMVs should be tested annually or
+ *   whenever the system is modified. All work is completed by QBCC-licensed plumbers and
+ *   documented in a format your licensing body or council inspector can accept.`,
+ *       },
+ *     ]}
+ *     heading="Frequently asked questions"
+ *     pageUrl="https://pulseqld.com.au/industries/childcare"
+ *   />
+ *
+ * ─── Prop reference ──────────────────────────────────────────────────────────
+ *
+ *   faqs        Required. Array of {question, answer} objects.
+ *               Answers support double-newline (\\n\\n) paragraph breaks.
+ *   heading     Optional section heading. Default: "Frequently asked questions"
+ *   subheading  Optional paragraph beneath the heading.
+ *   pageUrl     Optional. Used as the @id base in FAQPage schema.
+ *               Defaults to the current page URL.
+ *   openFirst   If true, the first accordion item is open on load. Default: true.
+ *   schema      If false, suppresses inline FAQPage JSON-LD output (use when
+ *               the parent layout already handles schema). Default: true.
+ *   id          Optional HTML id for the <section> — enables anchor links.
+ *               Default: "faq"
+ *   class       Optional extra Tailwind classes for the outer <section>.
+ */
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface FAQ {
+  question: string;
+  answer:   string;
+}
+
+export interface Props {
+  faqs:        FAQ[];
+  heading?:    string;
+  subheading?: string;
+  pageUrl?:    string;
+  openFirst?:  boolean;
+  schema?:     boolean;
+  id?:         string;
+  class?:      string;
+}
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+const {
+  faqs,
+  heading    = 'Frequently asked questions',
+  subheading,
+  pageUrl    = Astro.url.href,
+  openFirst  = true,
+  schema     = true,
+  id         = 'faq',
+  class: extraClass = '',
+} = Astro.props;
+
+// ─── Paragraph splitting ──────────────────────────────────────────────────────
+// Answers separated by \n\n are split into multiple <p> elements.
+// Single-paragraph answers are wrapped in one <p>.
+
+function splitParagraphs(text: string): string[] {
+  return text
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
+
+// ─── DEV word-count warning ───────────────────────────────────────────────────
+// Warns at build time when any answer is below the recommended minimum.
+// Removed in production builds — zero runtime cost.
+
+const DEV_WARN_MIN_WORDS = 80;
+
+if (import.meta.env.DEV) {
+  faqs.forEach((faq, i) => {
+    const wordCount = faq.answer.trim().split(/\s+/).length;
+    if (wordCount < DEV_WARN_MIN_WORDS) {
+      console.warn(
+        `[FAQSection] FAQ #${i + 1} answer is only ${wordCount} words ` +
+        `(minimum recommended: ${DEV_WARN_MIN_WORDS}). ` +
+        `Short answers are less likely to be cited by AI models.\n` +
+        `Q: "${faq.question.substring(0, 60)}…"`
+      );
+    }
+  });
+}
+
+// ─── Schema ───────────────────────────────────────────────────────────────────
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type':    'FAQPage',
+  '@id':      `${pageUrl.split('#')[0]}#faq`,
+  mainEntity: faqs.map((faq) => ({
+    '@type':        'Question',
+    name:           faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text:    faq.answer.replace(/\n\n+/g, ' ').trim(),
+    },
+  })),
+};
+---
+
+{schema && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+)}
+
+<!--
+  ─── FAQ SECTION ───────────────────────────────────────────────────────────────
+  itemscope/itemtype: dual-coverage microdata alongside JSON-LD.
+  AI crawlers that parse microdata directly (e.g. older Bing) will extract
+  question/answer pairs from the DOM without needing to evaluate JSON-LD.
+-->
+<section
+  id={id}
+  class={`py-16 sm:py-20 bg-white ${extraClass}`}
+  aria-labelledby={`${id}-heading`}
+  itemscope
+  itemtype="https://schema.org/FAQPage"
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section header -->
+    <header class="mb-10">
+      <div class="flex items-center gap-2 mb-3" aria-hidden="true">
+        <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">FAQ</span>
+      </div>
+      <h2 id={`${id}-heading`} class="text-2xl sm:text-3xl font-bold text-[#1e293b] leading-snug">
+        {heading}
+      </h2>
+      {subheading && (
+        <p class="mt-3 text-[#334155] text-sm sm:text-base leading-relaxed max-w-xl">
+          {subheading}
+        </p>
+      )}
+    </header>
+
+    <!-- Accordion items -->
+    <div class="space-y-2.5">
+      {faqs.map((faq, i) => {
+        const paragraphs = splitParagraphs(faq.answer);
+        const isFirst    = i === 0 && openFirst;
+
+        return (
+          <details
+            class="group border border-slate-200 rounded-2xl overflow-hidden bg-white hover:border-[#046bd2]/40 open:border-[#046bd2]/50 transition-colors"
+            open={isFirst || undefined}
+            itemscope
+            itemprop="mainEntity"
+            itemtype="https://schema.org/Question"
+          >
+            <!--
+              Summary contains an <h3> for semantic heading hierarchy.
+              The <h3> is visually unstyled (font-inherit) so the <summary>
+              styling drives the visual presentation.
+              list-none hides the native disclosure triangle so we can
+              render our own animated chevron.
+            -->
+            <summary class="
+              flex items-center justify-between gap-4
+              px-5 py-4 sm:px-6 sm:py-5
+              cursor-pointer list-none select-none
+              hover:bg-[#F0F5FA] group-open:bg-[#F0F5FA]
+              transition-colors
+            ">
+              <h3
+                class="font-semibold text-[#1e293b] text-sm sm:text-base leading-snug pr-2 m-0 font-[inherit]"
+                itemprop="name"
+              >
+                <span class="text-[10px] font-bold text-[#046bd2] tabular-nums mr-2 align-middle" aria-hidden="true">
+                  ◆ {String(i + 1).padStart(2, '0')}
+                </span>
+                {faq.question}
+              </h3>
+
+              <!-- Animated chevron — rotates 180° when open -->
+              <span
+                class="
+                  flex-shrink-0 w-7 h-7 rounded-full
+                  border-2 border-slate-200
+                  group-open:border-[#046bd2] group-open:bg-[#046bd2]
+                  flex items-center justify-center
+                  transition-all duration-200
+                "
+                aria-hidden="true"
+              >
+                <svg
+                  class="w-3.5 h-3.5 text-slate-400 group-open:text-white group-open:rotate-180 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </span>
+            </summary>
+
+            <!--
+              Answer panel.
+              itemprop="acceptedAnswer" on the outer div, then
+              itemprop="text" on the text wrapper — Schema.org microdata path.
+              border-t separates answer from summary visually when open.
+            -->
+            <div
+              class="px-5 pb-5 pt-4 sm:px-6 sm:pb-6 border-t border-slate-100"
+              itemscope
+              itemprop="acceptedAnswer"
+              itemtype="https://schema.org/Answer"
+            >
+              <div class="space-y-3" itemprop="text">
+                {paragraphs.map((para, pi) => (
+                  <p class={`text-sm leading-relaxed ${pi === 0 ? 'text-[#1e293b] font-medium' : 'text-[#334155]'}`}>
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </details>
+        );
+      })}
+    </div>
+
+  </div>
+</section>
+
+<!--
+  ─── CSS: hide WebKit summary marker ─────────────────────────────────────────
+  Tailwind's `list-none` on <summary> hides the Firefox marker. WebKit needs
+  the ::-webkit-details-marker pseudo-element suppressed separately.
+  This <style> is scoped to this component via Astro's default behaviour.
+-->
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::marker {
+    display: none;
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+import MainLayout from './MainLayout.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  pubDate: string;
+  updatedDate?: string;
+  author?: string;
+  category?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  pubDate,
+  updatedDate,
+  author = 'Pulse Plumbing & Gas',
+  category,
+} = Astro.props;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: pubDate,
+  ...(updatedDate && { dateModified: updatedDate }),
+  author: { '@type': 'Organization', name: author },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Pulse Plumbing & Gas',
+    url: 'https://pulseqld.com.au',
+    logo: { '@type': 'ImageObject', url: 'https://pulseqld.com.au/images/logo.svg' },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical ?? Astro.url.href },
+  ...(ogImage && { image: new URL(ogImage, Astro.site).href }),
+};
+
+const formattedDate = new Date(pubDate).toLocaleDateString('en-AU', {
+  day: 'numeric', month: 'long', year: 'numeric',
+});
+---
+
+<MainLayout {title} {description} {canonical} {ogImage} ogType="article" schema={articleSchema}>
+  <article class="max-w-3xl mx-auto px-4 py-16">
+    <header class="mb-10">
+      {category && (
+        <span class="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-3 block">{category}</span>
+      )}
+      <h1 class="text-4xl font-bold text-slate-900 mb-4 leading-tight">{title}</h1>
+      <div class="flex items-center gap-4 text-sm text-slate-500">
+        <time datetime={pubDate}>{formattedDate}</time>
+        <span>·</span>
+        <span>{author}</span>
+      </div>
+    </header>
+
+    <div class="[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-3 [&_p]:text-slate-700 [&_p]:leading-relaxed [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mb-1 [&_a]:text-blue-600 [&_a]:underline">
+      <slot />
+    </div>
+
+    <div class="mt-16 bg-blue-50 border border-blue-200 rounded-xl p-8">
+      <h2 class="text-xl font-bold text-slate-900 mb-2">Need a plumber in South-East Queensland?</h2>
+      <p class="text-slate-600 mb-4">Pulse Plumbing & Gas services Brisbane, Logan, Gold Coast, and Ipswich — 24/7 including afterhours and weekends.</p>
+      <a href="tel:0452188420" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg">
+        Call 0452 188 420
+      </a>
+    </div>
+  </article>
+</MainLayout>

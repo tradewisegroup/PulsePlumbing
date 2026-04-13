@@ -1,0 +1,239 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const title = 'Maintenance Plumber Brisbane, Logan, Gold Coast & Ipswich | Pulse Plumbing & Gas';
+const description = 'Trusted 24/7 on-call plumber in Brisbane and South-East Queensland. Reliable plumbing & gas services for residential and commercial clients. Call 0452 188 420.';
+
+const services = [
+  { icon: '🚿', label: 'Blocked Drains', href: '/services/blocked-drains', desc: 'CCTV inspection, high-pressure jetting and excavation.' },
+  { icon: '💧', label: 'Burst Pipes', href: '/services/burst-pipes', desc: 'Emergency response, pipe relining and repairs.' },
+  { icon: '🔥', label: 'Hot Water Systems', href: '/services/hot-water-systems', desc: 'Repairs, replacements and heat pump installs.' },
+  { icon: '⛽', label: 'Gas Fitting', href: '/services/gas-fitting', desc: 'Gas lines, appliance installs and safety checks.' },
+  { icon: '🔍', label: 'Leak Detection', href: '/services/leak-detection', desc: 'Non-invasive tracing with acoustic and thermal tools.' },
+  { icon: '📹', label: 'Drain Camera', href: '/services/drain-camera', desc: 'CCTV drain inspection and full condition reports.' },
+  { icon: '🔄', label: 'Backflow Prevention', href: '/services/backflow-prevention', desc: 'Testing, certification and compliance repairs.' },
+  { icon: '🛠️', label: 'Preventative Maintenance', href: '/services/preventative-maintenance', desc: 'Scheduled maintenance plans for commercial clients.' },
+];
+
+const industries = [
+  { label: 'Retail', href: '/industries/retail' },
+  { label: 'Childcare', href: '/industries/childcare' },
+  { label: 'Education', href: '/industries/education' },
+  { label: 'Aged Care', href: '/industries/aged-care' },
+  { label: 'Student Accommodation', href: '/industries/student-accommodation' },
+  { label: 'Commercial Real Estate', href: '/industries/commercial-real-estate' },
+  { label: 'Property Management', href: '/industries/property-management' },
+  { label: 'New Builds', href: '/industries/new-builds' },
+  { label: 'Civil', href: '/industries/civil' },
+];
+
+const locations = [
+  { label: 'Brisbane', href: '/plumber-brisbane' },
+  { label: 'Logan', href: '/plumber-logan' },
+  { label: 'Gold Coast', href: '/plumber-gold-coast' },
+  { label: 'Ipswich', href: '/plumber-ipswich' },
+];
+
+const homepageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Pulse Plumbing & Gas',
+  url: 'https://pulseqld.com.au',
+};
+---
+
+<MainLayout {title} {description} schema={homepageSchema}>
+
+  <!-- ── Hero ── -->
+  <section class="bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Copy -->
+        <div>
+          <div class="inline-flex items-center gap-2 bg-white border border-[#D1D5DB] rounded-full px-4 py-1.5 text-sm text-[#334155] font-medium mb-6 shadow-sm">
+            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+            Available 24/7 — Afterhours &amp; Weekends
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl font-bold text-[#1e293b] leading-tight mb-5">
+            Reliable Plumbing &amp; Gas Services Across Brisbane
+          </h1>
+
+          <p class="text-lg text-[#334155] leading-relaxed mb-8">
+            Trusted 24/7 on-call plumber in Brisbane and across South-East Queensland. Residential and commercial maintenance plumbing — no surprises, no shortcuts.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-3 mb-8">
+            <a href="tel:0452188420"
+               class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded text-base transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              Call Now — Emergency Response
+            </a>
+            <a href="/contact"
+               class="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold px-6 py-3.5 rounded text-base transition-colors">
+              Get a Free Quote
+            </a>
+          </div>
+
+          <!-- Trust signals -->
+          <div class="flex flex-wrap items-center gap-5 text-sm text-[#334155]">
+            {[
+              'QBCC Licensed',
+              'Fully Insured',
+              'Residential & Commercial',
+              'SE Queensland',
+            ].map((t) => (
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Hero image -->
+        <div class="flex justify-center lg:justify-end">
+          <img
+            src="/images/truck-hero.jpg"
+            alt="Pulse Plumbing & Gas service vehicle"
+            width="562"
+            height="550"
+            class="w-full max-w-md lg:max-w-none rounded-xl shadow-lg object-cover"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Services grid ── -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">Our Services</h2>
+        <p class="text-lg text-[#334155] max-w-2xl mx-auto">
+          From emergency callouts to scheduled commercial maintenance — we handle it all.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {services.map((s) => (
+          <a href={s.href}
+             class="group block bg-white border border-[#D1D5DB] hover:border-[#046bd2] rounded-lg p-6 transition-all hover:shadow-md">
+            <div class="text-2xl mb-3">{s.icon}</div>
+            <h3 class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] mb-1.5 transition-colors">{s.label}</h3>
+            <p class="text-sm text-[#334155] leading-relaxed">{s.desc}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Why Pulse ── -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-14 items-start">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-8">
+            Why South-East Queensland chooses Pulse
+          </h2>
+          <div class="space-y-6">
+            {[
+              {
+                title: '24/7 emergency response',
+                desc: 'We answer the phone at 2am and we show up. Nights, weekends and public holidays — no excuses.',
+              },
+              {
+                title: 'Transparent, upfront quoting',
+                desc: 'You get a clear price before we start. No hidden call-out fees, no surprise charges on the invoice.',
+              },
+              {
+                title: 'Residential & commercial expertise',
+                desc: 'From a dripping tap to full-facility maintenance contracts. Same team, same standards.',
+              },
+              {
+                title: 'QBCC licensed & fully insured',
+                desc: 'All work is completed by licensed tradespeople and backed by a workmanship warranty.',
+              },
+            ].map((item) => (
+              <div class="flex gap-4">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[#046bd2] flex items-center justify-center mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-[#1e293b] mb-1">{item.title}</h3>
+                  <p class="text-sm text-[#334155] leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Industries panel -->
+        <div class="bg-white border border-[#D1D5DB] rounded-xl p-8 shadow-sm">
+          <h3 class="font-semibold text-[#1e293b] text-lg mb-5">Industries we serve</h3>
+          <div class="flex flex-wrap gap-2">
+            {industries.map((i) => (
+              <a href={i.href}
+                 class="bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] text-sm text-[#334155] hover:text-white px-3 py-1.5 rounded transition-colors">
+                {i.label}
+              </a>
+            ))}
+          </div>
+          <p class="mt-6 text-sm text-[#334155]">
+            We build long-term maintenance relationships with commercial clients across all sectors.
+          </p>
+          <a href="/contact"
+             class="mt-5 inline-block bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-5 py-2.5 rounded transition-colors">
+            Discuss a Maintenance Contract
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Locations ── -->
+  <section class="py-16 bg-white border-t border-[#D1D5DB]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold text-[#1e293b] mb-3">Servicing South-East Queensland</h2>
+      <p class="text-[#334155] mb-8">Based in QLD — covering the full South-East corridor.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        {locations.map((l) => (
+          <a href={l.href}
+             class="bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] text-[#334155] hover:text-white font-medium px-6 py-3 rounded transition-colors">
+            📍 Plumber {l.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="bg-[#046bd2] py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Need a plumber now?</h2>
+      <p class="text-xl text-blue-100 mb-8">
+        Available afterhours and on weekends. Call us for emergency assistance.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="tel:0452188420"
+           class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+          </svg>
+          Call Now — Emergency Response
+        </a>
+        <a href="/contact"
+           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors border border-white">
+          Send an Enquiry
+        </a>
+      </div>
+    </div>
+  </section>
+
+</MainLayout>

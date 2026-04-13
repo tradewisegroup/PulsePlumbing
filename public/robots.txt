@@ -1,0 +1,70 @@
+# robots.txt — pulseqld.com.au
+# Generated for Pulse Plumbing & Gas
+# https://pulseqld.com.au
+
+# ── Default: allow all well-behaved crawlers ──────────────────────────────────
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_/
+
+# ── Sitemap ───────────────────────────────────────────────────────────────────
+Sitemap: https://pulseqld.com.au/sitemap-index.xml
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AI language model crawlers
+#
+# These bots are explicitly permitted so that content from pulseqld.com.au
+# can appear in AI-generated answers (ChatGPT, Perplexity, Claude, Gemini).
+# Blocking AI crawlers prevents the site from being cited as a source.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# OpenAI — ChatGPT training and browsing
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+# OpenAI — ChatGPT real-time browsing (plugin / web search)
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+
+# Anthropic — Claude training and Claude.ai citations
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+
+# Anthropic — Claude web crawler (alternate user-agent string)
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+
+# Perplexity AI — Perplexity.ai search and citations
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+
+# Google — Gemini / AI Overviews (via Google-Extended)
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+# Meta — Meta AI (Llama-based assistant)
+User-agent: meta-externalagent
+Allow: /
+Disallow: /api/
+
+# Cohere — Cohere AI models
+User-agent: cohere-ai
+Allow: /
+Disallow: /api/
+
+# You.com AI search
+User-agent: YouBot
+Allow: /
+Disallow: /api/
+
+# Common Crawl — training dataset used by many open-source LLMs
+User-agent: CCBot
+Allow: /
+Disallow: /api/

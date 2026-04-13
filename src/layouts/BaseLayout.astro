@@ -1,0 +1,222 @@
+---
+import '../styles/global.css';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+export interface Props {
+  /** Page-level title — formatted as "{title} | Pulse Plumbing & Gas Brisbane" */
+  title: string;
+  /** Meta description — ideally 140–160 characters */
+  description: string;
+  /** Canonical URL — defaults to current page URL */
+  canonical?: string;
+  /** Absolute or root-relative path to OG image — defaults to /images/og-default.jpg */
+  ogImage?: string;
+  /** og:type — defaults to "website" */
+  ogType?: 'website' | 'article' | 'service';
+  /** Prevent indexing (404s, thank-you pages, etc.) */
+  noindex?: boolean;
+  /**
+   * Additional page-level JSON-LD schema object.
+   * The LocalBusiness schema is always injected by this layout.
+   * Pass a Service, Article, FAQPage, etc. here for page-specific markup.
+   */
+  schema?: Record<string, unknown>;
+}
+
+// ─── Defaults ─────────────────────────────────────────────────────────────────
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage = '/images/og-default.jpg',
+  ogType = 'website',
+  noindex = false,
+  schema,
+} = Astro.props;
+
+const SITE = 'https://pulseqld.com.au';
+const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? 'GTM-XXXXXXX';
+const HUBSPOT_PORTAL_ID = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID ?? '';
+
+// Resolve ogImage to an absolute URL regardless of whether it was passed as
+// a root-relative path ("/images/foo.jpg") or already absolute.
+const ogImageAbsolute = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, SITE).href;
+
+// ─── Always-present LocalBusiness schema ─────────────────────────────────────
+// Injected on every page via this layout. Never remove.
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'Plumber'],
+  '@id': `${SITE}/#business`,
+  name: 'Pulse Plumbing & Gas',
+  url: SITE,
+  logo: `${SITE}/images/logo.png`,
+  image: `${SITE}/images/og-default.jpg`,
+  telephone: '0452188420',
+  email: 'admin@pulseqld.com.au',
+  description:
+    'Maintenance plumbing for residential and commercial clients across Brisbane, Logan, Gold Coast and Ipswich. Available 24/7 including afterhours and weekends.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Brisbane',
+    addressRegion: 'QLD',
+    addressCountry: 'AU',
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Brisbane' },
+    { '@type': 'City', name: 'Logan' },
+    { '@type': 'City', name: 'Gold Coast' },
+    { '@type': 'City', name: 'Ipswich' },
+  ],
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [
+      'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+      'Friday', 'Saturday', 'Sunday',
+    ],
+    opens: '00:00',
+    closes: '23:59',
+  },
+  priceRange: '$$',
+  sameAs: [],
+};
+---
+
+<!doctype html>
+<html
+  lang="en-AU"
+  class="scroll-smooth"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- ── Google Tag Manager ──────────────────────────────────────────── -->
+    <!-- Replace GTM-XXXXXXX with real container ID in .env.local          -->
+    <script is:inline define:vars={{ GTM_ID }}>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l !== 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', GTM_ID);
+    </script>
+
+    <!-- ── Preconnect ─────────────────────────────────────────────────── -->
+    <!-- No Google Fonts used — system-ui stack only. Preconnect to GTM.  -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- ── Primary SEO ────────────────────────────────────────────────── -->
+    <title>{title} | Pulse Plumbing &amp; Gas Brisbane</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex
+      ? <meta name="robots" content="noindex,nofollow" />
+      : <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    }
+
+    <!-- ── Open Graph ─────────────────────────────────────────────────── -->
+    <meta property="og:type"        content={ogType} />
+    <meta property="og:title"       content={`${title} | Pulse Plumbing & Gas Brisbane`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url"         content={canonical} />
+    <meta property="og:image"       content={ogImageAbsolute} />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt"   content="Pulse Plumbing & Gas" />
+    <meta property="og:site_name"   content="Pulse Plumbing & Gas" />
+    <meta property="og:locale"      content="en_AU" />
+
+    <!-- ── Twitter / X Card ──────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={`${title} | Pulse Plumbing & Gas Brisbane`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={ogImageAbsolute} />
+    <meta name="twitter:image:alt"   content="Pulse Plumbing & Gas" />
+
+    <!-- ── Favicons & manifest ───────────────────────────────────────── -->
+    <link rel="icon"             type="image/svg+xml"  href="/favicon.svg" />
+    <link rel="icon"             type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest"         href="/site.webmanifest" />
+    <meta name="theme-color"     content="#046bd2" />
+
+    <!-- ── JSON-LD: LocalBusiness (always present) ───────────────────── -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(localBusinessSchema, null, 0)}
+    />
+
+    <!-- ── JSON-LD: Page-specific schema (passed via props) ──────────── -->
+    {schema && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(schema, null, 0)}
+      />
+    )}
+
+    <!-- ── Page-specific head content (extra schemas, preloads, etc.) ─── -->
+    <slot name="head" />
+
+    <!-- ── HubSpot tracking (only when portal ID is configured) ──────── -->
+    {HUBSPOT_PORTAL_ID && (
+      <script
+        is:inline
+        src={`//js-ap1.hs-scripts.com/${HUBSPOT_PORTAL_ID}.js`}
+        async
+        defer
+      />
+    )}
+  </head>
+
+  <body
+    class="
+      bg-white text-slate-700 antialiased
+      dark:bg-slate-900 dark:text-slate-300
+      font-[system-ui,_-apple-system,_BlinkMacSystemFont,_'Segoe_UI',_sans-serif]
+    "
+  >
+    <!-- ── GTM noscript fallback ─────────────────────────────────────── -->
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+
+    <!-- ── Skip to content (accessibility) ──────────────────────────── -->
+    <a
+      href="#main-content"
+      class="
+        sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100]
+        bg-[#046bd2] text-white font-semibold px-4 py-2 rounded
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#046bd2]
+      "
+    >
+      Skip to main content
+    </a>
+
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

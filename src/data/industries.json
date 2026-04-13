@@ -1,0 +1,586 @@
+[
+  {
+    "slug": "retail",
+    "name": "Retail",
+    "heroTitle": "Plumbing That Keeps Your Retail Centre Open and Trading",
+    "heroSubtitle": "Scheduled and emergency maintenance plumbing for shopping centres, strip retail, food courts and franchise groups — planned around your trading hours so downtime never costs you a day's revenue.",
+    "metaTitle": "Retail Plumbing Services Brisbane & SE Queensland",
+    "metaDescription": "Retail plumbing Brisbane, Logan & Gold Coast. After-hours scheduling, grease trap service and 24/7 emergency response for shopping centres and food courts.",
+    "keyBenefits": [
+      "After-hours and overnight works scheduled around your trading calendar — no foot-traffic or revenue impact",
+      "Grease trap pump-outs, inspections and council compliance documentation for all food-court tenants",
+      "Priority emergency dispatch for burst pipes, sewage overflows and drain failures — 24 hours a day",
+      "Annual backflow prevention testing and Form 9 certification across every commercial water connection"
+    ],
+    "complianceInfo": "Retail properties in Queensland must comply with the Plumbing and Drainage Act 2018 and AS/NZS 3500 plumbing standards. Food-court and hospitality tenancies are required by local councils and Queensland Health to maintain grease interceptors in working order, with regular pump-outs documented in a service register. All commercial connections to the water authority main must be fitted with WSAA-approved backflow prevention devices and tested annually under AS/NZS 2845.1 — test certificates must be submitted to Queensland Urban Utilities or the relevant distributor-retailer. Fire services plumbing must comply with AS 2118.1. Pulse Plumbing provides all compliance documentation for landlord, body corporate, council and water authority reporting.",
+    "faqs": [
+      {
+        "q": "Can you complete maintenance without disrupting our trading hours?",
+        "a": "Yes — coordinating with centre management to avoid peak trading periods is standard practice for our retail clients. We schedule non-urgent maintenance during early-morning, overnight or Sunday-morning windows, and coordinate access directly with your facilities manager or centre management office. For large food courts and major shopping centres, we complete site inductions, obtain work permits and confirm with the operations team before any works begin. All areas are cleaned and cleared before trading commences. Emergency call-outs are handled differently — we respond immediately regardless of trading status, work quickly to minimise service impact, and communicate progress to your duty manager throughout. We carry isolation equipment and portable drainage gear on every vehicle."
+      },
+      {
+        "q": "What grease trap requirements apply to food court tenancies in Queensland?",
+        "a": "All food service tenancies that discharge fats, oils and grease (FOG) into the reticulated sewer must install and maintain a grease interceptor or trap compliant with AS 4058 and the local council's trade waste requirements under the Queensland Plumbing and Drainage Act 2018. Pump-out frequency is set by the council authority based on output volume — typically monthly to quarterly for active food businesses. Service providers must supply written records documenting pump-out volume, device condition and any defects found. Council trade waste inspectors can issue compliance notices and infringement penalties where interceptors are not maintained. Pulse Plumbing manages the full service programme — inspection, pump-out, documentation and council reporting — for food court operators across South-East Queensland."
+      },
+      {
+        "q": "How fast can you respond to a flooding or burst pipe during trading hours?",
+        "a": "We provide 24/7 emergency response with a target on-site time of 60 to 90 minutes across our South-East Queensland service area. Retail clients on a maintenance agreement receive priority dispatch. During a flooding or burst pipe event, our first action is isolating the water supply to stop further flow, followed by temporary drainage and extraction measures to protect stock, fixtures and tenant property. We carry isolation tooling, portable submersible pumps and wet-vacuum equipment on our service vehicles. Once the immediate threat is controlled, we identify the cause, complete necessary repairs and provide a written incident report including time of attendance, scope of work and photos — suitable for insurance claims, landlord notification and body corporate reporting."
+      },
+      {
+        "q": "Do you provide the compliance documentation required by landlords and body corporates?",
+        "a": "Yes. Every job is accompanied by a written job report and completion photos. For notifiable plumbing work, we issue a Certificate of Compliance (Form 9) as required under the Queensland Plumbing and Drainage Act 2018 and Plumbing and Drainage Regulation 2019. Backflow prevention test results are recorded on the prescribed AS/NZS 2845.1 test report and submitted directly to Queensland Urban Utilities or your local distributor-retailer on your behalf. Grease interceptor service is documented with pump-out volume, device condition and remediation notes. All records are emailed to your facilities team and can be formatted to upload into your property management, CMMS or asset management platform."
+      },
+      {
+        "q": "Can you manage plumbing across a multi-site retail portfolio or franchise network?",
+        "a": "Yes. We work with retail groups, franchise networks and commercial property managers operating across multiple South-East Queensland locations. Portfolio clients receive a dedicated account manager, consistent service standards and pricing across all sites, and consolidated monthly invoicing. Reporting can be delivered per site, by region or aggregated across the portfolio. We maintain a digital service history for each property exportable for due diligence audits, insurance renewals or pre-sale preparation. For franchise groups, we can align our service records with your brand's compliance documentation requirements and coordinate with individual franchisees directly. Contact us with your site list and we will prepare a schedule-of-rates agreement."
+      },
+      {
+        "q": "What backflow prevention obligations apply to retail properties?",
+        "a": "Under the Queensland Plumbing and Drainage Act 2018 and AS/NZS 2845.1, all non-domestic properties connected to the reticulated water supply must have registered testable backflow prevention assemblies at the property boundary. For retail tenancies, high-risk connection points — including irrigation systems, fire services, commercial dishwashers and chemical dosing equipment — may require additional individual protection. All registered devices must be tested annually by a QBCC-licensed plumber who holds the specialised backflow prevention testing authorisation. Test certificates must be submitted to Queensland Urban Utilities or the relevant water authority. Failure to maintain registered devices can result in water authority enforcement action including disconnection. Pulse Plumbing manages the full annual programme and handles all authority notifications."
+      },
+      {
+        "q": "How do you navigate the multiple stakeholders in a tenanted retail centre?",
+        "a": "Retail centres involve a layered structure — building owner, centre management, body corporate, individual tenants and their fitout contractors — each holding responsibility for different parts of the plumbing system and each requiring different documentation. Before any work commences, we clarify the boundary between base-building and tenancy plumbing responsibility, confirm the correct work-order and sign-off authority, and identify who is liable for the scope in question. We liaise with the correct party — centre management for common-area works, the tenant or their contractor for tenancy works — and ensure compliance certificates and invoices are directed accordingly. We are familiar with the standard works approval and induction processes used by major centre management groups across South-East Queensland."
+      }
+    ],
+    "primaryKeywords": [
+      "retail plumbing Brisbane",
+      "shopping centre plumber QLD",
+      "food court grease trap service Brisbane",
+      "commercial plumber Logan City",
+      "retail maintenance plumbing Gold Coast"
+    ],
+    "targetClient": "Facilities Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "blocked-drains",
+      "backflow-prevention",
+      "drain-camera",
+      "hot-water-systems",
+      "preventative-maintenance"
+    ],
+    "testimonialName": "Sarah Kowalski",
+    "testimonialText": "Pulse manages all the maintenance plumbing across our centre and a group of strip retail sites in Logan. They work overnight to avoid disrupting our tenants, their reporting satisfies the body corporate and the grease trap programme has kept us clear of two council notices this year. Responsive, professional and they actually turn up when they say they will.",
+    "testimonialCompany": "Facilities Manager, Logan Retail Group"
+  },
+
+  {
+    "slug": "childcare",
+    "name": "Childcare",
+    "heroTitle": "ACECQA-Compliant Plumbing for Childcare Centres Across QLD",
+    "heroSubtitle": "Safe water temperatures, correct handwashing ratios and infection-control-ready plumbing for licensed childcare centres, kindergartens and early learning facilities — with all compliance documentation your assessor expects.",
+    "metaTitle": "Childcare Centre Plumbing Brisbane | TMV Compliant",
+    "metaDescription": "Childcare plumbing Brisbane, Logan & Gold Coast. TMV installation, annual testing and backflow prevention for ACECQA compliance. 24/7 emergency response.",
+    "keyBenefits": [
+      "TMV installation and annual AS/NZS 4032 testing to maintain the 45 °C maximum outlet temperature required under the National Regulations",
+      "Handwashing station design and installation to meet the facility-to-child ratio requirements under Regulation 103 and 112",
+      "Infection-control plumbing: separate drainage for food preparation and nappy change areas as required under NQF Standard 2.1",
+      "After-hours scheduling that avoids disruption to children, families and your licensing conditions"
+    ],
+    "complianceInfo": "Childcare centres in Queensland must comply with the Education and Care Services National Law Act 2010 and Education and Care Services National Regulations 2011 (Regulation 103: health, hygiene and safe food; Regulation 112: nappy change and safe sleeping). Hot water delivered to any outlet accessible to children must not exceed 45 °C, achieved via thermostatic mixing valves (TMVs) complying with AS/NZS 4032.0 and AS/NZS 3500.4. TMVs must be serviced and tested annually in accordance with the manufacturer's instructions and AS/NZS 4032.4. Backflow prevention must comply with AS/NZS 2845.1. QBCC-licensed plumbers must issue a Certificate of Compliance (Form 9) for all notifiable work. Pulse Plumbing provides all test records, compliance certificates and service logs required for ACECQA assessments and licencing audits.",
+    "faqs": [
+      {
+        "q": "What is the maximum hot water temperature allowed at childcare outlets, and why?",
+        "a": "Under Regulation 103 of the Education and Care Services National Regulations 2011, hot water delivered to any outlet accessible to children must not exceed 45 °C. This requirement exists because children's skin is significantly thinner and more sensitive than adult skin — a temperature that causes a mild scald in an adult can cause a full-thickness burn in a toddler within seconds. The standard method to achieve this is a thermostatic mixing valve (TMV) installed at or near each outlet, blending cold water into the hot supply to maintain a consistent, safe delivery temperature regardless of the incoming hot water temperature. Storage cylinders should still be maintained at 60 °C or above to prevent Legionella growth, but the TMV blends the water down to a safe temperature before it reaches the tap."
+      },
+      {
+        "q": "How often do TMVs need to be tested at a childcare centre?",
+        "a": "Thermostatic mixing valves in childcare centres should be tested at least annually, in accordance with AS/NZS 4032.4 (the Australian Standard for the maintenance and testing of temperature-controlled mixing devices). Many TMV manufacturers specify more frequent testing — particularly in high-use or hard-water environments where lime scale build-up can affect the thermostat's accuracy. Testing involves verifying that the outlet temperature falls within the acceptable range (typically 42–45 °C) under both normal and fail-safe conditions, and confirming that the cold-water fail-safe mechanism operates correctly. Pulse Plumbing provides a calibrated test report after each inspection — documentation you will need to present at any ACECQA assessment or licensing audit conducted by the Department of Education."
+      },
+      {
+        "q": "What happens to our licence if we lose hot water?",
+        "a": "Loss of hot water is treated as a serious risk under the National Quality Framework because it directly affects health, hygiene and safe food handling. If your hot water system fails, you may be unable to maintain the handwashing and sanitisation routines required under Regulations 77 and 103, which could trigger a mandatory closure notice from your regulatory authority. Under Queensland's Education and Care Services National Law, the regulatory authority can direct a service to close or reduce its capacity if it determines that children's health or safety is at immediate risk. Pulse Plumbing treats hot water failure at a childcare centre as an emergency and aims to be on-site within 60–90 minutes, 24 hours a day. We carry common hot water system components and replacement units on our vehicles to restore service as quickly as possible."
+      },
+      {
+        "q": "Do you install and certify the correct number of handwashing facilities?",
+        "a": "Yes. Regulation 112 of the Education and Care Services National Regulations specifies that an approved provider must ensure the service premises has an adequate number of handwashing facilities — typically one basin per group room for children, plus separate staff facilities. The Queensland Development Code (QDC) Part 1.4 provides additional guidance on fixture counts for early childhood education buildings. If you are expanding your licensed capacity, renovating or building a new centre, we can assess your current fixture count, confirm whether it meets the regulatory ratios and provide a scope of works for any required upgrades. All installations include a Certificate of Compliance and can be submitted to QBCC and your licencing authority as evidence of compliance."
+      },
+      {
+        "q": "What plumbing is required to meet infection control standards in a childcare setting?",
+        "a": "Under NQF Quality Area 2 (Standard 2.1.2) and Regulation 103, childcare operators must implement effective infection control procedures, which include the physical separation of drainage systems serving nappy change areas, food preparation areas and handwashing basins. In practice, this means nappy change benches require their own waste connection (separate from kitchen or general amenities drainage in some configurations), dedicated handwashing basins must be located immediately adjacent to nappy change areas, and food preparation sinks must be served by filtered, temperature-controlled water. We design and install plumbing configurations that satisfy these requirements, including appropriate backflow protection between water supply zones and infection-barrier compliant waste drainage."
+      },
+      {
+        "q": "Can you carry out maintenance without disrupting the children or failing our duty of care?",
+        "a": "Yes. We take extra care when working in early childhood environments. Our tradespeople are familiar with childcare operating routines and approach every job with an awareness of the presence of young children. For non-emergency maintenance, we schedule works outside operating hours — typically before 7 am or after 6 pm on weekdays, or on weekends. We confirm the schedule with the centre director at least 24 hours in advance. During any works inside an active centre, we isolate the work area using suitable barriers, use tool-free access methods where possible to reduce noise, and do not leave any tools, materials or trip hazards accessible to children. For emergency call-outs during operating hours, we coordinate with the director on the safest approach before entering the facility."
+      },
+      {
+        "q": "Do you provide the service records required for ACECQA assessments?",
+        "a": "Yes. ACECQA and state regulatory authorities expect approved providers to maintain service records for all infrastructure that is subject to a maintenance or testing obligation — including TMVs, backflow prevention devices and hot water systems. Pulse Plumbing provides a written service report after every TMV test, including the pre-test and post-test outlet temperatures, condition of the valve, any remediation performed and the technician's QBCC licence number. Backflow prevention test reports are issued on the prescribed Queensland Water Authority form. Certificate of Compliance (Form 9) documents are provided for all notifiable plumbing works. We recommend maintaining these records in your Quality Improvement Plan documentation folder, as they are commonly requested during A&R assessments."
+      }
+    ],
+    "primaryKeywords": [
+      "childcare plumbing Brisbane",
+      "TMV installation childcare QLD",
+      "ACECQA plumbing compliance Queensland",
+      "childcare centre plumber Logan",
+      "early learning centre hot water Gold Coast"
+    ],
+    "targetClient": "Centre Director",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "hot-water-systems",
+      "backflow-prevention",
+      "blocked-drains",
+      "leak-detection",
+      "preventative-maintenance"
+    ],
+    "testimonialName": "Emma Nguyen",
+    "testimonialText": "We had a hot water system fail at 6:30 am on a Monday — Pulse were on-site before we opened and had us back up and running before any families arrived. They did the full TMV audit the same week and gave us a service record pack I could hand straight to our assessor. That kind of reliability makes a real difference when you're responsible for 60 children every day.",
+    "testimonialCompany": "Centre Director, Little Stars Early Learning Capalaba"
+  },
+
+  {
+    "slug": "education",
+    "name": "Education",
+    "heroTitle": "School and Campus Plumbing Built Around the Academic Calendar",
+    "heroSubtitle": "Planned maintenance and fast emergency response for primary schools, high schools, TAFEs and universities — scheduled during school holidays to protect the learning environment and comply with Queensland water safety regulations.",
+    "metaTitle": "School & University Plumbing Brisbane QLD",
+    "metaDescription": "School and university plumbing Brisbane, Logan & Gold Coast. Holiday scheduling, Legionella management, lab plumbing and 24/7 emergency response.",
+    "keyBenefits": [
+      "Holiday-scheduled bulk maintenance programmes that never disturb the academic calendar or disrupt student exams",
+      "Science laboratory drainage, gas benching connections and fume cupboard waste management for STEM facilities",
+      "Legionella risk assessment and water system management for campuses with warm water storage or cooling towers",
+      "Single-contractor accountability across classroom blocks, amenities, commercial kitchens and sporting facilities"
+    ],
+    "complianceInfo": "Schools and education facilities in Queensland must comply with the Plumbing and Drainage Act 2018, AS/NZS 3500 and the National Construction Code (NCC). Queensland Health's Code of Practice for the Management of Legionella requires a written Legionella risk management plan for any warm water system storing more than 5 litres between 20 °C and 50 °C, including heat pump hot water systems, solar storage tanks, thermal mixing vessels and cooling towers. Backflow prevention devices must be tested annually under AS/NZS 2845.1. Science laboratories with acid-waste drainage must comply with AS/NZS 3500.2 special drainage requirements. Department of Education capital works and maintenance obligations are additional requirements for state school operators. Pulse Plumbing provides all inspection reports, Legionella management documentation and compliance certificates compatible with your school's asset register.",
+    "faqs": [
+      {
+        "q": "Can all maintenance works be scheduled during school holidays?",
+        "a": "Yes — planning maintenance during term breaks is the default approach for our education sector clients. We work with your facilities manager to prepare a forward programme at the start of each year, mapping bulk maintenance tasks to the Queensland school holiday calendar. This means inspections, drain cleans, hot water system services and backflow tests are completed before the school year begins or during each break, rather than reactively during the term. For boarding schools and universities with year-round occupants, we identify lower-occupancy periods and schedule accordingly. Emergency work is of course attended to immediately regardless of the academic calendar — we are available 24 hours a day, seven days a week, throughout the year."
+      },
+      {
+        "q": "What is Legionella risk management and which school facilities trigger the requirement?",
+        "a": "Legionella pneumophila is a waterborne bacterium that thrives in warm water systems between 20 °C and 45 °C. Queensland Health's Code of Practice for the Management of Legionella requires a written risk management plan and ongoing monitoring for any facility with a warm water storage system holding more than 5 litres in that temperature range. For schools, this typically captures solar hot water storage tanks, heat pump systems, thermal mixing vessels and thermally stratified storage. Cooling towers — present at some larger secondary schools and universities — require a separate and more stringent management plan, including weekly checks, monthly microbiological sampling and regular cleaning. Pulse Plumbing assists education facilities to prepare their Legionella risk management plans, identify non-compliant systems and implement temperature management and disinfection protocols."
+      },
+      {
+        "q": "Do you handle science laboratory and specialised classroom plumbing?",
+        "a": "Yes. Science laboratories present several non-standard plumbing requirements that require specific expertise. Acid-waste drainage systems must use chemical-resistant pipework materials (typically polypropylene or HDPE) and must be clearly differentiated from the standard sanitary drainage system, as per AS/NZS 3500.2. Emergency eyewash and safety shower stations must comply with AS 4775 and must deliver tepid water (between 15 °C and 38 °C) for a minimum of 15 minutes — which requires a dedicated tempering arrangement in Queensland's climate. Gas benching for Bunsen burners requires a licensed gas fitter and must comply with AS/NZS 5601. We have installed and maintained science laboratory plumbing and gas systems at secondary schools and TAFE campuses across South-East Queensland."
+      },
+      {
+        "q": "Can you manage plumbing across an entire school campus with multiple buildings?",
+        "a": "Yes. School campuses are complex multi-building environments with diverse plumbing requirements — classroom amenities, staffrooms, commercial teaching kitchens, science laboratories, gymnasiums, aquatic centres and oval facilities. We provide single-contractor management across the entire campus footprint, so your business manager has one phone number, one invoice and one point of accountability. Our technicians receive a site briefing before each visit and maintain a site-specific service history. We can operate under your school's contractor management system (e.g. via Schoology, Asset Manager or your own CMMS) and provide reports in your preferred format. For Department of Education state schools, we are familiar with the Minor Works and Maintenance procurement requirements."
+      },
+      {
+        "q": "What compliance obligations apply to the school's commercial kitchen or tuck shop?",
+        "a": "Commercial kitchens and tuck shops at schools are subject to the same grease interceptor and trade waste requirements as any food-service business. Local councils require a grease trap or interceptor to be installed and maintained at all commercial food preparation sinks, with regular pump-outs and service documentation. Queensland Health's food safety regulations also apply. The commercial kitchen should have separate hot and cold water supply to each sink, with a certified backflow prevention device on the mains connection. Dishwashers require a dedicated hot water service at the correct operating temperature. Pulse Plumbing installs and maintains commercial kitchen plumbing for school canteens, TAFE hospitality departments and university food outlets, and provides all required council and health authority documentation."
+      },
+      {
+        "q": "How quickly do you respond to a plumbing emergency during the school day?",
+        "a": "We provide 24/7 emergency response and aim to be on-site within 60 to 90 minutes for urgent call-outs across our service area. For education clients on a maintenance agreement, priority dispatch is guaranteed. During the school day, we coordinate with your business manager or facilities staff on the most appropriate response approach — particularly for situations requiring isolation of a water supply zone, access to a locked plant room, or works in an area occupied by students. Sewage overflows are treated as the highest priority given the infection-control and duty-of-care implications. For major incidents, we can mobilise multiple technicians to minimise the time the affected area is out of service."
+      },
+      {
+        "q": "Do you provide documentation for Department of Education and council inspections?",
+        "a": "Yes. We provide Certificate of Compliance (Form 9) for all notifiable plumbing work, backflow prevention test certificates submitted to Queensland Urban Utilities, Legionella management records and grease interceptor service documentation. For state schools, our reports are formatted to support the Department of Education's asset and maintenance register requirements. For private schools and universities, we provide records compatible with your preferred asset management system. All historical records are retained in our digital service management platform and can be exported at any time for council inspections, insurance renewals, accreditation audits or due diligence. We retain records for a minimum of seven years in line with Queensland record-keeping requirements."
+      }
+    ],
+    "primaryKeywords": [
+      "school plumbing Brisbane QLD",
+      "university plumbing contractor South-East Queensland",
+      "Legionella risk management schools QLD",
+      "TAFE plumbing maintenance Brisbane",
+      "education facility plumber Logan"
+    ],
+    "targetClient": "Facilities Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "preventative-maintenance",
+      "hot-water-systems",
+      "backflow-prevention",
+      "blocked-drains",
+      "gas-fitting"
+    ],
+    "testimonialName": "Mark Patterson",
+    "testimonialText": "We've had Pulse on a maintenance agreement for two years. They schedule everything during the holidays so our staff barely know they've been in, and the documentation they provide is exactly what our regional facilities team needs for the asset register. When we had a burst pipe during a Year 12 exam block last year, they were on-site in under an hour and isolated the zone without affecting the exam rooms.",
+    "testimonialCompany": "Business Manager, Browns Plains State High School"
+  },
+
+  {
+    "slug": "aged-care",
+    "name": "Aged Care",
+    "heroTitle": "Specialist Plumbing for Aged Care That Meets the Quality Standards",
+    "heroSubtitle": "Safe water temperatures, Legionella risk management and dignified, low-disruption maintenance for residential aged care facilities, retirement villages and home care providers — with documentation your Quality Assessors expect.",
+    "metaTitle": "Aged Care Plumbing Brisbane & SE Queensland",
+    "metaDescription": "Aged care plumbing Brisbane, Logan & Gold Coast. Annual TMV testing, Legionella management and 24/7 emergency response. Full compliance documentation.",
+    "keyBenefits": [
+      "Annual TMV testing with compliance certificates addressing Aged Care Quality Standard 2 (safe environment) and AS/NZS 4032.4",
+      "Legionella risk management programmes for warm water storage systems serving vulnerable residents",
+      "Low-disruption, after-hours scheduling that respects residents' routines and preserves their dignity",
+      "Rapid emergency response for hot water failures — a compliance and duty-of-care risk in a residential care setting"
+    ],
+    "complianceInfo": "Residential aged care facilities in Queensland must comply with the Aged Care Quality Standards (effective 1 July 2019), the Aged Care Act 1997 (Cth), the Queensland Plumbing and Drainage Act 2018 and AS/NZS 3500.4. Hot water delivered to resident bathing and shower outlets must not exceed 45 °C (43 °C at shower and bath outlets under some facility configurations), achieved via thermostatic mixing valves (TMVs) complying with AS/NZS 4032.0. TMVs must be tested annually under AS/NZS 4032.4. Warm water systems present a Legionella risk requiring a written management plan under Queensland Health guidelines. Backflow prevention must be tested annually under AS/NZS 2845.1 and certified to Queensland Urban Utilities. The Aged Care Quality and Safety Commission expects evidence of regular maintenance, testing and remediation in your continuous improvement documentation.",
+    "faqs": [
+      {
+        "q": "What hot water temperature standards apply to residential aged care facilities?",
+        "a": "Under AS/NZS 3500.4 and the Aged Care Quality Standards, hot water delivered to resident bathing, showering and handwashing outlets must not exceed 45 °C, with 43 °C recommended at shower and bath outlets where elderly or cognitively impaired residents may have reduced thermal sensitivity. Water storage cylinders must maintain 60 °C throughout the vessel to prevent Legionella growth, creating a requirement for thermostatic mixing valves (TMVs) that blend cold water into the hot supply at the point of use. TMVs must comply with AS/NZS 4032.0 and be tested annually under AS/NZS 4032.4. The test record must document the delivery temperature before and after testing, the valve condition and any remediation. Pulse Plumbing provides test certificates that are formatted for inclusion in your Quality Improvement Plan."
+      },
+      {
+        "q": "What does Legionella risk management involve for an aged care facility?",
+        "a": "Legionella pneumophila is a serious health risk for aged care residents because immunocompromised and elderly individuals face a substantially higher fatality rate from Legionnaires' disease than the general population. Queensland Health's Code of Practice requires a written Legionella risk management plan for any facility with a warm water storage system holding more than 5 litres between 20 °C and 50 °C — which captures the vast majority of aged care hot water systems, heat pump tanks and thermally stratified solar storage vessels. The plan must identify at-risk systems, document temperature monitoring and treatment protocols, and be reviewed at least annually. Cooling towers and spa/hydrotherapy pools (common in aged care facilities) require a separate management plan with more rigorous monitoring and disinfection requirements. Pulse Plumbing assists with plan preparation, system audits and ongoing monitoring."
+      },
+      {
+        "q": "How do you minimise disruption to residents during plumbing maintenance?",
+        "a": "Minimising disruption to residents is a priority in every aged care engagement, not an afterthought. Before scheduling any work, we consult with the facility manager or maintenance coordinator to understand the daily resident routine — medication rounds, meal times, bathing schedules, activity programmes and visiting hours. Non-urgent works are scheduled at times the facility manager identifies as least disruptive, typically mid-morning or early afternoon during low-activity periods, or on weekends where the roster permits. Our tradespeople receive a verbal briefing before entering the facility, are reminded to use quiet tools where possible, knock and wait before entering resident rooms and corridors, and keep all work areas tidy throughout. We never leave materials, tools or trip hazards in corridors, communal areas or near residents' rooms."
+      },
+      {
+        "q": "What is the response time for a hot water failure at an aged care facility?",
+        "a": "We treat hot water failure at a residential aged care facility as an urgent emergency and aim to be on-site within 60 minutes, 24 hours a day, seven days a week. Loss of hot water in a care setting affects residents' ability to bathe, creates an infection-control risk through the inability to maintain hand hygiene protocols, and — depending on the duration — may be reportable as a serious incident under the Aged Care Quality and Safety Commission's incident management requirements. Our service vehicles carry the most common hot water system components and replacement units so we can resolve most failures on the first visit. For aged care clients on a maintenance agreement, a dedicated emergency escalation contact is available at all times."
+      },
+      {
+        "q": "Does an aged care facility need to report plumbing failures to the Quality and Safety Commission?",
+        "a": "Potentially yes. Under the Aged Care Quality and Safety Commission Act 2018 and the serious incident reporting scheme (SIRS), providers must report certain incidents to the Commission within defined timeframes. While a routine plumbing failure would not typically be reportable, an extended loss of hot water that compromises residents' personal hygiene, a sewage overflow affecting residents' rooms or common areas, or a Legionella detection that resulted in resident illness could each constitute a serious incident under the Commission's reportable incident categories. Maintaining a documented maintenance history, prompt response records and compliance test certificates demonstrates to the Commission that the provider took all reasonable steps to maintain a safe environment. Pulse Plumbing's documentation is specifically structured to support this evidence requirement."
+      },
+      {
+        "q": "Can you manage plumbing across a multi-site aged care group?",
+        "a": "Yes. We work with residential aged care operators, retirement village groups and home care organisations managing multiple South-East Queensland facilities. Portfolio clients receive a dedicated account manager, consistent service standards across all sites, and consolidated invoicing on a monthly or quarterly basis. We maintain a digital service history for each facility including all TMV test records, Legionella management documentation, backflow test certificates and general maintenance records — exportable at any time for Commission audit, accreditation review or insurance renewal. For operators with upcoming accreditation assessments, we can prepare a compliance gap analysis identifying any outstanding maintenance, testing or documentation obligations across your portfolio."
+      },
+      {
+        "q": "What fall-prevention considerations should inform the plumbing design in an aged care bathroom?",
+        "a": "Falls are the leading cause of injury among aged care residents, and bathroom environments are the highest-risk area. While fall prevention is primarily a design and nursing concern, plumbing contributes in several ways. Grab rails must be installed adjacent to toilet pans and in showers in accordance with AS 1428.1 (accessible design standards), and their installation requires compliant substrate backing in the wall substrate — a factor we assess when carrying out any bathroom maintenance. Non-slip wet-area flooring must drain effectively with no standing water pooling around fixtures, meaning floor wastes must be correctly positioned and maintained clear. Hand-held shower roses on adjustable rails allow residents to bathe seated. Lever-style tapware is far easier for arthritic or low-grip residents to operate than traditional cross-head fittings. We advise on all of these elements during facility assessments."
+      }
+    ],
+    "primaryKeywords": [
+      "aged care plumbing Brisbane QLD",
+      "TMV testing aged care South-East Queensland",
+      "Legionella management residential care QLD",
+      "aged care plumber Logan City",
+      "retirement village plumbing Gold Coast"
+    ],
+    "targetClient": "Facility Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "hot-water-systems",
+      "backflow-prevention",
+      "leak-detection",
+      "blocked-drains",
+      "preventative-maintenance"
+    ],
+    "testimonialName": "Diane Hartley",
+    "testimonialText": "We've been through three plumbing contractors in five years trying to find someone who understands aged care. Pulse actually understood the compliance obligations without us having to explain them, scheduled everything around our residents' routines, and gave us documentation we could take straight to our accreditation review. The TMV test pack alone saved us a significant amount of preparation time.",
+    "testimonialCompany": "Maintenance Coordinator, Sunnybank Hills Aged Care Facility"
+  },
+
+  {
+    "slug": "student-accommodation",
+    "name": "Student Accommodation",
+    "heroTitle": "High-Density Plumbing Maintenance for PBSA and University Residences",
+    "heroSubtitle": "Rapid-response maintenance and planned programmes for purpose-built student accommodation, university residential colleges and private student housing — built for the demands of 24/7 full-occupancy buildings across South-East Queensland.",
+    "metaTitle": "Student Accommodation Plumbing Brisbane & QLD",
+    "metaDescription": "Student accommodation plumbing Brisbane, Logan & Gold Coast. Bulk maintenance contracts, 24/7 emergency response and Legionella risk management.",
+    "keyBenefits": [
+      "Bulk maintenance programmes priced for high-density buildings — reducing per-unit cost compared to reactive call-by-call pricing",
+      "Same-day response to blocked drains and hot water failures that create duty-of-care exposure for operators",
+      "Preventative drain maintenance to manage the extreme fixture wear of a 365-day full-occupancy building",
+      "Reporting compatible with PBSA operator, university asset management and NCC compliance requirements"
+    ],
+    "complianceInfo": "Purpose-built student accommodation (PBSA) in Queensland must comply with the Plumbing and Drainage Act 2018, the National Construction Code (NCC) and AS/NZS 3500. Where centralised hot water systems serve 20 or more residents, Queensland Health's Code of Practice requires a Legionella risk management plan. Backflow prevention devices on all mains connections must be registered and tested annually under AS/NZS 2845.1, with test certificates submitted to Queensland Urban Utilities or the local distributor-retailer. For buildings with more than a prescribed number of occupants, AS/NZS 3500.4 requires warm water delivery systems to meet specific temperature and flow requirements. The RTRA Act 2008 (Residential Tenancies and Rooming Accommodation Act) classifies hot water failure and sewage overflow as urgent repairs requiring immediate response. Pulse Plumbing provides all compliance documentation and can assist PBSA operators to prepare required Legionella management plans.",
+    "faqs": [
+      {
+        "q": "Why do student accommodation buildings have so many plumbing problems?",
+        "a": "High-occupancy, 24/7 use places extreme demands on plumbing infrastructure in ways that typical residential buildings simply do not experience. Student residences typically have occupancy rates close to 100% for 38 to 42 weeks per year, with residents who may not be experienced at maintaining shared facilities. The most frequent issues are blocked toilets and floor wastes (caused by wet wipes, paper towels and other non-flushable items), worn tap washers and shower cartridges (high daily usage), calcium scale build-up in showers and hot water systems (particularly in areas with moderately hard water), and split or perished cistern components. A preventative maintenance programme that checks fixtures, clears drainage annually with high-pressure jetting and identifies early-stage failures reduces reactive call-out volume dramatically — typically by 50–70% in our experience with comparable buildings."
+      },
+      {
+        "q": "What are the Legionella management obligations for large student accommodation buildings?",
+        "a": "Queensland Health's Code of Practice for the Management of Legionella applies to any building with a warm water storage system holding more than 5 litres between 20 °C and 50 °C. For centralised hot water systems serving 20 or more residents — standard in any mid-to-large PBSA development — the building owner or operator must have a written Legionella risk management plan, conduct regular temperature monitoring, and maintain records of temperature checks and any corrective actions. Buildings with cooling towers face significantly more onerous requirements, including weekly checks, monthly microbiological sampling and regular disinfection. Failure to manage Legionella risk is both a serious public health risk and a significant regulatory exposure. Pulse Plumbing assists PBSA operators to prepare plans, conduct risk assessments and implement monitoring programmes."
+      },
+      {
+        "q": "Is a blocked toilet or hot water failure considered an urgent repair for student accommodation?",
+        "a": "Yes. Under Queensland's Residential Tenancies and Rooming Accommodation Act 2008 (RTRA Act), the following are classified as urgent repairs: a burst water service, a blocked or broken toilet system if there is no other functioning toilet on the premises, failure of hot water service, and a serious roof leak. For student accommodation buildings managed as rooming accommodation, the same urgent repair obligations apply. The building manager or operator must arrange urgent repairs promptly — in practice, this means a same-day response for most urgent issues. Failure to respond promptly can result in the resident engaging another plumber and charging the cost to the operator, or a Tenancy Queensland dispute. Pulse Plumbing provides 24/7 emergency response and treats all RTRA-classified urgent repairs as the highest priority."
+      },
+      {
+        "q": "How do you price plumbing maintenance for a building with 150+ rooms?",
+        "a": "Bulk maintenance agreements for large PBSA buildings are priced on a schedule-of-rates basis, where agreed fixed prices apply to the most common job types — cistern repairs, tap reseating, shower cartridge replacement, blocked drain clearing and hot water system servicing. The schedule is established at the start of the agreement based on a site assessment, your historic fault records and the age and condition of the building's plumbing infrastructure. For the largest buildings, a fixed annual maintenance fee covering a defined scope of preventative works is also available. This gives operators budget certainty, eliminates the administrative overhead of approving individual quotes and incentivises us to do the preventative work that prevents expensive reactive repairs — which benefits both parties."
+      },
+      {
+        "q": "Can you provide reports that satisfy PBSA operator and university asset management requirements?",
+        "a": "Yes. We understand that PBSA operators, university property divisions and student accommodation trusts have formal asset management and compliance reporting requirements that go well beyond a simple invoice. Our reports for accommodation clients include: itemised job records per room or area with completion photos, periodic summary reports showing call-out volumes by fault type (useful for identifying systemic issues), annual compliance reports consolidating all backflow test certificates, Legionella management records and TMV test results, and end-of-tenancy maintenance reports. Reports are delivered in PDF and can be provided in CSV format for upload into your asset management system. We are experienced working within Archibus, Maximo, FM:Systems and bespoke university CMMS environments."
+      },
+      {
+        "q": "How do you manage plumbing access in a fully occupied residential building?",
+        "a": "Working in a fully occupied building without disrupting residents requires careful planning and coordination. For scheduled maintenance, we provide at least 48 hours' written notice to affected rooms via your building manager, confirm the access window, and complete works within the agreed timeframe. We never isolate a hot water zone or toilets serving a floor without confirming the isolation window with the building manager and ensuring the duration is as short as possible. For individual-room maintenance, we coordinate access with the resident through the building manager rather than approaching rooms unannounced. All maintenance staff carry identification and follow your building's security and visitor protocols. For emergency works, we attend immediately and notify the building manager of the isolation scope and estimated duration as soon as we are on-site."
+      },
+      {
+        "q": "What drain issues are most common in high-occupancy student buildings and how do you prevent them?",
+        "a": "The three most common drain issues in student accommodation are: wet wipes and non-flushable items causing toilet blockages (the leading cause of reactive drain call-outs); grease accumulation in kitchen drains in buildings with shared or individual kitchenettes; and slow floor wastes in ensuite bathrooms caused by hair accumulation over time. Preventative measures include annual high-pressure water jetting of all main waste stacks and individual bathroom drains, installation of hair strainer floor wastes that can be cleaned by residents, and consistent signage in bathrooms and kitchens about what should not be put down the drain. We also offer a CCTV inspection of main waste lines every two to three years to identify root intrusion, joint defects and scale build-up before they cause a blockage."
+      }
+    ],
+    "primaryKeywords": [
+      "student accommodation plumbing Brisbane",
+      "PBSA plumbing maintenance QLD",
+      "university residential plumber South-East Queensland",
+      "student housing plumber Logan",
+      "high density building plumbing Gold Coast"
+    ],
+    "targetClient": "Building Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "blocked-drains",
+      "hot-water-systems",
+      "leak-detection",
+      "backflow-prevention",
+      "preventative-maintenance"
+    ],
+    "testimonialName": "James Tran",
+    "testimonialText": "We manage 240 beds across two buildings in the Logan–Brisbane corridor and Pulse has been our plumbing partner for 18 months. The reactive call-out volume dropped significantly after they did the first annual drain jetting programme, and their bulk rate means we're not being hit with premium pricing every time there's a blocked toilet at 10 pm. The reporting they provide satisfies our head office compliance team without me having to chase anyone.",
+    "testimonialCompany": "Building Manager, UniLodge Logan"
+  },
+
+  {
+    "slug": "commercial-real-estate",
+    "name": "Commercial Real Estate",
+    "heroTitle": "Plumbing That Protects Asset Value for Commercial Property Owners",
+    "heroSubtitle": "Planned maintenance and rapid emergency response for office buildings, industrial estates, mixed-use developments and strata properties — with full compliance documentation for due diligence, insurance and NABERS reporting across South-East Queensland.",
+    "metaTitle": "Commercial Property Plumbing Brisbane QLD",
+    "metaDescription": "Commercial property plumbing Brisbane, Logan & Gold Coast. Portfolio maintenance contracts, compliance documentation and 24/7 emergency response.",
+    "keyBenefits": [
+      "Planned maintenance programmes that reduce lifecycle costs, prevent water damage and protect net lettable area value",
+      "Compliance documentation trail — Form 9 certificates, backflow test records and service logs for due diligence and insurance",
+      "Portfolio-level agreements with consolidated invoicing for funds, syndicates and corporate property teams",
+      "After-hours emergency response to protect tenant relationships and limit landlord liability exposure"
+    ],
+    "complianceInfo": "Commercial property owners in Queensland must comply with the Plumbing and Drainage Act 2018, AS/NZS 3500, the National Construction Code and the Water Supply (Safety and Reliability) Act 2008. All non-domestic properties must have WSAA-approved backflow prevention assemblies on mains connections, tested annually under AS/NZS 2845.1 with certificates submitted to Queensland Urban Utilities. Properties with cooling towers require a Legionella risk management plan under Queensland Health's Code of Practice. Fire services plumbing must be maintained under AS 1851 and AS 2118.1. Food-service tenancies require grease interceptor maintenance in accordance with local council trade waste requirements. Pulse Plumbing provides all compliance documentation — Certificate of Compliance (Form 9), backflow test certificates, Legionella management records and grease interceptor service logs — formatted for your asset management system and NABERS boundary assessments.",
+    "faqs": [
+      {
+        "q": "How does planned maintenance protect the value of a commercial property?",
+        "a": "Water damage is consistently the largest single cause of property insurance claims and unplanned capital expenditure for commercial building owners. Plumbing failures — burst supply lines, failed valve seats, corroded fittings, blocked drains causing overflow — are the mechanism behind the majority of water-related building damage. A well-structured preventative maintenance programme identifies these failures at the early-warning stage: a weeping isolation valve before it fails open, a draining slow enough to suggest root intrusion before it blocks completely, or an anode rod at end of life before the hot water vessel corrodes through. The cost of catching and rectifying these issues during a scheduled visit is typically 5–10% of the cost of the reactive repair, the associated water damage, the insurance claim administration and the tenant disruption that follows an unplanned failure."
+      },
+      {
+        "q": "What compliance obligations do commercial property owners have for plumbing and water services?",
+        "a": "Commercial property owners in Queensland carry a range of ongoing plumbing compliance obligations. All non-domestic mains connections must have registered backflow prevention assemblies tested annually under AS/NZS 2845.1, with test certificates submitted to Queensland Urban Utilities or the local distributor-retailer. Properties with cooling towers must maintain a Legionella risk management plan under Queensland Health's Code of Practice. Where food-service tenancies operate, grease interceptors must be maintained with council-compliant service records. Fire services plumbing — sprinkler systems and hydrant installations — must be maintained under AS 1851. All notifiable plumbing work must be accompanied by a Certificate of Compliance (Form 9). Failure to meet these obligations can result in water authority enforcement, insurance voidance and exposure to statutory liability."
+      },
+      {
+        "q": "Can you coordinate directly with our tenants rather than routing everything through head office?",
+        "a": "Yes — and for many of our commercial property clients, direct tenant liaison is the preferred operating model. For routine maintenance, our technicians contact the tenant's office manager or facilities contact directly to arrange access, complete the work, provide a job report and notify the property manager of completion. For urgent repairs affecting a tenancy, we communicate the scope and expected duration of any service isolation directly to the tenant contact, minimising the disruption and demonstrating the landlord's responsiveness. We can operate within whatever structure you specify — full tenant-direct liaison, landlord-routed only, or a hybrid depending on the work type. All completion reports, compliance certificates and invoices are routed to your accounts and property management team."
+      },
+      {
+        "q": "Do you provide documentation suitable for due diligence and asset sale processes?",
+        "a": "Yes. When a commercial property is being sold or refinanced, purchasers and lenders routinely request a services maintenance history as part of due diligence. This includes evidence that backflow devices have been tested and certified, that any cooling tower Legionella plan has been maintained, that fire services plumbing has been maintained under AS 1851, and that all notifiable works have been certified. Gaps in this documentation are a red flag for purchasers and can result in price reductions or delayed completion. Pulse Plumbing maintains a digital service history for every property we manage, exportable at any time in a format suitable for a due diligence data room. For vendors preparing a property for sale, we can conduct a compliance audit and close any documentation gaps before going to market."
+      },
+      {
+        "q": "How do you manage plumbing for a multi-tenancy office building with varied tenant requirements?",
+        "a": "Multi-tenancy office buildings present specific complexity: each tenancy has its own fitout, some have commercial kitchens or server rooms with specific water-cooling requirements, and the boundary between base-building and tenancy responsibility must be carefully managed to avoid billing disputes. Before commencing any work, we confirm with the property manager whether the scope falls within base-building (landlord's cost) or tenancy (tenant's cost) plumbing and document the agreed boundary. For planned maintenance, we work from a base-building services plan identifying all fixtures, isolations, risers and connection points. For tenancy works, we liaise directly with the tenant's fitout contractor or facilities manager. Consolidated monthly reporting separates base-building and tenancy-charged items clearly."
+      },
+      {
+        "q": "What backflow prevention requirements apply to A-grade and B-grade commercial office buildings?",
+        "a": "All commercial office buildings in Queensland — regardless of grade — must have registered testable backflow prevention assemblies on all mains water connections under the Queensland Plumbing and Drainage Act 2018 and AS/NZS 2845.1. The type of device required depends on the hazard classification of the downstream use. A typical A-grade or B-grade office building will require reduced pressure zone (RPZ) valves or double-check valve assemblies at the boundary meter, with additional protection at high-risk connection points such as irrigation, fire services and cooling tower make-up. All devices must be tested annually by a QBCC-licensed plumber holding the backflow testing authorisation. Test results must be submitted to Queensland Urban Utilities on the prescribed form. Pulse Plumbing manages the full annual programme and handles all authority notifications."
+      },
+      {
+        "q": "Can you manage plumbing maintenance across a commercial property portfolio?",
+        "a": "Yes. We work with property funds, syndicates, commercial REITs and corporate property teams managing multiple South-East Queensland assets. Portfolio clients receive a dedicated account manager, consistent service standards and pricing across all assets, and consolidated monthly invoicing by property or portfolio. Annual compliance programmes — backflow testing, Legionella management, grease interceptor service — are scheduled and managed across all assets simultaneously, ensuring no compliance dates are missed. We provide quarterly reporting summarising maintenance activities, compliance status and any capital recommendations across the portfolio. For new assets coming into the portfolio, we conduct a compliance audit and condition assessment before taking on the maintenance agreement."
+      }
+    ],
+    "primaryKeywords": [
+      "commercial property plumbing Brisbane",
+      "office building plumber QLD",
+      "strata plumbing maintenance South-East Queensland",
+      "commercial real estate plumber Logan",
+      "A-grade office plumbing Brisbane CBD"
+    ],
+    "targetClient": "Asset Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "preventative-maintenance",
+      "backflow-prevention",
+      "blocked-drains",
+      "drain-camera",
+      "leak-detection"
+    ],
+    "testimonialName": "Craig Bowman",
+    "testimonialText": "We manage eight commercial properties across Logan and Brisbane South and Pulse handles all the plumbing. The compliance documentation they provide — backflow certificates, Form 9s, service logs — is exactly what we need for our annual insurance renewal and when we go to market on a property. They've stopped three water damage events from becoming insurance claims this year alone.",
+    "testimonialCompany": "Asset Manager, Apex Property Group"
+  },
+
+  {
+    "slug": "property-management",
+    "name": "Property Management",
+    "heroTitle": "The Plumber That Property Managers Actually Rely On",
+    "heroSubtitle": "Same-day attendance, photo reports compatible with your PM software, transparent pricing and 24/7 emergency response for urgent repairs — trusted by property managers across Brisbane, Logan, Gold Coast and Ipswich.",
+    "metaTitle": "Property Management Plumbing Brisbane QLD",
+    "metaDescription": "Plumbing for property managers across Brisbane, Logan and Gold Coast. Same-day attendance, photo reports for PropertyMe and REST, 24/7 urgent repairs.",
+    "keyBenefits": [
+      "Same-day or next-day attendance on routine tenant requests — no chasing for availability confirmations",
+      "Photo job reports emailed directly to your office — formatted for PropertyMe, REST Professional and Console Cloud",
+      "Clear identification of RTRA Act urgent repairs to protect you from liability and tenant-initiated remedies",
+      "Preferred supplier agreements for PM offices: fixed response times, consistent pricing, one monthly invoice"
+    ],
+    "complianceInfo": "Property managers in Queensland operate under the Property Occupations Act 2014 and the Residential Tenancies and Rooming Accommodation Act 2008 (RTRA Act). The RTRA Act defines urgent repairs — including a burst water service, blocked or broken toilet system (where no alternative exists), hot water failure, and serious roof leaking — and requires property managers to ensure these are attended to promptly. Failure to respond promptly to an urgent repair can entitle the tenant to arrange the repair themselves and recover costs from the landlord, or to apply to the Queensland Civil and Administrative Tribunal (QCAT). Property managers must provide receipts for all maintenance costs to their landlord within seven days. Routine plumbing work that constitutes notifiable work under the Plumbing and Drainage Act 2018 requires a Certificate of Compliance (Form 9) which must be retained with the property's records. Pulse Plumbing provides all required documentation and supports property managers in meeting their legislative maintenance obligations.",
+    "faqs": [
+      {
+        "q": "What counts as an urgent repair under Queensland tenancy law?",
+        "a": "Under Section 214 of the Residential Tenancies and Rooming Accommodation Act 2008, urgent repairs are specifically defined and include: a burst water service; a blocked or broken toilet system if there is no other functioning toilet on the premises; serious roof leaking; a gas leak; a dangerous electrical fault; flooding or serious storm damage; failure of the gas, electricity or water supply; a failure of the hot water service; and a failure of any service that is essential for the property to be used as accommodation. For property managers, the critical implication is that urgent repairs must be attended to promptly — ideally same day. If the property manager fails to arrange the repair promptly, the tenant is entitled to engage a contractor directly and recover costs up to $1,800 from the landlord. Pulse Plumbing provides 24/7 response for all RTRA-classified urgent repairs."
+      },
+      {
+        "q": "How do you send job reports to our property management office?",
+        "a": "After every job, we email a written completion report to your PM office within two hours. The report includes: the attending technician's name and QBCC licence number, the date and time of attendance, a description of the fault found and the work completed, the parts used and their costs, and completion photos showing before and after where relevant. We format reports to be uploaded directly into PropertyMe, REST Professional, Console Cloud and Managed — including the job description in the correct field format for your maintenance log. For jobs that generate a Certificate of Compliance (Form 9), the certificate is attached to the same email. We can also copy reports to the tenant's contact email address if your office requires it. No chasing required."
+      },
+      {
+        "q": "Can you coordinate directly with our tenants so we don't have to be the go-between?",
+        "a": "Yes, and most of our PM clients prefer this arrangement. Once a work order is raised in your system, we contact the tenant directly by text or phone to confirm access arrangements, advise an arrival window and follow up if there is no response. After completing the job, we send the tenant a brief SMS confirming the works are done and direct any follow-up questions to your office. This removes you from the access coordination loop entirely for routine maintenance, which for a busy PM office managing 200+ properties makes a significant difference to daily workload. For urgent repairs, we attend immediately and notify both you and the tenant of our ETA, scope and completion status."
+      },
+      {
+        "q": "How do you handle a plumbing fault where the cost might be disputed between landlord and tenant?",
+        "a": "Plumbing cost allocation disputes between landlords and tenants — most commonly around drain blockages — are a regular issue in property management. Our approach is to document the fault clearly in our report, with photos and a written description that allows a non-technical reader to understand the cause. For blocked drains, we note whether the blockage was caused by root intrusion (structural issue — landlord's responsibility), foreign objects flushed by the occupant (tenant's responsibility), or accumulated waste consistent with normal use (generally landlord's responsibility unless caused by improper disposal). We do not make a determination of liability in our reports — that is your role — but we provide the factual basis for you to make that determination and advise the landlord accordingly. This documentation also supports any QCAT application if the dispute escalates."
+      },
+      {
+        "q": "What does a preferred supplier agreement with Pulse look like for a PM office?",
+        "a": "A preferred supplier agreement with our PM clients typically includes: a committed response time for urgent repairs (our standard is on-site within 90 minutes, 24/7); a next-business-day commitment for routine requests; a schedule of fixed prices for the 30 most common job types — cistern repairs, tap reseating, shower head replacements, hot water system callouts, drain clearing; a dedicated phone number that connects directly to our PM team rather than a general dispatch queue; a single consolidated monthly invoice broken down by property; and a quarterly performance report showing average response times and job completion rates. Agreements are reviewed annually. Contact us to discuss the specific parameters for your rent roll."
+      },
+      {
+        "q": "Do you provide Certificate of Compliance documents for rental property maintenance?",
+        "a": "Yes. Any plumbing work classified as notifiable under the Queensland Plumbing and Drainage Act 2018 must be accompanied by a Certificate of Compliance (Form 9). For rental properties, this most commonly applies to hot water system replacements, new or modified drainage, gas fitting and any work that alters the water supply configuration. The Form 9 is a legal document that the property owner must retain. We issue Form 9 certificates for all qualifying work and include them in our job report email. For property managers keeping digital property files, we recommend storing the Form 9 against the property record in your PM platform. Annual backflow prevention test certificates — required where registered devices are present — are submitted directly to Queensland Urban Utilities and a copy sent to your office."
+      },
+      {
+        "q": "How do you price routine maintenance for a property manager's rent roll?",
+        "a": "We price routine maintenance on a fixed schedule-of-rates basis for PM clients, so you and your landlords know the cost before approving a work order for common jobs. The schedule covers the most frequent maintenance types — tap reseating and washer replacement, cistern repairs (buttons, valves, fill valves), shower rose and cartridge replacement, blocked toilet clearing, hot water system callout and diagnosis, and basic drain unblocking. For more complex or non-standard work, we provide a fixed quote before commencing. Our PM pricing is competitive with the broader market while explicitly excluding the surprise variation charges and after-hours premiums that cause most PM–contractor disputes. We do not charge separate call-out fees for emergency responses outside business hours."
+      }
+    ],
+    "primaryKeywords": [
+      "property management plumbing Brisbane",
+      "plumber for property managers QLD",
+      "rental property maintenance plumber Logan",
+      "urgent repair plumber Brisbane South",
+      "PM plumbing preferred supplier Gold Coast"
+    ],
+    "targetClient": "Property Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "hot-water-systems",
+      "blocked-drains",
+      "leak-detection",
+      "gas-fitting",
+      "residential"
+    ],
+    "testimonialName": "Rachel Stevens",
+    "testimonialText": "I manage 180 properties across Logan and Brisbane South and Pulse handles all our routine plumbing. They contact the tenant directly, send the report to my inbox within two hours, and I've never had to chase a completion update. The fixed pricing means I can approve most work orders without calling the landlord first. When I do have an urgent repair at midnight, there's actually a person who answers.",
+    "testimonialCompany": "Senior Property Manager, LJ Hooker Logan"
+  },
+
+  {
+    "slug": "new-builds",
+    "name": "New Builds",
+    "heroTitle": "On-Schedule Plumbing for Residential and Commercial New Builds",
+    "heroSubtitle": "Reliable rough-in, frame-stage and fit-off plumbing for house and land packages, multi-unit developments and commercial construction — with NCC-compliant pressure testing and Form 9 certification across South-East Queensland.",
+    "metaTitle": "New Build Plumbing Brisbane & SE Queensland",
+    "metaDescription": "New build plumbing Brisbane, Logan & Gold Coast. Rough-in, fit-off, NCC compliance and Form 9 certificates for residential and commercial construction.",
+    "keyBenefits": [
+      "Consistent scheduling at rough-in, frame stage and fit-off — we attend on the programme date, not whenever suits us",
+      "NCC-compliant pressure testing, inspection documentation and Form 9 certificates for every notifiable job",
+      "Fixed schedule-of-rates for builders running ongoing construction programmes — no per-job renegotiation",
+      "Direct coordination with hydraulic engineers, certifiers, QBCC inspectors and Queensland Urban Utilities"
+    ],
+    "complianceInfo": "All new plumbing and drainage installations in Queensland must be completed by a QBCC-licensed plumber and drainer. A Certificate of Compliance (Form 9) is required for all notifiable work under the Plumbing and Drainage Act 2018 and must be provided to the building owner before practical completion. Plumbing must comply with AS/NZS 3500 (all parts), the National Construction Code (NCC) Volume 1 and 2, and Queensland's Plumbing and Drainage Regulation 2019. Hot water systems must comply with AS/NZS 3500.4 and relevant energy efficiency requirements under the NCC. Water supply connections require Queensland Urban Utilities or council water authority approval and a compliance inspection. All drainage connections to the sewer must be approved by the relevant distributor-retailer. Pulse Plumbing provides Form 9 certificates, pressure test records and all documentation required for council inspections, QBCC audit and the practical completion handover pack.",
+    "faqs": [
+      {
+        "q": "What stages of a new build does a plumber need to attend?",
+        "a": "A residential new build typically requires a licensed plumber at four distinct stages. First, underground drainage and sewer connections are completed before the concrete slab is poured — this is the most time-critical stage because delays hold up the entire build. Second, rough-in works are completed during the frame stage, when all water supply pipes and drainage are run through the wall and floor framing before the internal linings are installed. Third, a pressure test is conducted prior to lining, confirming that all supply and drainage pipework is watertight and compliant with AS/NZS 3500. Fourth, fit-off is completed after internal linings, installing all fixtures — toilet suites, basins, baths, shower bases, tapware, hot water systems and gas appliances. The Form 9 Certificate of Compliance is issued upon completion of all notifiable work."
+      },
+      {
+        "q": "What is a Form 9 and when is it required for new construction?",
+        "a": "A Form 9 (Certificate of Compliance) is a legal document issued by the licensed plumber who completed the work, certifying that the installation complies with the Queensland Plumbing and Drainage Act 2018, Plumbing and Drainage Regulation 2019, AS/NZS 3500 and the National Construction Code. It is required for all notifiable plumbing work — broadly, any work that connects to or modifies a water supply, drainage, sewage, gas or stormwater system. For new residential and commercial builds, this means a Form 9 is required for the underground drainage stage and for the fit-off stage (at minimum). The Form 9 must be provided to the building owner before or at practical completion and is essential for the final building certification. Pulse Plumbing issues Form 9 certificates for all qualifying work and provides copies to the builder, owner and certifier as required."
+      },
+      {
+        "q": "What is a pressure test and when does it happen in the construction process?",
+        "a": "A hydraulic pressure test verifies that all water supply pipework is watertight and can sustain the operating pressure required under AS/NZS 3500.1 before the walls are lined and access becomes impossible. For residential buildings, the test is typically conducted after the frame-stage rough-in is complete and before the plasterboard or cladding is fixed. Copper and cross-linked polyethylene (PEX) supply lines are pressurised to 1.5 times the operating pressure and held for a minimum period while the technician checks for pressure drop and inspects all joints and fittings. Drainage is inspected for gradient and joint integrity. The test result is recorded on the Form 9. Some certifiers and local councils require the plumber to be present during the council's own inspection, which we accommodate as a standard part of our new build service."
+      },
+      {
+        "q": "How do you help builders keep plumbing off the critical path?",
+        "a": "Plumbing delays cascade to every other trade on site — a delayed underground stage postpones the slab, a delayed rough-in holds the plasterer, and a delayed fit-off delays practical completion and delays the builder's final payment. Our approach to preventing plumbing from becoming a critical-path item starts with locking confirmed dates in our scheduling system at the contract stage, not waiting until the week before. We monitor the build programme and confirm or adjust dates at least five working days before each attendance. Where site conditions change, we communicate the impact on our schedule immediately so the site supervisor can adjust the overall programme. For builders running concurrent sites, we allocate a dedicated technician to your contract so you are not competing with other clients for availability."
+      },
+      {
+        "q": "Can you manage plumbing across a full residential estate or townhouse development?",
+        "a": "Yes. We manage plumbing programmes for house-and-land packages, lot-by-lot production builds, townhouse developments and medium-density apartment buildings. For estate builders, we stage our works to align with your lot release schedule, completing underground drainage on each lot in sequence and maintaining a buffer to avoid any lot holding up a slab pour. For townhouse developments where multiple lots are under construction simultaneously, we allocate dedicated technicians to the contract and maintain a programme overlay with your site supervisor. We can also manage the civil plumbing component — internal road drainage, stormwater kerb connections and common-area water supply — on a design-and-construct or construct-only basis. Single-contractor accountability for the full plumbing scope is available."
+      },
+      {
+        "q": "What hot water system requirements apply to new residential construction in Queensland?",
+        "a": "New residential buildings in Queensland are subject to the National Construction Code (NCC) energy efficiency requirements for heated water systems. Under NCC Section J7.3 (or the equivalent Deemed-to-Satisfy provision), residential buildings in Climate Zone 2 (covering South-East Queensland) must install a solar hot water system with electric or gas boosting, a heat pump hot water system, or a gas instantaneous hot water system as the primary heating source. Electric resistance storage systems are no longer compliant as the primary hot water source for new residential buildings under the NCC. Thermostatic mixing valves (TMVs) limiting delivery temperature to 50 °C at bathtub and shower outlets are required under AS/NZS 3500.4. Pulse Plumbing advises builders and owners on compliant system selection and installs all types of compliant hot water systems for new construction."
+      },
+      {
+        "q": "Do you handle connections to Queensland Urban Utilities and council infrastructure?",
+        "a": "Yes. Connections to the Queensland Urban Utilities (QUU) or local council water and sewer network are subject to formal approval processes managed by the relevant distributor-retailer. For residential new builds, this involves lodging a connection application (previously an Infrastructure Charges Notice), coordinating a QUU inspection of the sanitary drainage connection before backfilling, and obtaining a water meter connection permit. For commercial and civil projects, the process is more complex — involving a hydraulic design review, infrastructure agreement, connection fee calculation and staged inspections during construction. We manage all approvals, lodgements and inspection scheduling with QUU and local council, and can liaise with the project's hydraulic engineer where a formal hydraulic design is required."
+      }
+    ],
+    "primaryKeywords": [
+      "new build plumbing Brisbane QLD",
+      "residential construction plumber Logan",
+      "rough-in plumbing South-East Queensland",
+      "Form 9 certificate plumber Brisbane",
+      "house and land plumbing Gold Coast"
+    ],
+    "targetClient": "Site Supervisor",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "gas-fitting",
+      "hot-water-systems",
+      "backflow-prevention",
+      "residential",
+      "commercial"
+    ],
+    "testimonialName": "Brad Mitchell",
+    "testimonialText": "We run about 40 starts a year across Logan and the northern Gold Coast. Pulse has been on our plumbing contract for the last 18 months and I've had to chase a missed stage attendance once. They're on the dates we agreed, the Form 9s come through the same day and they actually communicate when something changes on a site. That sounds basic but it isn't common.",
+    "testimonialCompany": "Site Supervisor, Mitchell & Sons Construction"
+  },
+
+  {
+    "slug": "civil",
+    "name": "Civil",
+    "heroTitle": "Civil Plumbing and Water Infrastructure for SE Queensland Developments",
+    "heroSubtitle": "Subdivision reticulation, sewer and water main extensions, stormwater infrastructure and large-diameter drainage for civil contractors, developers and local government projects — delivered on programme with WSAA-compliant documentation across South-East Queensland.",
+    "metaTitle": "Civil Plumbing Services Brisbane & SE Queensland",
+    "metaDescription": "Civil plumbing Brisbane & SE QLD. Subdivision reticulation, water mains and stormwater drainage. QBCC licensed, WSAA compliant, as-constructed drawings.",
+    "keyBenefits": [
+      "Full subdivision reticulation — bulk earthworks drainage through to individual lot water meter and sewer connection",
+      "WSAA-compliant design, installation and pressure testing for Queensland Urban Utilities infrastructure connections",
+      "GPS as-constructed drawings and full documentation package for infrastructure agreement finalisation",
+      "SWMS, environmental management plans and erosion and sediment control documentation for every civil site"
+    ],
+    "complianceInfo": "Civil plumbing and drainage works in Queensland must comply with the Plumbing and Drainage Act 2018, the Water Supply (Safety and Reliability) Act 2008, AS/NZS 3500 and the relevant distributor-retailer's infrastructure design standards — typically Queensland Urban Utilities Design Guidelines for projects in the QUU service area, or Logan Water / Gold Coast Water standards for other areas. Connection of civil water and sewer infrastructure to the public network requires a formal infrastructure agreement (IA) with the distributor-retailer, including hydraulic design review, connection fee payment and staged construction inspections. GPS as-constructed drawings in the distributor-retailer's required format are mandatory before the IA is finalised and assets are transferred. Health and safety obligations under the Work Health and Safety Act 2011 and Work Health and Safety Regulation 2011 require site-specific Safe Work Method Statements (SWMS) for all high-risk activities. Pulse Plumbing provides all construction documentation, inspection records, pressure test results and as-constructed drawings required for infrastructure agreement finalisation.",
+    "faqs": [
+      {
+        "q": "What does civil plumbing scope typically include on a residential subdivision?",
+        "a": "A civil plumbing package for a residential subdivision typically covers: trunk sewer mains connecting to the distributor-retailer's existing network; individual lot sewer connections with inspection openings at the kerb; water reticulation mains serving all lots; individual lot water meter assemblies at the kerb; stormwater kerb drainage, underground pipes and outlet structures; and common-area drainage systems for roads, car parks and open space. On larger subdivisions with sequential lot releases, the civil plumbing programme is typically staged, with each stage completed to the point of distributor-retailer inspection before the next stage commences. Pulse Plumbing can take full responsibility for the civil plumbing package, or work as a specialist subcontractor to the principal civil contractor. We maintain Civil and Plumbing and Drainage QBCC licences for all relevant work categories."
+      },
+      {
+        "q": "What are the WSAA standards that apply to Queensland civil plumbing?",
+        "a": "The Water Services Association of Australia (WSAA) publishes industry codes and specifications that Queensland's water distributor-retailers — including Queensland Urban Utilities, Logan Water, Gold Coast Water and Unitywater — adopt as their construction standards. The key WSAA documents for civil plumbing works include WSA 02 (Sewerage Code of Australia), WSA 03 (Water Supply Code of Australia) and WSA 05 (Civil Construction Code). These specify acceptable materials, jointing methods, trench bedding, thrust restraint, pressure testing procedures, CCTV inspection requirements and as-constructed documentation standards. Local distributor-retailers may publish their own Design Guidelines and Standard Drawings that supplement WSAA codes. Pulse Plumbing is familiar with QUU, Logan Water and Gold Coast Water construction standards and provides works that comply with the applicable distributor-retailer's requirements."
+      },
+      {
+        "q": "What is an infrastructure agreement and what documentation is required to finalise it?",
+        "a": "An infrastructure agreement (IA) is the formal contract between a developer and the water distributor-retailer that governs the construction and transfer of water and sewerage infrastructure assets. Before the IA is entered into, the developer must submit hydraulic plans for review and receive design acceptance. During construction, distributor-retailer inspectors attend at specified hold points — typically before backfilling sewer connections and during pressure testing of water mains. After construction, the developer must provide GPS as-constructed drawings in the distributor-retailer's required format (commonly 12d or CAD in MGA94 coordinates), pressure test records, CCTV inspection footage of all sewer mains, material certification records and a defect liability bond. Pulse Plumbing prepares all required construction documentation and works with the project's surveyor to produce compliant as-constructed drawings."
+      },
+      {
+        "q": "What health and safety documentation is required on a civil plumbing site?",
+        "a": "Civil plumbing sites involve multiple high-risk work activities under the Work Health and Safety Regulation 2011, each requiring a documented Safe Work Method Statement (SWMS). These include: excavation below 1.5 metres (confined space and trenching risks); working near live services (dial before you dig processes and service locating requirements); confined space entry for maintenance access to existing infrastructure; working near or over water (stormwater detention basins, creek crossings); and mobile plant operations (excavators, vacuum trucks). Environmental management obligations under local council development conditions require erosion and sediment control plans compliant with the Urban Land Development Authority standards. Pulse Plumbing prepares all SWMS documentation, coordinates service locating prior to excavation and implements ESC measures as part of our standard civil plumbing delivery."
+      },
+      {
+        "q": "Can you deliver the full civil plumbing package for a commercial development?",
+        "a": "Yes. Commercial development civil plumbing requires a broader scope than residential subdivision: industrial precincts, mixed-use developments and commercial parks require larger-diameter sewer and water mains, trade waste pre-treatment infrastructure (for industrial tenancies with significant FOG, chemical or heavy metal discharge), stormwater quality treatment devices (gross pollutant traps, bioretention basins, sediment basins), fire protection water supply infrastructure and in some cases pumped sewer rising mains where gravity drainage is not achievable. We provide design-and-construct services for civil plumbing on commercial developments in partnership with accredited hydraulic engineers, or construct-only where a design has already been approved by the distributor-retailer. We are experienced with QUU, Logan Water and Gold Coast Water development assessment and construction inspection requirements."
+      },
+      {
+        "q": "How do you manage service locating and third-party services on civil sites?",
+        "a": "Striking an underground service — gas, power, telecommunications, water or sewer — is one of the most serious risks on any civil site, with potential for fatalities, major infrastructure damage and significant project delays. Our pre-excavation process requires a Dial Before You Dig (DBYD) search for every project, with plans received and reviewed before any excavation commences. For complex sites with dense utility corridors, we engage a licensed vacuum excavation contractor to safely expose and mark existing services before mechanical excavation begins. Our excavation SWMS documents the service locating process, identifies known services on the site plan, and requires all operators to hand-dig within 300 mm of any marked service. Any unexpected service encountered during excavation is immediately reported, exposed by hand, identified and reported to the relevant authority before works proceed."
+      },
+      {
+        "q": "Do you work on infrastructure maintenance as well as new civil construction?",
+        "a": "Yes. Beyond new subdivision and development infrastructure, we provide maintenance and rehabilitation services for existing civil plumbing infrastructure. This includes CCTV inspection and condition assessment of ageing sewer and stormwater mains; high-pressure cleaning of sewer mains and stormwater systems; structural repair of pipe defects using trenchless relining technology (CIPP lining); access chamber rehabilitation; and emergency response to sewer main failures including excavation, pipe replacement and service restoration. We work with local government, Queensland Urban Utilities and private infrastructure managers responsible for maintaining civil plumbing assets. For network operators preparing asset management plans, we provide condition assessment reports in a format compatible with ISO 55000 asset management principles."
+      }
+    ],
+    "primaryKeywords": [
+      "civil plumbing Brisbane QLD",
+      "subdivision reticulation contractor South-East Queensland",
+      "WSAA compliant plumbing Logan",
+      "infrastructure plumbing contractor Queensland",
+      "sewer main construction Brisbane"
+    ],
+    "targetClient": "Civil Project Manager",
+    "relatedServices": [
+      "maintenance-plumbing",
+      "blocked-drains",
+      "drain-camera",
+      "backflow-prevention",
+      "commercial",
+      "leak-detection"
+    ],
+    "testimonialName": "Tom O'Brien",
+    "testimonialText": "We used Pulse on a 64-lot subdivision in Logan — the full civil plumbing package from underground through to lot connections and water meters. They worked directly with our civil subcontractors, attended every QUU hold point, and had the as-constructed documentation to us within a week of practical completion. The IA was finalised without any RFI on the documentation. That's a first for a project this size.",
+    "testimonialCompany": "Project Manager, Logan Civil Contractors Pty Ltd"
+  }
+]

@@ -1,0 +1,231 @@
+---
+import { suburbsByRegion } from '../data/locations';
+
+const PHONE = '0452 188 420';
+const PHONE_HREF = 'tel:0452188420';
+
+// Top 5 suburbs per region for the nav mega-dropdown
+const locationGroups = suburbsByRegion.map((r) => ({
+  label: r.label,
+  key: r.key,
+  suburbs: r.suburbs.slice(0, 5),
+}));
+
+const services = [
+  { label: 'Blocked Drains', href: '/services/blocked-drains' },
+  { label: 'Burst Pipes', href: '/services/burst-pipes' },
+  { label: 'Hot Water Systems', href: '/services/hot-water-systems' },
+  { label: 'Gas Fitting', href: '/services/gas-fitting' },
+  { label: 'Leak Detection', href: '/services/leak-detection' },
+  { label: 'Drain Camera Inspection', href: '/services/drain-camera' },
+  { label: 'Backflow Prevention', href: '/services/backflow-prevention' },
+  { label: 'Preventative Maintenance', href: '/services/preventative-maintenance' },
+];
+
+const industries = [
+  { label: 'Retail', href: '/industries/retail' },
+  { label: 'Childcare', href: '/industries/childcare' },
+  { label: 'Education', href: '/industries/education' },
+  { label: 'Aged Care', href: '/industries/aged-care' },
+  { label: 'Student Accommodation', href: '/industries/student-accommodation' },
+  { label: 'Commercial Real Estate', href: '/industries/commercial-real-estate' },
+  { label: 'Property Management', href: '/industries/property-management' },
+  { label: 'New Builds', href: '/industries/new-builds' },
+  { label: 'Civil', href: '/industries/civil' },
+];
+
+const locations = [
+  { label: 'Brisbane', href: '/plumber-brisbane' },
+  { label: 'Logan', href: '/plumber-logan' },
+  { label: 'Gold Coast', href: '/plumber-gold-coast' },
+  { label: 'Ipswich', href: '/plumber-ipswich' },
+];
+---
+
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 lg:h-20">
+
+    <!-- Logo -->
+    <a href="/" class="flex-shrink-0" aria-label="Pulse Plumbing & Gas — Home">
+      <img
+        src="/images/logo.png"
+        alt="Pulse Plumbing & Gas"
+        width="200"
+        height="78"
+        class="h-10 lg:h-12 w-auto"
+        loading="eager"
+      />
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="hidden lg:flex items-center gap-1 text-sm font-semibold">
+
+      <!-- Services -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded transition-colors">
+          Services
+          <svg class="w-3.5 h-3.5 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-60 bg-white border border-gray-200 rounded-lg shadow-lg
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+          <ul class="py-1.5">
+            {services.map((s) => (
+              <li>
+                <a href={s.href}
+                   class="block px-4 py-2.5 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] transition-colors">
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+
+      <!-- Industries -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded transition-colors">
+          Industries
+          <svg class="w-3.5 h-3.5 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="absolute top-full left-0 mt-1 w-60 bg-white border border-gray-200 rounded-lg shadow-lg
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+          <ul class="py-1.5">
+            {industries.map((i) => (
+              <li>
+                <a href={i.href}
+                   class="block px-4 py-2.5 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] transition-colors">
+                  {i.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+
+      <!-- Locations mega-dropdown -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded transition-colors">
+          Locations
+          <svg class="w-3.5 h-3.5 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-[700px] bg-white border border-gray-200 rounded-xl shadow-xl
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 p-5">
+          <div class="grid grid-cols-5 gap-4">
+            {locationGroups.map((group) => (
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">{group.label}</p>
+                <ul class="space-y-1">
+                  {group.suburbs.map((s) => (
+                    <li>
+                      <a href={`/plumber-${s.slug}`}
+                         class="block text-sm text-slate-600 hover:text-[#046bd2] transition-colors py-0.5 truncate">
+                        {s.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Servicing 130+ suburbs within 30km of Loganholme</span>
+            <a href="/service-areas"
+               class="text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] flex items-center gap-1 transition-colors">
+              View all service areas →
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <a href="/about" class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded transition-colors block">About</a>
+      </li>
+      <li>
+        <a href="/blog" class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded transition-colors block">Blog</a>
+      </li>
+      <li>
+        <a href="/contact" class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded transition-colors block">Contact</a>
+      </li>
+    </ul>
+
+    <!-- Right CTAs -->
+    <div class="flex items-center gap-3">
+      <!-- Phone — visible md+ -->
+      <a href="tel:0452188420"
+         class="hidden md:flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-[#046bd2] transition-colors">
+        <svg class="w-4 h-4 text-[#046bd2]" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+        </svg>
+        {PHONE}
+      </a>
+
+      <!-- Book button -->
+      <a href="/contact"
+         class="bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-4 py-2.5 rounded transition-colors hidden sm:inline-block">
+        Get a Quote
+      </a>
+
+      <!-- Emergency — mobile prominent -->
+      <a href={PHONE_HREF}
+         class="bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-4 py-2.5 rounded transition-colors sm:hidden">
+        Call Now
+      </a>
+
+      <!-- Hamburger -->
+      <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-500 hover:text-slate-900 transition-colors" aria-label="Open menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-4 space-y-1">
+      <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 px-3 pb-2 pt-1">Services</p>
+      {services.map((s) => (
+        <a href={s.href} class="block px-3 py-2.5 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded transition-colors">{s.label}</a>
+      ))}
+
+      <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 px-3 pb-2 pt-4">Industries</p>
+      {industries.map((i) => (
+        <a href={i.href} class="block px-3 py-2.5 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded transition-colors">{i.label}</a>
+      ))}
+
+      <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 px-3 pb-2 pt-4">Locations</p>
+      {locationGroups.map((group) => (
+        <>
+          <p class="text-xs font-medium text-slate-400 px-3 pt-2 pb-1">{group.label}</p>
+          {group.suburbs.map((s) => (
+            <a href={`/plumber-${s.slug}`} class="block px-3 py-2 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded transition-colors">{s.name}</a>
+          ))}
+        </>
+      ))}
+      <a href="/service-areas" class="block px-3 py-2.5 text-sm font-semibold text-[#046bd2] hover:bg-[#F0F5FA] rounded transition-colors">
+        View all 130+ service areas →
+      </a>
+
+      <div class="pt-4 flex flex-col gap-2 pb-2">
+        <a href="tel:0452188420" class="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-3 rounded text-center transition-colors">
+          Call Now — Emergency Response
+        </a>
+        <a href="/contact" class="bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold text-sm px-4 py-3 rounded text-center transition-colors">
+          Get a Quote
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

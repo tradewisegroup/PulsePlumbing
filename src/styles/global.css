@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* ── Google Font: Plus Jakarta Sans ── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@theme {
+  /* ── Pulse Plumbing & Gas brand colours (from pulseqld.com.au) ── */
+  --color-pulse-blue:     #046bd2;   /* primary — buttons, links, accents  */
+  --color-pulse-blue-dk:  #045cb4;   /* hover state                        */
+  --color-pulse-dark:     #1e293b;   /* headings, dark sections            */
+  --color-pulse-slate:    #334155;   /* body text                          */
+  --color-pulse-light:    #F0F5FA;   /* page backgrounds, cards            */
+  --color-pulse-gray:     #D1D5DB;   /* borders, dividers                  */
+  --color-pulse-white:    #FFFFFF;
+  --color-pulse-black:    #111111;
+
+  /* ── Typography ── */
+  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Base resets */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  color: #334155;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: #1e293b;
+}

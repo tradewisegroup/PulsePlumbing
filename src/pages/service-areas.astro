@@ -1,0 +1,98 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { suburbsByRegion, suburbs } from '../data/locations';
+
+const title = 'Service Areas | Plumber Brisbane, Logan, Gold Coast & Ipswich | Pulse Plumbing & Gas';
+const description = `Pulse Plumbing & Gas services ${suburbs.length}+ suburbs across South-East Queensland within 30km of Loganholme. Find your local plumber — available 24/7.`;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Plumbing Services — South-East Queensland',
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Pulse Plumbing & Gas',
+    url: 'https://pulseqld.com.au',
+    telephone: '0452188420',
+  },
+  areaServed: suburbs.map((s) => ({
+    '@type': 'City',
+    name: s.name,
+    postalCode: s.postcode,
+  })),
+};
+---
+
+<MainLayout {title} {description} schema={schema}>
+
+  <!-- Hero -->
+  <section class="bg-[#F0F5FA] border-b border-[#D1D5DB]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="hover:text-[#046bd2]">Home</a></li>
+          <li class="text-slate-300">/</li>
+          <li class="text-slate-700 font-medium">Service Areas</li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl sm:text-5xl font-bold text-[#1e293b] mb-4">Service Areas</h1>
+      <p class="text-lg text-[#334155] max-w-2xl">
+        We service {suburbs.length}+ suburbs across South-East Queensland — from the Brisbane southside and Logan City through to Redland, northern Gold Coast, and Ipswich. Available 24/7.
+      </p>
+    </div>
+  </section>
+
+  <!-- Regions -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+      {suburbsByRegion.map((region) => (
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <h2 class="text-2xl font-bold text-[#1e293b]">{region.label}</h2>
+            <span class="bg-[#F0F5FA] border border-[#D1D5DB] text-[#334155] text-sm px-2.5 py-0.5 rounded-full">
+              {region.suburbs.length} suburbs
+            </span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+            {region.suburbs.map((s) => (
+              <a href={`/plumber-${s.slug}`}
+                 class="group flex items-start gap-2 bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] rounded-lg px-3 py-2.5 transition-all">
+                <svg class="w-3.5 h-3.5 text-[#046bd2] group-hover:text-white flex-shrink-0 mt-0.5 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                <div>
+                  <div class="text-sm font-medium text-[#1e293b] group-hover:text-white transition-colors leading-tight">{s.name}</div>
+                  <div class="text-xs text-[#334155] group-hover:text-blue-100 transition-colors">{s.postcode}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#046bd2] py-14">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Can't find your suburb?</h2>
+      <p class="text-blue-100 text-lg mb-8">
+        We cover a large area across South-East Queensland. If your suburb isn't listed, call us — we'll let you know if we can help.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="tel:0452188420"
+           class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+          </svg>
+          Call 0452 188 420
+        </a>
+        <a href="/contact"
+           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors">
+          Send an Enquiry
+        </a>
+      </div>
+    </div>
+  </section>
+
+</MainLayout>

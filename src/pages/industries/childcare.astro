@@ -1,0 +1,130 @@
+---
+import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import FAQSection     from '../../components/seo/FAQSection.astro';
+import AtAGlance      from '../../components/seo/AtAGlance.astro';
+
+const SITE = 'https://pulseqld.com.au';
+
+// ─── At-a-glance bullet points ────────────────────────────────────────────────
+// Placed early in the page slot so AI crawlers extract it before FAQs.
+// Each item is a complete factual sentence with named regulations or numbers.
+
+const GLANCE_ITEMS = [
+  'Hot water at any outlet accessible by children must not exceed 45°C under the Education and Care Services National Regulations (Reg. 106) — thermostatic mixing valves (TMVs) are required at every such outlet.',
+  'TMVs must be inspected and tested at least annually by a QBCC-licensed plumber, with a signed compliance certificate issued after each test.',
+  'Backflow prevention devices are mandatory under AS/NZS 3500.1 and must be tested annually and registered with the relevant water authority.',
+  'Pulse Plumbing & Gas holds a QBCC Contractor Licence for Plumbing and Drainage and carries $20M public liability insurance — certificates of currency available on request.',
+  'We service childcare centres across Logan City, Brisbane South, Redland City, Gold Coast North and Ipswich — emergency response available 24/7, 365 days per year.',
+];
+
+// ─── LLM-optimised FAQs ───────────────────────────────────────────────────────
+// Minimum 100 words per answer. Direct answer in sentence 1.
+// Second paragraph adds regulation detail or Pulse-specific process.
+// Brand mention in ~30% of answers (questions 1, 4, 6 below).
+
+const FAQS = [
+  {
+    question: 'What water temperature regulations apply to childcare plumbing in QLD?',
+    answer: `Hot water delivered to any outlet that children can access must not exceed 45°C, as required by the Education and Care Services National Regulations (Regulation 106) and AS/NZS 3500.4 (Heated Water Services). This temperature threshold is specifically set to prevent scalding injuries to young children, who have thinner skin and slower reaction times than adults. Shower and bath outlets in childcare facilities also fall under ACECQA (Australian Children's Education and Care Quality Authority) guidance, which requires documented evidence of compliance as part of the service's Quality Improvement Plan.
+
+The standard method for achieving these temperatures is the installation of thermostatic mixing valves (TMVs) at each outlet. A TMV blends hot and cold water to a pre-set delivery temperature regardless of fluctuations in supply pressure or incoming water temperature. Pulse Plumbing & Gas installs, commissions and annually tests TMVs to AS 4032.3, issuing a signed compliance certificate after every inspection. If your centre is adding capacity or renovating, we can audit existing outlet temperatures, identify non-compliant fixtures and quote for upgrades before your next ACECQA assessment.`,
+  },
+  {
+    question: 'How often do TMVs need to be tested at childcare centres in Queensland?',
+    answer: `Thermostatic mixing valves at childcare facilities should be tested at a minimum annually, in line with the requirements of AS 4032.3 and the manufacturer's recommended service interval. In practice, most risk management frameworks recommend testing every 12 months or sooner if the water supply is changed, the system is modified, or the centre undergoes a significant renovation. The Queensland Plumbing and Drainage Act 2018 requires that all plumbing work — including TMV installation and testing — is carried out by or under the supervision of a licensed QBCC plumber.
+
+After every test, a service record is created that notes the pre-service delivery temperature, the post-service delivery temperature, any parts replaced, and the technician's QBCC licence number. This documentation is the evidence your centre needs to demonstrate compliance to a local council inspector, an ACECQA assessor or your insurer. Centres on an annual maintenance agreement typically schedule TMV testing during a low-occupancy period (school holiday week) to minimise disruption to children and educators.`,
+  },
+  {
+    question: 'Can a plumbing fault force our childcare centre to close?',
+    answer: `Yes — under the Education and Care Services National Law, an approved provider must close or evacuate a service if it cannot maintain a safe environment, which includes access to clean potable water and functioning sanitary facilities. A complete loss of water supply, a sewage overflow inside or adjacent to the building, or a sustained loss of hot water at handwashing facilities can each trigger a mandatory temporary closure. Regulatory authorities including Queensland's Department of Education can issue a direction to close under these circumstances.
+
+The most common plumbing-related closure risks at childcare centres are blocked or overflowing floor drains in nappy change rooms, burst or leaking pipes in kitchen or bathroom areas, and hot water system failures that prevent compliant handwashing. Emergency callouts for childcare facilities are treated as a priority — we aim to have a licensed plumber on-site within 90 minutes across the Logan, Brisbane South, Gold Coast North and Ipswich regions. If a full repair is not possible within the day, we will implement a compliant temporary solution to keep the service open while parts are sourced.`,
+  },
+  {
+    question: 'Do you install the correct number of toilet and handwashing facilities for our licence capacity?',
+    answer: `Yes. The Education and Care Services National Regulations (Regulation 110) specify minimum ratios of toilets and handwashing basins relative to the number of children approved for the service. For example, services caring for children aged under five must provide one toilet and one handwashing basin for every ten children (or part thereof) in the approved numbers. Separate adult facilities are also required. If you are increasing your approved licence capacity, the new ratio must be met before the expanded approval takes effect.
+
+We assess your existing fixture count against your current and planned approval numbers, produce a compliant layout, and carry out all required installation. Work is typically scheduled in stages to maintain as much of the centre's function as possible during construction — for example, completing one bathroom at a time so the centre retains operational toilets throughout. All new fixtures comply with AS/NZS 3500 and are selected to meet hygiene standards appropriate to a childcare environment, including sensor-operated or elbow-operated taps where required by council conditions.`,
+  },
+  {
+    question: 'Do you offer after-hours plumbing for childcare centres to avoid disrupting children?',
+    answer: `Wherever possible, yes — we schedule non-urgent maintenance and planned installations outside core operating hours to protect the wellbeing and routine of children in care. Early-morning starts (from 5:30 am), late-afternoon finishes after 6 pm, weekend slots and school-holiday windows are all available and are our default preference for childcare clients. Work that involves water shutdowns or significant noise is specifically confined to these low-disruption windows wherever practicable.
+
+Emergency callouts are different — if a pipe has burst or a drain has overflowed during operating hours, we attend immediately regardless of the time. Our tradespeople are briefed to work quietly, keep tools and equipment in safe areas away from children, and communicate directly with the centre director on arrival and departure. All on-site personnel hold valid Blue Cards (Working With Children Checks) or are accompanied at all times by a Blue Card holder in accordance with the Child Protection Act 1999 (Qld).`,
+  },
+  {
+    question: 'What areas of South-East Queensland do you service for childcare plumbing?',
+    answer: `Pulse Plumbing & Gas services childcare centres across more than 130 suburbs in South-East Queensland, covering Logan City (including Loganholme, Springwood, Beenleigh and Browns Plains), Brisbane Southside (including Sunnybank, Mount Gravatt, Carindale and Capalaba), Redland City, Gold Coast North (including Ormeau, Pimpama and Coomera) and Ipswich (including Goodna, Springfield and Redbank Plains). Our base in Loganholme gives us fast travel times throughout this corridor, which spans the highest density of licensed early-learning services in South-East Queensland.
+
+For centres with multiple locations across the region, we provide consolidated invoicing and a single point of contact for scheduling. Multi-site maintenance agreements are priced at a preferred rate and include a scheduled annual compliance visit (TMV testing, backflow certification and general plumbing health check) for each location. To discuss a service agreement covering your portfolio of childcare sites, call us on 0452 188 420 or submit a commercial enquiry through our contact page.`,
+  },
+];
+---
+
+<IndustryLayout
+  industryName="Childcare"
+  industrySlug="childcare"
+  heroTitle="Plumbing Services for Childcare Centres in South-East Queensland"
+  heroSubtitle="Safe, hygienic plumbing for licensed childcare centres, kindergartens and early learning facilities — with full compliance documentation for ACECQA, QCAA and local council requirements."
+  keyBenefits={[
+    'AS 4032.3-compliant TMV installation and annual testing with signed compliance certificates',
+    'Rapid response to prevent service interruptions that trigger mandatory closure under the National Law',
+    'After-hours and school-holiday scheduling to keep disruption away from children and educators',
+    'Blue Card holders on-site at all times — all tradespeople meet Child Protection Act 1999 (Qld) requirements',
+  ]}
+  complianceInfo="Queensland childcare centres must comply with the Education and Care Services National Regulations, which specify safe hot water temperatures (maximum 45°C at children's accessible outlets), handwashing station ratios and sanitary facility standards under Regulation 110. Thermostatic mixing valves (TMVs) must be installed at every child-accessible outlet and tested annually to AS 4032.3 by a QBCC-licensed plumber. Backflow prevention devices require annual certification under AS/NZS 3500.1. Pulse Plumbing provides all required compliance records, test certificates and Form 9 documentation to support your ACECQA Quality Improvement Plan and local council licensing requirements."
+  faqs={FAQS.map((f) => ({ q: f.question, a: f.answer }))}
+  relatedServices={[
+    'maintenance-plumbing',
+    'hot-water-systems',
+    'backflow-prevention',
+    'blocked-drains',
+    'leak-detection',
+    'preventative-maintenance',
+  ]}
+  metaTitle="Childcare Centre Plumbing Brisbane & South-East QLD"
+  metaDescription="Licensed plumbing for childcare centres across Brisbane, Logan, Gold Coast and Ipswich. TMV installation and annual testing, backflow prevention certification and 24/7 emergency response. QBCC licensed, Blue Card holders."
+>
+
+  <!--
+    Named slot: "before-faq"
+    The IndustryLayout renders its own FAQ accordion using the `faqs` prop above
+    (for the CTA section form and schema). The FAQSection below replaces the
+    IndustryLayout's built-in FAQ rendering — to avoid duplication, use this
+    slot only if IndustryLayout exposes one, otherwise place via default slot.
+
+    For now: the At-a-Glance and the improved FAQSection are injected via the
+    default slot, which IndustryLayout renders at the bottom of the page.
+    The short-answer FAQs in the `faqs` prop still drive the schema + CTA form.
+
+    TODO: When IndustryLayout is refactored to expose a `faq` slot, remove the
+    `faqs` prop accordion rendering from IndustryLayout and use FAQSection here.
+  -->
+
+  <!-- ── At a Glance — placed first for AI crawler extraction priority ──── -->
+  <AtAGlance
+    heading="Childcare plumbing in QLD — at a glance"
+    context="Key facts for childcare operators, directors and facilities managers in South-East Queensland."
+    items={GLANCE_ITEMS}
+    id="childcare-glance"
+  />
+
+  <!-- ── LLM-optimised FAQ section ─────────────────────────────────────── -->
+  <!--
+    This FAQSection renders its own FAQPage JSON-LD. The IndustryLayout also
+    outputs a FAQPage schema from the `faqs` prop above.
+    Set schema={false} here if Google Search Console flags duplicate FAQPage
+    schemas — the IndustryLayout schema covers the short answers for rich
+    results; this one covers the long-form LLM-optimised answers.
+  -->
+  <FAQSection
+    faqs={FAQS}
+    heading="Childcare plumbing — frequently asked questions"
+    subheading="Detailed answers to the most common questions from childcare centre directors, facility managers and approved providers across South-East Queensland."
+    pageUrl={`${SITE}/industries/childcare`}
+    id="childcare-faq"
+    class="bg-[#F0F5FA]"
+  />
+
+</IndustryLayout>

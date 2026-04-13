@@ -1,0 +1,441 @@
+---
+/**
+ * Schema.astro — Central JSON-LD schema component for pulseqld.com.au.
+ *
+ * ALL structured data for the site should render through this component.
+ * It outputs a single <script type="application/ld+json"> tag whose content
+ * is a Schema.org @graph array.
+ *
+ * Usage in a layout or page:
+ *   import Schema from '../components/seo/Schema.astro';
+ *   <Schema type="service" pageTitle="Blocked Drains" faqs={FAQS} />
+ *
+ * IMPORTANT — avoid duplicate LocalBusiness output:
+ *   BaseLayout.astro currently injects its own LocalBusiness schema inline.
+ *   When a layout or page uses this component, do NOT also pass a `schema`
+ *   prop to BaseLayout, or remove BaseLayout's inline injection.
+ *   The civil section is exempt — CivilLayout builds its own @graph
+ *   independently and does not use this component.
+ *
+ * ─── Prop reference ──────────────────────────────────────────────────────────
+ *
+ *   type            Required. Controls which type-specific nodes are added.
+ *   pageTitle       H1 / headline of the page. Used in Service, Article, etc.
+ *   pageDescription Short description of the page content.
+ *   serviceType     Schema.org serviceType string, e.g. "Blocked Drain Clearing".
+ *   suburb          Suburb name for location pages. Adds geo + scoped areaServed.
+ *   postalCode      Optional postcode for location pages — appended to areaServed.
+ *   faqs            Array of {q, a} pairs. Generates FAQPage schema when provided.
+ *   articleDate     ISO 8601 date string for blog articles, e.g. "2024-06-01".
+ *   authorName      Author display name for blog articles.
+ *   canonical       Canonical URL for this page (used in @id fields).
+ *                   Defaults to SITE + Astro.url.pathname.
+ */
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+type PageType =
+  | 'homepage'
+  | 'service'
+  | 'industry'
+  | 'location'
+  | 'blog'
+  | 'civil'
+  | 'contact';
+
+export interface FAQ {
+  q: string;
+  a: string;
+}
+
+export interface Props {
+  type:             PageType;
+  pageTitle?:       string;
+  pageDescription?: string;
+  serviceType?:     string;
+  /** Suburb name — enables geo coordinates and suburb-scoped areaServed */
+  suburb?:          string;
+  /** Optional postcode for location pages */
+  postalCode?:      string;
+  /** FAQ items — generates FAQPage schema + FAQPage @type node */
+  faqs?:            FAQ[];
+  /** ISO date for blog articles e.g. "2024-06-15" */
+  articleDate?:     string;
+  /** Author display name for blog articles */
+  authorName?:      string;
+  /** Canonical URL — defaults to SITE + Astro.url.pathname */
+  canonical?:       string;
+}
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const SITE  = 'https://pulseqld.com.au';
+const PHONE = '0452188420';
+const EMAIL = 'admin@pulseqld.com.au';
+
+const {
+  type,
+  pageTitle,
+  pageDescription,
+  serviceType,
+  suburb,
+  postalCode,
+  faqs = [],
+  articleDate,
+  authorName,
+  canonical,
+} = Astro.props;
+
+const pageUrl = canonical ?? (SITE + Astro.url.pathname);
+
+// ─── Suburb geo-coordinate lookup ────────────────────────────────────────────
+//
+// Used to inject GeoCoordinates into the LocalBusiness node on location pages.
+//
+// TODO: Replace the __default__ Brisbane CBD fallback with accurate centroid
+//       coordinates for every suburb in src/data/locations.ts. The most
+//       reliable source is the ABS Locality Boundaries dataset (ASGS Edition 3)
+//       or the Google Maps Geocoding API run at build time.
+//
+//       For local SEO, accurate geo data marginally improves local-pack
+//       eligibility — worth updating before launch.
+
+interface Coords { latitude: number; longitude: number }
+
+const SUBURB_COORDS: Record<string, Coords> = {
+  // ── Major service area centres ────────────────────────────────────────────
+  'Brisbane':          { latitude: -27.4698, longitude: 153.0251 },
+  'Logan':             { latitude: -27.6389, longitude: 153.1081 },
+  'Gold Coast':        { latitude: -28.0167, longitude: 153.4000 },
+  'Ipswich':           { latitude: -27.6145, longitude: 152.7608 },
+
+  // ── Logan City ───────────────────────────────────────────────────────────
+  'Beenleigh':         { latitude: -27.7146, longitude: 153.2013 },
+  'Browns Plains':     { latitude: -27.6700, longitude: 153.0333 },
+  'Loganholme':        { latitude: -27.6905, longitude: 153.1872 },
+  'Springwood':        { latitude: -27.6063, longitude: 153.1518 },
+  'Meadowbrook':       { latitude: -27.6725, longitude: 153.1319 },
+  'Marsden':           { latitude: -27.6614, longitude: 153.0861 },
+  'Waterford':         { latitude: -27.6878, longitude: 153.1661 },
+  'Slacks Creek':      { latitude: -27.6500, longitude: 153.1333 },
+  'Daisy Hill':        { latitude: -27.6464, longitude: 153.1748 },
+  'Shailer Park':      { latitude: -27.6531, longitude: 153.1939 },
+  'Crestmead':         { latitude: -27.6897, longitude: 153.0536 },
+  'Kingston':          { latitude: -27.6706, longitude: 153.0972 },
+  'Woodridge':         { latitude: -27.6344, longitude: 153.1022 },
+  'Logan Central':     { latitude: -27.6394, longitude: 153.1066 },
+  'Eagleby':           { latitude: -27.7280, longitude: 153.2044 },
+  'Cornubia':          { latitude: -27.6864, longitude: 153.2019 },
+  'Carbrook':          { latitude: -27.7250, longitude: 153.2392 },
+  'Tanah Merah':       { latitude: -27.7103, longitude: 153.2147 },
+  'Edens Landing':     { latitude: -27.7239, longitude: 153.1797 },
+  'Heritage Park':     { latitude: -27.6706, longitude: 153.0586 },
+  'Hillcrest':         { latitude: -27.6728, longitude: 153.0428 },
+  'Boronia Heights':   { latitude: -27.6575, longitude: 153.0428 },
+  'Park Ridge':        { latitude: -27.7189, longitude: 153.0500 },
+
+  // ── Brisbane South ───────────────────────────────────────────────────────
+  'Capalaba':          { latitude: -27.5311, longitude: 153.2019 },
+  'Carindale':         { latitude: -27.5022, longitude: 153.1100 },
+  'Coorparoo':         { latitude: -27.5025, longitude: 153.0600 },
+  'Greenslopes':       { latitude: -27.5033, longitude: 153.0519 },
+  'Eight Mile Plains': { latitude: -27.5747, longitude: 153.0986 },
+  'Sunnybank':         { latitude: -27.5697, longitude: 153.0506 },
+  'Sunnybank Hills':   { latitude: -27.5817, longitude: 153.0617 },
+  'Runcorn':           { latitude: -27.5811, longitude: 153.0372 },
+  'Kuraby':            { latitude: -27.5997, longitude: 153.0814 },
+  'Rochedale':         { latitude: -27.5922, longitude: 153.1150 },
+  'Wishart':           { latitude: -27.5497, longitude: 153.0978 },
+  'Mansfield':         { latitude: -27.5328, longitude: 153.0836 },
+  'Mount Gravatt':     { latitude: -27.5417, longitude: 153.0644 },
+  'Cannon Hill':       { latitude: -27.4667, longitude: 153.0833 },
+  'Morningside':       { latitude: -27.4736, longitude: 153.0694 },
+  'Wynnum':            { latitude: -27.4556, longitude: 153.1567 },
+  'Manly':             { latitude: -27.4569, longitude: 153.1789 },
+  'Alexandra Hills':   { latitude: -27.5306, longitude: 153.2133 },
+  'Birkdale':          { latitude: -27.5006, longitude: 153.2281 },
+  'Wellington Point':  { latitude: -27.4858, longitude: 153.2378 },
+  'Cleveland':         { latitude: -27.5264, longitude: 153.2644 },
+
+  // ── Redland City ─────────────────────────────────────────────────────────
+  'Redland Bay':       { latitude: -27.6028, longitude: 153.3003 },
+
+  // ── Gold Coast North ─────────────────────────────────────────────────────
+  'Coomera':           { latitude: -27.8403, longitude: 153.3125 },
+  'Ormeau':            { latitude: -27.7703, longitude: 153.2539 },
+  'Pimpama':           { latitude: -27.8136, longitude: 153.3019 },
+
+  // ── Ipswich ───────────────────────────────────────────────────────────────
+  'Goodna':            { latitude: -27.6167, longitude: 152.8997 },
+  'Springfield':       { latitude: -27.6667, longitude: 152.9167 },
+  'Camira':            { latitude: -27.6278, longitude: 152.9181 },
+  'Gailes':            { latitude: -27.6139, longitude: 152.9494 },
+
+  // ── Default fallback ─────────────────────────────────────────────────────
+  // Used for any suburb not listed above.
+  // TODO: replace with accurate per-suburb centroid before launch.
+  __default__:         { latitude: -27.4698, longitude: 153.0251 },
+};
+
+function getCoords(name: string): Coords {
+  return SUBURB_COORDS[name] ?? SUBURB_COORDS['__default__'];
+}
+
+// ─── Base LocalBusiness / Plumber node ───────────────────────────────────────
+//
+// Always included in the @graph, regardless of page type.
+// `@type` array allows Google to match both the generic LocalBusiness
+// and the more specific Plumber type simultaneously.
+
+const localBusiness: Record<string, unknown> = {
+  '@type':       ['LocalBusiness', 'Plumber'],
+  '@id':         `${SITE}/#business`,
+  name:          'Pulse Plumbing & Gas',
+  url:           SITE,
+  logo:          `${SITE}/images/logo.png`,
+  image:         `${SITE}/images/og-default.jpg`,
+  telephone:     PHONE,
+  email:         EMAIL,
+  description:
+    suburb
+      ? `QBCC-licensed plumber servicing ${suburb}, QLD. Residential and commercial maintenance plumbing available 24/7.`
+      : 'QBCC-licensed maintenance plumber servicing Brisbane, Logan, Gold Coast and Ipswich. Residential and commercial. Available 24/7 including afterhours and weekends.',
+  address: {
+    '@type':          'PostalAddress',
+    addressLocality:  suburb ?? 'Brisbane',
+    addressRegion:    'QLD',
+    addressCountry:   'AU',
+    ...(postalCode ? { postalCode } : {}),
+  },
+  areaServed: suburb
+    // Location pages: narrow areaServed to the specific suburb
+    ? {
+        '@type':    'City',
+        name:       suburb,
+        ...(postalCode ? { postalCode } : {}),
+      }
+    // All other pages: full service footprint
+    : [
+        { '@type': 'City', name: 'Brisbane'  },
+        { '@type': 'City', name: 'Logan'     },
+        { '@type': 'City', name: 'Gold Coast'},
+        { '@type': 'City', name: 'Ipswich'   },
+      ],
+  openingHoursSpecification: {
+    '@type':   'OpeningHoursSpecification',
+    dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    opens:     '00:00',
+    closes:    '23:59',
+  },
+  priceRange:    '$$',
+  // hasCredential accepts either a string or an EducationalOccupationalCredential node.
+  // Using the structured form so Google can parse the issuing authority.
+  hasCredential: {
+    '@type':            'EducationalOccupationalCredential',
+    credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
+    recognizedBy: {
+      '@type': 'GovernmentOrganization',
+      name:    'Queensland Building and Construction Commission',
+      url:     'https://www.qbcc.qld.gov.au',
+    },
+  },
+  sameAs: [],
+};
+
+// Inject GeoCoordinates when a suburb is provided.
+// Improves local-pack eligibility — accurate coords are higher-signal than
+// the address alone.
+if (suburb) {
+  const coords = getCoords(suburb);
+  (localBusiness as Record<string, unknown>)['geo'] = {
+    '@type':    'GeoCoordinates',
+    latitude:   coords.latitude,
+    longitude:  coords.longitude,
+  };
+}
+
+// ─── @graph node builders ─────────────────────────────────────────────────────
+
+const graph: Record<string, unknown>[] = [localBusiness];
+
+// ── homepage ────────────────────────────────────────────────────────────────
+// WebSite node enables Sitelinks Searchbox if Google decides to show it.
+if (type === 'homepage') {
+  graph.push({
+    '@type':         'WebSite',
+    '@id':           `${SITE}/#website`,
+    name:            'Pulse Plumbing & Gas',
+    url:             SITE,
+    potentialAction: {
+      '@type':       'SearchAction',
+      target:        `${SITE}/service-areas?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  });
+}
+
+// ── service / industry ───────────────────────────────────────────────────────
+// Service pages and industry pages both get a Service node.
+// ServiceLayout already builds this inline; these pages should migrate to
+// using Schema.astro + skip passing schema to BaseLayout directly.
+if (type === 'service' || type === 'industry') {
+  graph.push({
+    '@type':       'Service',
+    '@id':         `${pageUrl}#service`,
+    name:          pageTitle ?? 'Plumbing Service',
+    ...(serviceType     ? { serviceType }              : {}),
+    ...(pageDescription ? { description: pageDescription } : {}),
+    provider: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Brisbane'  },
+      { '@type': 'City', name: 'Logan'     },
+      { '@type': 'City', name: 'Gold Coast'},
+      { '@type': 'City', name: 'Ipswich'   },
+    ],
+    url: pageUrl,
+  });
+}
+
+// ── location ─────────────────────────────────────────────────────────────────
+// PlumbingService is a sub-type of LocalBusiness — more precise than Service
+// for suburb-level pages. Combined with the narrowed LocalBusiness areaServed
+// above, this gives strong suburb-level local signal.
+if (type === 'location') {
+  graph.push({
+    '@type':       'PlumbingService',
+    '@id':         `${pageUrl}#service`,
+    name:          pageTitle ?? (suburb ? `Plumber ${suburb} QLD` : 'Plumbing Service'),
+    ...(pageDescription ? { description: pageDescription } : {}),
+    ...(serviceType     ? { serviceType }                  : {}),
+    provider: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+    },
+    areaServed: {
+      '@type':  'City',
+      name:     suburb ?? 'Brisbane',
+      ...(postalCode ? { postalCode } : {}),
+    },
+    url: pageUrl,
+  });
+
+  // BreadcrumbList for suburb pages — helps with SERP display and navigation schema
+  if (suburb) {
+    graph.push({
+      '@type':           'BreadcrumbList',
+      '@id':             `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home',          item: SITE },
+        { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${SITE}/service-areas` },
+        { '@type': 'ListItem', position: 3, name: `Plumber ${suburb}`, item: pageUrl },
+      ],
+    });
+  }
+}
+
+// ── blog ─────────────────────────────────────────────────────────────────────
+// Article schema for blog posts. dateModified defaults to datePublished when
+// no separate modified date is tracked.
+if (type === 'blog') {
+  graph.push({
+    '@type':           'Article',
+    '@id':             `${pageUrl}#article`,
+    headline:          pageTitle ?? '',
+    ...(pageDescription ? { description: pageDescription } : {}),
+    ...(articleDate ? {
+      datePublished: articleDate,
+      dateModified:  articleDate,
+    } : {}),
+    author: {
+      '@type': 'Person',
+      name:    authorName ?? 'Pulse Plumbing & Gas',
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+      name:    'Pulse Plumbing & Gas',
+      logo: {
+        '@type': 'ImageObject',
+        url:     `${SITE}/images/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id':   pageUrl,
+    },
+  });
+}
+
+// ── civil ────────────────────────────────────────────────────────────────────
+// Minimal node — CivilLayout builds its own detailed Organization + Service
+// @graph and passes it directly to BaseLayout. This node is provided for
+// civil pages that render outside CivilLayout (e.g. /industries/civil).
+if (type === 'civil') {
+  graph.push({
+    '@type':       'Service',
+    '@id':         `${pageUrl}#service`,
+    name:          pageTitle ?? 'Civil Plumbing Services — SE Queensland',
+    serviceType:   serviceType ?? 'Civil Plumbing',
+    ...(pageDescription ? { description: pageDescription } : {}),
+    provider: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+    },
+    areaServed: { '@type': 'State', name: 'Queensland' },
+    url: pageUrl,
+  });
+}
+
+// ── contact ──────────────────────────────────────────────────────────────────
+if (type === 'contact') {
+  graph.push({
+    '@type':  'ContactPage',
+    '@id':    `${pageUrl}#page`,
+    name:     pageTitle ?? 'Contact Pulse Plumbing & Gas',
+    ...(pageDescription ? { description: pageDescription } : {}),
+    url:      pageUrl,
+    mainEntity: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+    },
+  });
+}
+
+// ── FAQPage ──────────────────────────────────────────────────────────────────
+// Appended to the @graph for any page type when faqs are provided.
+// Google requires at least 1 Q&A pair; CLAUDE.md mandates at least 5.
+// The FAQPage @id is unique per page so multiple pages can have FAQ schema
+// without clashing when Google processes the site's overall schema graph.
+if (faqs.length > 0) {
+  graph.push({
+    '@type':    'FAQPage',
+    '@id':      `${pageUrl}#faq`,
+    mainEntity: faqs.map((f) => ({
+      '@type':        'Question',
+      name:           f.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:    f.a,
+      },
+    })),
+  });
+}
+
+// ─── Final output ─────────────────────────────────────────────────────────────
+
+const schemaJson = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph':   graph,
+});
+---
+
+<!--
+  Single JSON-LD script for this page.
+  set:html bypasses Astro's JSX escaping so the JSON is written verbatim.
+  Do NOT split this into multiple <script> tags — a single @graph is the
+  correct pattern and avoids duplicate @context declarations.
+-->
+<script type="application/ld+json" set:html={schemaJson} />

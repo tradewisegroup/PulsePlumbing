@@ -1,0 +1,224 @@
+---
+export const prerender = true;
+
+import { suburbs, suburbBySlug, REGION_LABELS, suburbsByRegion } from '../data/locations';
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+export function getStaticPaths() {
+  return suburbs.map((suburb) => ({
+    params: { suburb: suburb.slug },
+  }));
+}
+
+const { suburb: slug } = Astro.params;
+const suburb = suburbBySlug.get(slug!)!;
+
+const regionLabel = REGION_LABELS[suburb.region];
+
+// Nearby suburbs in same region (for internal linking)
+const nearbyInRegion = suburbsByRegion
+  .find((r) => r.key === suburb.region)
+  ?.suburbs.filter((s) => s.slug !== suburb.slug)
+  .slice(0, 8) ?? [];
+
+// Services list
+const services = [
+  { label: 'Blocked Drains', href: '/services/blocked-drains' },
+  { label: 'Burst Pipes', href: '/services/burst-pipes' },
+  { label: 'Hot Water Systems', href: '/services/hot-water-systems' },
+  { label: 'Gas Fitting', href: '/services/gas-fitting' },
+  { label: 'Leak Detection', href: '/services/leak-detection' },
+  { label: 'Drain Camera Inspection', href: '/services/drain-camera' },
+  { label: 'Backflow Prevention', href: '/services/backflow-prevention' },
+  { label: 'Preventative Maintenance', href: '/services/preventative-maintenance' },
+];
+
+const faqs = [
+  {
+    question: `Do you have a plumber available in ${suburb.name}?`,
+    answer: `Yes — Pulse Plumbing & Gas services ${suburb.name} (${suburb.postcode}) 24 hours a day, 7 days a week including afterhours, weekends and public holidays. Call 0452 188 420.`,
+  },
+  {
+    question: `How quickly can a plumber reach ${suburb.name}?`,
+    answer: `Being based in South-East Queensland and servicing the ${regionLabel} area, we typically respond to emergency calls in ${suburb.name} within 60–90 minutes. For non-urgent bookings, we offer same-day and next-day appointments.`,
+  },
+  {
+    question: `What plumbing services do you offer in ${suburb.name}?`,
+    answer: `We provide the full range of maintenance plumbing services in ${suburb.name}: blocked drains, burst pipes, hot water system repairs and replacements, gas fitting, leak detection, drain camera inspections, backflow prevention, and preventative maintenance contracts.`,
+  },
+  {
+    question: `Are your plumbers licensed to work in ${suburb.name}, QLD?`,
+    answer: `Yes. All our plumbers hold a current Queensland QBCC licence and are fully insured. We comply with all Australian plumbing standards and Queensland legislation.`,
+  },
+  {
+    question: `Do you offer emergency plumbing in ${suburb.name} on weekends?`,
+    answer: `Absolutely. We provide 24/7 emergency plumbing in ${suburb.name} including Saturdays, Sundays and public holidays. There are no extra surcharges hidden in the fine print — we give you a clear price upfront.`,
+  },
+  {
+    question: `Do you service commercial properties in ${suburb.name}?`,
+    answer: `Yes. We work with property managers, strata managers, retail operators, childcare centres, aged care facilities and other commercial clients in ${suburb.name} and the surrounding ${regionLabel} area. Ask us about preventative maintenance contracts.`,
+  },
+];
+
+const title = `Plumber ${suburb.name} ${suburb.postcode} | Pulse Plumbing & Gas`;
+const description = `Need a plumber in ${suburb.name}? Pulse Plumbing & Gas provides 24/7 emergency and maintenance plumbing in ${suburb.name}, ${suburb.postcode}. Residential and commercial. Call 0452 188 420.`;
+---
+
+<LocationLayout
+  {title}
+  {description}
+  locationName={suburb.name}
+  postalCodes={[suburb.postcode]}
+  {faqs}
+>
+
+  <!-- Hero -->
+  <section class="bg-[#F0F5FA] border-b border-[#D1D5DB]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+      <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 flex-wrap">
+          <li><a href="/" class="hover:text-[#046bd2] transition-colors">Home</a></li>
+          <li class="text-slate-300">/</li>
+          <li><a href="/service-areas" class="hover:text-[#046bd2] transition-colors">Service Areas</a></li>
+          <li class="text-slate-300">/</li>
+          <li class="text-slate-700 font-medium">Plumber {suburb.name}</li>
+        </ol>
+      </nav>
+
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-white border border-[#D1D5DB] rounded-full px-4 py-1.5 text-sm text-slate-600 font-medium mb-5 shadow-sm">
+          <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+          Servicing {suburb.name} 24/7
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-bold text-[#1e293b] leading-tight mb-5">
+          Plumber {suburb.name}
+        </h1>
+        <p class="text-lg text-[#334155] leading-relaxed mb-8">
+          Pulse Plumbing & Gas provides 24/7 residential and commercial maintenance plumbing in {suburb.name} ({suburb.postcode}) and the surrounding {regionLabel} area. Emergency response available — call us any time.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="tel:0452188420"
+             class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded text-base transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+            </svg>
+            Call Now — Emergency
+          </a>
+          <a href="/contact"
+             class="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold px-6 py-3.5 rounded text-base transition-colors">
+            Get a Free Quote
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-[#1e293b] mb-8">
+        Plumbing services available in {suburb.name}
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {services.map((s) => (
+          <a href={s.href}
+             class="flex items-center gap-3 bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] px-4 py-3.5 rounded-lg group transition-all">
+            <svg class="w-4 h-4 text-[#046bd2] group-hover:text-white flex-shrink-0 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-sm font-medium text-[#1e293b] group-hover:text-white transition-colors">{s.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Pulse in this area -->
+  <section class="py-16 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-2xl font-bold text-[#1e293b] mb-6">
+            Your local plumber in {suburb.name}
+          </h2>
+          <div class="space-y-4 text-[#334155] leading-relaxed">
+            <p>
+              Pulse Plumbing & Gas is the trusted choice for homeowners, property managers and businesses in {suburb.name} and across {regionLabel}. We're only ~{suburb.distanceKm}km from your area, meaning fast response times when you need us most.
+            </p>
+            <p>
+              Whether it's a blocked drain at midnight, a hot water system that's stopped working, or a scheduled maintenance contract for your commercial facility — we handle it with the same level of professionalism and care.
+            </p>
+            <p>
+              All work is completed by QBCC-licensed tradespeople. We provide clear, upfront pricing before any work begins — no hidden call-out fees, no surprises on the invoice.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          {[
+            { icon: '🕐', title: '24/7 availability', desc: `We're available in ${suburb.name} around the clock — including nights, weekends and public holidays.` },
+            { icon: '💬', title: 'Upfront pricing', desc: 'Clear quotes before we start. No hidden fees, no inflated afterhours rates.' },
+            { icon: '🔐', title: 'QBCC licensed', desc: 'All our plumbers hold current Queensland licences and full insurance cover.' },
+            { icon: '⭐', title: 'Residential & commercial', desc: `From ${suburb.name} homes to commercial facilities — we service all property types.` },
+          ].map((item) => (
+            <div class="flex gap-4 bg-white border border-[#D1D5DB] rounded-lg p-4">
+              <div class="text-2xl flex-shrink-0">{item.icon}</div>
+              <div>
+                <h3 class="font-semibold text-[#1e293b] mb-1">{item.title}</h3>
+                <p class="text-sm text-[#334155]">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-[#1e293b] mb-8">
+        Frequently asked questions — plumber {suburb.name}
+      </h2>
+      <div class="space-y-4">
+        {faqs.map((faq) => (
+          <details class="group border border-[#D1D5DB] rounded-lg overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer font-semibold text-[#1e293b] hover:bg-[#F0F5FA] transition-colors list-none">
+              {faq.question}
+              <svg class="w-5 h-5 text-[#046bd2] flex-shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="px-5 pb-4 pt-2 text-[#334155] text-sm leading-relaxed border-t border-[#D1D5DB]">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Nearby suburbs -->
+  {nearbyInRegion.length > 0 && (
+    <section class="py-12 bg-[#F0F5FA] border-t border-[#D1D5DB]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-lg font-semibold text-[#1e293b] mb-5">
+          Also servicing nearby {regionLabel} suburbs
+        </h2>
+        <div class="flex flex-wrap gap-2">
+          {nearbyInRegion.map((s) => (
+            <a href={`/plumber-${s.slug}`}
+               class="bg-white hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] text-[#334155] hover:text-white text-sm px-3 py-1.5 rounded transition-colors">
+              Plumber {s.name}
+            </a>
+          ))}
+          <a href="/service-areas"
+             class="bg-[#046bd2] text-white text-sm px-3 py-1.5 rounded hover:bg-[#045cb4] transition-colors">
+            View all areas →
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+</LocationLayout>

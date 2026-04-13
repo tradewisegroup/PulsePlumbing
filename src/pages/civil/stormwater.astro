@@ -1,0 +1,270 @@
+---
+import CivilLayout from '../../layouts/CivilLayout.astro';
+import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+
+const FORM_ID = import.meta.env.PUBLIC_HUBSPOT_CIVIL_FORM_ID ?? '';
+const SITE    = 'https://pulseqld.com.au';
+
+const PROCESS_STEPS = [
+  {
+    step: '01',
+    title: 'Stormwater design review',
+    description: 'We review or prepare the stormwater design against AS/NZS 3500.3, council WSUD standards and the relevant local government\'s stormwater management guidelines. For design-and-construct engagements, we engage a civil hydraulic engineer to model the catchment, size the pipe network and design any water sensitive urban design (WSUD) treatment train elements — biofiltration basins, swales, detention basins and gross pollutant traps — in accordance with council requirements.',
+  },
+  {
+    step: '02',
+    title: 'Pipe network & pit installation',
+    description: 'Stormwater pit and pipe networks are installed to AS/NZS 3500.3 using UPVC stormwater pipe, RCCP (reinforced concrete), or HDPE depending on the design loadings, flow conditions and trench depth. Pre-cast and in-situ pits, gullies, kerb inlets, inlet/outlet structures and junction structures are installed to manufacturer specifications and bedded in accordance with AS/NZS 3725. All pipe bedding, haunching and backfill is placed in accordance with structural design requirements.',
+  },
+  {
+    step: '03',
+    title: 'Open channel drainage & kerb works',
+    description: 'Open channel drainage — grassed swales, concrete-lined channels and earthen drains — is constructed to the council-approved hydraulic design. Kerb and channel, lintel drains, side entry pits and kerb adaptors are installed in coordination with the road works contractor. Inlet and outlet levels are checked against finished road levels to confirm flow paths are clear of ponding risk.',
+  },
+  {
+    step: '04',
+    title: 'Detention basins & WSUD structures',
+    description: 'Detention basins, gross pollutant traps (GPTs), trash screens, sediment basins and biofiltration rain gardens are constructed in accordance with council WSUD guidelines and the Healthy Waterways WSUD Technical Design Guidelines for SEQ. We manage installation of pre-cast or in-situ structures, specialist filtration media placement and outlet protection to achieve the required pollutant load reduction targets.',
+  },
+  {
+    step: '05',
+    title: 'Council compliance documentation & as-constructeds',
+    description: 'All earthworks and drainage construction are managed under an erosion and sediment control (ESC) plan prepared in accordance with the Queensland Environmental Protection Act 1994 and IECA guidelines. On completion, GPS as-constructed drawings are produced in MGA94 format and submitted to council alongside CCTV inspection reports for any council-maintained drainage infrastructure, confirming compliance with council stormwater design requirements.',
+  },
+];
+
+const STANDARDS = [
+  { code: 'AS/NZS 3500.3',    title: 'Stormwater Drainage',                 note: 'Design and installation of stormwater drainage systems' },
+  { code: 'AS/NZS 3725',      title: 'Design for Installation of Buried Concrete Pipes', note: 'Structural design for underground pipe network installations' },
+  { code: 'Council WSUD',     title: 'Water Sensitive Urban Design',         note: 'Healthy Waterways WSUD Technical Design Guidelines for SEQ' },
+  { code: 'EPAct 1994 ESC',   title: 'Environmental Protection Act 1994',    note: 'Erosion and sediment control obligations during earthworks' },
+  { code: 'IECA BPE&SC',      title: 'Best Practice Erosion & Sediment Control', note: 'IECA Australasia guidelines for construction site ESC' },
+  { code: 'QDC MP 1.4',       title: 'Queensland Development Code',          note: 'Stormwater management requirements for operational works approvals in Queensland' },
+];
+
+const FAQS = [
+  {
+    q: 'What is WSUD and how do I demonstrate council compliance on a development?',
+    a: 'WSUD stands for Water Sensitive Urban Design. In South-East Queensland, councils require new developments to demonstrate that post-development stormwater runoff quality meets the target pollutant load reductions set out in the SEQ Healthy Waterways Partnership\'s WSUD Technical Design Guidelines. Typically a development must achieve 80% reduction in total suspended solids, 45% reduction in total phosphorus and 45% reduction in total nitrogen compared to unmitigated runoff. This is achieved through a WSUD treatment train — often a combination of swales, biofiltration cells, detention basins and gross pollutant traps — designed to treat runoff from impervious surfaces before it enters the council drainage network or a receiving waterway. WSUD design and construction evidence, including as-constructed documentation demonstrating the treatment train is built to design, is required as a condition of your operational works approval. We manage design, construction and council compliance documentation as part of our stormwater scope.',
+  },
+  {
+    q: 'When is a detention basin required and how is it sized?',
+    a: 'A detention basin is required when a development increases the impervious area of a site and would otherwise increase stormwater peak flows to the downstream drainage network or receiving waterway above pre-development levels. Councils in SEQ typically require post-development peak flows not to exceed the pre-development benchmark for a range of storm events (commonly 2-year, 5-year and 100-year ARI). A detention basin is sized by a civil hydraulic engineer who models the catchment using a hydrological tool (DRAINS, XPSWMM or similar), calculates the storage volume required to attenuate the peak flow to the allowable discharge rate, and designs the outlet structure. Outlet structures — pit and pipe assemblies, or purpose-designed orifice/weir systems — control the rate of release from the basin. We construct detention basins — earthworks, liner, outlet structures and inlet protection — as part of our civil stormwater scope and provide the as-constructed survey required to confirm the basin volume matches the design.',
+  },
+  {
+    q: 'What stormwater pit and pipe materials do you install?',
+    a: 'Stormwater pit and pipe material selection is based on the design flow capacity, trench depth, structural loading and site conditions. For standard residential subdivision drainage up to DN600, we most commonly use unplasticised PVC stormwater pipe (UPVC) conforming to AS/NZS 1254, or rubber-ring joint UPVC to AS/NZS 1477. For larger diameters, high-load conditions and major trunk drains, reinforced concrete circular pipe (RCCP) to AS/NZS 4058 is used. HDPE corrugated pipe is an option for trenchless installations. Class selection is determined by the hydraulic and structural design engineer. Stormwater pits — from kerb inlet pits to large junction pits — are either pre-cast concrete units to council standard drawings or in-situ poured concrete where non-standard sizes are required. Inlet/outlet structures are designed to the hydraulic design and may incorporate trash screens, energy dissipators and erosion protection at outlets.',
+  },
+  {
+    q: 'Do you manage erosion and sediment control compliance on construction sites?',
+    a: 'Yes. All our civil stormwater works are carried out under an erosion and sediment control (ESC) plan prepared in accordance with the Queensland Environmental Protection Act 1994 (EPAct) and the IECA Best Practice Erosion and Sediment Control (BPE&SC) guidelines. Our ESC plan identifies all potential sediment sources, drainage paths and sensitive receiving environments, and specifies controls — silt fences, sediment basins, rock check dams, stabilised construction entrances and inlet protection — appropriate to the site conditions and earthworks scope. Our supervisors are trained in ESC inspection and maintenance. Where the council or assessment manager requires an accredited ESC practitioner (AEP) on the project, we can engage one as part of our D&C fee.',
+  },
+  {
+    q: 'What CCTV inspection and documentation is required for council stormwater handover?',
+    a: 'Most SEQ councils require CCTV inspection of underground stormwater infrastructure prior to accepting it as a public asset and confirming council stormwater design compliance. The scope varies by council but typically covers all pipes 225 mm diameter and larger within the road reserve and inter-allotment drainage easements. CCTV footage must be captured using a crawler camera, coded to WRC defect coding standards and submitted in the council\'s required format — often alongside as-constructed drawings via the council\'s asset management system. Pulse Plumbing & Gas manages CCTV inspection as part of our civil stormwater package and provides coded footage, defect reports and rectification works if required, ready for council submission. GPS as-constructed drawings in MGA94 format and confirmation that WSUD structures have been installed to design are also required for the operational works compliance stage.',
+  },
+];
+
+const schema = {
+  '@graph': [
+    {
+      '@type':       'Service',
+      '@id':         `${SITE}/civil/stormwater#service`,
+      name:          'Stormwater Infrastructure & Drainage — QLD',
+      serviceType:   'Civil Stormwater Drainage',
+      provider: {
+        '@type': 'Organization',
+        '@id':   `${SITE}/#organization`,
+      },
+      areaServed: [
+        { '@type': 'City',  name: 'Brisbane'  },
+        { '@type': 'City',  name: 'Logan'     },
+        { '@type': 'City',  name: 'Gold Coast'},
+        { '@type': 'City',  name: 'Ipswich'   },
+        { '@type': 'State', name: 'Queensland'},
+      ],
+      description:
+        'QBCC-licensed stormwater contractor delivering stormwater pit and pipe installation, open channel drainage, detention basins, inlet/outlet structures, WSUD compliance and council stormwater design compliance across Brisbane and SE Queensland.',
+      keywords: 'stormwater contractor Brisbane, civil stormwater QLD, stormwater drainage contractor',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name:    'Stormwater Drainage Services',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Stormwater Pit & Pipe Installation' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Open Channel Drainage' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Detention Basin Construction' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'WSUD Treatment Train Construction' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Council Stormwater Compliance Documentation' } },
+        ],
+      },
+    },
+    {
+      '@type':    'FAQPage',
+      mainEntity: FAQS.map(f => ({
+        '@type':        'Question',
+        name:           f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<CivilLayout
+  pageTitle="Stormwater Infrastructure & Drainage — QLD"
+  pageSubtitle="Stormwater pit and pipe installation, open channel drainage, detention basins, inlet/outlet structures, WSUD compliance and council stormwater design compliance across Brisbane, Logan and Gold Coast. AS/NZS 3500.3 compliant with full ESC and council as-constructed documentation."
+  metaTitle="Stormwater Contractor Brisbane | Civil Stormwater QLD"
+  metaDescription="Stormwater drainage contractor across SE Queensland. Stormwater pit and pipe installation, open channel drainage, detention basins, WSUD compliance and council stormwater design documentation. AS/NZS 3500.3 compliant delivery for Brisbane, Logan and Gold Coast developments."
+  activeSlug="stormwater"
+  schema={schema}
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       1. CAPABILITY OVERVIEW
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="capability-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-14 items-start">
+
+        <div>
+          <div class="inline-flex items-center gap-2 bg-[#046bd2]/10 border border-[#046bd2]/20 rounded-full px-3 py-1 mb-5">
+            <span class="text-xs font-semibold text-[#046bd2]">Stormwater Capability</span>
+          </div>
+          <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-5 leading-tight">
+            Stormwater drainage for developments across SEQ
+          </h2>
+          <p class="text-[#334155] text-base leading-relaxed mb-5">
+            We design and construct stormwater infrastructure for residential subdivisions, commercial and industrial sites, and civil infrastructure projects across South-East Queensland. Our scope covers underground stormwater pit and pipe networks, open channel drainage, detention basins, inlet/outlet structures, WSUD treatment trains, biofiltration rain gardens and gross pollutant trap installations.
+          </p>
+          <p class="text-[#334155] text-base leading-relaxed mb-5">
+            All stormwater works are delivered to AS/NZS 3500.3, council stormwater design standards and the relevant local government's WSUD guidelines. We prepare or review erosion and sediment control (ESC) plans in accordance with the Queensland Environmental Protection Act 1994, and manage all CCTV inspection and documentation required for council stormwater infrastructure acceptance.
+          </p>
+          <p class="text-[#334155] text-base leading-relaxed">
+            We operate as both principal contractor and civil plumbing subcontractor. For developers and civil contractors who need a licensed civil plumber to deliver the stormwater scope under their head contract, we provide a fixed-price or schedule-of-rates subcontract and attend all inspection hold points.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          {[
+            { icon: '🌊', title: 'Stormwater pit & pipe installation', desc: 'UPVC and RCCP stormwater pipe networks from DN150 to DN1200. Pre-cast and in-situ pit installations, kerb inlets, junction structures, headwalls and outlet protection.' },
+            { icon: '🏞️', title: 'Open channel drainage', desc: 'Grassed swales, concrete-lined channels and earthen drains constructed to council-approved hydraulic design. Grade control structures and energy dissipators at outlets.' },
+            { icon: '🏗️', title: 'Detention basins', desc: 'Earthworks, liner, inlet/outlet structures and erosion protection for on-site detention basins. Sized by hydraulic engineer to meet council peak flow attenuation requirements.' },
+            { icon: '🌿', title: 'WSUD treatment trains', desc: 'Biofiltration rain gardens, bioretention cells, sedimentation basins and inlet pre-treatment structures to Healthy Waterways WSUD Technical Design Guidelines for SEQ.' },
+            { icon: '📋', title: 'Council compliance documentation', desc: 'ESC plans, GPS as-constructeds in MGA94 format, CCTV inspection footage and WSUD as-built confirmation for council stormwater design compliance and infrastructure acceptance.' },
+          ].map(item => (
+            <div class="bg-white border border-slate-200 rounded-xl p-5 flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
+                {item.icon}
+              </div>
+              <div>
+                <h3 class="font-semibold text-[#1e293b] text-sm mb-1">{item.title}</h3>
+                <p class="text-[#334155] text-xs leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       2. PROCESS STEPS
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-white" aria-labelledby="process-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          How we deliver stormwater projects
+        </h2>
+        <p class="text-[#334155] text-lg">
+          From design review to council handover — our stormwater delivery process.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        {PROCESS_STEPS.map(step => (
+          <div class="bg-[#F0F5FA] border border-slate-200 rounded-2xl p-7 flex gap-6 items-start">
+            <div class="text-4xl font-black text-[#046bd2]/20 leading-none flex-shrink-0 w-12 text-center">
+              {step.step}
+            </div>
+            <div>
+              <h3 class="font-bold text-[#1e293b] text-lg mb-2">{step.title}</h3>
+              <p class="text-[#334155] text-sm leading-relaxed">{step.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       3. STANDARDS & COMPLIANCE
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#1e293b]" aria-labelledby="standards-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-10">
+        <h2 id="standards-heading" class="text-3xl sm:text-4xl font-bold text-white mb-4">
+          Standards &amp; compliance
+        </h2>
+        <p class="text-white/65 text-base leading-relaxed">
+          Stormwater construction in Queensland must satisfy AS/NZS 3500.3, council WSUD standards, the Queensland Environmental Protection Act 1994 and local government stormwater design guidelines. We deliver to all applicable standards and provide documentation confirming compliance at each stage.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {STANDARDS.map(s => (
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
+            <div class="inline-block bg-[#046bd2]/20 text-[#046bd2] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
+              {s.code}
+            </div>
+            <div class="font-semibold text-white text-sm mb-1">{s.title}</div>
+            <div class="text-white/50 text-xs leading-relaxed">{s.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       4. FAQs
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="faq-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-10">
+        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Stormwater FAQs
+        </h2>
+        <p class="text-[#334155] text-lg">
+          Common questions from developers and civil contractors about stormwater infrastructure and council compliance in SE Queensland.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        {FAQS.map((faq, i) => (
+          <details
+            class="bg-white border border-slate-200 rounded-2xl overflow-hidden group"
+            open={i === 0}
+          >
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#1e293b] hover:text-[#046bd2] transition-colors select-none">
+              {faq.q}
+              <svg
+                class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="px-6 pb-6 text-[#334155] text-sm leading-relaxed">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
+  <CivilEnquiryForm formId={FORM_ID} initialProjectType="stormwater" client:load slot="enquiry-form" />
+
+</CivilLayout>

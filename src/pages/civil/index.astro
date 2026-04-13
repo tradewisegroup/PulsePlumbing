@@ -1,0 +1,502 @@
+---
+import CivilLayout from '../../layouts/CivilLayout.astro';
+import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+
+const FORM_ID = import.meta.env.PUBLIC_HUBSPOT_CIVIL_FORM_ID ?? '';
+const SITE    = 'https://pulseqld.com.au';
+
+// ─── Service areas ────────────────────────────────────────────────────────────
+
+const SERVICE_AREAS = [
+  {
+    slug:        'water-mains',
+    href:        '/civil/water-mains',
+    icon:        '💧',
+    label:       'Water Mains',
+    line1:       'Installation, extension and live tie-ins for residential subdivisions and commercial precincts.',
+    line2:       'WSA 03:2011 compliant. Full infrastructure agreement documentation for QUU, Logan Water and Gold Coast Water.',
+    standards:   ['WSA 03:2011', 'AS/NZS 3500.1'],
+  },
+  {
+    slug:        'stormwater',
+    href:        '/civil/stormwater',
+    icon:        '🌊',
+    label:       'Stormwater',
+    line1:       'Underground pipe networks, kerb drainage, WSUD treatment trains and gross pollutant trap installation.',
+    line2:       'AS/NZS 3500.3 compliant. ESC plans to EPAct 1994. CCTV inspection and council as-constructed documentation.',
+    standards:   ['AS/NZS 3500.3', 'WSUD Guidelines'],
+  },
+  {
+    slug:        'sewer-construction',
+    href:        '/civil/sewer-construction',
+    icon:        '⚙️',
+    label:       'Sewer Construction',
+    line1:       'Gravity mains, pump stations, rising mains and lot connections for subdivision and civil projects.',
+    line2:       'WSA 02:2014 compliant. CCTV inspection with WRC defect coding. Full documentation for distributor-retailer handover.',
+    standards:   ['WSA 02:2014', 'AS/NZS 3500.2'],
+  },
+  {
+    slug:        'infrastructure-maintenance',
+    href:        '/civil/infrastructure-maintenance',
+    icon:        '🛠️',
+    label:       'Infrastructure Maintenance',
+    line1:       'Programmed CCTV condition assessment, high-pressure jetting, emergency response and trenchless rehabilitation.',
+    line2:       'WSA 05:2013 aligned. ISO 55000 asset management reporting. Contract arrangements for councils and utilities.',
+    standards:   ['WSA 05:2013', 'ISO 55000'],
+  },
+];
+
+// ─── Compliance & standards ───────────────────────────────────────────────────
+
+const COMPLIANCE_STANDARDS = [
+  {
+    code:    'WSAA Standards',
+    title:   'Water Services Association of Australia',
+    context: 'WSA 02:2014 (Sewerage Code), WSA 03:2011 (Water Reticulation Code) and WSA 05:2013 (Conduit Inspection Reporting) govern the design, construction and inspection of water and sewer infrastructure delivered to distributor-retailers in Queensland.',
+  },
+  {
+    code:    'AS 2032',
+    title:   'Installation of UPVC Pipe Systems',
+    context: 'Covers the installation of unplasticised PVC pressure pipe for water supply, applicable to water main reticulation and rising main installation.',
+  },
+  {
+    code:    'AS 2033',
+    title:   'Installation of PE Pipe Systems',
+    context: 'Governs the installation of polyethylene pipe for water, gas and drainage — applied to HDPE rising mains, trenchless installations and HDD water main crossings.',
+  },
+  {
+    code:    'QDC / NCC',
+    title:   'Queensland Development Code & National Construction Code',
+    context: 'The Queensland Development Code mandates part references that apply to plumbing and drainage on development sites, including operational works conditions on development approvals.',
+  },
+  {
+    code:    'AS/NZS 3500',
+    title:   'Plumbing and Drainage Series',
+    context: 'Parts 1–5 cover water services, sanitary plumbing, stormwater drainage, heated water services and domestic installations. All civil plumbing work is delivered to the applicable part.',
+  },
+  {
+    code:    'PDA 2018 (Qld)',
+    title:   'Plumbing and Drainage Act 2018',
+    context: 'Establishes the licencing framework for plumbing and drainage work in Queensland. All work is carried out by or under the supervision of a QBCC-licensed plumber. Inspection and compliance certificates are provided on completion.',
+  },
+  {
+    code:    'QBCC Act 1991',
+    title:   'Queensland Building and Construction Commission Act',
+    context: 'Governs contractor licensing, insurance requirements and standards of work for building and construction in Queensland. Pulse Plumbing & Gas holds a current QBCC Contractor Licence for plumbing and drainage.',
+  },
+];
+
+// ─── Tender & procurement ─────────────────────────────────────────────────────
+
+const PROCUREMENT_POINTS = [
+  {
+    icon: '📋',
+    heading: 'Formal RFQ & tender processes',
+    detail:  'We respond to written RFQs, formal tenders and expression of interest processes. Our submissions include capability statement, QBCC licence, insurance certificates, relevant project references and fee proposal.',
+  },
+  {
+    icon: '✅',
+    heading: 'Pre-qualified supplier registration',
+    detail:  'We can register on your supplier panel or pre-qualification system. We hold current documentation required for most Queensland council and state government pre-qualification processes — QBCC licence, public liability CoC, Workers Compensation CoC, financial statements.',
+  },
+  {
+    icon: '🔒',
+    heading: 'Insurance certificates of currency',
+    detail:  'Public liability ($20M) and Workers Compensation certificates are available on request at any time. Professional indemnity insurance is available for design-and-construct engagements. All certificates are issued by the insurer directly.',
+  },
+  {
+    icon: '⛑️',
+    heading: 'SWMS and WHS documentation',
+    detail:  'Site-specific Safe Work Method Statements are prepared for all high-risk construction work in accordance with the WHS Act 2011 (QLD). SWMS templates for our common civil plumbing activities — excavation, confined space entry, live main tie-ins, bypass pumping — are available in advance of project commencement.',
+  },
+  {
+    icon: '🧾',
+    heading: 'Progress claim invoicing via Xero',
+    detail:  'We issue progress claims and invoices through Xero, with PDF and digital delivery. We can accommodate standard head contractor invoice timing requirements and will provide a schedule of values for lump-sum contracts on request.',
+  },
+];
+
+// ─── Project types ────────────────────────────────────────────────────────────
+
+const PROJECT_TYPES = [
+  {
+    icon:   '🏘️',
+    label:  'Estate Subdivisions',
+    detail: 'Full civil plumbing package for residential and commercial estates — water reticulation, sewer mains, lot connections and stormwater kerb drainage.',
+  },
+  {
+    icon:   '🚧',
+    label:  'Road Corridor Relocations',
+    detail: 'Water main relocations within road reserves for road widening, intersection upgrades and infrastructure improvement projects. Shutdown and tie-in coordination managed.',
+  },
+  {
+    icon:   '🏛️',
+    label:  'Council Maintenance Programmes',
+    detail: 'Programmed CCTV condition assessment and high-pressure cleaning across council-maintained sewer and stormwater networks. Annual and multi-year contract arrangements.',
+  },
+  {
+    icon:   '📄',
+    label:  'Development Approval Connections',
+    detail: 'Civil plumbing connections required as conditions of development approval — sewer extensions, water service connections, stormwater connections to council infrastructure.',
+  },
+  {
+    icon:   '🚨',
+    label:  'Emergency Infrastructure Repair',
+    detail: 'Emergency response for sewer overflows, water main breaks and blocked infrastructure in council and utility-managed networks. Bypass pumping, jetting and emergency excavation.',
+  },
+];
+
+// ─── FAQs ─────────────────────────────────────────────────────────────────────
+
+const FAQS = [
+  {
+    q: 'What certifications does Pulse Plumbing & Gas hold for civil work?',
+    a: 'Pulse Plumbing & Gas holds a current QBCC (Queensland Building and Construction Commission) Contractor Licence covering plumbing and drainage, including civil plumbing works. Our QBCC licence is publicly verifiable on the QBCC licence register. We work in accordance with WSAA standards — WSA 02:2014, WSA 03:2011 and WSA 05:2013 — for sewer and water reticulation, and all work complies with the Queensland Plumbing and Drainage Act 2018 and the relevant parts of AS/NZS 3500. Our team holds current trade licences and high-risk work licences for confined space entry, trenching and civil plumbing activities. Current QBCC certificates and insurance certificates of currency are available on request for inclusion in pre-qualification packages and tender submissions.',
+  },
+  {
+    q: 'How do we submit an RFQ to Pulse Plumbing & Gas?',
+    a: 'The fastest way to submit a request for quotation is to use the project enquiry form on this page or email admin@pulseqld.com.au directly. Include the project brief, site location, estimated project value, scope of civil plumbing works, any relevant design drawings or specifications, and your preferred programme or timeline. We confirm our capability and availability within one business day. For formal tender submissions, we also participate in procurement portals including VendorPanel, Tenderlink and most Queensland council eProcurement systems. If you need our company profile, pre-qualification documentation, QBCC licence details, insurance certificates or capability statement before issuing the RFQ, contact us and we will provide these promptly.',
+  },
+  {
+    q: 'What is the typical response time for civil project enquiries?',
+    a: 'We target a response to all civil project enquiries within one business day. For straightforward project scope enquiries, we will typically confirm our capability, general availability and pricing approach within that timeframe. For larger or more complex scopes requiring a detailed written tender response, we acknowledge your enquiry within one business day and provide an indicative timeline for our full submission. If you have a tender closing date, please note it in your enquiry — we prioritise time-sensitive tender responses. For urgent enquiries and time-critical project start dates, you can also call us directly on 0452 188 420 during business hours and we will discuss availability immediately.',
+  },
+  {
+    q: 'Does Pulse Plumbing & Gas carry public liability insurance for civil works?',
+    a: 'Yes. Pulse Plumbing & Gas carries public liability insurance to $20 million, which is current for all civil plumbing works including excavation, water main tie-ins, sewer construction and infrastructure maintenance. A certificate of currency (CoC) is available on request at any time for inclusion in tender submissions, pre-qualification packages or head contractor onboarding documentation. We also hold current Workers Compensation insurance through WorkCover Queensland. For design-and-construct engagements, professional indemnity insurance can be arranged where required. Our insurance documentation is provided as a standard part of our pre-qualification package alongside the QBCC licence certificate, capability statement and SWMS templates.',
+  },
+  {
+    q: 'What Queensland councils and networks has Pulse Plumbing & Gas worked with?',
+    a: 'We have delivered civil plumbing projects and maintenance programmes across multiple local government areas in South-East Queensland, including Logan City Council, Brisbane City Council (south corridor), Redland City Council and Ipswich City Council. We are familiar with the infrastructure design standards, operational works approval conditions and inspection processes for each of these councils. For water and sewer reticulation works, we work directly with the relevant distributor-retailers — Queensland Urban Utilities (QUU), Logan Water and Unitywater — and are familiar with their infrastructure agreement requirements, hold-point inspection procedures and as-constructed documentation formats. If you are a council officer or council contractor seeking a licensed civil plumbing subcontractor in SE Queensland, please use the project enquiry form on this page.',
+  },
+  {
+    q: 'How does Pulse Plumbing & Gas handle SWMS and site safety documentation?',
+    a: 'Pulse Plumbing & Gas prepares site-specific Safe Work Method Statements (SWMS) for all high-risk construction work as required by the Work Health and Safety Act 2011 (QLD) and Work Health and Safety Regulation 2011. Our SWMS library covers the high-risk activities common to civil plumbing projects: excavation and trenching, confined space entry (manholes and pits), live water main tie-ins, sewer bypass pumping, asphalt and pavement reinstatement, and traffic management. SWMS are provided to the principal contractor prior to commencing each high-risk task. Site inductions, SWMS sign-off and toolbox talks are completed before work starts. Electronic SWMS and safety documentation are available in PDF format or via our WHS management system on request for head contractor onboarding.',
+  },
+];
+
+// ─── Schema ───────────────────────────────────────────────────────────────────
+// Organisation schema is always injected by CivilLayout.
+// Pass additional Service schema via the schema prop (@graph array).
+
+const schema = {
+  '@graph': [
+    {
+      '@type':       'Service',
+      '@id':         `${SITE}/civil#service`,
+      name:          'Civil Plumbing Infrastructure — SE Queensland',
+      serviceType:   'Civil Plumbing',
+      provider: {
+        '@type': 'Organization',
+        '@id':   `${SITE}/#organization`,
+      },
+      areaServed: [
+        { '@type': 'City',  name: 'Brisbane'  },
+        { '@type': 'City',  name: 'Logan'     },
+        { '@type': 'City',  name: 'Gold Coast'},
+        { '@type': 'City',  name: 'Ipswich'   },
+        { '@type': 'State', name: 'Queensland'},
+      ],
+      description:
+        'QBCC-licensed civil plumbing contractor delivering water main installation, sewer construction, stormwater infrastructure and maintenance contracts across South-East Queensland. WSAA WSA 02:2014, WSA 03:2011 and WSA 05:2013 compliant.',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name:    'Civil Plumbing Services',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Water Main Installation' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Stormwater Infrastructure Construction' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Sewer Construction' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Civil Infrastructure Maintenance' } },
+        ],
+      },
+    },
+  ],
+};
+---
+
+<CivilLayout
+  pageTitle="Civil Plumbing Infrastructure — Queensland"
+  pageSubtitle="Delivering civil plumbing infrastructure across South East Queensland. QBCC licensed. Compliant with WSAA standards and Queensland guidelines."
+  metaTitle="Civil Plumbing Contractor Brisbane & SE Queensland"
+  metaDescription="QBCC civil plumbing — water mains, sewer construction and stormwater across SE Queensland. WSAA compliant delivery for councils, developers and civil contractors."
+  activeSlug=""
+  faqs={FAQS}
+  schema={schema}
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §2  SERVICE AREAS
+       Four linked capability cards targeting procurement language.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="services-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="max-w-2xl mb-12">
+        <div class="flex items-center gap-2 mb-3" aria-hidden="true">
+          <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Capability</span>
+        </div>
+        <h2 id="services-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Civil plumbing services
+        </h2>
+        <p class="text-[#334155] text-lg leading-relaxed">
+          We deliver the full civil plumbing scope across South-East Queensland — from greenfield subdivision reticulation through to existing network maintenance.
+          Each engagement is supported by full infrastructure agreement documentation.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-5">
+        {SERVICE_AREAS.map(sa => (
+          <a
+            href={sa.href}
+            class="group bg-white border border-slate-200 hover:border-[#046bd2]/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
+          >
+            <div class="p-7">
+              <!-- Header row -->
+              <div class="flex items-start gap-4 mb-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-[#046bd2]/8 group-hover:bg-[#046bd2]/14 flex items-center justify-center text-2xl flex-shrink-0 transition-colors"
+                  aria-hidden="true"
+                >
+                  {sa.icon}
+                </div>
+                <h3 class="font-bold text-[#1e293b] group-hover:text-[#046bd2] text-lg leading-snug transition-colors pt-1">
+                  {sa.label}
+                </h3>
+              </div>
+
+              <!-- Two-line description -->
+              <p class="text-[#334155] text-sm leading-relaxed mb-1">
+                {sa.line1}
+              </p>
+              <p class="text-slate-400 text-xs leading-relaxed mb-5">
+                {sa.line2}
+              </p>
+
+              <!-- Standards badges -->
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                {sa.standards.map(s => (
+                  <span class="inline-block font-mono text-[10px] font-semibold text-[#046bd2] bg-[#046bd2]/8 border border-[#046bd2]/15 rounded px-2 py-0.5">
+                    {s}
+                  </span>
+                ))}
+              </div>
+
+              <!-- CTA row -->
+              <div class="flex items-center gap-1.5 text-sm font-semibold text-[#046bd2] group-hover:gap-3 transition-all">
+                View capability
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §3  COMPLIANCE & STANDARDS PANEL
+       Documentation-style list of applicable standards, styled for
+       procurement officers who need to verify contractor compliance.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-white border-t border-slate-100" aria-labelledby="compliance-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid lg:grid-cols-[320px_1fr] gap-12 lg:gap-16 items-start">
+
+        <!-- Left: section identity -->
+        <div class="lg:pt-1">
+          <div class="flex items-center gap-2 mb-3" aria-hidden="true">
+            <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Standards Compliance</span>
+          </div>
+          <h2 id="compliance-heading" class="text-2xl sm:text-3xl font-bold text-[#1e293b] mb-4 leading-snug">
+            Work compliant with:
+          </h2>
+          <p class="text-[#334155] text-sm leading-relaxed mb-6">
+            All civil plumbing work is delivered in accordance with applicable
+            Australian Standards, WSAA codes and Queensland legislation.
+            Compliance evidence — hold-point inspection records, material
+            certification, test certificates and as-constructed documentation —
+            is provided as a standard deliverable on every project.
+          </p>
+          <a
+            href="#civil-enquiry"
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors"
+          >
+            Request compliance documentation →
+          </a>
+        </div>
+
+        <!-- Right: standards reference list -->
+        <div class="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
+
+          {COMPLIANCE_STANDARDS.map((std, i) => (
+            <div class={`flex items-start gap-4 px-5 py-4 ${i % 2 === 0 ? 'bg-white' : 'bg-[#F0F5FA]/50'} hover:bg-[#EFF6FF]/60 transition-colors group`}>
+
+              <!-- Check icon -->
+              <div class="w-6 h-6 rounded-full bg-[#046bd2]/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#046bd2]/20 transition-colors" aria-hidden="true">
+                <svg class="w-3.5 h-3.5 text-[#046bd2]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 mb-1">
+                  <span class="font-mono text-xs font-bold text-[#046bd2] bg-[#046bd2]/8 border border-[#046bd2]/15 rounded px-2 py-0.5 flex-shrink-0">
+                    {std.code}
+                  </span>
+                  <span class="font-semibold text-[#1e293b] text-sm leading-snug">
+                    {std.title}
+                  </span>
+                </div>
+                <p class="text-[#334155] text-xs leading-relaxed">
+                  {std.context}
+                </p>
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §4  TENDER & PROCUREMENT
+       Dark section targeting civil contractors and councils. Addresses
+       the pre-qualification and procurement documentation checklist
+       that procurement officers run through when shortlisting subcontractors.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#1e293b]" aria-labelledby="procurement-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid lg:grid-cols-[400px_1fr] gap-12 lg:gap-16 items-start">
+
+        <!-- Left: framing copy -->
+        <div>
+          <div class="flex items-center gap-2 mb-4" aria-hidden="true">
+            <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+            <span class="text-[10px] font-bold text-white/35 uppercase tracking-[0.15em]">Procurement</span>
+          </div>
+          <h2 id="procurement-heading" class="text-2xl sm:text-3xl font-bold text-white mb-5 leading-snug">
+            Working with civil contractors and councils
+          </h2>
+          <p class="text-white/60 text-sm leading-relaxed mb-5">
+            We understand the documentation and process requirements of principal contractors, councils and government procurement teams. Our pre-qualification documentation is current and available on short notice — we won't slow down your onboarding or tender timeline.
+          </p>
+          <p class="text-white/60 text-sm leading-relaxed">
+            We participate in formal RFQ, EOI and open tender processes. If you have a procurement deadline, include it in your enquiry and we will prioritise accordingly.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href="#civil-enquiry"
+              class="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-colors"
+            >
+              Submit an RFQ
+            </a>
+            <a
+              href="/docs/pulse-plumbing-civil-capability.pdf"
+              class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/35 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
+              aria-label="Download capability statement PDF"
+            >
+              <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              Download Capability Statement
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: procurement checklist -->
+        <div class="space-y-3">
+          {PROCUREMENT_POINTS.map(pt => (
+            <div class="flex items-start gap-4 bg-white/5 border border-white/8 hover:bg-white/8 rounded-xl p-5 transition-colors group">
+              <div
+                class="w-10 h-10 rounded-lg bg-[#046bd2]/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-[#046bd2]/30 transition-colors"
+                aria-hidden="true"
+              >
+                {pt.icon}
+              </div>
+              <div class="min-w-0">
+                <div class="font-semibold text-white text-sm mb-1">{pt.heading}</div>
+                <p class="text-white/55 text-xs leading-relaxed">{pt.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §5  PROJECT TYPES
+       Helps procurement managers match their project scope to our capability
+       without having to read a full capability statement.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA] border-t border-slate-200" aria-labelledby="project-types-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="max-w-2xl mb-12">
+        <div class="flex items-center gap-2 mb-3" aria-hidden="true">
+          <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Project Scope</span>
+        </div>
+        <h2 id="project-types-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Types of civil projects we work on
+        </h2>
+        <p class="text-[#334155] text-lg leading-relaxed">
+          From greenfield subdivision reticulation through to emergency infrastructure repair — indicative project types across our civil plumbing capability.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {PROJECT_TYPES.map(pt => (
+          <div class="bg-white border border-slate-200 rounded-xl p-6 hover:border-[#046bd2]/40 hover:shadow-sm transition-all group">
+            <div
+              class="w-11 h-11 rounded-lg bg-[#046bd2]/8 group-hover:bg-[#046bd2]/14 flex items-center justify-center text-2xl mb-4 transition-colors"
+              aria-hidden="true"
+            >
+              {pt.icon}
+            </div>
+            <h3 class="font-bold text-[#1e293b] text-sm mb-2">{pt.label}</h3>
+            <p class="text-[#334155] text-xs leading-relaxed">{pt.detail}</p>
+          </div>
+        ))}
+
+        <!-- "Have a different project?" card -->
+        <div class="bg-[#046bd2]/5 border border-[#046bd2]/20 rounded-xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="w-11 h-11 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
+              💬
+            </div>
+            <h3 class="font-bold text-[#1e293b] text-sm mb-2">Have a different project scope?</h3>
+            <p class="text-[#334155] text-xs leading-relaxed">
+              If your project doesn't fit neatly into one of these categories, get in touch — we'll tell you directly whether it's within our scope.
+            </p>
+          </div>
+          <a
+            href="#civil-enquiry"
+            class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors"
+          >
+            Submit an enquiry
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Civil enquiry form ──────────────────────────────────────────────────── -->
+  <CivilEnquiryForm formId={FORM_ID} client:load slot="enquiry-form" />
+
+</CivilLayout>

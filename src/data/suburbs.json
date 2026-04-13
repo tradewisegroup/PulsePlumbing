@@ -1,0 +1,402 @@
+[
+  {
+    "name": "Loganholme",
+    "slug": "loganholme",
+    "region": "Logan",
+    "postcode": "4129",
+    "lat": -27.6905,
+    "lng": 153.1872,
+    "population_size": "medium",
+    "nearby_suburbs": ["shailer-park", "cornubia", "meadowbrook"]
+  },
+  {
+    "name": "Shailer Park",
+    "slug": "shailer-park",
+    "region": "Logan",
+    "postcode": "4128",
+    "lat": -27.6531,
+    "lng": 153.1939,
+    "population_size": "medium",
+    "nearby_suburbs": ["loganholme", "daisy-hill", "cornubia"]
+  },
+  {
+    "name": "Cornubia",
+    "slug": "cornubia",
+    "region": "Logan",
+    "postcode": "4130",
+    "lat": -27.6864,
+    "lng": 153.2019,
+    "population_size": "small",
+    "nearby_suburbs": ["loganholme", "shailer-park", "carbrook"]
+  },
+  {
+    "name": "Daisy Hill",
+    "slug": "daisy-hill",
+    "region": "Logan",
+    "postcode": "4127",
+    "lat": -27.6464,
+    "lng": 153.1748,
+    "population_size": "medium",
+    "nearby_suburbs": ["shailer-park", "slacks-creek", "springwood"]
+  },
+  {
+    "name": "Tanah Merah",
+    "slug": "tanah-merah",
+    "region": "Logan",
+    "postcode": "4128",
+    "lat": -27.7103,
+    "lng": 153.2147,
+    "population_size": "small",
+    "nearby_suburbs": ["carbrook", "cornubia", "beenleigh"]
+  },
+  {
+    "name": "Meadowbrook",
+    "slug": "meadowbrook",
+    "region": "Logan",
+    "postcode": "4131",
+    "lat": -27.6725,
+    "lng": 153.1319,
+    "population_size": "small",
+    "nearby_suburbs": ["loganholme", "kingston", "slacks-creek"]
+  },
+  {
+    "name": "Carbrook",
+    "slug": "carbrook",
+    "region": "Logan",
+    "postcode": "4130",
+    "lat": -27.7250,
+    "lng": 153.2392,
+    "population_size": "small",
+    "nearby_suburbs": ["tanah-merah", "cornubia", "eagleby"]
+  },
+  {
+    "name": "Slacks Creek",
+    "slug": "slacks-creek",
+    "region": "Logan",
+    "postcode": "4127",
+    "lat": -27.6500,
+    "lng": 153.1333,
+    "population_size": "medium",
+    "nearby_suburbs": ["daisy-hill", "springwood", "kingston"]
+  },
+  {
+    "name": "Springwood",
+    "slug": "springwood",
+    "region": "Logan",
+    "postcode": "4127",
+    "lat": -27.6063,
+    "lng": 153.1518,
+    "population_size": "large",
+    "nearby_suburbs": ["slacks-creek", "daisy-hill", "rochedale-south"]
+  },
+  {
+    "name": "Kingston",
+    "slug": "kingston",
+    "region": "Logan",
+    "postcode": "4114",
+    "lat": -27.6706,
+    "lng": 153.0972,
+    "population_size": "medium",
+    "nearby_suburbs": ["meadowbrook", "woodridge", "logan-central"]
+  },
+  {
+    "name": "Woodridge",
+    "slug": "woodridge",
+    "region": "Logan",
+    "postcode": "4114",
+    "lat": -27.6344,
+    "lng": 153.1022,
+    "population_size": "large",
+    "nearby_suburbs": ["kingston", "logan-central", "slacks-creek"]
+  },
+  {
+    "name": "Logan Central",
+    "slug": "logan-central",
+    "region": "Logan",
+    "postcode": "4114",
+    "lat": -27.6394,
+    "lng": 153.1066,
+    "population_size": "medium",
+    "nearby_suburbs": ["woodridge", "kingston", "marsden"]
+  },
+  {
+    "name": "Beenleigh",
+    "slug": "beenleigh",
+    "region": "Logan",
+    "postcode": "4207",
+    "lat": -27.7146,
+    "lng": 153.2013,
+    "population_size": "large",
+    "nearby_suburbs": ["eagleby", "tanah-merah", "edens-landing"]
+  },
+  {
+    "name": "Eagleby",
+    "slug": "eagleby",
+    "region": "Logan",
+    "postcode": "4207",
+    "lat": -27.7280,
+    "lng": 153.2044,
+    "population_size": "small",
+    "nearby_suburbs": ["beenleigh", "tanah-merah", "edens-landing"]
+  },
+  {
+    "name": "Edens Landing",
+    "slug": "edens-landing",
+    "region": "Logan",
+    "postcode": "4207",
+    "lat": -27.7239,
+    "lng": 153.1797,
+    "population_size": "small",
+    "nearby_suburbs": ["beenleigh", "eagleby", "waterford"]
+  },
+  {
+    "name": "Heritage Park",
+    "slug": "heritage-park",
+    "region": "Logan",
+    "postcode": "4118",
+    "lat": -27.6706,
+    "lng": 153.0586,
+    "population_size": "small",
+    "nearby_suburbs": ["browns-plains", "crestmead", "marsden"]
+  },
+  {
+    "name": "Browns Plains",
+    "slug": "browns-plains",
+    "region": "Logan",
+    "postcode": "4118",
+    "lat": -27.6700,
+    "lng": 153.0333,
+    "population_size": "large",
+    "nearby_suburbs": ["heritage-park", "crestmead", "marsden"]
+  },
+  {
+    "name": "Marsden",
+    "slug": "marsden",
+    "region": "Logan",
+    "postcode": "4132",
+    "lat": -27.6614,
+    "lng": 153.0861,
+    "population_size": "medium",
+    "nearby_suburbs": ["browns-plains", "crestmead", "kingston"]
+  },
+  {
+    "name": "Crestmead",
+    "slug": "crestmead",
+    "region": "Logan",
+    "postcode": "4132",
+    "lat": -27.6897,
+    "lng": 153.0536,
+    "population_size": "medium",
+    "nearby_suburbs": ["marsden", "browns-plains", "heritage-park"]
+  },
+  {
+    "name": "Loganlea",
+    "slug": "loganlea",
+    "region": "Logan",
+    "postcode": "4131",
+    "lat": -27.6978,
+    "lng": 153.1394,
+    "population_size": "small",
+    "nearby_suburbs": ["meadowbrook", "logan-central", "kingston"]
+  },
+  {
+    "name": "Waterford",
+    "slug": "waterford",
+    "region": "Logan",
+    "postcode": "4133",
+    "lat": -27.6878,
+    "lng": 153.1661,
+    "population_size": "small",
+    "nearby_suburbs": ["edens-landing", "loganholme", "tanah-merah"]
+  },
+  {
+    "name": "Rochedale South",
+    "slug": "rochedale-south",
+    "region": "Logan",
+    "postcode": "4123",
+    "lat": -27.6014,
+    "lng": 153.1175,
+    "population_size": "medium",
+    "nearby_suburbs": ["springwood", "daisy-hill", "rochedale"]
+  },
+  {
+    "name": "Rochedale",
+    "slug": "rochedale",
+    "region": "Brisbane",
+    "postcode": "4123",
+    "lat": -27.5922,
+    "lng": 153.1150,
+    "population_size": "medium",
+    "nearby_suburbs": ["rochedale-south", "wishart", "sunnybank-hills"]
+  },
+  {
+    "name": "Sunnybank",
+    "slug": "sunnybank",
+    "region": "Brisbane",
+    "postcode": "4109",
+    "lat": -27.5697,
+    "lng": 153.0506,
+    "population_size": "large",
+    "nearby_suburbs": ["sunnybank-hills", "mount-gravatt", "wishart"]
+  },
+  {
+    "name": "Sunnybank Hills",
+    "slug": "sunnybank-hills",
+    "region": "Brisbane",
+    "postcode": "4109",
+    "lat": -27.5817,
+    "lng": 153.0617,
+    "population_size": "large",
+    "nearby_suburbs": ["sunnybank", "mount-gravatt", "rochedale"]
+  },
+  {
+    "name": "Mount Gravatt",
+    "slug": "mount-gravatt",
+    "region": "Brisbane",
+    "postcode": "4122",
+    "lat": -27.5417,
+    "lng": 153.0644,
+    "population_size": "medium",
+    "nearby_suburbs": ["sunnybank", "wishart", "mansfield"]
+  },
+  {
+    "name": "Wishart",
+    "slug": "wishart",
+    "region": "Brisbane",
+    "postcode": "4122",
+    "lat": -27.5497,
+    "lng": 153.0978,
+    "population_size": "medium",
+    "nearby_suburbs": ["mount-gravatt", "mansfield", "rochedale"]
+  },
+  {
+    "name": "Mansfield",
+    "slug": "mansfield",
+    "region": "Brisbane",
+    "postcode": "4122",
+    "lat": -27.5328,
+    "lng": 153.0836,
+    "population_size": "medium",
+    "nearby_suburbs": ["wishart", "mount-gravatt", "carindale"]
+  },
+  {
+    "name": "Carindale",
+    "slug": "carindale",
+    "region": "Brisbane",
+    "postcode": "4152",
+    "lat": -27.5022,
+    "lng": 153.1100,
+    "population_size": "medium",
+    "nearby_suburbs": ["mansfield", "wishart", "capalaba"]
+  },
+  {
+    "name": "Capalaba",
+    "slug": "capalaba",
+    "region": "Brisbane",
+    "postcode": "4157",
+    "lat": -27.5311,
+    "lng": 153.2019,
+    "population_size": "large",
+    "nearby_suburbs": ["alexandra-hills", "mount-cotton", "carindale"]
+  },
+  {
+    "name": "Alexandra Hills",
+    "slug": "alexandra-hills",
+    "region": "Brisbane",
+    "postcode": "4161",
+    "lat": -27.5306,
+    "lng": 153.2133,
+    "population_size": "medium",
+    "nearby_suburbs": ["capalaba", "mount-cotton", "carindale"]
+  },
+  {
+    "name": "Mount Cotton",
+    "slug": "mount-cotton",
+    "region": "Brisbane",
+    "postcode": "4165",
+    "lat": -27.6136,
+    "lng": 153.2175,
+    "population_size": "small",
+    "nearby_suburbs": ["capalaba", "alexandra-hills", "tanah-merah"]
+  },
+  {
+    "name": "Ormeau",
+    "slug": "ormeau",
+    "region": "GoldCoast",
+    "postcode": "4208",
+    "lat": -27.7703,
+    "lng": 153.2539,
+    "population_size": "medium",
+    "nearby_suburbs": ["yatala", "pimpama", "eagleby"]
+  },
+  {
+    "name": "Pimpama",
+    "slug": "pimpama",
+    "region": "GoldCoast",
+    "postcode": "4209",
+    "lat": -27.8136,
+    "lng": 153.3019,
+    "population_size": "large",
+    "nearby_suburbs": ["ormeau", "coomera", "yatala"]
+  },
+  {
+    "name": "Coomera",
+    "slug": "coomera",
+    "region": "GoldCoast",
+    "postcode": "4209",
+    "lat": -27.8403,
+    "lng": 153.3125,
+    "population_size": "large",
+    "nearby_suburbs": ["pimpama", "ormeau", "yatala"]
+  },
+  {
+    "name": "Yatala",
+    "slug": "yatala",
+    "region": "GoldCoast",
+    "postcode": "4207",
+    "lat": -27.7556,
+    "lng": 153.2225,
+    "population_size": "small",
+    "nearby_suburbs": ["ormeau", "pimpama", "eagleby"]
+  },
+  {
+    "name": "Goodna",
+    "slug": "goodna",
+    "region": "Ipswich",
+    "postcode": "4300",
+    "lat": -27.6167,
+    "lng": 152.8997,
+    "population_size": "medium",
+    "nearby_suburbs": ["redbank-plains", "springfield", "springfield-lakes"]
+  },
+  {
+    "name": "Springfield",
+    "slug": "springfield",
+    "region": "Ipswich",
+    "postcode": "4300",
+    "lat": -27.6667,
+    "lng": 152.9167,
+    "population_size": "large",
+    "nearby_suburbs": ["goodna", "springfield-lakes", "redbank-plains"]
+  },
+  {
+    "name": "Redbank Plains",
+    "slug": "redbank-plains",
+    "region": "Ipswich",
+    "postcode": "4301",
+    "lat": -27.6400,
+    "lng": 152.8700,
+    "population_size": "large",
+    "nearby_suburbs": ["goodna", "springfield", "springfield-lakes"]
+  },
+  {
+    "name": "Springfield Lakes",
+    "slug": "springfield-lakes",
+    "region": "Ipswich",
+    "postcode": "4300",
+    "lat": -27.6811,
+    "lng": 152.9175,
+    "population_size": "medium",
+    "nearby_suburbs": ["springfield", "goodna", "redbank-plains"]
+  }
+]

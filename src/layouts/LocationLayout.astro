@@ -1,0 +1,67 @@
+---
+import MainLayout from './MainLayout.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  locationName: string;
+  locationRegion?: string;
+  postalCodes?: string[];
+  faqs?: { question: string; answer: string }[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  locationName,
+  locationRegion = 'QLD',
+  postalCodes = [],
+  faqs = [],
+} = Astro.props;
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Plumber',
+  name: 'Pulse Plumbing & Gas',
+  url: 'https://pulseqld.com.au',
+  telephone: '0452188420',
+  email: 'admin@pulseqld.com.au',
+  description: `Maintenance plumber servicing ${locationName}, ${locationRegion}. Residential and commercial. 24/7 available.`,
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: locationRegion,
+    addressCountry: 'AU',
+    addressLocality: locationName,
+  },
+  areaServed: {
+    '@type': 'City',
+    name: locationName,
+    ...(postalCodes.length > 0 && { postalCode: postalCodes.join(', ') }),
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    opens: '00:00',
+    closes: '23:59',
+  },
+  priceRange: '$$',
+};
+
+const faqSchema = faqs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+} : null;
+---
+
+<MainLayout {title} {description} {canonical} {ogImage} schema={[localBusinessSchema, ...(faqSchema ? [faqSchema] : [])]}>
+  <slot />
+</MainLayout>

@@ -1,0 +1,280 @@
+---
+import CivilLayout from '../../layouts/CivilLayout.astro';
+import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+
+const FORM_ID = import.meta.env.PUBLIC_HUBSPOT_CIVIL_FORM_ID ?? '';
+const SITE    = 'https://pulseqld.com.au';
+
+const SERVICES = [
+  {
+    icon: '📹',
+    title: 'CCTV condition assessment',
+    description: 'Planned and reactive crawler CCTV of gravity sewer and stormwater mains. WRC defect coding, quantified condition reports and prioritised maintenance schedules. Footage and reports delivered in the format required by your asset management system — Infor EAM, Conquest, Assetic or equivalent.',
+  },
+  {
+    icon: '💦',
+    title: 'High-pressure water jetting',
+    description: 'Sewer and stormwater main cleaning using high-pressure water jetting (HPWJ) to remove grease accumulations, root intrusion, silt and debris. Jetting is combined with CCTV inspection to confirm the pipe is clear and identify structural defects exposed by the cleaning process.',
+  },
+  {
+    icon: '🌱',
+    title: 'Root cutting & grease removal',
+    description: 'Mechanical root cutting and high-pressure grease removal for recurring blockage locations. We identify root entry points via CCTV and provide options for permanent remediation — chemical root treatment, relining or excavation and repair — to reduce reblocking frequency and ongoing maintenance costs.',
+  },
+  {
+    icon: '🔧',
+    title: 'Manhole inspection & rehabilitation',
+    description: 'Inspection, cleaning and condition assessment of sewer and stormwater manholes. Rehabilitation options include chemical grouting for joint infiltration, epoxy or polyurea lining of corroded benching and invert, and precast ring replacement where structural deterioration is identified.',
+  },
+  {
+    icon: '🚨',
+    title: 'Emergency response for infrastructure failures',
+    description: 'Emergency response for sewer overflows, main breaks, pump station failures and blockages affecting public health or the environment. We maintain a response capability for local government and utility clients and are available for emergency call-out on a contracted basis with agreed response times.',
+  },
+  {
+    icon: '🔄',
+    title: 'Trenchless rehabilitation',
+    description: 'Cured-in-place pipe (CIPP) lining, pipe bursting and lateral lining for structurally defective mains where open-cut excavation is not practical. We project-manage rehabilitation with specialist subcontractors and manage all pre and post-lining CCTV inspection.',
+  },
+];
+
+const MAINTENANCE_CONTRACTS = [
+  {
+    type: 'Scheduled Preventive Maintenance Programme',
+    description: 'Annual or bi-annual CCTV condition assessment and high-pressure cleaning programme across a defined pipe network. We provide scheduling, condition reporting and a prioritised maintenance backlog for your asset management plan.',
+    clients: 'Local government, water utilities, large commercial & industrial asset owners',
+  },
+  {
+    type: 'Emergency Response Retainer',
+    description: 'On-call emergency response for infrastructure failures — sewer overflows, main breaks and pump station faults — within an agreed response time. Typically combined with a scheduled preventive maintenance programme for full network coverage.',
+    clients: 'Local government, utilities, strata managers, large facility operators',
+  },
+  {
+    type: 'Annual Maintenance Contract',
+    description: 'Comprehensive annual maintenance contract covering scheduled CCTV, preventive jetting, emergency response and reactive maintenance. Reporting aligned to ISO 55000 asset management principles and your asset management plan structure.',
+    clients: 'Councils, water utilities, large commercial property owners and asset managers',
+  },
+];
+
+const FAQS = [
+  {
+    q: 'How do we establish an annual maintenance contract for our council or utility network?',
+    a: 'The most straightforward way to establish an annual maintenance contract is to submit a request for proposal (RFP) or request for quotation (RFQ) that outlines your network scope, required services, response time expectations and reporting requirements. We respond to formal RFQ and tender processes and can also provide a capability statement and fee proposal based on a brief scope description. For council procurement officers, we can supply all pre-qualification documentation — QBCC licence, public liability certificate of currency ($20M), Workers Compensation CoC and SWMS templates — as part of our submission. Annual maintenance contracts are typically structured as a schedule of rates with set call-out fees, hourly rates and day rates for scheduled and reactive work. We issue monthly progress claim invoices through Xero and can provide a tailored reporting format aligned to your asset management plan.',
+  },
+  {
+    q: 'What scheduled preventive maintenance programmes do you offer for sewer and stormwater networks?',
+    a: 'We offer scheduled preventive maintenance programmes structured to match your network condition data and asset management plan. A typical programme includes a combination of annual or bi-annual CCTV condition assessment of higher-risk pipe segments (older pipes, known blockage histories, high inflow/infiltration risk) and annual high-pressure jetting of grease-prone sections and known root intrusion areas. We programme work to minimise community disruption — combining jetting and CCTV in a single pass using our combo jetter-CCTV units, and scheduling work outside peak traffic periods. At the end of each programme cycle, we provide a network-level condition report with a GIS-mapped defect register, a prioritised works schedule and an updated maintenance backlog that can be used to justify capital renewal funding. Reactive maintenance call-outs within the contracted area are also captured and reported as part of the programme.',
+  },
+  {
+    q: 'What is your emergency response capability for infrastructure failures?',
+    a: 'We provide emergency response for civil water and sewer infrastructure failures — sewer overflows, main breaks, pump station failures and blockages posing an immediate public health or environmental risk. Our emergency response capability includes: bypass pumping to contain sewer overflows while the root cause is investigated; emergency high-pressure jetting and CCTV to clear and diagnose blockages; pump station emergency repair for wet well and equipment faults; and emergency excavation and pipe repair where a main has failed. We hold all relevant high-risk work SWMS for confined space entry (manholes), working on live sewer mains and emergency excavation near services. For local government and utility clients, we can establish a contracted emergency response arrangement with agreed response times and documented call-out fee structures. Response documentation — including incident report, site photographs and remediation summary — is provided to the asset manager after each emergency event.',
+  },
+  {
+    q: 'What reporting do you provide for asset managers and council procurement officers?',
+    a: 'Our maintenance reporting is structured to give asset managers and council procurement officers the condition evidence they need for financial planning, maintenance scheduling and renewal capital programmes — without having to translate our field data into a format their system can use. Standard reports include: CCTV inspection reports per segment coded to WRC defect standards; a network-level condition summary with defect distribution by type, severity and location; a prioritised maintenance and renewal schedule ranked by defect severity and consequence of failure; a reactive maintenance log listing all emergency and reactive call-outs with cost and response time data; and a programme close-out summary confirming scope delivery against the contracted maintenance programme. For councils using specific asset management platforms (Infor EAM, Conquest, Assetic, Pozi), we can provide data exports in the required import format. Reporting frequency, format and distribution list are agreed at contract commencement.',
+  },
+  {
+    q: 'Can you manage trenchless rehabilitation for pipes that cannot be accessed by open-cut excavation?',
+    a: 'Yes — trenchless rehabilitation is part of our civil maintenance capability. The most common technique used in sewer and stormwater maintenance is cured-in-place pipe (CIPP) lining, in which a resin-saturated felt tube is inserted into the defective host pipe and cured in place to form a structural pipe-within-a-pipe. CIPP lining is used when the host pipe has multiple structural defects spread across its length, when open-cut excavation would be disruptive or costly (under a road, building or services corridor), or when the cost of excavation exceeds the rehabilitation cost. Other trenchless options include pipe bursting (for upsizing the main diameter), spray-applied lining for manholes and structural point repair sleeves for isolated defects. Pulse Plumbing & Gas project-manages CIPP and trenchless rehabilitation works using specialist subcontractors, managing all pre-lining cleaning and CCTV, QA testing, post-lining inspection and as-built documentation for the asset manager.',
+  },
+];
+
+const schema = {
+  '@graph': [
+    {
+      '@type':       'Service',
+      '@id':         `${SITE}/civil/infrastructure-maintenance#service`,
+      name:          'Civil Infrastructure Maintenance Contracts — QLD',
+      serviceType:   'Civil Infrastructure Maintenance',
+      provider: {
+        '@type': 'Organization',
+        '@id':   `${SITE}/#organization`,
+      },
+      areaServed: [
+        { '@type': 'City',  name: 'Brisbane'  },
+        { '@type': 'City',  name: 'Logan'     },
+        { '@type': 'City',  name: 'Gold Coast'},
+        { '@type': 'City',  name: 'Ipswich'   },
+        { '@type': 'State', name: 'Queensland'},
+      ],
+      description:
+        'QBCC-licensed civil infrastructure maintenance contractor delivering ongoing maintenance programmes for councils and utilities, scheduled preventive maintenance, emergency response for infrastructure failures, CCTV condition assessment, reactive maintenance and annual maintenance contracts across Brisbane and SE Queensland.',
+      keywords: 'civil plumbing maintenance Brisbane, infrastructure maintenance contractor QLD',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name:    'Civil Infrastructure Maintenance Services',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'CCTV Condition Assessment' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Scheduled Preventive Maintenance' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Emergency Response for Infrastructure Failures' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Reactive Maintenance Programmes' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Annual Maintenance Contracts' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Trenchless Rehabilitation' } },
+        ],
+      },
+    },
+    {
+      '@type':    'FAQPage',
+      mainEntity: FAQS.map(f => ({
+        '@type':        'Question',
+        name:           f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<CivilLayout
+  pageTitle="Civil Infrastructure Maintenance Contracts — QLD"
+  pageSubtitle="Ongoing maintenance programmes for councils and utilities — scheduled preventive maintenance, CCTV condition assessment, emergency response for infrastructure failures, reactive maintenance and annual maintenance contracts across Brisbane, Logan and Gold Coast. WSA 05:2013 aligned delivery for council procurement officers and asset managers."
+  metaTitle="Civil Plumbing Maintenance Brisbane | Infrastructure Maintenance Contractor QLD"
+  metaDescription="Civil infrastructure maintenance contractor across SE Queensland. Scheduled preventive maintenance, CCTV condition assessment, emergency response for infrastructure failures, reactive maintenance and annual maintenance contracts for councils, utilities and asset managers. WSA 05:2013 aligned."
+  activeSlug="infrastructure-maintenance"
+  schema={schema}
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       1. SERVICES GRID
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="services-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <div class="inline-flex items-center gap-2 bg-[#046bd2]/10 border border-[#046bd2]/20 rounded-full px-3 py-1 mb-5">
+          <span class="text-xs font-semibold text-[#046bd2]">Maintenance Capability</span>
+        </div>
+        <h2 id="services-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Civil maintenance services for councils and utilities
+        </h2>
+        <p class="text-[#334155] text-lg">
+          Ongoing maintenance programmes for civil water and sewer infrastructure — from scheduled preventive maintenance and CCTV condition assessment through to emergency response for infrastructure failures and trenchless rehabilitation. Structured for council procurement officers and asset managers.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {SERVICES.map(s => (
+          <div class="bg-white border border-slate-200 rounded-2xl p-6 hover:border-[#046bd2]/40 hover:shadow-md transition-all">
+            <div class="w-12 h-12 rounded-xl bg-[#046bd2]/10 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
+              {s.icon}
+            </div>
+            <h3 class="font-bold text-[#1e293b] text-base mb-2">{s.title}</h3>
+            <p class="text-[#334155] text-sm leading-relaxed">{s.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       2. CONTRACT TYPES
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-white" aria-labelledby="contracts-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 id="contracts-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Maintenance contract structures
+        </h2>
+        <p class="text-[#334155] text-lg">
+          We structure maintenance contracts to match the procurement requirements of councils, utilities and asset managers — from simple scheduled cleaning programmes through to comprehensive annual maintenance contracts with emergency response capability.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-6">
+        {MAINTENANCE_CONTRACTS.map((c, i) => (
+          <div class="bg-[#F0F5FA] border border-slate-200 rounded-2xl p-7">
+            <div class="text-3xl font-black text-[#046bd2]/20 mb-4 leading-none">
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <h3 class="font-bold text-[#1e293b] text-lg mb-3">{c.type}</h3>
+            <p class="text-[#334155] text-sm leading-relaxed mb-4">{c.description}</p>
+            <div class="text-xs text-slate-500">
+              <span class="font-semibold text-slate-600">Typical clients:</span> {c.clients}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       3. STANDARDS & COMPLIANCE
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#1e293b]" aria-labelledby="standards-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-14 items-center">
+
+        <div>
+          <h2 id="standards-heading" class="text-3xl sm:text-4xl font-bold text-white mb-5 leading-tight">
+            Standards-aligned maintenance delivery
+          </h2>
+          <p class="text-white/65 text-base leading-relaxed mb-5">
+            Our maintenance programmes are aligned to WSAA WSA 05:2013 (Conduit Inspection Reporting Code of Australia), providing the national standard for CCTV inspection and condition reporting of buried pipelines. WRC defect codes used in our condition reports are directly compatible with the coding systems used by Queensland councils and water utilities in their asset management systems.
+          </p>
+          <p class="text-white/65 text-base leading-relaxed">
+            Asset management reporting is structured to align with ISO 55000 principles — providing councils and asset managers with the condition evidence needed to support long-term financial planning, maintenance scheduling and renewal capital programmes. All maintenance documentation is provided in the format required by your procurement and reporting obligations.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          {[
+            { code: 'WSA 05:2013',    title: 'Conduit Inspection Reporting Code', note: 'National standard for CCTV inspection and condition reporting of buried pipelines' },
+            { code: 'WRC Defect Coding', title: 'Water Research Centre',          note: 'International standard for pipe condition defect classification' },
+            { code: 'ISO 55000',       title: 'Asset Management',                 note: 'Framework for strategic civil infrastructure asset management reporting' },
+            { code: 'AS 2865',         title: 'Confined Spaces',                  note: 'Safety requirements for confined space entry — manhole and pit access' },
+          ].map(s => (
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
+              <div class="inline-block bg-[#046bd2]/20 text-[#046bd2] text-xs font-bold px-2 py-0.5 rounded-full mb-2">
+                {s.code}
+              </div>
+              <div class="font-semibold text-white text-sm mb-0.5">{s.title}</div>
+              <div class="text-white/45 text-xs leading-relaxed">{s.note}</div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       4. FAQs
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="faq-heading">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-10">
+        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Infrastructure maintenance FAQs
+        </h2>
+        <p class="text-[#334155] text-lg">
+          Common questions from council procurement officers, asset managers and facility managers about civil infrastructure maintenance programmes.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        {FAQS.map((faq, i) => (
+          <details
+            class="bg-white border border-slate-200 rounded-2xl overflow-hidden group"
+            open={i === 0}
+          >
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#1e293b] hover:text-[#046bd2] transition-colors select-none">
+              {faq.q}
+              <svg
+                class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="px-6 pb-6 text-[#334155] text-sm leading-relaxed">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
+  <CivilEnquiryForm formId={FORM_ID} initialProjectType="infrastructure-maintenance" client:load slot="enquiry-form" />
+
+</CivilLayout>

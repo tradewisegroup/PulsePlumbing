@@ -1,0 +1,197 @@
+---
+import CivilLayout from '../../layouts/CivilLayout.astro';
+import CivilRFQForm from '../../components/forms/CivilRFQForm.jsx';
+
+const FORM_ID = import.meta.env.PUBLIC_HUBSPOT_CIVIL_FORM_ID ?? '';
+const SITE    = 'https://pulseqld.com.au';
+const PHONE   = '0452 188 420';
+const EMAIL   = 'admin@pulseqld.com.au';
+
+// ─── "What to include" checklist ─────────────────────────────────────────────
+
+const CHECKLIST_ITEMS = [
+  {
+    icon: '📍',
+    heading: 'Project location and scope description',
+    detail:  'Site address or suburb, the nature of the civil plumbing works, the size of the network or development, and any staging requirements.',
+  },
+  {
+    icon: '📄',
+    heading: 'Relevant drawings or DA documents (if available)',
+    detail:  'Hydraulic design drawings, engineering specifications, development approval conditions, distributor-retailer design guidelines, or a project brief. Email large files directly to admin@pulseqld.com.au.',
+  },
+  {
+    icon: '📅',
+    heading: 'Required start date and completion timeline',
+    detail:  'Anticipated start date, overall programme, and any critical milestones — practical completion date, infrastructure agreement submission, or tender closing date.',
+  },
+  {
+    icon: '📋',
+    heading: 'Council or client specifications applicable',
+    detail:  'Name of the relevant council, distributor-retailer (QUU, Logan Water, Unitywater), or head contractor, and any specification documents that govern the scope.',
+  },
+  {
+    icon: '🗂️',
+    heading: 'Whether SWMS, insurance certs or pre-qual docs are required',
+    detail:  'Let us know upfront if you need our QBCC licence certificate, public liability certificate of currency, Workers Compensation certificate, SWMS templates, or capability statement before issuing the RFQ. We can provide these immediately.',
+  },
+];
+
+// ─── Credential & contact cards ───────────────────────────────────────────────
+
+const CREDENTIAL_ITEMS = [
+  { label: 'Direct enquiries', value: EMAIL,       href: `mailto:${EMAIL}`,    mono: false },
+  { label: 'Phone',            value: PHONE,        href: `tel:0452188420`,     mono: false },
+  { label: 'QBCC Licence',     value: '[INSERT]',   href: null,                 mono: true  },
+  { label: 'ABN',              value: '[INSERT]',   href: null,                 mono: true  },
+  { label: 'Public Liability', value: '$20M',       href: null,                 mono: false },
+  { label: 'Workers Comp',     value: 'Current (WorkCover QLD)', href: null,   mono: false },
+];
+
+// ─── Schema ───────────────────────────────────────────────────────────────────
+
+const schema = {
+  '@graph': [
+    {
+      '@type':       'ContactPage',
+      '@id':         `${SITE}/civil/contact#page`,
+      name:          'Submit a Civil Project Enquiry — Pulse Plumbing & Gas',
+      description:
+        'Submit a civil project RFQ or infrastructure enquiry to Pulse Plumbing & Gas. QBCC-licensed civil plumbing contractor serving SE Queensland. Responses within one business day.',
+      url:           `${SITE}/civil/contact`,
+      mainEntity: {
+        '@type':     'Organization',
+        '@id':       `${SITE}/#organization`,
+      },
+    },
+  ],
+};
+---
+
+<CivilLayout
+  pageTitle="Civil Project Enquiries & RFQ Submissions"
+  pageSubtitle="We respond to all civil enquiries within 1 business day. For urgent infrastructure matters, call 0452 188 420."
+  metaTitle="Submit a Civil Project Enquiry — Pulse Plumbing & Gas"
+  metaDescription="Submit a civil project RFQ or infrastructure maintenance enquiry to Pulse Plumbing & Gas — QBCC-licensed civil plumbing contractor across SE Queensland. Water mains, sewer construction, stormwater and maintenance contracts. Response within one business day."
+  activeSlug="__contact"
+  schema={schema}
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §1 WHAT TO INCLUDE CHECKLIST
+       Procurement language — helps the enquirer write a better brief and
+       pre-qualifies the lead before it reaches our civil team.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="checklist-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-[380px_1fr] gap-14 items-start">
+
+        <!-- Left: section identity -->
+        <div class="lg:pt-1">
+          <div class="flex items-center gap-2 mb-3" aria-hidden="true">
+            <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Before You Submit</span>
+          </div>
+          <h2 id="checklist-heading" class="text-2xl sm:text-3xl font-bold text-[#1e293b] mb-4 leading-snug">
+            What to include in your enquiry
+          </h2>
+          <p class="text-[#334155] text-sm leading-relaxed mb-6">
+            The more detail you provide upfront, the faster and more specific our response will be. Use this checklist to ensure your enquiry covers the information our civil team needs to assess your project scope.
+          </p>
+          <p class="text-sm text-[#334155] leading-relaxed">
+            If you have drawings or DA documents ready, email them to{' '}
+            <a href={`mailto:${EMAIL}`} class="text-[#046bd2] hover:underline font-medium">{EMAIL}</a>{' '}
+            with your company name in the subject line, then reference the project in the form below.
+          </p>
+        </div>
+
+        <!-- Right: checklist items -->
+        <div class="space-y-3">
+          {CHECKLIST_ITEMS.map((item, i) => (
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-start gap-4 hover:border-[#046bd2]/30 hover:shadow-sm transition-all group">
+              <!-- Diamond bullet -->
+              <div class="w-9 h-9 rounded-lg bg-[#046bd2]/8 group-hover:bg-[#046bd2]/14 flex items-center justify-center text-lg flex-shrink-0 transition-colors" aria-hidden="true">
+                {item.icon}
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-[10px] font-bold text-[#046bd2] tabular-nums">◆ {String(i + 1).padStart(2, '0')}</span>
+                  <h3 class="font-semibold text-[#1e293b] text-sm leading-snug">{item.heading}</h3>
+                </div>
+                <p class="text-[#334155] text-xs leading-relaxed">{item.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §2 CREDENTIALS & CONTACT DETAILS PANEL
+       Targets procurement officers who need to verify contractor details
+       before issuing an RFQ. Cards match the dark/professional tone.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-16 bg-white border-t border-slate-100" aria-labelledby="credentials-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="flex items-center gap-2 mb-2" aria-hidden="true">
+            <div class="w-1 h-4 bg-[#046bd2] rounded-full"></div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Contractor Details</span>
+          </div>
+          <h2 id="credentials-heading" class="text-xl font-bold text-[#1e293b]">
+            Contact details &amp; credentials
+          </h2>
+        </div>
+        <p class="text-xs text-slate-400 max-w-xs leading-relaxed">
+          Pre-qualification documentation — QBCC licence certificate, insurance certificates of currency, SWMS templates and capability statement — available on request.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {CREDENTIAL_ITEMS.map(item => (
+          <div class="bg-[#F0F5FA] border border-slate-200 rounded-xl px-5 py-4">
+            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">
+              {item.label}
+            </div>
+            {item.href ? (
+              <a
+                href={item.href}
+                class={`text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors ${item.mono ? 'font-mono' : ''}`}
+              >
+                {item.value}
+              </a>
+            ) : (
+              <span class={`text-sm font-semibold text-[#1e293b] ${item.mono ? 'font-mono' : ''}`}>
+                {item.value}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <!-- Response time commitment -->
+      <div class="mt-6 bg-[#046bd2]/5 border border-[#046bd2]/15 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
+          ⏱️
+        </div>
+        <div>
+          <div class="font-semibold text-[#1e293b] text-sm mb-0.5">Response time commitment</div>
+          <p class="text-[#334155] text-xs leading-relaxed">
+            We confirm capability and availability for all civil project enquiries within <strong>one business day</strong>.
+            For formal tender submissions with a closing date, note the deadline in your enquiry and we will prioritise accordingly.
+            For urgent infrastructure matters, call <a href="tel:0452188420" class="text-[#046bd2] font-semibold hover:underline">{PHONE}</a>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── RFQ form (renders inside CivilLayout section 6) ─────────────────── -->
+  <CivilRFQForm formId={FORM_ID} client:load slot="enquiry-form" />
+
+</CivilLayout>

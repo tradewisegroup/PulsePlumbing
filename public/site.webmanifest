@@ -1,0 +1,13 @@
+{
+  "name": "Pulse Plumbing & Gas",
+  "short_name": "Pulse",
+  "description": "Maintenance plumber servicing Brisbane, Logan, Gold Coast and Ipswich. Available 24/7.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#046bd2",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

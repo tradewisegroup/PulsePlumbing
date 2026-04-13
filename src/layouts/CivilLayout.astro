@@ -1,0 +1,852 @@
+---
+/**
+ * CivilLayout.astro
+ *
+ * Layout for all /civil/* pages.
+ *
+ * Audience: procurement managers, project engineers, council officers,
+ * civil contractors. NOT residential homeowners — no emergency CTAs.
+ *
+ * Structure (7 sections):
+ *  1. Civil nav bar  — sticky, separate identity from consumer header
+ *  2. Hero           — dark, structured, capability-statement framing
+ *  3. <slot />       — page-specific content
+ *  4. Compliance     — documentation-style reference block (when complianceRefs given)
+ *  5. Related svcs   — links to other civil service pages
+ *  6. CTA / form     — <slot name="enquiry-form" /> + contact info
+ *  7. Civil footer   — ABN, QBCC, insurance, accreditations
+ */
+import BaseLayout from './BaseLayout.astro';
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+export interface ComplianceRef {
+  /** Standards code, e.g. "WSA 03:2011" */
+  code:   string;
+  /** Full standard title */
+  title:  string;
+  /** One-line note on relevance */
+  note?:  string;
+  /** Optional link to standard body */
+  url?:   string;
+}
+
+export interface FAQ {
+  q: string;
+  a: string;
+}
+
+export interface Props {
+  /** Page H1 headline — also used as <title> */
+  pageTitle:       string;
+  /** Optional hero paragraph */
+  pageSubtitle?:   string;
+  /** <head> meta title override — defaults to pageTitle */
+  metaTitle?:      string;
+  /** <head> meta description */
+  metaDescription: string;
+  /**
+   * Active sub-nav slug.
+   *   ''                         → Civil Overview (index)
+   *   'water-mains'              → Water Mains
+   *   'stormwater'               → Stormwater
+   *   'sewer-construction'       → Sewer Construction
+   *   'infrastructure-maintenance' → Infrastructure Maintenance
+   * Also accepted as `activeSlug` for backwards compatibility.
+   */
+  serviceType?:    string;
+  /** @deprecated — use serviceType */
+  activeSlug?:     string;
+  /** FAQ items — when provided the layout renders the FAQ section + FAQPage schema */
+  faqs?:           FAQ[];
+  /**
+   * Standards and compliance references.
+   * When provided, the layout renders a documentation-style reference block
+   * after the page slot. Pages that render their own inline standards section
+   * should NOT also pass complianceRefs (to avoid duplication).
+   */
+  complianceRefs?: ComplianceRef[];
+  /** Additional page-level schema — merged into @graph */
+  schema?:         Record<string, unknown>;
+}
+
+const {
+  pageTitle,
+  pageSubtitle,
+  metaTitle,
+  metaDescription,
+  serviceType,
+  activeSlug,
+  faqs        = [],
+  complianceRefs = [],
+  schema,
+} = Astro.props;
+
+// Resolve active slug from either prop name
+const activeService: string = serviceType ?? activeSlug ?? '';
+
+const SITE     = 'https://pulseqld.com.au';
+const PHONE    = '0452 188 420';
+const PHONE_HREF = 'tel:0452188420';
+const EMAIL    = 'admin@pulseqld.com.au';
+
+// ─── Sub-navigation ───────────────────────────────────────────────────────────
+
+const NAV_ITEMS = [
+  { label: 'Civil Overview',            slug: '',                          href: '/civil'                              },
+  { label: 'Water Mains',               slug: 'water-mains',               href: '/civil/water-mains'                  },
+  { label: 'Stormwater',                slug: 'stormwater',                href: '/civil/stormwater'                   },
+  { label: 'Sewer Construction',        slug: 'sewer-construction',         href: '/civil/sewer-construction'           },
+  { label: 'Maintenance',               slug: 'infrastructure-maintenance', href: '/civil/infrastructure-maintenance'   },
+  { label: 'Civil Contact',             slug: '__contact',                  href: '/civil/contact'                      },
+];
+
+// ─── Related services (for "Other civil services" section) ────────────────────
+
+interface CivilService {
+  slug:        string;
+  href:        string;
+  label:       string;
+  icon:        string;
+  description: string;
+}
+
+const ALL_CIVIL_SERVICES: CivilService[] = [
+  {
+    slug:        'water-mains',
+    href:        '/civil/water-mains',
+    label:       'Water Mains',
+    icon:        '💧',
+    description: 'Installation, extension, live tie-ins and pressure testing. WSA 03:2011 compliant with full infrastructure agreement documentation.',
+  },
+  {
+    slug:        'stormwater',
+    href:        '/civil/stormwater',
+    label:       'Stormwater',
+    icon:        '🌊',
+    description: 'Underground pipe networks, kerb drainage, WSUD treatment trains and GPT installation to AS/NZS 3500.3.',
+  },
+  {
+    slug:        'sewer-construction',
+    href:        '/civil/sewer-construction',
+    label:       'Sewer Construction',
+    icon:        '⚙️',
+    description: 'Gravity mains, pump stations, rising mains and lot connections. CCTV inspection and WSA 02:2014 compliant documentation.',
+  },
+  {
+    slug:        'infrastructure-maintenance',
+    href:        '/civil/infrastructure-maintenance',
+    label:       'Infrastructure Maintenance',
+    icon:        '🛠️',
+    description: 'Programmed CCTV condition assessment, high-pressure jetting, emergency response and trenchless rehabilitation. WSA 05:2013 aligned.',
+  },
+];
+
+// Show related services: all except the currently active page (max 3)
+const relatedServices = ALL_CIVIL_SERVICES.filter(
+  (s) => s.slug !== activeService,
+).slice(0, 3);
+
+// ─── Breadcrumb label ─────────────────────────────────────────────────────────
+
+const activeLabel = NAV_ITEMS.find((n) => n.slug === activeService)?.label ?? 'Civil';
+
+// ─── JSON-LD schemas ──────────────────────────────────────────────────────────
+
+const organisationSchema = {
+  '@type':     'Organization',
+  '@id':       `${SITE}/#organization`,
+  name:        'Pulse Plumbing & Gas',
+  legalName:   'Pulse Plumbing & Gas',   // TODO: confirm Pty Ltd once ABN verified
+  url:         SITE,
+  logo:        `${SITE}/images/logo.png`,
+  image:       `${SITE}/images/og-default.jpg`,
+  telephone:   '0452188420',
+  email:       EMAIL,
+  description:
+    'QBCC-licensed civil plumbing contractor specialising in water main installation, sewer construction, stormwater infrastructure and maintenance contracts across South-East Queensland.',
+  address: {
+    '@type':          'PostalAddress',
+    addressLocality:  'Brisbane',
+    addressRegion:    'QLD',
+    addressCountry:   'AU',
+  },
+  areaServed: {
+    '@type': 'State',
+    name:    'Queensland',
+  },
+  knowsAbout: [
+    'Civil plumbing infrastructure',
+    'Water main installation',
+    'Sewer construction',
+    'Stormwater infrastructure',
+    'Infrastructure maintenance',
+    'WSAA standards',
+    'WSA 02 Sewerage Code',
+    'WSA 03 Water Reticulation Code',
+    'WSA 05 Conduit Inspection Reporting Code',
+  ],
+  hasCredential: {
+    '@type':              'EducationalOccupationalCredential',
+    credentialCategory:   'QBCC Contractor Licence',
+    recognizedBy: {
+      '@type': 'GovernmentOrganization',
+      name:    'Queensland Building and Construction Commission',
+      url:     'https://www.qbcc.qld.gov.au',
+    },
+  },
+  sameAs: [],
+};
+
+// FAQPage schema — only when faqs are provided
+const faqSchema = faqs.length > 0
+  ? {
+      '@type':    'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type':        'Question',
+        name:           f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }
+  : null;
+
+// Breadcrumb schema
+const breadcrumbSchema = {
+  '@type':           'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home',  item: SITE },
+    { '@type': 'ListItem', position: 2, name: 'Civil', item: `${SITE}/civil` },
+    ...(activeService
+      ? [{ '@type': 'ListItem', position: 3, name: activeLabel, item: `${SITE}/civil/${activeService}` }]
+      : []),
+  ],
+};
+
+// Merge all schemas into a @graph
+const extraGraphItems: unknown[] = [];
+if (faqSchema)                         extraGraphItems.push(faqSchema);
+if (schema?.['@graph'])                extraGraphItems.push(...(schema['@graph'] as unknown[]));
+else if (schema)                       extraGraphItems.push(schema);
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organisationSchema,
+    breadcrumbSchema,
+    ...extraGraphItems,
+  ],
+};
+---
+
+<BaseLayout
+  title={metaTitle ?? pageTitle}
+  description={metaDescription}
+  canonical={`${SITE}${Astro.url.pathname}`}
+  schema={pageSchema}
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §1 CIVIL NAV BAR
+       Sticky strip below the consumer header. Gives the civil section a
+       distinct identity: darker palette, professional CTAs, no emergency
+       language.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div
+    class="sticky top-[4.5rem] lg:top-[5rem] z-40 bg-[#0f172a] border-b border-white/10 shadow-lg shadow-black/20"
+    role="navigation"
+    aria-label="Civil services navigation"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center h-12 gap-0 overflow-x-auto no-scrollbar">
+
+        <!-- Brand token -->
+        <div class="flex items-center gap-2 flex-shrink-0 pr-4 mr-1 border-r border-white/10 hidden sm:flex">
+          <div class="w-5 h-5 rounded bg-[#046bd2]/20 flex items-center justify-center flex-shrink-0" aria-hidden="true">
+            <svg class="w-3 h-3 text-[#046bd2]" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <span class="text-[10px] font-bold text-white/35 uppercase tracking-[0.15em]">Civil</span>
+        </div>
+
+        <!-- Nav links -->
+        {NAV_ITEMS.map((item) => {
+          const isContact = item.slug === '__contact';
+          const isActive  = !isContact && item.slug === activeService;
+          return (
+            <a
+              href={item.href}
+              aria-current={isActive ? 'page' : undefined}
+              class={[
+                'flex-shrink-0 text-[11px] font-semibold px-3 h-full flex items-center border-b-2 whitespace-nowrap transition-colors',
+                isActive
+                  ? 'border-[#046bd2] text-white'
+                  : isContact
+                    ? 'border-transparent text-[#046bd2] hover:text-[#7ab8f5] hover:border-[#046bd2]/40'
+                    : 'border-transparent text-white/55 hover:text-white hover:border-white/25',
+              ].join(' ')}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+
+        <!-- Spacer -->
+        <div class="flex-1 min-w-4"></div>
+
+        <!-- Capability statement + RFQ CTAs (desktop only) -->
+        <div class="hidden md:flex items-center gap-2 flex-shrink-0 pl-4 border-l border-white/10">
+          <a
+            href="/docs/pulse-plumbing-civil-capability.pdf"
+            class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-3 py-1 transition-colors"
+            aria-label="Download capability statement PDF"
+          >
+            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Capability Statement
+          </a>
+          <a
+            href="#civil-enquiry"
+            class="inline-flex items-center gap-1.5 text-[11px] font-semibold bg-[#046bd2] hover:bg-[#045cb4] text-white rounded-full px-3 py-1 transition-colors"
+          >
+            Submit RFQ
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §2 HERO
+       Corporate tone. Left: breadcrumb + credential + H1 + subtitle + CTAs.
+       Right: capability highlights panel (imagery placeholder).
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden bg-[#0f172a]">
+
+    <!-- Angled gradient accent -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: linear-gradient(135deg, rgba(4,107,210,0.18) 0%, transparent 50%), linear-gradient(to right, #0f172a 55%, #0d2038 100%);"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Blueprint grid texture -->
+    <div
+      class="absolute inset-0 opacity-[0.025] pointer-events-none"
+      style="background-image: linear-gradient(#5b9bd5 1px, transparent 1px), linear-gradient(90deg, #5b9bd5 1px, transparent 1px); background-size: 40px 40px;"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="grid lg:grid-cols-[1fr_420px] gap-12 lg:gap-16 items-center">
+
+        <!-- Left: copy -->
+        <div>
+          <!-- Breadcrumb -->
+          <nav class="mb-5 text-xs text-white/35" aria-label="Breadcrumb">
+            <ol class="flex items-center gap-2">
+              <li><a href="/" class="hover:text-white/60 transition-colors">Home</a></li>
+              <li aria-hidden="true" class="text-white/20">›</li>
+              {activeService ? (
+                <>
+                  <li><a href="/civil" class="hover:text-white/60 transition-colors">Civil</a></li>
+                  <li aria-hidden="true" class="text-white/20">›</li>
+                  <li class="text-white/55" aria-current="page">{activeLabel}</li>
+                </>
+              ) : (
+                <li class="text-white/55" aria-current="page">Civil</li>
+              )}
+            </ol>
+          </nav>
+
+          <!-- Credential pill -->
+          <div class="inline-flex items-center gap-2 bg-[#046bd2]/12 border border-[#046bd2]/25 rounded-full px-3.5 py-1.5 mb-6">
+            <svg class="w-3.5 h-3.5 text-[#046bd2] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-sm font-semibold text-[#046bd2]">QBCC Licensed — Civil Plumbing Contractor</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-white leading-[1.1] tracking-tight mb-5">
+            {pageTitle}
+          </h1>
+
+          {pageSubtitle && (
+            <p class="text-base sm:text-lg text-white/60 leading-relaxed mb-8 max-w-xl">
+              {pageSubtitle}
+            </p>
+          )}
+
+          <!-- CTAs: NO emergency language — professional procurement context -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a
+              href="#civil-enquiry"
+              class="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors shadow-lg shadow-[#046bd2]/25 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0f172a] focus:ring-[#046bd2]"
+            >
+              Submit an RFQ
+            </a>
+            <a
+              href="/docs/pulse-plumbing-civil-capability.pdf"
+              class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0f172a] focus:ring-white/30"
+              aria-label="Download capability statement PDF"
+            >
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              Request Capability Statement
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: capability panel — professional imagery placeholder -->
+        <div class="hidden lg:block">
+          <div class="bg-white/4 border border-white/10 rounded-2xl overflow-hidden">
+
+            <!-- Imagery placeholder — replace with real project photography -->
+            <div
+              class="h-44 relative flex items-end"
+              style="background: linear-gradient(160deg, #1e3a5f 0%, #0d2038 60%, #0f172a 100%);"
+              aria-hidden="true"
+            >
+              <!-- Blueprint-style corner marks -->
+              <div class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-[#046bd2]/40 rounded-tl"></div>
+              <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-[#046bd2]/40 rounded-tr"></div>
+              <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-[#046bd2]/40 rounded-bl"></div>
+              <div class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-[#046bd2]/40 rounded-br"></div>
+              <div class="w-full px-5 pb-4">
+                <p class="text-[10px] font-mono text-white/25 uppercase tracking-widest text-center">
+                  Project imagery placeholder
+                </p>
+              </div>
+            </div>
+
+            <!-- Capability stats grid -->
+            <div class="grid grid-cols-2 divide-x divide-y divide-white/8">
+              {[
+                { label: 'QBCC Licensed',     value: 'Civil & Drainage' },
+                { label: 'WSAA Compliant',    value: 'WSA 02 / 03 / 05' },
+                { label: 'As-Constructeds',   value: 'GPS MGA94 / 12d'  },
+                { label: 'Area Served',       value: 'SE Queensland'    },
+              ].map(stat => (
+                <div class="px-4 py-3">
+                  <div class="text-[10px] font-semibold text-white/35 uppercase tracking-wide mb-0.5">{stat.label}</div>
+                  <div class="text-sm font-semibold text-white">{stat.value}</div>
+                </div>
+              ))}
+            </div>
+
+            <!-- Quick contact strip -->
+            <div class="border-t border-white/8 px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-xs text-white/40">Enquiries:</span>
+              <a
+                href={PHONE_HREF}
+                class="text-xs font-bold text-white hover:text-[#7ab8f5] transition-colors"
+                aria-label={`Call civil team on ${PHONE}`}
+              >
+                {PHONE}
+              </a>
+              <a
+                href={`mailto:${EMAIL}`}
+                class="text-xs font-semibold text-[#046bd2] hover:text-[#7ab8f5] transition-colors"
+              >
+                {EMAIL}
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §3 PAGE CONTENT
+       Each child page fills this slot with its unique sections.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <slot />
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §4 COMPLIANCE REFERENCE BLOCK
+       Only rendered when complianceRefs prop is populated.
+       Styled as a technical documentation panel — code badges, reference
+       numbers, and brief relevance notes.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  {complianceRefs.length > 0 && (
+    <section class="py-16 bg-white border-t border-slate-100" aria-labelledby="compliance-ref-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid lg:grid-cols-[280px_1fr] gap-10 lg:gap-16">
+
+          <!-- Left: section identity ("sidebar") -->
+          <div class="lg:pt-1">
+            <!-- Documentation-style label -->
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-1 h-5 bg-[#046bd2] rounded-full flex-shrink-0" aria-hidden="true"></div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Technical Reference</span>
+            </div>
+            <h2 id="compliance-ref-heading" class="text-xl font-bold text-[#1e293b] mb-3 leading-snug">
+              Standards &amp; compliance references
+            </h2>
+            <p class="text-sm text-[#334155] leading-relaxed mb-5">
+              This work is delivered in accordance with the following Australian and industry standards. Copies of hold-point inspection records and compliance documentation are provided as part of the infrastructure agreement package.
+            </p>
+            <a
+              href="#civil-enquiry"
+              class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors"
+            >
+              Request documentation →
+            </a>
+          </div>
+
+          <!-- Right: reference cards -->
+          <div>
+            <!-- Reference table header (document-style) -->
+            <div class="hidden sm:grid grid-cols-[140px_1fr_1fr] gap-4 px-4 pb-2 border-b border-slate-200 mb-1">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Reference</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Standard</span>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Relevance</span>
+            </div>
+
+            <div class="divide-y divide-slate-100">
+              {complianceRefs.map((ref) => (
+                <div class="grid sm:grid-cols-[140px_1fr_1fr] gap-2 sm:gap-4 items-start py-3.5 px-4 hover:bg-[#F0F5FA] rounded-lg transition-colors group">
+
+                  <!-- Code badge -->
+                  <div>
+                    {ref.url ? (
+                      <a
+                        href={ref.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1 font-mono text-xs font-bold text-[#046bd2] bg-[#046bd2]/8 border border-[#046bd2]/20 rounded px-2 py-0.5 hover:bg-[#046bd2]/15 transition-colors"
+                      >
+                        {ref.code}
+                        <svg class="w-2.5 h-2.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                      </a>
+                    ) : (
+                      <span class="inline-block font-mono text-xs font-bold text-[#046bd2] bg-[#046bd2]/8 border border-[#046bd2]/20 rounded px-2 py-0.5">
+                        {ref.code}
+                      </span>
+                    )}
+                  </div>
+
+                  <!-- Title -->
+                  <div class="text-sm font-semibold text-[#1e293b] leading-snug">
+                    {ref.title}
+                  </div>
+
+                  <!-- Note -->
+                  <div class="text-sm text-[#334155] leading-relaxed">
+                    {ref.note ?? '—'}
+                  </div>
+
+                </div>
+              ))}
+            </div>
+
+            <p class="mt-4 text-xs text-slate-400 px-4">
+              Standards references current as at date of project delivery.
+              Compliance is confirmed against the revision in force at commencement.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §4b FAQ SECTION
+       Only rendered when faqs prop is populated.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  {faqs.length > 0 && (
+    <section class="py-20 bg-[#F0F5FA]" aria-labelledby="civil-faq-heading">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1 h-5 bg-[#046bd2] rounded-full flex-shrink-0" aria-hidden="true"></div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Technical FAQ</span>
+          </div>
+          <h2 id="civil-faq-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b]">
+            Frequently asked questions
+          </h2>
+        </div>
+
+        <div class="space-y-2">
+          {faqs.map((faq, i) => (
+            <details
+              class="bg-white border border-slate-200 rounded-xl overflow-hidden group"
+              open={i === 0}
+            >
+              <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#1e293b] hover:text-[#046bd2] transition-colors select-none text-sm sm:text-base">
+                {faq.q}
+                <svg
+                  class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 group-open:text-[#046bd2] transition-all"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </summary>
+              <div class="px-6 pb-6 pt-1 text-[#334155] text-sm leading-relaxed">
+                {faq.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §5 RELATED CIVIL SERVICES
+       Always rendered; excludes the current active service.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  {relatedServices.length > 0 && (
+    <section class="py-16 bg-white border-t border-slate-100" aria-labelledby="related-services-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-1 h-4 bg-[#046bd2] rounded-full flex-shrink-0" aria-hidden="true"></div>
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Civil Services</span>
+            </div>
+            <h2 id="related-services-heading" class="text-xl font-bold text-[#1e293b]">
+              Other civil plumbing services
+            </h2>
+          </div>
+          <a
+            href="/civil"
+            class="text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors flex-shrink-0"
+          >
+            View all civil services →
+          </a>
+        </div>
+
+        <div class={`grid gap-4 ${relatedServices.length === 1 ? 'sm:grid-cols-1 max-w-sm' : relatedServices.length === 2 ? 'sm:grid-cols-2 max-w-2xl' : 'sm:grid-cols-3'}`}>
+          {relatedServices.map((s) => (
+            <a
+              href={s.href}
+              class="group flex items-start gap-4 bg-[#F0F5FA] border border-slate-200 hover:border-[#046bd2]/50 hover:bg-white rounded-xl p-5 transition-all hover:shadow-md"
+            >
+              <div
+                class="w-10 h-10 rounded-lg bg-[#046bd2]/10 group-hover:bg-[#046bd2]/15 flex items-center justify-center text-xl flex-shrink-0 transition-colors"
+                aria-hidden="true"
+              >
+                {s.icon}
+              </div>
+              <div class="min-w-0">
+                <div class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] text-sm mb-1 transition-colors">
+                  {s.label}
+                </div>
+                <p class="text-xs text-[#334155] leading-relaxed line-clamp-2">
+                  {s.description}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )}
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §6 CIVIL ENQUIRY CTA + FORM
+       No emergency language. Copy frames the section around procurement
+       and project planning, not immediate callouts.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="civil-enquiry" class="py-20 bg-[#0f172a]" aria-labelledby="civil-cta-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-5 gap-12 items-start">
+
+        <!-- Left: copy (2/5) -->
+        <div class="lg:col-span-2">
+
+          <div class="flex items-center gap-2 mb-5">
+            <div class="w-1 h-5 bg-[#046bd2] rounded-full flex-shrink-0" aria-hidden="true"></div>
+            <span class="text-[10px] font-bold text-white/35 uppercase tracking-[0.15em]">Civil Enquiries</span>
+          </div>
+
+          <h2 id="civil-cta-heading" class="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
+            Submit a project enquiry
+          </h2>
+          <p class="text-white/55 text-sm leading-relaxed mb-8">
+            Whether you're tendering a subdivision, seeking a subcontractor for an
+            infrastructure project, or need a maintenance contractor for an existing
+            network — tell us about the scope and we'll respond with our capability
+            and availability within one business day.
+          </p>
+
+          <!-- Contact methods -->
+          <div class="space-y-3 mb-8">
+            <a
+              href={PHONE_HREF}
+              class="flex items-center gap-3 group"
+              aria-label={`Call civil team on ${PHONE}`}
+            >
+              <div class="w-8 h-8 rounded-lg bg-[#046bd2]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#046bd2]/30 transition-colors">
+                <svg class="w-4 h-4 text-[#046bd2]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm font-bold text-white group-hover:text-[#7ab8f5] transition-colors">{PHONE}</div>
+                <div class="text-xs text-white/40">Civil enquiries — business hours</div>
+              </div>
+            </a>
+
+            <a
+              href={`mailto:${EMAIL}`}
+              class="flex items-center gap-3 group"
+            >
+              <div class="w-8 h-8 rounded-lg bg-[#046bd2]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#046bd2]/30 transition-colors">
+                <svg class="w-4 h-4 text-[#046bd2]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-[#046bd2] group-hover:text-[#7ab8f5] transition-colors">{EMAIL}</div>
+                <div class="text-xs text-white/40">Include project brief for a faster response</div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Credential grid -->
+          <div class="grid grid-cols-2 gap-3 pt-6 border-t border-white/10">
+            {[
+              { label: 'QBCC Licensed',    sub: 'Civil Plumbing & Drainage' },
+              { label: 'WSAA Compliant',   sub: 'WSA 02, 03, 05'            },
+              { label: 'WHS Documented',   sub: 'SWMS — all high-risk work'  },
+              { label: 'GPS As-Constructeds', sub: 'MGA94 / 12d format'     },
+            ].map((c) => (
+              <div>
+                <div class="text-xs font-bold text-white mb-0.5">{c.label}</div>
+                <div class="text-[11px] text-white/40 leading-snug">{c.sub}</div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        <!-- Right: form island (3/5) -->
+        <div class="lg:col-span-3">
+          <slot name="enquiry-form" />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       §7 CIVIL FOOTER
+       Distinct from the main consumer footer. ABN, QBCC, insurance,
+       accreditations. Sits inside <main> above the global Footer component.
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <footer class="bg-[#1e293b] border-t border-white/8" aria-label="Civil contractor information">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+
+        <!-- Column 1: Identity -->
+        <div>
+          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Contractor</div>
+          <div class="font-bold text-white text-sm mb-1">Pulse Plumbing &amp; Gas</div>
+          <div class="text-xs text-white/45 leading-relaxed space-y-0.5">
+            <div>ABN: [INSERT ABN]</div>
+            <div>Brisbane, Queensland, Australia</div>
+            <div>
+              <a href={`tel:${PHONE_HREF.replace('tel:','')}`} class="hover:text-white transition-colors">{PHONE}</a>
+            </div>
+            <div>
+              <a href={`mailto:${EMAIL}`} class="text-[#046bd2] hover:text-[#7ab8f5] transition-colors">{EMAIL}</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Licensing -->
+        <div>
+          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Licensing</div>
+          <div class="space-y-2 text-xs text-white/50">
+            <div>
+              <div class="font-semibold text-white/75 mb-0.5">QBCC Contractor Licence</div>
+              <div>Licence No.: [INSERT QBCC]</div>
+              <div>Class: Plumbing &amp; Drainage</div>
+            </div>
+            <div>
+              <div class="font-semibold text-white/75 mb-0.5">QBCC — Additional Class</div>
+              <div>Civil Plumbing &amp; Drainage</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 3: Insurance -->
+        <div>
+          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Insurance</div>
+          <div class="space-y-2 text-xs text-white/50">
+            <div>
+              <div class="font-semibold text-white/75 mb-0.5">Public Liability</div>
+              <div>$20 million — current CoC available on request</div>
+            </div>
+            <div>
+              <div class="font-semibold text-white/75 mb-0.5">Workers Compensation</div>
+              <div>WorkCover Queensland — current</div>
+            </div>
+            <div>
+              <div class="font-semibold text-white/75 mb-0.5">Professional Indemnity</div>
+              <div>Available on request</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 4: Accreditations & standards -->
+        <div>
+          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Standards</div>
+          <div class="flex flex-wrap gap-1.5">
+            {[
+              'WSAA WSA 02:2014',
+              'WSAA WSA 03:2011',
+              'WSAA WSA 05:2013',
+              'AS/NZS 3500 Series',
+              'QBCC Licensed',
+              'WHS Act 2011 (Qld)',
+              'ISO 55000',
+              'AS 2865 Confined Spaces',
+            ].map((badge) => (
+              <span class="inline-block text-[10px] font-semibold text-white/50 bg-white/5 border border-white/10 rounded px-2 py-0.5">
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom rule -->
+      <div class="pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-white/30">
+        <div>
+          © {new Date().getFullYear()} Pulse Plumbing &amp; Gas. All rights reserved.
+          QBCC Licence [INSERT]. ABN [INSERT].
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="/privacy" class="hover:text-white/60 transition-colors">Privacy Policy</a>
+          <a href="/civil" class="hover:text-white/60 transition-colors">Civil Services</a>
+          <a href="/contact" class="hover:text-white/60 transition-colors">Contact</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</BaseLayout>
+
+<style>
+  /* Hide scrollbar on the sub-nav overflow container */
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+</style>

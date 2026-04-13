@@ -1,0 +1,512 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+export interface Props {
+  /** Display name, e.g. "Childcare" */
+  industryName: string;
+  /** URL slug, e.g. "childcare" → /industries/childcare */
+  industrySlug: string;
+  /** H1, e.g. "Plumbing Services for Childcare Centres in QLD" */
+  heroTitle: string;
+  /** Paragraph beneath the H1 */
+  heroSubtitle: string;
+  /** Exactly 4 short benefit statements for the Why-Pulse cards */
+  keyBenefits: [string, string, string, string];
+  /** Industry-specific compliance note — shown in the blue callout block */
+  complianceInfo: string;
+  /** At least 5 Q&A pairs — rendered as accordion + FAQPage schema */
+  faqs: { q: string; a: string }[];
+  /** Service slugs — rendered as linked cards in the Services section */
+  relatedServices: string[];
+  /** <head> meta title (no suffix — BaseLayout adds " | Pulse Plumbing & Gas Brisbane") */
+  metaTitle: string;
+  /** <head> meta description */
+  metaDescription: string;
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const {
+  industryName,
+  industrySlug,
+  heroTitle,
+  heroSubtitle,
+  keyBenefits,
+  complianceInfo,
+  faqs,
+  relatedServices,
+  metaTitle,
+  metaDescription,
+} = Astro.props;
+
+const SITE     = 'https://pulseqld.com.au';
+const PHONE    = '0452 188 420';
+const PHONE_HREF = 'tel:0452188420';
+
+// Full service catalogue — keyed by slug
+const SERVICE_DATA: Record<string, { label: string; description: string; icon: string }> = {
+  'maintenance-plumbing': { label: 'Maintenance Plumbing',  icon: '🔧', description: 'Scheduled and reactive maintenance to keep your facility running.' },
+  'commercial':           { label: 'Commercial Plumbing',   icon: '🏢', description: 'Full-scope commercial plumbing for any size facility.' },
+  'residential':          { label: 'Residential Plumbing',  icon: '🏠', description: 'Reliable plumbing for homes, units and townhouses.' },
+  'gas-fitting':          { label: 'Gas Fitting',           icon: '⛽', description: 'Gas lines, appliance connections and compliance checks.' },
+  'blocked-drains':       { label: 'Blocked Drains',        icon: '🚿', description: 'High-pressure jetting, CCTV inspection and excavation.' },
+  'hot-water-systems':    { label: 'Hot Water Systems',     icon: '🔥', description: 'Repairs, replacements and heat pump installations.' },
+  'drain-camera':         { label: 'CCTV Drain Camera',     icon: '📹', description: 'Detailed inspection reports and root detection.' },
+  'backflow-prevention':  { label: 'Backflow Prevention',   icon: '🔄', description: 'Annual testing, repairs and compliance certification.' },
+  'leak-detection':       { label: 'Leak Detection',        icon: '🔍', description: 'Non-invasive acoustic and thermal tracing.' },
+  'preventative-maintenance': { label: 'Preventative Maintenance', icon: '🛠️', description: 'Custom maintenance plans to prevent costly breakdowns.' },
+};
+
+// Trust bar items
+const TRUST_ITEMS = [
+  { label: 'QBCC Licensed',       icon: '✅' },
+  { label: '24/7 Response',       icon: '🕐' },
+  { label: '10+ Years Experience',icon: '⭐' },
+  { label: 'Insurance Covered',   icon: '🛡️' },
+  { label: 'Same Day Service',    icon: '⚡' },
+];
+
+// Benefit card icons — cycle through these if custom ones aren't set
+const BENEFIT_ICONS = ['🔧', '⚡', '🛡️', '📋'];
+
+// ─── Schema ───────────────────────────────────────────────────────────────────
+// Passed as @graph to BaseLayout — BaseLayout always adds LocalBusiness on top.
+
+const serviceSchema = {
+  '@type': 'Service',
+  '@id': `${SITE}/industries/${industrySlug}/#service`,
+  name: `Plumbing Services for ${industryName}`,
+  description: heroSubtitle,
+  provider: {
+    '@type': 'LocalBusiness',
+    '@id': `${SITE}/#business`,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Brisbane' },
+    { '@type': 'City', name: 'Logan' },
+    { '@type': 'City', name: 'Gold Coast' },
+    { '@type': 'City', name: 'Ipswich' },
+  ],
+  url: `${SITE}/industries/${industrySlug}`,
+};
+
+const faqSchema = {
+  '@type': 'FAQPage',
+  '@id': `${SITE}/industries/${industrySlug}/#faq`,
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.a,
+    },
+  })),
+};
+
+// Combined schema @graph — one <script> tag with both Service + FAQPage
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [serviceSchema, faqSchema],
+};
+
+// Resolved service objects (skip unknown slugs gracefully)
+const resolvedServices = relatedServices
+  .map((slug) => ({ slug, ...SERVICE_DATA[slug] }))
+  .filter((s) => s.label);
+---
+
+<BaseLayout
+  title={metaTitle}
+  description={metaDescription}
+  canonical={`${SITE}/industries/${industrySlug}`}
+  schema={pageSchema}
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       1. HERO
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden bg-[#1e293b]">
+    <!-- Subtle radial glow — pure CSS, no image needed -->
+    <div
+      class="absolute inset-0 opacity-30 pointer-events-none"
+      style="background: radial-gradient(ellipse 80% 60% at 60% 40%, #046bd2 0%, transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <!-- Fine grid overlay for texture -->
+    <div
+      class="absolute inset-0 opacity-[0.04] pointer-events-none"
+      style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 40px 40px;"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+      <!-- Breadcrumb -->
+      <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="hover:text-white/80 transition-colors">Home</a></li>
+          <li aria-hidden="true" class="text-white/30">/</li>
+          <li><a href="/industries" class="hover:text-white/80 transition-colors">Industries</a></li>
+          <li aria-hidden="true" class="text-white/30">/</li>
+          <li class="text-white/70">{industryName}</li>
+        </ol>
+      </nav>
+
+      <!-- Industry badge -->
+      <div class="inline-flex items-center gap-2 bg-[#046bd2]/20 border border-[#046bd2]/40 rounded-full px-4 py-1.5 mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#046bd2]" aria-hidden="true"></span>
+        <span class="text-sm font-semibold text-[#046bd2]">{industryName}</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight mb-5">
+          {heroTitle}
+        </h1>
+        <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
+          {heroSubtitle}
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold text-base px-7 py-3.5 rounded-full transition-colors shadow-lg shadow-[#046bd2]/30"
+          >
+            Get a Quote
+          </a>
+          <a
+            href={PHONE_HREF}
+            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold text-base px-7 py-3.5 rounded-full transition-colors"
+          >
+            <svg class="w-4.5 h-4.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+            </svg>
+            Call {PHONE}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       2. TRUST BAR
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="bg-white border-b border-slate-200" aria-label="Trust indicators">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        {TRUST_ITEMS.map((item, i) => (
+          <li class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+            <span class="text-base leading-none" aria-hidden="true">{item.icon}</span>
+            {item.label}
+            {i < TRUST_ITEMS.length - 1 && (
+              <span class="hidden sm:block w-px h-4 bg-slate-200 ml-8" aria-hidden="true"></span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       3. WHY PULSE FOR [INDUSTRY] — 4 benefit cards
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#1e293b] leading-tight mb-4">
+          Why choose Pulse for {industryName}?
+        </h2>
+        <p class="text-[#334155] text-lg">
+          We understand the unique demands of the {industryName.toLowerCase()} sector and build our service around them.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {keyBenefits.map((benefit, i) => (
+          <article class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-[#046bd2]/40 transition-all group">
+            <div
+              class="w-11 h-11 rounded-xl bg-[#046bd2]/10 flex items-center justify-center text-xl mb-4 group-hover:bg-[#046bd2]/15 transition-colors"
+              aria-hidden="true"
+            >
+              {BENEFIT_ICONS[i]}
+            </div>
+            <p class="text-sm font-semibold text-[#1e293b] leading-snug">{benefit}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       4. COMPLIANCE CALLOUT
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative bg-blue-50 border-l-4 border-[#046bd2] rounded-r-2xl px-8 py-7 shadow-sm">
+        <!-- Decorative icon -->
+        <div
+          class="absolute -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#046bd2] flex items-center justify-center shadow-md"
+          aria-hidden="true"
+        >
+          <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+
+        <div class="ml-4">
+          <h3 class="text-base font-bold text-[#046bd2] uppercase tracking-wide mb-2">
+            Compliance &amp; Regulatory Note — {industryName}
+          </h3>
+          <p class="text-[#334155] leading-relaxed">
+            {complianceInfo}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       5. SERVICES INCLUDED
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Services for {industryName}
+        </h2>
+        <p class="text-[#334155] text-lg">
+          We provide the following plumbing and gas services to {industryName.toLowerCase()} operators across South-East Queensland.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {resolvedServices.map((s) => (
+          <a
+            href={`/services/${s.slug}`}
+            class="group flex items-start gap-4 bg-white border border-slate-200 hover:border-[#046bd2] rounded-2xl p-5 shadow-sm hover:shadow-md transition-all"
+          >
+            <div
+              class="w-10 h-10 rounded-xl bg-[#F0F5FA] group-hover:bg-[#046bd2]/10 flex items-center justify-center text-xl flex-shrink-0 transition-colors"
+              aria-hidden="true"
+            >
+              {s.icon}
+            </div>
+            <div class="min-w-0">
+              <div class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] text-sm leading-snug mb-1 transition-colors">
+                {s.label}
+              </div>
+              <div class="text-xs text-[#334155] leading-relaxed">{s.description}</div>
+            </div>
+            <svg
+              class="w-4 h-4 text-slate-300 group-hover:text-[#046bd2] flex-shrink-0 mt-0.5 ml-auto transition-colors"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       6. FAQ ACCORDION
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-white" aria-labelledby="faq-heading">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
+        Frequently asked questions
+      </h2>
+      <p class="text-[#334155] mb-10 text-lg">
+        Common questions about plumbing services for {industryName.toLowerCase()} facilities.
+      </p>
+
+      <div class="space-y-3">
+        {faqs.map((faq, i) => (
+          <details
+            class="group border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:border-[#046bd2]/40 transition-colors open:border-[#046bd2]/40"
+            {...i === 0 ? { open: true } : {}}
+          >
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none select-none hover:bg-[#F0F5FA] group-open:bg-[#F0F5FA] transition-colors">
+              <span class="font-semibold text-[#1e293b] text-sm sm:text-base leading-snug pr-4">
+                {faq.q}
+              </span>
+              <!-- Plus/minus icon -->
+              <span class="flex-shrink-0 w-6 h-6 rounded-full border-2 border-slate-200 group-open:border-[#046bd2] group-open:bg-[#046bd2] flex items-center justify-center transition-all" aria-hidden="true">
+                <svg class="w-3 h-3 text-slate-500 group-open:text-white group-open:rotate-45 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+              </span>
+            </summary>
+            <div class="px-6 pb-5 pt-1 border-t border-slate-100 text-[#334155] text-sm leading-relaxed">
+              {faq.a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       7. TESTIMONIAL (named slot — fill per industry page)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  {Astro.slots.has('testimonial') && (
+    <section class="py-16 bg-[#1e293b]" aria-label="Client testimonial">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex gap-2 mb-6" aria-label="5 star rating">
+          {Array.from({ length: 5 }).map(() => (
+            <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+          ))}
+        </div>
+        <slot name="testimonial" />
+      </div>
+    </section>
+  )}
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       8. INDUSTRY QUOTE FORM CTA
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#046bd2]" aria-labelledby="cta-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+        <!-- Left: copy -->
+        <div>
+          <h2 id="cta-heading" class="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
+            Get a quote for your {industryName.toLowerCase()} facility
+          </h2>
+          <p class="text-blue-100 text-lg leading-relaxed mb-6">
+            We'll assess your requirements and provide a clear, upfront quote — no obligations, no hidden fees.
+          </p>
+          <ul class="space-y-2">
+            {[
+              'Fast response — typically same day',
+              'QBCC licensed and fully insured',
+              'Transparent pricing before we start',
+              'Available 24/7 for emergencies',
+            ].map((point) => (
+              <li class="flex items-center gap-3 text-blue-50 text-sm">
+                <svg class="w-4 h-4 text-white/60 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Right: inline form -->
+        <div class="bg-white rounded-2xl shadow-xl p-7">
+          <h3 class="text-lg font-bold text-[#1e293b] mb-5">
+            Request a quote for {industryName}
+          </h3>
+          <form
+            action="/api/contact"
+            method="POST"
+            class="space-y-4"
+            novalidate
+          >
+            <!-- Hidden fields -->
+            <input type="hidden" name="industry"   value={industrySlug} />
+            <input type="hidden" name="source"     value={`Industry page — ${industryName}`} />
+            <input type="hidden" name="form_id"    value="" />
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label for={`fname-${industrySlug}`} class="block text-xs font-semibold text-slate-600 mb-1.5">
+                  First name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  id={`fname-${industrySlug}`}
+                  type="text"
+                  name="firstname"
+                  required
+                  autocomplete="given-name"
+                  class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition"
+                  placeholder="Jane"
+                />
+              </div>
+              <div>
+                <label for={`lname-${industrySlug}`} class="block text-xs font-semibold text-slate-600 mb-1.5">
+                  Last name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  id={`lname-${industrySlug}`}
+                  type="text"
+                  name="lastname"
+                  required
+                  autocomplete="family-name"
+                  class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition"
+                  placeholder="Smith"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for={`email-${industrySlug}`} class="block text-xs font-semibold text-slate-600 mb-1.5">
+                Email <span class="text-red-500">*</span>
+              </label>
+              <input
+                id={`email-${industrySlug}`}
+                type="email"
+                name="email"
+                required
+                autocomplete="email"
+                class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition"
+                placeholder="jane@example.com.au"
+              />
+            </div>
+
+            <div>
+              <label for={`phone-${industrySlug}`} class="block text-xs font-semibold text-slate-600 mb-1.5">
+                Phone <span class="text-red-500">*</span>
+              </label>
+              <input
+                id={`phone-${industrySlug}`}
+                type="tel"
+                name="phone"
+                required
+                autocomplete="tel"
+                class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition"
+                placeholder="04XX XXX XXX"
+              />
+            </div>
+
+            <div>
+              <label for={`message-${industrySlug}`} class="block text-xs font-semibold text-slate-600 mb-1.5">
+                Tell us about your facility
+              </label>
+              <textarea
+                id={`message-${industrySlug}`}
+                name="message"
+                rows="3"
+                class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition resize-none"
+                placeholder={`e.g. We operate a ${industryName.toLowerCase()} facility in Brisbane and need…`}
+              ></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              class="w-full bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold text-sm px-6 py-3.5 rounded-full transition-colors shadow-sm shadow-[#046bd2]/30"
+            >
+              Send Quote Request
+            </button>
+
+            <p class="text-center text-xs text-slate-400">
+              We respond within 2 hours during business hours.
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Default slot — for any extra per-page content (case studies, gallery, etc.) -->
+  <slot />
+
+</BaseLayout>

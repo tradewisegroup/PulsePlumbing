@@ -1,0 +1,266 @@
+---
+import MobileMenu from './MobileMenu.jsx';
+
+const PHONE      = '0452 188 420';
+const PHONE_HREF = 'tel:0452188420';
+
+const services = [
+  { label: 'Maintenance Plumbing', href: '/services/maintenance-plumbing', icon: '🔧', desc: 'Scheduled & reactive maintenance'   },
+  { label: 'Commercial',           href: '/services/commercial',           icon: '🏢', desc: 'Facilities, strata & fit-outs'       },
+  { label: 'Residential',          href: '/services/residential',          icon: '🏠', desc: 'Homes, units & townhouses'           },
+  { label: 'Gas Fitting',          href: '/services/gas-fitting',          icon: '⛽', desc: 'Lines, appliances & safety checks'   },
+  { label: 'Blocked Drains',       href: '/services/blocked-drains',       icon: '🚿', desc: 'Jetting, CCTV & excavation'          },
+  { label: 'Hot Water',            href: '/services/hot-water-systems',    icon: '🔥', desc: 'Repairs, replacements & heat pumps'  },
+  { label: 'CCTV Drain Camera',    href: '/services/drain-camera',         icon: '📹', desc: 'Inspection reports & root detection' },
+  { label: 'Backflow Prevention',  href: '/services/backflow-prevention',  icon: '🔄', desc: 'Testing, repairs & certification'   },
+];
+
+const industries = [
+  { label: 'Retail',                 href: '/industries/retail'                },
+  { label: 'Childcare',              href: '/industries/childcare'             },
+  { label: 'Education',              href: '/industries/education'             },
+  { label: 'Aged Care',              href: '/industries/aged-care'             },
+  { label: 'Student Accommodation',  href: '/industries/student-accommodation' },
+  { label: 'Commercial Real Estate', href: '/industries/commercial-real-estate'},
+  { label: 'Property Management',    href: '/industries/property-management'   },
+  { label: 'New Builds',             href: '/industries/new-builds'            },
+];
+---
+
+<header class="sticky top-0 z-50 w-full">
+
+  <!-- ── Utility bar ──────────────────────────────────────────────────── -->
+  <div class="bg-[#046bd2] text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between gap-4 text-xs sm:text-sm">
+
+      <!-- Left: availability message -->
+      <div class="flex items-center gap-2 font-medium tracking-wide">
+        <!-- Pulsing red availability dot -->
+        <span class="relative flex h-2 w-2 flex-shrink-0" aria-hidden="true">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+        </span>
+        <span class="hidden sm:inline">Available 24/7 — Afterhours &amp; Weekends</span>
+        <span class="sm:hidden">24/7 Emergency Plumber</span>
+      </div>
+
+      <!-- Right: click-to-call -->
+      <a
+        href={PHONE_HREF}
+        class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
+        aria-label={`Call Pulse Plumbing & Gas on ${PHONE}`}
+      >
+        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+        </svg>
+        {PHONE}
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Main nav bar ──────────────────────────────────────────────────── -->
+  <!--
+    backdrop-blur + bg-white/95 gives a frosted-glass effect on scroll.
+    The blur only shows once content scrolls beneath the header.
+  -->
+  <div class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 lg:h-[4.5rem] gap-6">
+
+        <!-- ── Logo ── -->
+        <a
+          href="/"
+          class="flex-shrink-0"
+          aria-label="Pulse Plumbing & Gas — Home"
+        >
+          <img
+            src="/images/logo.png"
+            alt="Pulse Plumbing & Gas"
+            width="180"
+            height="70"
+            class="h-10 lg:h-11 w-auto"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </a>
+
+        <!-- ── Desktop navigation (centre) ── -->
+        <nav
+          class="hidden lg:flex items-center gap-0.5 text-sm font-semibold"
+          aria-label="Main navigation"
+        >
+
+          <!-- Home -->
+          <a
+            href="/"
+            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+          >
+            Home
+          </a>
+
+          <!-- Services dropdown -->
+          <div class="relative group">
+            <button
+              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Services
+              <svg
+                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#046bd2] transition-all duration-200 group-hover:rotate-180"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- Services panel -->
+            <div
+              class="
+                absolute top-full left-1/2 -translate-x-1/2 mt-2
+                w-[520px] bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60
+                opacity-0 invisible translate-y-1
+                group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+                transition-all duration-200 ease-out
+                z-50 p-2
+              "
+            >
+              <div class="grid grid-cols-2 gap-0.5">
+                {services.map((s) => (
+                  <a
+                    href={s.href}
+                    class="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-[#F0F5FA] group/item transition-colors"
+                  >
+                    <span class="text-xl leading-none mt-0.5 flex-shrink-0" aria-hidden="true">{s.icon}</span>
+                    <div>
+                      <div class="text-sm font-semibold text-slate-800 group-hover/item:text-[#046bd2] transition-colors leading-tight">
+                        {s.label}
+                      </div>
+                      <div class="text-xs text-slate-500 mt-0.5 leading-snug">{s.desc}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <div class="mt-1 pt-2 px-2 pb-1 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-400">All services available 24/7</span>
+                <a href="/services" class="text-xs font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors">
+                  View all →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Industries dropdown -->
+          <div class="relative group">
+            <button
+              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Industries
+              <svg
+                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#046bd2] transition-all duration-200 group-hover:rotate-180"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- Industries panel -->
+            <div
+              class="
+                absolute top-full left-0 mt-2
+                w-56 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60
+                opacity-0 invisible translate-y-1
+                group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+                transition-all duration-200 ease-out
+                z-50 py-2
+              "
+            >
+              {industries.map((i) => (
+                <a
+                  href={i.href}
+                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] transition-colors"
+                >
+                  <span class="w-1 h-1 rounded-full bg-[#046bd2] flex-shrink-0" aria-hidden="true"></span>
+                  {i.label}
+                </a>
+              ))}
+              <div class="mx-3 mt-1 pt-2 border-t border-slate-100">
+                <a href="/civil" class="flex items-center gap-2 px-1 py-2 text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors">
+                  Civil →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Civil (standalone) -->
+          <a
+            href="/civil"
+            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+          >
+            Civil
+          </a>
+
+          <!-- About -->
+          <a
+            href="/about"
+            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+          >
+            About
+          </a>
+
+          <!-- Contact -->
+          <a
+            href="/contact"
+            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+          >
+            Contact
+          </a>
+
+        </nav>
+
+        <!-- ── Right: CTA + mobile controls ── -->
+        <div class="flex items-center gap-3 flex-shrink-0">
+
+          <!-- "Get a Quote" — desktop -->
+          <a
+            href="/contact"
+            class="
+              hidden lg:inline-flex items-center justify-center
+              bg-[#046bd2] hover:bg-[#045cb4]
+              text-white text-sm font-semibold
+              rounded-full px-6 py-2
+              transition-colors shadow-sm shadow-[#046bd2]/30 hover:shadow-[#046bd2]/40
+            "
+          >
+            Get a Quote
+          </a>
+
+          <!-- Emergency phone — always visible on mobile -->
+          <a
+            href={PHONE_HREF}
+            class="
+              lg:hidden flex items-center gap-1.5
+              bg-red-600 hover:bg-red-700
+              text-white text-xs font-bold
+              rounded-full px-3 py-2
+              transition-colors
+            "
+            aria-label={`Emergency plumber — call ${PHONE}`}
+          >
+            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+            </svg>
+            <span>Emergency</span>
+          </a>
+
+          <!-- Hamburger / close — React island handles its own toggle state -->
+          <MobileMenu client:load />
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>

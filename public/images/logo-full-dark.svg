@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 100" width="340" height="100">
+  <defs>
+    <!-- Flame blue gradient -->
+    <radialGradient id="flameBlue" cx="35%" cy="65%" r="65%">
+      <stop offset="0%" stop-color="#44BBFF"/>
+      <stop offset="55%" stop-color="#046bd2"/>
+      <stop offset="100%" stop-color="#0a3575"/>
+    </radialGradient>
+    <!-- Orange flame right highlight -->
+    <radialGradient id="flameOrange" cx="65%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#FF8800"/>
+      <stop offset="45%" stop-color="#FF3300"/>
+      <stop offset="100%" stop-color="#CC1000" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Inner highlight -->
+    <radialGradient id="flameInner" cx="32%" cy="52%" r="42%">
+      <stop offset="0%" stop-color="#88DDFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0066CC" stop-opacity="0"/>
+    </radialGradient>
+    <!-- PULSE text metallic gradient -->
+    <linearGradient id="metalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="35%" stop-color="#DDDDDD"/>
+      <stop offset="65%" stop-color="#AAAAAA"/>
+      <stop offset="100%" stop-color="#888888"/>
+    </linearGradient>
+    <!-- Pulse line gradient -->
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#046bd2" stop-opacity="0.3"/>
+      <stop offset="20%" stop-color="#046bd2"/>
+      <stop offset="80%" stop-color="#046bd2"/>
+      <stop offset="100%" stop-color="#046bd2" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── Flame Icon ── -->
+  <!-- Base shape -->
+  <path d="M14 6 C10 12 2 24 2 40 C2 52 10 64 22 66 C34 64 42 52 42 40 C42 24 26 12 22 6 C20 9 14 6 14 6Z"
+        transform="translate(4,8) scale(0.82)"
+        fill="url(#flameBlue)"/>
+  <!-- Orange highlight -->
+  <path d="M22 6 C28 12 36 22 38 32 C40 38 38 46 34 50 C40 45 44 40 44 34 C44 20 30 10 22 6Z"
+        transform="translate(4,8) scale(0.82)"
+        fill="url(#flameOrange)" opacity="0.88"/>
+  <!-- Inner glow -->
+  <path d="M22 18 C19 24 12 32 12 41 C12 47 16 53 22 55 C28 53 32 47 32 41 C32 32 25 24 22 18Z"
+        transform="translate(4,8) scale(0.82)"
+        fill="url(#flameInner)" opacity="0.55"/>
+  <!-- Bright core -->
+  <ellipse cx="23" cy="52" rx="4" ry="5.5"
+           transform="translate(4,8) scale(0.82)"
+           fill="#BBEEFF" opacity="0.4"/>
+
+  <!-- ── PULSE text ── -->
+  <text x="62" y="62"
+        font-family="'Arial Black', 'Impact', sans-serif"
+        font-weight="900"
+        font-size="52"
+        letter-spacing="2"
+        fill="url(#metalGrad)"
+        paint-order="stroke"
+        stroke="#555555"
+        stroke-width="1">PULSE</text>
+
+  <!-- ── ECG Pulse Line ── -->
+  <!-- Line goes under PULSE text and subtext -->
+  <path d="M62,70 L105,70 L112,58 L118,80 L124,62 L130,70 L290,70"
+        fill="none"
+        stroke="url(#lineGrad)"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- ── PLUMBING & GAS subtext ── -->
+  <text x="124" y="86"
+        font-family="'Arial', sans-serif"
+        font-weight="400"
+        font-size="14"
+        letter-spacing="3.5"
+        fill="#046bd2">PLUMBING &amp; GAS</text>
+</svg>

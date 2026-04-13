@@ -1,0 +1,187 @@
+---
+/**
+ * AtAGlance.astro — AI-crawler-optimised "quick summary" box.
+ *
+ * Renders 4–5 bullet points summarising the key facts of a page in a format
+ * that is easily extractable by AI crawlers (ChatGPT, Perplexity, Gemini,
+ * Bing Copilot) and by featured-snippet algorithms.
+ *
+ * ─── Why this exists ─────────────────────────────────────────────────────────
+ *
+ * When AI models generate answers, they prefer content that is:
+ *   • Near the top of the page (early extraction priority)
+ *   • Structured as a list (easily chunked into discrete facts)
+ *   • Factually dense with specific numbers, standards, and named entities
+ *   • Visually distinct (signals "summary block" to parsers)
+ *
+ * ChatGPT and Perplexity have been observed citing <ul> lists from the first
+ * screenful of a page far more often than equivalent prose buried lower down.
+ * This component is designed to be placed immediately after the page hero or
+ * opening paragraph.
+ *
+ * ─── Content guidelines ──────────────────────────────────────────────────────
+ *
+ * Each bullet should be a complete, standalone factual sentence. Avoid:
+ *   ✗ "24/7 availability" — too short, no context
+ *   ✗ "We are QBCC licensed" — vague, no detail
+ *
+ * Prefer:
+ *   ✓ "Pulse Plumbing & Gas holds a QBCC Contractor Licence for Plumbing and
+ *      Drainage, covering all residential and commercial work in Queensland."
+ *   ✓ "Emergency plumbing in Loganholme is available 24 hours a day, 7 days a
+ *      week — our target on-site response time is under 60 minutes."
+ *   ✓ "All hot water work complies with AS/NZS 3500 and the Queensland
+ *      Plumbing and Drainage Act 2018."
+ *
+ * ─── Usage ───────────────────────────────────────────────────────────────────
+ *
+ *   import AtAGlance from '../components/seo/AtAGlance.astro';
+ *
+ *   <AtAGlance
+ *     heading="Childcare plumbing — at a glance"
+ *     items={[
+ *       'Pulse Plumbing & Gas holds a QBCC Contractor Licence for Plumbing and Drainage — valid for all residential and commercial work across Queensland.',
+ *       'Hot water at outlets accessible by children must not exceed 45°C under the Education and Care Services National Regulations (Regulation 106).',
+ *       'Thermostatic mixing valves (TMVs) are required at every child-accessible tap and must be tested and certified annually by a QBCC-licensed plumber.',
+ *       'We service childcare centres across Logan, Brisbane South, Gold Coast North and Ipswich — typically same-day or next-morning response.',
+ *       '24/7 emergency callout is available; our target on-site response time for plumbing emergencies at childcare facilities is under 90 minutes.',
+ *     ]}
+ *   />
+ *
+ * ─── Prop reference ──────────────────────────────────────────────────────────
+ *
+ *   items       Required. 4–6 bullet point strings. Each should be a complete
+ *               factual sentence (80–160 characters is ideal for AI extraction).
+ *   heading     Optional. Visible heading above the list.
+ *               Default: "At a glance"
+ *   context     Optional. One sentence of framing context shown above the list
+ *               in smaller type. Useful for setting scope ("for childcare in QLD").
+ *   id          Optional HTML id for the wrapper. Default: "at-a-glance".
+ *   class       Optional extra classes for the outer wrapper element.
+ *   accentColor Optional Tailwind border-color class. Default: "border-[#046bd2]"
+ */
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export interface Props {
+  items:        string[];
+  heading?:     string;
+  context?:     string;
+  id?:          string;
+  class?:       string;
+  accentColor?: string;
+}
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+const {
+  items,
+  heading     = 'At a glance',
+  context,
+  id          = 'at-a-glance',
+  class: extraClass = '',
+  accentColor = 'border-[#046bd2]',
+} = Astro.props;
+
+// DEV guard: too few items loses the "list" benefit; too many dilutes impact.
+if (import.meta.env.DEV) {
+  if (items.length < 3) {
+    console.warn('[AtAGlance] Provide at least 3 items for effective AI extraction.');
+  }
+  if (items.length > 7) {
+    console.warn('[AtAGlance] More than 7 items reduces scannability. Consider splitting into two sections.');
+  }
+  items.forEach((item, i) => {
+    if (item.length < 40) {
+      console.warn(`[AtAGlance] Item #${i + 1} is very short (${item.length} chars). AI crawlers prefer complete factual sentences.`);
+    }
+  });
+}
+---
+
+<!--
+  ─── AT A GLANCE BOX ─────────────────────────────────────────────────────────
+
+  Structural decisions for AI readability:
+  • role="note" signals a supplementary summary to assistive tech and parsers.
+  • itemscope/itemtype="ItemList" gives Schema.org microdata to crawlers that
+    don't evaluate JSON-LD (some older/lighter AI crawlers).
+  • Each <li> gets itemprop="itemListElement" + itemtype="ListItem" +
+    itemprop="name" on the text span — full microdata path.
+  • The border-l-4 visual treatment signals "callout/summary" to LLM parsers
+    trained on HTML layout patterns.
+-->
+<aside
+  id={id}
+  class={`my-8 ${extraClass}`}
+  role="note"
+  aria-label={heading}
+  itemscope
+  itemtype="https://schema.org/ItemList"
+>
+  <div class={`border-l-4 ${accentColor} bg-[#EEF4FC] rounded-r-2xl px-6 py-5 sm:px-7 sm:py-6`}>
+
+    <!-- Header row -->
+    <div class="flex items-start gap-3 mb-4">
+      <!-- Blue shield icon — visually signals "verified summary" -->
+      <div
+        class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#046bd2] flex items-center justify-center mt-0.5"
+        aria-hidden="true"
+      >
+        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+
+      <div>
+        <!-- Visible heading — h2 or h3 depending on page structure.
+             Using <p> with bold styling so consumers can wrap in any heading
+             level they need via the heading slot or just replace this line. -->
+        <p class="font-bold text-[#1e293b] text-sm sm:text-base leading-snug" itemprop="name">
+          {heading}
+        </p>
+        {context && (
+          <p class="text-xs text-[#334155] mt-0.5 leading-snug">{context}</p>
+        )}
+      </div>
+    </div>
+
+    <!--
+      List of facts.
+      Using <ul> (not <ol>) — unordered lists are more frequently cited by
+      AI models as "key facts" blocks than ordered lists, which imply steps.
+    -->
+    <ul class="space-y-2.5 ml-0" role="list">
+      {items.map((item, i) => (
+        <li
+          class="flex items-start gap-2.5"
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+        >
+          <!-- Filled blue dot — visually matches brand; semantically neutral -->
+          <span
+            class="flex-shrink-0 w-4 h-4 rounded-full bg-[#046bd2] flex items-center justify-center mt-0.5"
+            aria-hidden="true"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-white block"></span>
+          </span>
+
+          <!-- itemprop="name" is the correct microdata property for ListItem text -->
+          <meta itemprop="position" content={String(i + 1)} />
+          <span
+            class="text-sm text-[#1e293b] leading-relaxed"
+            itemprop="name"
+          >
+            {item}
+          </span>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</aside>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 100" width="340" height="100">
+  <defs>
+    <radialGradient id="flameBlueL" cx="35%" cy="65%" r="65%">
+      <stop offset="0%" stop-color="#44BBFF"/>
+      <stop offset="55%" stop-color="#046bd2"/>
+      <stop offset="100%" stop-color="#0a3575"/>
+    </radialGradient>
+    <radialGradient id="flameOrangeL" cx="65%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#FF8800"/>
+      <stop offset="45%" stop-color="#FF3300"/>
+      <stop offset="100%" stop-color="#CC1000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flameInnerL" cx="32%" cy="52%" r="42%">
+      <stop offset="0%" stop-color="#88DDFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0066CC" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Dark text gradient for light backgrounds -->
+    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="40%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#444444"/>
+    </linearGradient>
+    <linearGradient id="lineGradL" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#046bd2" stop-opacity="0.2"/>
+      <stop offset="20%" stop-color="#046bd2"/>
+      <stop offset="80%" stop-color="#046bd2"/>
+      <stop offset="100%" stop-color="#046bd2" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Flame Icon -->
+  <path d="M14 6 C10 12 2 24 2 40 C2 52 10 64 22 66 C34 64 42 52 42 40 C42 24 26 12 22 6 C20 9 14 6 14 6Z"
+        transform="translate(4,8) scale(0.82)" fill="url(#flameBlueL)"/>
+  <path d="M22 6 C28 12 36 22 38 32 C40 38 38 46 34 50 C40 45 44 40 44 34 C44 20 30 10 22 6Z"
+        transform="translate(4,8) scale(0.82)" fill="url(#flameOrangeL)" opacity="0.88"/>
+  <path d="M22 18 C19 24 12 32 12 41 C12 47 16 53 22 55 C28 53 32 47 32 41 C32 32 25 24 22 18Z"
+        transform="translate(4,8) scale(0.82)" fill="url(#flameInnerL)" opacity="0.55"/>
+  <ellipse cx="23" cy="52" rx="4" ry="5.5"
+           transform="translate(4,8) scale(0.82)" fill="#BBEEFF" opacity="0.4"/>
+
+  <!-- PULSE text — dark for light bg -->
+  <text x="62" y="62"
+        font-family="'Arial Black', 'Impact', sans-serif"
+        font-weight="900"
+        font-size="52"
+        letter-spacing="2"
+        fill="url(#darkGrad)">PULSE</text>
+
+  <!-- ECG Pulse Line -->
+  <path d="M62,70 L105,70 L112,58 L118,80 L124,62 L130,70 L290,70"
+        fill="none"
+        stroke="url(#lineGradL)"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- PLUMBING & GAS -->
+  <text x="124" y="86"
+        font-family="'Arial', sans-serif"
+        font-weight="400"
+        font-size="14"
+        letter-spacing="3.5"
+        fill="#046bd2">PLUMBING &amp; GAS</text>
+</svg>

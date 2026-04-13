@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 88" width="80" height="88">
+  <defs>
+    <radialGradient id="fb2" cx="35%" cy="65%" r="65%">
+      <stop offset="0%" stop-color="#44BBFF"/>
+      <stop offset="55%" stop-color="#046bd2"/>
+      <stop offset="100%" stop-color="#0a3575"/>
+    </radialGradient>
+    <radialGradient id="fo2" cx="65%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#FF8800"/>
+      <stop offset="45%" stop-color="#FF3300"/>
+      <stop offset="100%" stop-color="#CC1000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fi2" cx="32%" cy="52%" r="42%">
+      <stop offset="0%" stop-color="#88DDFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0066CC" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Base flame/drop shape -->
+  <path d="M40 4 C34 10 8 28 8 50 C8 66 22 82 40 84 C58 82 72 66 72 50 C72 28 46 10 40 4Z"
+        fill="url(#fb2)"/>
+  <!-- Orange flame streak -->
+  <path d="M40 4 C50 14 64 28 66 44 C68 52 64 64 56 70 C66 62 74 54 74 44 C74 26 52 12 40 4Z"
+        fill="url(#fo2)" opacity="0.88"/>
+  <!-- Inner glow -->
+  <path d="M40 20 C35 28 22 40 22 53 C22 62 30 72 40 74 C50 72 58 62 58 53 C58 40 45 28 40 20Z"
+        fill="url(#fi2)" opacity="0.55"/>
+  <!-- Bright core -->
+  <ellipse cx="35" cy="56" rx="7" ry="9" fill="#BBEEFF" opacity="0.4"/>
+</svg>

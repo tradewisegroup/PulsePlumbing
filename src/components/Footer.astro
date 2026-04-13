@@ -1,0 +1,150 @@
+---
+const PHONE = '0452 188 420';
+const PHONE_HREF = 'tel:0452188420';
+const EMAIL = 'admin@pulseqld.com.au';
+
+const services = [
+  { label: 'Blocked Drains', href: '/services/blocked-drains' },
+  { label: 'Burst Pipes', href: '/services/burst-pipes' },
+  { label: 'Hot Water Systems', href: '/services/hot-water-systems' },
+  { label: 'Gas Fitting', href: '/services/gas-fitting' },
+  { label: 'Leak Detection', href: '/services/leak-detection' },
+  { label: 'Drain Camera Inspection', href: '/services/drain-camera' },
+  { label: 'Backflow Prevention', href: '/services/backflow-prevention' },
+  { label: 'Preventative Maintenance', href: '/services/preventative-maintenance' },
+];
+
+const industries = [
+  { label: 'Retail', href: '/industries/retail' },
+  { label: 'Childcare', href: '/industries/childcare' },
+  { label: 'Education', href: '/industries/education' },
+  { label: 'Aged Care', href: '/industries/aged-care' },
+  { label: 'Commercial Real Estate', href: '/industries/commercial-real-estate' },
+  { label: 'Property Management', href: '/industries/property-management' },
+  { label: 'New Builds', href: '/industries/new-builds' },
+];
+
+const locations = [
+  { label: 'Plumber Brisbane', href: '/plumber-brisbane' },
+  { label: 'Plumber Logan', href: '/plumber-logan' },
+  { label: 'Plumber Gold Coast', href: '/plumber-gold-coast' },
+  { label: 'Plumber Ipswich', href: '/plumber-ipswich' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <!-- Emergency band -->
+  <div class="bg-red-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="text-white font-semibold text-sm text-center sm:text-left">
+        Plumbing emergency? We respond 24/7 — including nights, weekends &amp; public holidays.
+      </p>
+      <a href={PHONE_HREF}
+         class="flex-shrink-0 bg-white text-red-600 font-bold text-sm px-5 py-2.5 rounded hover:bg-red-50 transition-colors">
+        Call Now — {PHONE}
+      </a>
+    </div>
+  </div>
+
+  <!-- Main footer body -->
+  <div class="bg-[#1e293b] text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+
+        <!-- Brand -->
+        <div class="lg:col-span-2">
+          <a href="/" class="inline-block mb-5" aria-label="Pulse Plumbing & Gas — Home">
+            <img
+              src="/images/logo.png"
+              alt="Pulse Plumbing & Gas"
+              width="180"
+              height="70"
+              class="h-11 w-auto brightness-0 invert"
+              loading="lazy"
+            />
+          </a>
+          <p class="text-sm text-white/60 leading-relaxed mb-6 max-w-xs">
+            Maintenance plumbing for residential and commercial clients across South-East Queensland. Available 24/7 including afterhours and weekends.
+          </p>
+          <div class="space-y-2.5 text-sm">
+            <a href={PHONE_HREF}
+               class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
+              <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              {PHONE}
+            </a>
+            <a href={`mailto:${EMAIL}`}
+               class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
+              <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              {EMAIL}
+            </a>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-white/35">
+            <span>ABN: [INSERT ABN]</span>
+            <span>·</span>
+            <span>QBCC Lic: [INSERT LICENCE]</span>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Services</h3>
+          <ul class="space-y-2.5">
+            {services.map((s) => (
+              <li>
+                <a href={s.href} class="text-sm text-white/60 hover:text-white transition-colors">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Industries -->
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Industries</h3>
+          <ul class="space-y-2.5">
+            {industries.map((i) => (
+              <li>
+                <a href={i.href} class="text-sm text-white/60 hover:text-white transition-colors">{i.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Locations + Company -->
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Locations</h3>
+          <ul class="space-y-2.5 mb-8">
+            {locations.map((l) => (
+              <li>
+                <a href={l.href} class="text-sm text-white/60 hover:text-white transition-colors">{l.label}</a>
+              </li>
+            ))}
+          </ul>
+          <h3 class="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">Company</h3>
+          <ul class="space-y-2.5">
+            <li><a href="/about" class="text-sm text-white/60 hover:text-white transition-colors">About Us</a></li>
+            <li><a href="/blog" class="text-sm text-white/60 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="/contact" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal bar -->
+    <div class="border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/35">
+        <p>&copy; {year} Pulse Plumbing & Gas. All rights reserved.</p>
+        <div class="flex items-center gap-5">
+          <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="/terms" class="hover:text-white transition-colors">Terms of Use</a>
+          <a href="/disclaimer" class="hover:text-white transition-colors">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
