@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # Wrangler local dev state
 .wrangler/
+
+.vercel
