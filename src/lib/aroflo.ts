@@ -4,12 +4,23 @@
 // Docs: https://apidocs.aroflo.com
 
 import { createHmac, createHash } from 'node:crypto';
+import { config as dotenvConfig } from 'dotenv';
+import { resolve } from 'node:path';
 
-const BASE_URL = import.meta.env.AROFLO_BASE_URL ||
-  'https://api.aroflo.com';
-const USERNAME = import.meta.env.AROFLO_USERNAME;
-const PASSWORD = import.meta.env.AROFLO_PASSWORD;
-const SECRET  = import.meta.env.AROFLO_SECRET_KEY;
+// In dev the Vercel adapter's SSR worker runs in an isolated context that
+// doesn't inherit Vite's env loading. Load .env.local directly so
+// process.env is populated. In production (Vercel) the file won't exist
+// and dotenv silently no-ops — process.env is already set by the platform.
+dotenvConfig({ path: resolve(process.cwd(), '.env.local') });
+
+function env(key: string): string {
+  return (process.env[key] ?? import.meta.env[key] ?? '') as string;
+}
+
+const BASE_URL = env('AROFLO_BASE_URL') || 'https://api.aroflo.com';
+const USERNAME = env('AROFLO_USERNAME');
+const PASSWORD = env('AROFLO_PASSWORD');
+const SECRET   = env('AROFLO_SECRET_KEY');
 
 interface AroFloHeaders {
   Authorization: string;

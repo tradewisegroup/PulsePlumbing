@@ -6,6 +6,11 @@ import vercel              from '@astrojs/vercel';
 import { statSync }        from 'fs';
 import { resolve, join }   from 'path';
 import { fileURLToPath }   from 'url';
+import { loadEnv }         from 'vite';
+
+// Load all env vars (including non-PUBLIC_) into process.env for SSR routes
+const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
+Object.assign(process.env, env);
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
 

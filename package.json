@@ -23,6 +23,7 @@
     "@types/react-dom": "^19.2.3",
     "astro": "^6.1.5",
     "astro-seo": "^1.1.0",
+    "dotenv": "^17.4.2",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "schema-dts": "^2.0.0",
