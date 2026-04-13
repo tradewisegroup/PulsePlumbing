@@ -382,19 +382,18 @@ export const POST: APIRoute = async ({ request }) => {
   // not block the user response or cause them to resubmit.
   let arofloTaskId: string | null = null;
   try {
-    arofloTaskId = await createCivilEnquiry({
+    const civilResult = await createCivilEnquiry({
       companyName:     data.companyName,
-      firstName:       data.firstName,
-      lastName:        data.lastName,
-      email:           data.email,
+      contactName:     `${data.firstName} ${data.lastName}`.trim(),
       phone:           data.phone,
+      email:           data.email,
       projectType:     data.projectType,
-      projectValue:    data.projectValue  || undefined,
+      projectValue:    data.projectValue || 'Not specified',
       projectLocation: data.projectLocation || undefined,
       description:     data.description,
-      howFound:        data.howFound      || undefined,
-      utmCampaign:     data.utm_campaign  || undefined,
+      timeline:        data.timeline || undefined,
     });
+    arofloTaskId = civilResult.taskId ?? null;
   } catch (err) {
     console.error('[AroFlo Civil] Task creation failed (lead captured in HubSpot):', err);
   }

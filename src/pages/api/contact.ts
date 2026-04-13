@@ -284,10 +284,10 @@ export const POST: APIRoute = async ({ request }) => {
   // AroFlo failure is non-blocking — HubSpot already captured the lead.
   // createLeadFromForm never throws; soft failures set arofloError: true.
   const arofloResult = await createLeadFromForm({
-    email:       data.email,
-    fullName:    [data.firstname, data.lastname].filter(Boolean).join(' '),
-    companyName: data.company   || undefined,
+    name:        [data.firstname, data.lastname].filter(Boolean).join(' '),
+    company:     data.company   || undefined,
     phone:       data.phone,
+    email:       data.email,
     serviceType: data.service_type,
     industry:    data.industry  || undefined,
     suburb:      data.suburb    || undefined,
