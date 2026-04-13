@@ -15,10 +15,10 @@
  * ─────────────────
  * HUBSPOT_PORTAL_ID          HubSpot account portal ID
  * HUBSPOT_CIVIL_FORM_ID      Civil-pipeline HubSpot form GUID
- * AROFLO_ORG_HASH            AroFlo organisation hash
+ * AROFLO_BASE_URL            AroFlo base URL (defaults to https://api.aroflo.com)
  * AROFLO_USERNAME            AroFlo API username
- * AROFLO_PASSWORD            AroFlo API password (MD5 pre-hashed)
- * AROFLO_ZONE                AroFlo zone — defaults to "au"
+ * AROFLO_PASSWORD            AroFlo API password
+ * AROFLO_SECRET_KEY          AroFlo HMAC signing secret
  *
  * Optional env vars
  * ─────────────────

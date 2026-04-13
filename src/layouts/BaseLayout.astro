@@ -39,8 +39,8 @@ const {
 } = Astro.props;
 
 const SITE = 'https://pulseqld.com.au';
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? 'GTM-XXXXXXX';
-const HUBSPOT_PORTAL_ID = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID ?? '';
+const GTM_ID = import.meta.env.GTM_ID ?? 'GTM-XXXXXXX';
+const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 
 // Resolve ogImage to an absolute URL regardless of whether it was passed as
 // a root-relative path ("/images/foo.jpg") or already absolute.
