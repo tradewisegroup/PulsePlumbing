@@ -191,6 +191,7 @@ const localBusiness: Record<string, unknown> = {
   '@type':       ['LocalBusiness', 'Plumber'],
   '@id':         `${SITE}/#business`,
   name:          'Pulse Plumbing & Gas',
+  legalName:     'Pulse Plumbing and Gas Pty Ltd',
   url:           SITE,
   logo:          `${SITE}/images/logo.png`,
   image:         `${SITE}/images/og-default.jpg`,
@@ -230,15 +231,28 @@ const localBusiness: Record<string, unknown> = {
   priceRange:    '$$',
   // hasCredential accepts either a string or an EducationalOccupationalCredential node.
   // Using the structured form so Google can parse the issuing authority.
-  hasCredential: {
-    '@type':            'EducationalOccupationalCredential',
-    credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
-    recognizedBy: {
-      '@type': 'GovernmentOrganization',
-      name:    'Queensland Building and Construction Commission',
-      url:     'https://www.qbcc.qld.gov.au',
+  hasCredential: [
+    {
+      '@type':            'EducationalOccupationalCredential',
+      credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
+      identifier:         '15384771',
+      recognizedBy: {
+        '@type': 'GovernmentOrganization',
+        name:    'Queensland Building and Construction Commission',
+        url:     'https://www.qbcc.qld.gov.au',
+      },
     },
-  },
+    {
+      '@type':            'EducationalOccupationalCredential',
+      credentialCategory: 'NSW Plumbing Contractor Licence',
+      identifier:         '476430C',
+      recognizedBy: {
+        '@type': 'GovernmentOrganization',
+        name:    'NSW Fair Trading',
+        url:     'https://www.fairtrading.nsw.gov.au',
+      },
+    },
+  ],
   sameAs: [],
 };
 

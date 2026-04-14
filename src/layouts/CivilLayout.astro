@@ -157,7 +157,7 @@ const organisationSchema = {
   '@type':     'Organization',
   '@id':       `${SITE}/#organization`,
   name:        'Pulse Plumbing & Gas',
-  legalName:   'Pulse Plumbing & Gas',   // TODO: confirm Pty Ltd once ABN verified
+  legalName:   'Pulse Plumbing and Gas Pty Ltd',
   url:         SITE,
   logo:        `${SITE}/images/logo.png`,
   image:       `${SITE}/images/civil-excavator.jpg`,
@@ -186,15 +186,28 @@ const organisationSchema = {
     'WSA 03 Water Reticulation Code',
     'WSA 05 Conduit Inspection Reporting Code',
   ],
-  hasCredential: {
-    '@type':              'EducationalOccupationalCredential',
-    credentialCategory:   'QBCC Contractor Licence',
-    recognizedBy: {
-      '@type': 'GovernmentOrganization',
-      name:    'Queensland Building and Construction Commission',
-      url:     'https://www.qbcc.qld.gov.au',
+  hasCredential: [
+    {
+      '@type':            'EducationalOccupationalCredential',
+      credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
+      identifier:         '15384771',
+      recognizedBy: {
+        '@type': 'GovernmentOrganization',
+        name:    'Queensland Building and Construction Commission',
+        url:     'https://www.qbcc.qld.gov.au',
+      },
     },
-  },
+    {
+      '@type':            'EducationalOccupationalCredential',
+      credentialCategory: 'NSW Plumbing Contractor Licence',
+      identifier:         '476430C',
+      recognizedBy: {
+        '@type': 'GovernmentOrganization',
+        name:    'NSW Fair Trading',
+        url:     'https://www.fairtrading.nsw.gov.au',
+      },
+    },
+  ],
   sameAs: [],
 };
 
@@ -759,7 +772,7 @@ const pageSchema = {
           <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Contractor</div>
           <div class="font-bold text-white text-sm mb-1">Pulse Plumbing &amp; Gas</div>
           <div class="text-xs text-white/45 leading-relaxed space-y-0.5">
-            <div>ABN: [INSERT ABN]</div>
+            <div>ABN: 62 652 712 699</div>
             <div>Brisbane, Queensland, Australia</div>
             <div>
               <a href={`tel:${PHONE_HREF.replace('tel:','')}`} class="hover:text-white transition-colors">{PHONE}</a>
@@ -776,7 +789,7 @@ const pageSchema = {
           <div class="space-y-2 text-xs text-white/50">
             <div>
               <div class="font-semibold text-white/75 mb-0.5">QBCC Contractor Licence</div>
-              <div>Licence No.: [INSERT QBCC]</div>
+              <div>Licence No.: 15384771</div>
               <div>Class: Plumbing &amp; Drainage</div>
             </div>
             <div>
@@ -831,8 +844,8 @@ const pageSchema = {
       <!-- Bottom rule -->
       <div class="pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-white/30">
         <div>
-          © {new Date().getFullYear()} Pulse Plumbing &amp; Gas. All rights reserved.
-          QBCC Licence [INSERT]. ABN [INSERT].
+          © {new Date().getFullYear()} Pulse Plumbing and Gas Pty Ltd. All rights reserved.
+          QBCC Licence 15384771. ABN 62 652 712 699.
         </div>
         <div class="flex items-center gap-4">
           <a href="/privacy" class="hover:text-white/60 transition-colors">Privacy Policy</a>
