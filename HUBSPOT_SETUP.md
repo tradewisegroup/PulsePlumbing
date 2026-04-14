@@ -167,47 +167,7 @@ This is your `HUBSPOT_CIVIL_FORM_ID`
 
 ---
 
-## Step 4 — Create the Emergency Form
-
-Stripped-down form for urgent callouts — fewer fields, faster to submit.
-
-### 4a — Create the form
-
-1. Go to **Marketing → Forms** → **Create form**
-2. **Embedded form** → **Blank template** → **Start**
-
-### 4b — Add these fields
-
-| Field label | Field name (internal) | Type | Required |
-|---|---|---|---|
-| Your name | `firstname` | Single-line text | Yes |
-| Phone number | `phone` | Phone number | Yes |
-| Email | `email` | Email | Yes |
-| Suburb | `suburb` | Single-line text | Yes |
-| Describe the emergency | `message` | Multi-line text | Yes |
-
-### 4c — Add hidden fields
-
-| Label | Internal name | Default value |
-|---|---|---|
-| Service type | `service_type` | Emergency |
-| Source | `source` | Website — Emergency |
-
-### 4d — Configure settings
-
-1. **Options** tab → thank you message:
-   *"We've received your emergency request. We'll call you back immediately."*
-2. Name it: `Pulse Plumbing — Emergency`
-3. Click **Publish**
-
-### 4e — Get the Form ID
-
-Copy the GUID from the URL.
-This is your `HUBSPOT_EMERGENCY_FORM_ID`
-
----
-
-## Step 5 — Set Up the Contact Pipeline (Optional but recommended)
+## Step 4 — Set Up the Contact Pipeline (Optional but recommended)
 
 This creates a deal pipeline so civil enquiries appear separately from
 residential leads.
@@ -225,7 +185,7 @@ residential leads.
 
 ---
 
-## Step 6 — Create a Workflow for Civil Leads (Optional)
+## Step 5 — Create a Workflow for Civil Leads (Optional)
 
 Automatically move civil form submissions into the Civil pipeline.
 
@@ -237,19 +197,17 @@ Automatically move civil form submissions into the Civil pipeline.
 
 ---
 
-## Step 7 — Add IDs to Vercel
-
-Once you have all three Form GUIDs:
+## Step 6 — Add IDs to Vercel
 
 1. Go to **vercel.com** → your project → **Settings → Environment Variables**
 2. Add:
 
 | Variable | Value |
 |---|---|
-| `HUBSPOT_PORTAL_ID` | Your 8-digit portal ID from Step 1 |
-| `HUBSPOT_FORM_ID` | GUID from Step 2g |
-| `HUBSPOT_CIVIL_FORM_ID` | GUID from Step 3g |
-| `HUBSPOT_EMERGENCY_FORM_ID` | GUID from Step 4e |
+| `HUBSPOT_API_BASE` | `https://api-ap1.hsforms.com` |
+| `HUBSPOT_PORTAL_ID` | `443056537` |
+| `HUBSPOT_FORM_ID` | `9d9a067f-b4f6-466a-b1bc-0efb495811a0` |
+| `HUBSPOT_CIVIL_FORM_ID` | `6174dda2-026e-406e-a62b-0f65a410fd2b` |
 
 3. Go to **Deployments** → latest deployment → **⋯ → Redeploy**
 
@@ -258,10 +216,10 @@ Once you have all three Form GUIDs:
 ## Quick Reference
 
 ```
-HUBSPOT_PORTAL_ID=________
-HUBSPOT_FORM_ID=________-____-____-____-____________
-HUBSPOT_CIVIL_FORM_ID=________-____-____-____-____________
-HUBSPOT_EMERGENCY_FORM_ID=________-____-____-____-____________
+HUBSPOT_API_BASE=https://api-ap1.hsforms.com
+HUBSPOT_PORTAL_ID=443056537
+HUBSPOT_FORM_ID=9d9a067f-b4f6-466a-b1bc-0efb495811a0
+HUBSPOT_CIVIL_FORM_ID=6174dda2-026e-406e-a62b-0f65a410fd2b
 ```
 
-Fill these in as you complete each step above, then add to Vercel and `.env.local`.
+Emergency enquiries go direct to phone — no form needed.
