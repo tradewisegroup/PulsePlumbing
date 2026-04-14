@@ -145,8 +145,9 @@ function validate(d: CivilFormData): string | null {
 
 // ─── HubSpot ──────────────────────────────────────────────────────────────────
 
-const HUBSPOT_PORTAL_ID   = import.meta.env.HUBSPOT_PORTAL_ID       ?? '';
+const HUBSPOT_PORTAL_ID     = import.meta.env.HUBSPOT_PORTAL_ID     ?? '';
 const HUBSPOT_CIVIL_FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
+const HUBSPOT_API_BASE      = import.meta.env.HUBSPOT_API_BASE      ?? 'https://api-ap1.hsforms.com';
 
 /**
  * Submit a civil enquiry to HubSpot Forms v3.
@@ -230,7 +231,7 @@ async function submitToHubSpot(
   };
 
   const res = await fetch(
-    `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${formId}`,
+    `${HUBSPOT_API_BASE}/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${formId}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },

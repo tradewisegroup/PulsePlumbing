@@ -137,6 +137,8 @@ function validate(d: FormData): string | null {
 
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 const HUBSPOT_FORM_ID   = import.meta.env.HUBSPOT_FORM_ID   ?? '';
+// ap1 = Asia Pacific region; change to api.hsforms.com for US-hosted accounts
+const HUBSPOT_API_BASE  = import.meta.env.HUBSPOT_API_BASE  ?? 'https://api-ap1.hsforms.com';
 
 /**
  * POST to the HubSpot Forms v3 submission endpoint.
@@ -196,7 +198,7 @@ async function submitToHubSpot(
   };
 
   const res = await fetch(
-    `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${formId}`,
+    `${HUBSPOT_API_BASE}/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${formId}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
