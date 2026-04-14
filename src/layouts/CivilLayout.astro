@@ -160,7 +160,7 @@ const organisationSchema = {
   legalName:   'Pulse Plumbing & Gas',   // TODO: confirm Pty Ltd once ABN verified
   url:         SITE,
   logo:        `${SITE}/images/logo.png`,
-  image:       `${SITE}/images/og-default.jpg`,
+  image:       `${SITE}/images/civil-excavator.jpg`,
   telephone:   '0452188420',
   email:       EMAIL,
   description:
@@ -242,6 +242,7 @@ const pageSchema = {
   title={metaTitle ?? pageTitle}
   description={metaDescription}
   canonical={`${SITE}${Astro.url.pathname}`}
+  ogImage="/images/civil-excavator.jpg"
   schema={pageSchema}
 >
 
