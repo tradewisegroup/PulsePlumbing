@@ -24,6 +24,8 @@ export interface Props {
   metaTitle: string;
   /** <head> meta description */
   metaDescription: string;
+  /** Optional hero background image path, e.g. "/images/stock-shopping-centre.jpg" */
+  heroImage?: string;
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -39,6 +41,7 @@ const {
   relatedServices,
   metaTitle,
   metaDescription,
+  heroImage,
 } = Astro.props;
 
 const SITE     = 'https://pulseqld.com.au';
@@ -55,7 +58,6 @@ const SERVICE_DATA: Record<string, { label: string; description: string; icon: s
   'hot-water-systems':    { label: 'Hot Water Systems',     icon: '🔥', description: 'Repairs, replacements and heat pump installations.' },
   'drain-camera':         { label: 'CCTV Drain Camera',     icon: '📹', description: 'Detailed inspection reports and root detection.' },
   'backflow-prevention':  { label: 'Backflow Prevention',   icon: '🔄', description: 'Annual testing, repairs and compliance certification.' },
-  'leak-detection':       { label: 'Leak Detection',        icon: '🔍', description: 'Non-invasive acoustic and thermal tracing.' },
   'preventative-maintenance': { label: 'Preventative Maintenance', icon: '🛠️', description: 'Custom maintenance plans to prevent costly breakdowns.' },
 };
 
@@ -128,16 +130,20 @@ const resolvedServices = relatedServices
        1. HERO
        ══════════════════════════════════════════════════════════════════════════ -->
   <section class="relative overflow-hidden bg-[#1e293b]">
-    <!-- Subtle radial glow — pure CSS, no image needed -->
+    {heroImage && (
+      <div
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={`background-image: url('${heroImage}')`}
+        aria-hidden="true"
+      ></div>
+    )}
+    {heroImage && (
+      <div class="absolute inset-0 bg-[#1e293b]/75 pointer-events-none" aria-hidden="true"></div>
+    )}
+    <!-- Subtle radial glow -->
     <div
       class="absolute inset-0 opacity-30 pointer-events-none"
       style="background: radial-gradient(ellipse 80% 60% at 60% 40%, #046bd2 0%, transparent 70%);"
-      aria-hidden="true"
-    ></div>
-    <!-- Fine grid overlay for texture -->
-    <div
-      class="absolute inset-0 opacity-[0.04] pointer-events-none"
-      style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 40px 40px;"
       aria-hidden="true"
     ></div>
 
@@ -160,7 +166,7 @@ const resolvedServices = relatedServices
       </div>
 
       <div class="max-w-3xl">
-        <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight mb-5">
+        <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-sky-200 leading-[1.12] tracking-tight mb-5">
           {heroTitle}
         </h1>
         <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">

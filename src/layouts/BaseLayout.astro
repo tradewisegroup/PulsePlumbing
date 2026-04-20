@@ -15,7 +15,7 @@ export interface Props {
   /** Absolute or root-relative path to OG image — defaults to /images/og-default.jpg */
   ogImage?: string;
   /** og:type — defaults to "website" */
-  ogType?: 'website' | 'article' | 'service';
+  ogType?: 'website' | 'article';
   /** Prevent indexing (404s, thank-you pages, etc.) */
   noindex?: boolean;
   /**
@@ -116,7 +116,9 @@ const localBusinessSchema = {
     </script>
 
     <!-- ── Preconnect ─────────────────────────────────────────────────── -->
-    <!-- No Google Fonts used — system-ui stack only. Preconnect to GTM.  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
@@ -184,11 +186,8 @@ const localBusinessSchema = {
   </head>
 
   <body
-    class="
-      bg-white text-slate-700 antialiased
-      dark:bg-slate-900 dark:text-slate-300
-      font-[system-ui,_-apple-system,_BlinkMacSystemFont,_'Segoe_UI',_sans-serif]
-    "
+    class="bg-white text-slate-700 antialiased"
+    style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
   >
     <!-- ── GTM noscript fallback ─────────────────────────────────────── -->
     <noscript>

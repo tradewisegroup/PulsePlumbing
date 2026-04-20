@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/forms/QuoteForm.jsx';
+
+const title = 'Contact Us — Get a Free Quote';
+const description = 'Contact Pulse Plumbing & Gas for a free, no-obligation quote. Available 24/7 for emergencies across Brisbane, Logan, Gold Coast and Ipswich.';
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': 'https://pulseqld.com.au/contact/#page',
+  name: 'Contact Pulse Plumbing & Gas',
+  url: 'https://pulseqld.com.au/contact',
+};
+---
+
+<BaseLayout {title} {description} canonical="https://pulseqld.com.au/contact" schema={contactSchema}>
+
+  <!-- ── Hero ── -->
+  <section class="bg-[#1e293b] py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold text-white mb-4">Get in touch</h1>
+      <p class="text-lg text-white/70 max-w-xl mx-auto">
+        Request a free quote or ask us anything. We respond within 2 hours during business hours — and we answer 24/7 for emergencies.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Main content ── -->
+  <section class="py-16 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-5 gap-12">
+
+        <!-- Left: contact details -->
+        <div class="lg:col-span-2 space-y-8">
+
+          <div>
+            <h2 class="text-xl font-bold text-[#1e293b] mb-5">Contact details</h2>
+            <div class="space-y-4">
+
+              <a href="tel:0452188420"
+                 class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl p-4 hover:border-[#046bd2] transition-colors group">
+                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#046bd2]/15 transition-colors">
+                  <svg class="w-5 h-5 text-[#046bd2]" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-0.5">Phone</p>
+                  <p class="font-bold text-[#1e293b] group-hover:text-[#046bd2] transition-colors">0452 188 420</p>
+                  <p class="text-xs text-slate-500 mt-0.5">Available 24/7 for emergencies</p>
+                </div>
+              </a>
+
+              <a href="mailto:admin@pulseqld.com.au"
+                 class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl p-4 hover:border-[#046bd2] transition-colors group">
+                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#046bd2]/15 transition-colors">
+                  <svg class="w-5 h-5 text-[#046bd2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-0.5">Email</p>
+                  <p class="font-bold text-[#1e293b] group-hover:text-[#046bd2] transition-colors">admin@pulseqld.com.au</p>
+                  <p class="text-xs text-slate-500 mt-0.5">We reply within 2 business hours</p>
+                </div>
+              </a>
+
+              <div class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl p-4">
+                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-[#046bd2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-0.5">Service Area</p>
+                  <p class="font-bold text-[#1e293b]">Brisbane, Logan, Gold Coast &amp; Ipswich</p>
+                  <p class="text-xs text-slate-500 mt-0.5">130+ suburbs across South-East Queensland</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Trust badges -->
+          <div class="bg-white border border-[#D1D5DB] rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-[#1e293b] mb-4">Why choose Pulse?</h3>
+            <ul class="space-y-2.5">
+              {[
+                'QBCC licensed & fully insured',
+                'Available 24/7 including public holidays',
+                'Transparent pricing — no hidden fees',
+                'Fast response — same day in most cases',
+                'Residential & commercial specialists',
+              ].map((point) => (
+                <li class="flex items-center gap-2.5 text-sm text-[#334155]">
+                  <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Right: form -->
+        <div class="lg:col-span-3">
+          <QuoteForm client:load />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

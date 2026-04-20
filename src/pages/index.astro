@@ -1,18 +1,34 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-const title = 'Maintenance Plumber Brisbane, Logan, Gold Coast & Ipswich | Pulse Plumbing & Gas';
+const title = 'Maintenance Plumber Brisbane, Logan, Gold Coast & Ipswich';
 const description = 'Trusted 24/7 on-call plumber in Brisbane and South-East Queensland. Reliable plumbing & gas services for residential and commercial clients. Call 0452 188 420.';
 
 const services = [
-  { icon: '🚿', label: 'Blocked Drains', href: '/services/blocked-drains', desc: 'CCTV inspection, high-pressure jetting and excavation.' },
-  { icon: '💧', label: 'Burst Pipes', href: '/services/burst-pipes', desc: 'Emergency response, pipe relining and repairs.' },
-  { icon: '🔥', label: 'Hot Water Systems', href: '/services/hot-water-systems', desc: 'Repairs, replacements and heat pump installs.' },
-  { icon: '⛽', label: 'Gas Fitting', href: '/services/gas-fitting', desc: 'Gas lines, appliance installs and safety checks.' },
-  { icon: '🔍', label: 'Leak Detection', href: '/services/leak-detection', desc: 'Non-invasive tracing with acoustic and thermal tools.' },
-  { icon: '📹', label: 'Drain Camera', href: '/services/drain-camera', desc: 'CCTV drain inspection and full condition reports.' },
-  { icon: '🔄', label: 'Backflow Prevention', href: '/services/backflow-prevention', desc: 'Testing, certification and compliance repairs.' },
-  { icon: '🛠️', label: 'Preventative Maintenance', href: '/services/preventative-maintenance', desc: 'Scheduled maintenance plans for commercial clients.' },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/><line x1="13.5" y1="10.5" x2="10.5" y2="13.5"/></svg>`,
+    label: 'Blocked Drains', href: '/services/blocked-drains', desc: 'CCTV inspection, high-pressure jetting and excavation.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="10" height="13" rx="2"/><path d="M10 5V3M14 5V3"/><path d="M10 18v3M14 18v3"/><path d="M9.5 11.5a2.5 2.5 0 0 0 5 0"/><line x1="12" y1="9" x2="12" y2="11.5"/></svg>`,
+    label: 'Hot Water Systems', href: '/services/hot-water-systems', desc: 'Repairs, replacements and heat pump installs.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2 3-4 5.5-4 8a4 4 0 0 0 8 0c0-2.5-1.5-4-2-5.5 0 2-1.5 3.5-2 3.5s-2-1.5-2-3.5"/><line x1="5" y1="18" x2="19" y2="18"/><line x1="8" y1="15" x2="8" y2="18"/><line x1="12" y1="15" x2="12" y2="18"/><line x1="16" y1="15" x2="16" y2="18"/><line x1="3" y1="21" x2="21" y2="21"/></svg>`,
+    label: 'Gas Fitting', href: '/services/gas-fitting', desc: 'Gas lines, appliance installs and safety checks.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="8" width="13" height="8" rx="2"/><circle cx="7.5" cy="12" r="2.5"/><path d="M14 10.5l5.5-3.5v10L14 13.5"/><circle cx="4.5" cy="12" r="0.5" fill="currentColor" stroke="none"/></svg>`,
+    label: 'Drain Camera', href: '/services/drain-camera', desc: 'CCTV drain inspection and full condition reports.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10h7v4H2z"/><path d="M15 10h7v4h-7z"/><path d="M9 10l6 2-6 2z"/><line x1="15" y1="10" x2="15" y2="14"/></svg>`,
+    label: 'Backflow Prevention', href: '/services/backflow-prevention', desc: 'Testing, certification and compliance repairs.',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+    label: 'Preventative Maintenance', href: '/services/preventative-maintenance', desc: 'Scheduled maintenance plans for commercial clients.',
+  },
 ];
 
 const industries = [
@@ -42,7 +58,7 @@ const homepageSchema = {
 };
 ---
 
-<MainLayout {title} {description} schema={homepageSchema}>
+<BaseLayout {title} {description} schema={homepageSchema}>
 
   <!-- ── Hero ── -->
   <section class="bg-[#F0F5FA]">
@@ -123,7 +139,7 @@ const homepageSchema = {
         {services.map((s) => (
           <a href={s.href}
              class="group block bg-white border border-[#D1D5DB] hover:border-[#046bd2] rounded-lg p-6 transition-all hover:shadow-md">
-            <div class="text-2xl mb-3">{s.icon}</div>
+            <div class="w-7 h-7 text-[#046bd2] mb-3 group-hover:text-[#045cb4] transition-colors" set:html={s.icon}></div>
             <h3 class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] mb-1.5 transition-colors">{s.label}</h3>
             <p class="text-sm text-[#334155] leading-relaxed">{s.desc}</p>
           </a>
@@ -236,4 +252,4 @@ const homepageSchema = {
     </div>
   </section>
 
-</MainLayout>
+</BaseLayout>

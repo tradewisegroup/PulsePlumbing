@@ -1,0 +1,345 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+
+const includedServices = [
+  {
+    title: 'TMV Testing & Servicing',
+    freq: 'Every 6–12 months',
+    compliance: true,
+    desc: 'Thermostatic mixing valves are tested, cleaned, calibrated and certified to AS/NZS 3500.4. Mandatory for aged care, childcare, healthcare and many commercial facilities.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M12 4v4M12 17v3M4 12h3M17 12h3"/><path d="M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1"/></svg>`,
+  },
+  {
+    title: 'Backflow Prevention Testing',
+    freq: 'Annually',
+    compliance: true,
+    desc: 'All registered backflow devices tested to AS/NZS 2845.1, with test certificates submitted to your water authority (Queensland Urban Utilities, Logan Water, etc.).',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10h7v4H2z"/><path d="M15 10h7v4h-7z"/><path d="M9 10l6 2-6 2z"/><line x1="15" y1="10" x2="15" y2="14"/></svg>`,
+  },
+  {
+    title: 'High-Pressure Drain Jetting',
+    freq: 'Every 6–12 months',
+    compliance: false,
+    desc: 'Scheduled high-pressure water jetting clears grease, scale and root intrusion before blockages develop — especially important for commercial kitchens, restaurants and strata.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>`,
+  },
+  {
+    title: 'CCTV Drain Inspection',
+    freq: 'Annually or post-jetting',
+    compliance: false,
+    desc: 'Camera inspection of drainage lines to identify root intrusion, pipe damage, sags or scale build-up. Includes a written report and footage — essential for asset management and insurance.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="8" width="13" height="8" rx="2"/><circle cx="7.5" cy="12" r="2.5"/><path d="M14 10.5l5.5-3.5v10L14 13.5"/></svg>`,
+  },
+  {
+    title: 'Hot Water System Servicing',
+    freq: 'Every 1–5 years',
+    compliance: false,
+    desc: 'Sacrificial anode inspection and replacement, pressure relief valve testing, temperature verification, element condition check. Extends system life and maintains warranty compliance.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="10" height="13" rx="2"/><path d="M10 5V3M14 5V3"/><path d="M10 18v3M14 18v3"/><path d="M9.5 11.5a2.5 2.5 0 0 0 5 0"/><line x1="12" y1="9" x2="12" y2="11.5"/></svg>`,
+  },
+  {
+    title: 'Tap, Fixture & Valve Maintenance',
+    freq: 'Annually',
+    compliance: false,
+    desc: 'Inspection and servicing of tapware, isolation valves, float valves and cisterns. Identify and fix small drips before they become costly water damage or complaints.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+  },
+  {
+    title: 'Gas Safety Inspections',
+    freq: 'Annually',
+    compliance: false,
+    desc: 'Visual inspection of gas lines, fittings and appliance connections. Pressure testing to identify slow leaks, plus compliance checks for gas appliances under the Gas Supply Act 2003 (Qld).',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2 3-4 5.5-4 8a4 4 0 0 0 8 0c0-2.5-1.5-4-2-5.5 0 2-1.5 3.5-2 3.5s-2-1.5-2-3.5"/><line x1="5" y1="18" x2="19" y2="18"/><line x1="8" y1="15" x2="8" y2="18"/><line x1="12" y1="15" x2="12" y2="18"/><line x1="16" y1="15" x2="16" y2="18"/><line x1="3" y1="21" x2="21" y2="21"/></svg>`,
+  },
+  {
+    title: 'Water Filter & Softener Servicing',
+    freq: 'Every 6–12 months',
+    compliance: false,
+    desc: 'Filter cartridge replacement, housing sanitisation and pressure checks for commercial kitchen, drinking water and whole-of-building filtration systems.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-4 8v6l-8 0v-6z"/><line x1="4" y1="4" x2="4" y2="2"/><line x1="20" y1="4" x2="20" y2="2"/></svg>`,
+  },
+];
+
+const costComparison = [
+  { scenario: 'Emergency drain unblock (after-hours)', reactive: '$450–$800+', preventative: '$180–$280 scheduled jet' },
+  { scenario: 'Hot water system replacement (failed anode)', reactive: '$1,800–$3,500', preventative: '$180–$250 anode replacement' },
+  { scenario: 'Water authority fine (missed backflow cert)', reactive: '$500–$2,000+', preventative: '$140–$220 annual test' },
+  { scenario: 'Burst fitting (undetected drip)', reactive: '$600–$4,000+ (incl. damage)', preventative: '$80–$120 tap service' },
+  { scenario: 'TMV non-compliance (scalding incident)', reactive: 'Insurance claim + legal', preventative: '$95–$160 per valve' },
+];
+---
+
+<ServiceLayout
+  serviceName="Preventative Maintenance"
+  serviceSlug="preventative-maintenance"
+  heroTitle="Scheduled Plumbing Maintenance Plans for Commercial Properties"
+  heroSubtitle="Stop paying emergency rates. Pulse Plumbing & Gas delivers structured preventative maintenance programs — TMV testing, backflow certification, drain jetting, hot water servicing and more — keeping your facility compliant, your systems running and your costs predictable."
+  keyBenefits={[
+    'Mandatory compliance managed for you — backflow certs, TMV testing, authority submissions',
+    'Flat-rate scheduled visits replace unpredictable emergency call-out fees',
+    'Single licensed contractor across all plumbing and gas assets on your site',
+    'Automated reminders and digital service records for every inspection',
+  ]}
+  process={[
+    {
+      title: 'Site audit & asset register',
+      description: 'We visit your property and document every plumbing and gas asset — backflow devices, TMVs, hot water systems, drains, fixtures and gas lines — building a full asset register with service due dates.',
+    },
+    {
+      title: 'Custom maintenance schedule',
+      description: 'We design a maintenance program around your facility type, compliance obligations and budget. You receive a clear annual schedule with flat-rate pricing for each visit — no surprises.',
+    },
+    {
+      title: 'Automated service reminders',
+      description: 'Our job management system automatically schedules and reminds you of upcoming services. You never need to track due dates — we manage the calendar and notify you before each visit.',
+    },
+    {
+      title: 'Scheduled service visits',
+      description: 'Our licensed plumbers arrive on time, complete all work on the schedule, and leave your systems certified and operational. Same technician for repeat visits wherever possible.',
+    },
+    {
+      title: 'Digital reports & compliance records',
+      description: 'After every visit you receive a digital service report, test certificates and any recommended follow-up work — all stored in your client portal and submitted to relevant authorities where required.',
+    },
+  ]}
+  faqs={[
+    {
+      q: 'What is included in a preventative maintenance plan?',
+      a: 'Plans are customised to your facility but typically include some combination of: backflow prevention device testing and certification, TMV testing and servicing, high-pressure drain jetting, CCTV drain inspection, hot water system servicing, gas safety inspections, and tap and fixture maintenance. We build the plan around your compliance obligations and asset register.',
+    },
+    {
+      q: 'Is TMV testing legally required in Queensland?',
+      a: 'Yes — for many commercial and regulated facilities. Under AS/NZS 3500.4, thermostatic mixing valves installed to control scald risk must be regularly serviced and tested. This is mandatory for aged care facilities, childcare centres, hospitals, schools and similar environments. Failure to maintain TMVs can expose facility operators to serious liability in the event of a scalding incident.',
+    },
+    {
+      q: 'How often does backflow prevention need to be tested?',
+      a: 'Annual testing is required under the Plumbing and Drainage Act 2018 (Qld) for all registered backflow prevention assemblies. Test certificates must be submitted to the relevant water authority (Queensland Urban Utilities, Logan Water, Unitywater, etc.). We track your due dates and submit all required documentation on your behalf.',
+    },
+    {
+      q: 'How much does a preventative maintenance plan cost?',
+      a: 'Costs depend on your facility size, the number of assets and the services required. Most commercial clients find that a planned maintenance program costs significantly less per year than a single emergency call-out plus the associated damage or compliance penalties. Contact us for a site audit and flat-rate quote tailored to your property.',
+    },
+    {
+      q: 'Can you take over maintenance from our existing plumber?',
+      a: 'Yes. We regularly take over maintenance contracts from other providers. We will conduct a site audit, document all existing assets and compliance status, and build a plan from there — identifying any overdue certifications or outstanding issues at the outset.',
+    },
+    {
+      q: 'Do you service strata and multi-tenancy buildings?',
+      a: 'Yes. We work with strata managers, property managers and body corporates to deliver scheduled maintenance across common areas and shared infrastructure — including shared hot water plants, fire service isolation valves, drainage systems and backflow devices.',
+    },
+    {
+      q: 'What industries do you provide maintenance plans for?',
+      a: 'We maintain plumbing infrastructure for aged care facilities, childcare centres, schools and universities, retail shopping centres, commercial real estate, property management portfolios, student accommodation, hospitality venues and civil/industrial sites across South-East Queensland.',
+    },
+  ]}
+  relatedIndustries={[
+    'aged-care',
+    'childcare',
+    'education',
+    'retail',
+    'commercial-real-estate',
+    'property-management',
+    'student-accommodation',
+  ]}
+  metaTitle="Preventative Plumbing Maintenance Plans Brisbane & SE Queensland"
+  metaDescription="Scheduled preventative plumbing maintenance for commercial properties — TMV testing, backflow certification, drain jetting, hot water servicing and gas inspections. Flat-rate plans, automated scheduling, full compliance across Brisbane, Logan, Gold Coast and Ipswich."
+>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       WHAT'S INCLUDED — service cards
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="services-included-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 id="services-included-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          What's included in a maintenance plan
+        </h2>
+        <p class="text-[#334155] text-lg">
+          Every plan is built around your facility's assets and compliance obligations. Services are scheduled at the right frequency — not just billed annually for the sake of it.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {includedServices.map((s) => (
+          <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-[#046bd2]/40 transition-all relative">
+            {s.compliance && (
+              <span class="absolute top-4 right-4 text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-0.5">
+                Compliance req.
+              </span>
+            )}
+            <div class="w-10 h-10 rounded-xl bg-[#046bd2]/10 flex items-center justify-center text-[#046bd2] mb-4">
+              <div class="w-5 h-5" set:html={s.icon}></div>
+            </div>
+            <h3 class="font-bold text-[#1e293b] mb-1 leading-snug pr-6">{s.title}</h3>
+            <p class="text-xs font-semibold text-[#046bd2] mb-2">{s.freq}</p>
+            <p class="text-sm text-[#334155] leading-relaxed">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 text-sm text-slate-500 text-center">
+        Services marked <span class="font-semibold text-amber-700">Compliance req.</span> are mandatory under Queensland law or Australian Standards for regulated facility types.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       COST COMPARISON
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-white" aria-labelledby="cost-comparison-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 id="cost-comparison-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+          Prevention vs reactive — the real cost
+        </h2>
+        <p class="text-[#334155] text-lg">
+          Emergency call-outs, compliance fines and water damage claims cost far more than the scheduled work that prevents them. The numbers are hard to argue with.
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-[#1e293b] text-white">
+              <th class="text-left px-6 py-4 font-semibold">Scenario</th>
+              <th class="text-left px-6 py-4 font-semibold text-red-300">Reactive cost</th>
+              <th class="text-left px-6 py-4 font-semibold text-green-300">Preventative cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {costComparison.map((row, i) => (
+              <tr class={i % 2 === 0 ? 'bg-white' : 'bg-[#F0F5FA]'}>
+                <td class="px-6 py-4 text-[#1e293b] font-medium">{row.scenario}</td>
+                <td class="px-6 py-4 text-red-600 font-semibold">{row.reactive}</td>
+                <td class="px-6 py-4 text-green-700 font-semibold">{row.preventative}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-xs text-slate-400 text-center">Indicative costs for South-East Queensland commercial properties. Actual costs vary by site and scope.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       HOW AUTOMATED SCHEDULING WORKS
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="py-20 bg-[#F0F5FA]" aria-labelledby="how-it-works-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-14 items-center">
+
+        <div>
+          <h2 id="how-it-works-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-6">
+            Set and forget — automated scheduling that keeps you compliant
+          </h2>
+          <p class="text-[#334155] text-lg leading-relaxed mb-8">
+            Once your asset register is built and your plan is agreed, our job management system takes care of the calendar. You receive automatic reminders before each service, digital reports after every visit, and compliance certificates filed on your behalf — without you needing to track a thing.
+          </p>
+          <ul class="space-y-4">
+            {[
+              {
+                title: 'Asset register & service history',
+                desc: 'Every valve, device and system on your site is logged with its last service date, next due date and full service history. Accessible any time on request.',
+              },
+              {
+                title: 'Compliance calendar management',
+                desc: 'We track your backflow test due dates, TMV service intervals and authority submission deadlines — and ensure nothing lapses.',
+              },
+              {
+                title: 'Authority submissions handled',
+                desc: 'Backflow test certificates are submitted directly to Queensland Urban Utilities, Logan Water, Unitywater or your relevant authority. You receive copies for your records.',
+              },
+              {
+                title: 'Digital reports after every visit',
+                desc: 'Service reports, test results, photos and recommendations delivered digitally after each visit — suitable for insurance, audits and property management records.',
+              },
+            ].map((item) => (
+              <li class="flex gap-4">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[#046bd2] flex items-center justify-center mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-[#1e293b] mb-1">{item.title}</p>
+                  <p class="text-sm text-[#334155] leading-relaxed">{item.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Compliance callout card -->
+          <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              <h3 class="font-bold text-amber-800">Compliance obligations in Queensland</h3>
+            </div>
+            <ul class="space-y-2 text-sm text-amber-900">
+              {[
+                'Backflow prevention devices must be tested annually — Plumbing and Drainage Act 2018 (Qld)',
+                'TMVs must be serviced to AS/NZS 3500.4 — mandatory for aged care, childcare and healthcare',
+                'Gas appliances must be installed and maintained by a licensed gas fitter — Gas Supply Act 2003 (Qld)',
+                'Non-compliance can result in water authority fines, insurance voidance or regulatory action',
+              ].map((point) => (
+                <li class="flex items-start gap-2">
+                  <span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5"></span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Stat cards -->
+          <div class="grid grid-cols-2 gap-4">
+            {[
+              { stat: '3–5×', label: 'More expensive to fix vs prevent' },
+              { stat: '100%', label: 'Digital compliance records provided' },
+              { stat: '24/7', label: 'Emergency response for plan clients' },
+              { stat: '130+', label: 'Suburbs serviced across SE Queensland' },
+            ].map((item) => (
+              <div class="bg-white border border-slate-200 rounded-2xl p-5 text-center shadow-sm">
+                <p class="text-3xl font-bold text-[#046bd2] mb-1">{item.stat}</p>
+                <p class="text-xs text-[#334155] leading-snug">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       WHO IT'S FOR
+       ══════════════════════════════════════════════════════════════════ -->
+  <section class="py-16 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-[#1e293b] mb-8 text-center">Maintenance plans for every commercial sector</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { sector: 'Aged Care & Healthcare', note: 'TMV compliance critical', icon: '❤️' },
+          { sector: 'Childcare Centres', note: 'TMV & backflow mandatory', icon: '👶' },
+          { sector: 'Schools & Universities', note: 'Backflow & hot water plans', icon: '🎓' },
+          { sector: 'Retail & Shopping Centres', note: 'Drain jetting & backflow', icon: '🛒' },
+          { sector: 'Strata & Property Management', note: 'Common area infrastructure', icon: '🔑' },
+          { sector: 'Student Accommodation', note: 'High-use hot water systems', icon: '🏘️' },
+          { sector: 'Commercial Real Estate', note: 'Full asset management', icon: '🏗️' },
+          { sector: 'Hospitality & Restaurants', note: 'Grease trap jetting & filtration', icon: '🍽️' },
+        ].map((item) => (
+          <div class="flex items-start gap-3 bg-[#F0F5FA] rounded-xl p-4 border border-slate-200">
+            <span class="text-xl flex-shrink-0">{item.icon}</span>
+            <div>
+              <p class="font-semibold text-[#1e293b] text-sm">{item.sector}</p>
+              <p class="text-xs text-[#334155] mt-0.5">{item.note}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>

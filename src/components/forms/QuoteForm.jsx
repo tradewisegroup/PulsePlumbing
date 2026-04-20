@@ -6,7 +6,7 @@ const SERVICE_OPTIONS = [
   { value: '',              label: 'Select a service…' },
   { value: 'maintenance',   label: 'Maintenance Plumbing' },
   { value: 'commercial',    label: 'Commercial Plumbing' },
-  { value: 'emergency',     label: 'Emergency / Burst Pipe' },
+  { value: 'emergency',     label: 'Emergency Plumbing' },
   { value: 'gas',           label: 'Gas Fitting' },
   { value: 'blocked-drain', label: 'Blocked Drain' },
   { value: 'hot-water',     label: 'Hot Water System' },
