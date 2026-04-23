@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'All Services | Pulse Plumbing & Gas';
+const description = 'Explore all plumbing and gas services offered by Pulse Plumbing & Gas across Brisbane, Logan, Gold Coast and Ipswich — available 24/7 including afterhours and weekends.';
+
+const services = [
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+    label: 'Maintenance Plumbing',
+    desc: 'Scheduled and reactive maintenance for residential and commercial properties. Preventative plans available for strata, facilities and property managers.',
+    href: '/services/preventative-maintenance',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/></svg>`,
+    label: 'Commercial',
+    desc: 'Full-service commercial plumbing for facilities, strata complexes, retail fit-outs and building managers across South-East Queensland.',
+    href: '/industries',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    label: 'Residential',
+    desc: 'Trusted plumbing for homes, units and townhouses. From leaking taps to full bathroom renovations — reliable service every time.',
+    href: '/services/residential',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2 3-4 5.5-4 8a4 4 0 0 0 8 0c0-2.5-1.5-4-2-5.5 0 2-1.5 3.5-2 3.5s-2-1.5-2-3.5"/><line x1="5" y1="18" x2="19" y2="18"/><line x1="8" y1="15" x2="8" y2="18"/><line x1="12" y1="15" x2="12" y2="18"/><line x1="16" y1="15" x2="16" y2="18"/><line x1="3" y1="21" x2="21" y2="21"/></svg>`,
+    label: 'Gas Fitting',
+    desc: 'Licensed gas fitting for new lines, appliance connections and safety checks. Residential and commercial gas work across SE Queensland.',
+    href: '/services/gas-fitting',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/><line x1="13.5" y1="10.5" x2="10.5" y2="13.5"/></svg>`,
+    label: 'Blocked Drains',
+    desc: 'High-pressure water jetting, CCTV inspection and root cutting. Fast response for blocked drains in homes and commercial properties.',
+    href: '/services/blocked-drains',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="10" height="13" rx="2"/><path d="M10 5V3M14 5V3"/><path d="M10 18v3M14 18v3"/><path d="M9.5 11.5a2.5 2.5 0 0 0 5 0"/><line x1="12" y1="9" x2="12" y2="11.5"/></svg>`,
+    label: 'Hot Water',
+    desc: 'Repairs, replacements and heat pump installations. All brands, all systems — electric, gas, solar and heat pump.',
+    href: '/services/hot-water-systems',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="8" width="13" height="8" rx="2"/><circle cx="7.5" cy="12" r="2.5"/><path d="M14 10.5l5.5-3.5v10L14 13.5"/><circle cx="4.5" cy="12" r="0.5" fill="currentColor" stroke="none"/></svg>`,
+    label: 'CCTV Drain Camera',
+    desc: 'Detailed CCTV inspection reports with video footage. Identify blockages, root intrusion, pipe damage and root cause without digging.',
+    href: '/services/drain-camera',
+  },
+  {
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10h7v4H2z"/><path d="M15 10h7v4h-7z"/><path d="M9 10l6 2-6 2z"/><line x1="15" y1="10" x2="15" y2="14"/></svg>`,
+    label: 'Backflow Prevention',
+    desc: 'QBCC-compliant testing, certification and repairs. Annual backflow prevention testing for commercial and industrial properties.',
+    href: '/services/backflow-prevention',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Plumbing & Gas Services — Pulse Plumbing & Gas',
+  url: 'https://pulseqld.com.au/services',
+  description,
+};
+---
+
+<BaseLayout {title} {description} canonical="https://pulseqld.com.au/services" schema={schema}>
+
+  <!-- Hero -->
+  <section class="bg-[#1e293b] py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="hover:text-white/80 transition-colors">Home</a></li>
+          <li class="text-white/30">/</li>
+          <li class="text-white/70">Services</li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4 inline-block bg-[#046bd2]/60 px-5 py-3 rounded-xl shadow-md">
+        Our Services
+      </h1>
+      <p class="text-lg text-white/70 max-w-2xl mt-4">
+        From emergency callouts to scheduled commercial maintenance — Pulse Plumbing &amp; Gas handles it all across Brisbane, Logan, Gold Coast and Ipswich. Available 24/7.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((s) => (
+          <a href={s.href}
+             class="group flex flex-col items-center text-center bg-white border border-[#D1D5DB] hover:border-[#046bd2] rounded-xl p-8 transition-all hover:shadow-md">
+            <div class="w-10 h-10 text-[#046bd2] mb-4 group-hover:text-[#045cb4] transition-colors" set:html={s.icon}></div>
+            <h2 class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] mb-2 transition-colors text-lg">{s.label}</h2>
+            <p class="text-sm text-[#334155] leading-relaxed">{s.desc}</p>
+            <span class="mt-4 text-xs font-semibold text-[#046bd2] group-hover:text-[#045cb4] transition-colors">Learn more →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#046bd2] py-14">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Need a plumber now?</h2>
+      <p class="text-blue-100 mb-8">Available 24/7 including afterhours and weekends across South-East Queensland.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="tel:0452188420"
+           class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+          </svg>
+          Call Now — Emergency Response
+        </a>
+        <a href="/contact"
+           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors">
+          Get a Free Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
