@@ -27,6 +27,8 @@ export interface Props {
   metaDescription: string;
   /** Optional hero background image path, e.g. "/images/stock-hot-water.jpg" */
   heroImage?: string;
+  /** CSS background-size value — defaults to 'cover'. Use 'contain' to show the full image. */
+  heroImageFit?: string;
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -43,6 +45,7 @@ const {
   metaTitle,
   metaDescription,
   heroImage,
+  heroImageFit = 'cover',
 } = Astro.props;
 
 const SITE     = 'https://pulseqld.com.au';
@@ -136,8 +139,8 @@ const pageSchema = {
     {heroImage && (
       <>
         <div
-          class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={`background-image: url('${heroImage}')`}
+          class="absolute inset-0 bg-center bg-no-repeat"
+          style={`background-image: url('${heroImage}'); background-size: ${heroImageFit};`}
           aria-hidden="true"
         ></div>
         <div class="absolute inset-0 bg-[#1e293b]/70" aria-hidden="true"></div>
