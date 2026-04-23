@@ -134,11 +134,14 @@ const pageSchema = {
        ══════════════════════════════════════════════════════════════════════════ -->
   <section class="relative overflow-hidden bg-[#1e293b]">
     {heroImage && (
-      <div
-        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={`background-image: url('${heroImage}')`}
-        aria-hidden="true"
-      ></div>
+      <>
+        <div
+          class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={`background-image: url('${heroImage}')`}
+          aria-hidden="true"
+        ></div>
+        <div class="absolute inset-0 bg-[#1e293b]/70" aria-hidden="true"></div>
+      </>
     )}
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
       <!-- Breadcrumb -->
