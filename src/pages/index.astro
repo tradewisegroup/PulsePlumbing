@@ -44,10 +44,10 @@ const industries = [
 ];
 
 const locations = [
-  { label: 'Brisbane', href: '/plumber-brisbane' },
-  { label: 'Logan', href: '/plumber-logan' },
-  { label: 'Gold Coast', href: '/plumber-gold-coast' },
-  { label: 'Ipswich', href: '/plumber-ipswich' },
+  { label: 'Brisbane', href: 'https://www.google.com/maps/place/Brisbane,+QLD/@-27.4698,153.0251,11z' },
+  { label: 'Logan', href: 'https://www.google.com/maps/place/Logan+City,+QLD/@-27.6381,153.1096,11z' },
+  { label: 'Gold Coast', href: 'https://www.google.com/maps/place/Gold+Coast,+QLD/@-28.0167,153.4000,11z' },
+  { label: 'Ipswich', href: 'https://www.google.com/maps/place/Ipswich,+QLD/@-27.6140,152.7600,11z' },
 ];
 
 const homepageSchema = {
@@ -221,6 +221,8 @@ const homepageSchema = {
       <div class="flex flex-wrap justify-center gap-4">
         {locations.map((l) => (
           <a href={l.href}
+             target="_blank"
+             rel="noopener noreferrer"
              class="bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] text-[#334155] hover:text-white font-medium px-6 py-3 rounded transition-colors">
             📍 Plumber {l.label}
           </a>
