@@ -14,7 +14,10 @@ import { resolve } from 'node:path';
 dotenvConfig({ path: resolve(process.cwd(), '.env.local') });
 
 function env(key: string): string {
-  return (process.env[key] ?? import.meta.env[key] ?? '') as string;
+  // import.meta.env exists under Vite/Astro SSR but not in a plain Node
+  // script run (e.g. scripts/export-quotes.ts), so guard against it.
+  const viteEnv = (import.meta as { env?: Record<string, string> }).env;
+  return (process.env[key] ?? viteEnv?.[key] ?? '') as string;
 }
 
 const BASE_URL = env('AROFLO_BASE_URL') || 'https://api.aroflo.com';
@@ -274,6 +277,246 @@ export async function createLeadFromForm(form: {
     // Don't fail the whole form submit if AroFlo is down
     return { success: true, arofloError: true };
   }
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// QUOTE EXPORT  →  Captain (pipeline / forecast / won-loss)
+//
+// The native AroFlo→Xero integration does NOT push quotes (only invoices,
+// POs, contacts, payments, credit notes, timesheets). So quote data — with
+// line-item cost / sell / description — has to be pulled from the AroFlo API
+// and handed to Captain. These helpers do that pull.
+//
+// NOTE ON FIELD NAMES: AroFlo's JSON keys for quote line items are not 100%
+// stable across zones/versions. The readers below are deliberately defensive
+// (try several key spellings) and the candidate lists are centralised in the
+// `FIELD` map so they're trivial to confirm/adjust against the live Postman
+// collection at https://apidocs.aroflo.com.
+// ──────────────────────────────────────────────────────────────────────────
+
+// Candidate JSON keys per logical field — first present wins.
+const FIELD = {
+  quoteId:     ['quoteid', 'quoteID', 'id'],
+  quoteNumber: ['quotenumber', 'quoteno', 'number'],
+  clientId:    ['clientid', 'clientID'],
+  clientName:  ['clientname', 'client'],
+  status:      ['status', 'quotestatus'],
+  totalCost:   ['totalcost', 'cost', 'costtotal'],
+  totalSell:   ['total', 'totalsell', 'selltotal', 'quotetotal', 'amount'],
+  created:     ['datecreated', 'created', 'createddate'],
+  modified:    ['datemodified', 'modified', 'lastmodified'],
+  // line items
+  liDesc:      ['description', 'itemdescription', 'name', 'partname'],
+  liQty:       ['quantity', 'qty', 'units'],
+  liUnitCost:  ['unitcost', 'cost', 'costunit'],
+  liUnitSell:  ['unitsell', 'sell', 'unitprice', 'unitrate', 'price'],
+  liLineCost:  ['linecost', 'totalcost'],
+  liLineSell:  ['linesell', 'total', 'linetotal', 'selltotal'],
+  liMarkup:    ['markup', 'markuppct', 'margin'],
+} as const;
+
+function pick(obj: Record<string, unknown>, keys: readonly string[]): unknown {
+  for (const k of keys) {
+    if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') {
+      return obj[k];
+    }
+  }
+  return undefined;
+}
+
+function num(v: unknown): number {
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') {
+    const n = parseFloat(v.replace(/[^0-9.\-]/g, ''));
+    return Number.isFinite(n) ? n : 0;
+  }
+  return 0;
+}
+
+function str(v: unknown): string {
+  return v === undefined || v === null ? '' : String(v);
+}
+
+// Normalise AroFlo's free-text quote status into a pipeline outcome that
+// Captain can forecast against.
+export type QuoteOutcome = 'won' | 'lost' | 'open' | 'other';
+function toOutcome(status: string): QuoteOutcome {
+  const s = status.toLowerCase();
+  if (/(won|accept|approv|success)/.test(s)) return 'won';
+  if (/(lost|declin|reject|unsuccess)/.test(s)) return 'lost';
+  if (/(expir|cancel|void|withdrawn)/.test(s)) return 'other';
+  if (/(pending|draft|sent|open|new|review)/.test(s)) return 'open';
+  return 'other';
+}
+
+export interface QuoteLineItem {
+  description: string;
+  quantity: number;
+  unitCost: number;
+  unitSell: number;
+  markupPct: number | null;
+  lineCost: number;
+  lineSell: number;
+}
+
+export interface QuoteRecord {
+  quoteId: string;
+  quoteNumber: string;
+  clientId: string;
+  clientName: string;
+  status: string;          // raw AroFlo status
+  outcome: QuoteOutcome;   // normalised for pipeline forecasting
+  totalCost: number;
+  totalSell: number;
+  marginPct: number | null;
+  dateCreated: string;
+  dateModified: string;
+  lineItems: QuoteLineItem[];
+}
+
+// Coerce AroFlo's "array OR single object OR missing" shapes into an array.
+function asArray<T>(v: T | T[] | undefined | null): T[] {
+  if (v === undefined || v === null) return [];
+  return Array.isArray(v) ? v : [v];
+}
+
+// Generic signed GET returning parsed JSON (null on failure).
+async function getJson(path: string): Promise<any | null> {
+  const headers = buildHeaders('GET', path);
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, { headers });
+    if (!res.ok) {
+      console.error(`[AroFlo] GET ${path} → ${res.status}`);
+      return null;
+    }
+    return await res.json();
+  } catch (err) {
+    console.error(`[AroFlo] GET ${path} error:`, err);
+    return null;
+  }
+}
+
+// Pull every quote header, paging through the full result set.
+// `where` is an optional AroFlo filter clause (already URL-safe), e.g.
+//   "datemodified>'2024-01-01'"  — omit to export everything.
+export async function fetchAllQuotes(opts: {
+  where?: string;
+  pageLimit?: number;
+} = {}): Promise<Record<string, unknown>[]> {
+  const pageLimit = opts.pageLimit ?? 100;
+  const whereParam = opts.where ? `&where=${encodeURIComponent(opts.where)}` : '';
+  const out: Record<string, unknown>[] = [];
+
+  for (let page = 1; ; page++) {
+    const path = `/quotes?page=${page}&pagelimit=${pageLimit}${whereParam}`;
+    const data = await getJson(path);
+    const batch = asArray<Record<string, unknown>>(
+      data?.response?.quotes?.quote ?? data?.response?.quotes
+    );
+    if (batch.length === 0) break;
+    out.push(...batch);
+    if (batch.length < pageLimit) break; // last page
+  }
+
+  return out;
+}
+
+// Fetch line items for one quote. AroFlo exposes these either nested in the
+// quote detail or via a quoteitems zone — try the detail endpoint first.
+export async function fetchQuoteLineItems(
+  quoteId: string
+): Promise<QuoteLineItem[]> {
+  const data = await getJson(`/quotes/${encodeURIComponent(quoteId)}`);
+  const q = data?.response?.quotes?.quote ?? data?.response?.quote ?? {};
+
+  // Line items live under a few possible containers.
+  const raw =
+    q?.lineitems?.lineitem ??
+    q?.quoteitems?.quoteitem ??
+    q?.items?.item ??
+    q?.lineitems ??
+    q?.items;
+
+  return asArray<Record<string, unknown>>(raw).map((li) => {
+    const quantity = num(pick(li, FIELD.liQty)) || 1;
+    const unitCost = num(pick(li, FIELD.liUnitCost));
+    const unitSell = num(pick(li, FIELD.liUnitSell));
+    const markupRaw = pick(li, FIELD.liMarkup);
+    // Prefer explicit line totals; otherwise derive from unit × qty.
+    const lineCost = num(pick(li, FIELD.liLineCost)) || unitCost * quantity;
+    const lineSell = num(pick(li, FIELD.liLineSell)) || unitSell * quantity;
+    return {
+      description: str(pick(li, FIELD.liDesc)),
+      quantity,
+      unitCost,
+      unitSell,
+      markupPct: markupRaw === undefined ? null : num(markupRaw),
+      lineCost,
+      lineSell,
+    };
+  });
+}
+
+// Orchestrate the full export: every quote + its line items, normalised into
+// Captain-ready QuoteRecords. `concurrency` throttles the per-quote line-item
+// calls so we don't hammer the AroFlo API.
+export async function exportAllQuotes(opts: {
+  where?: string;
+  pageLimit?: number;
+  concurrency?: number;
+  includeLineItems?: boolean;
+  onProgress?: (done: number, total: number) => void;
+} = {}): Promise<QuoteRecord[]> {
+  const includeLineItems = opts.includeLineItems ?? true;
+  const concurrency = Math.max(1, opts.concurrency ?? 4);
+
+  const headers = await fetchAllQuotes({
+    where: opts.where,
+    pageLimit: opts.pageLimit,
+  });
+
+  const records: QuoteRecord[] = new Array(headers.length);
+  let cursor = 0;
+  let done = 0;
+
+  async function worker() {
+    while (cursor < headers.length) {
+      const i = cursor++;
+      const h = headers[i];
+      const quoteId = str(pick(h, FIELD.quoteId));
+      const totalCost = num(pick(h, FIELD.totalCost));
+      const totalSell = num(pick(h, FIELD.totalSell));
+      const status = str(pick(h, FIELD.status));
+
+      const lineItems =
+        includeLineItems && quoteId ? await fetchQuoteLineItems(quoteId) : [];
+
+      records[i] = {
+        quoteId,
+        quoteNumber: str(pick(h, FIELD.quoteNumber)),
+        clientId: str(pick(h, FIELD.clientId)),
+        clientName: str(pick(h, FIELD.clientName)),
+        status,
+        outcome: toOutcome(status),
+        totalCost,
+        totalSell,
+        marginPct:
+          totalSell > 0 ? ((totalSell - totalCost) / totalSell) * 100 : null,
+        dateCreated: str(pick(h, FIELD.created)),
+        dateModified: str(pick(h, FIELD.modified)),
+        lineItems,
+      };
+
+      done++;
+      opts.onProgress?.(done, headers.length);
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, headers.length) }, worker)
+  );
+
+  return records;
 }
 
 // Civil-specific enquiry (separate task type, project fields)

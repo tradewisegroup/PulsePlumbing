@@ -1,5 +1,7 @@
 # build output
 dist/
+# quote export dumps (contain client PII — never commit)
+exports/
 # generated types
 .astro/
 
