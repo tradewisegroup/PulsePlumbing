@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types",
-    "export:quotes": "node --experimental-strip-types --no-warnings scripts/export-quotes.ts"
+    "export:quotes": "node --experimental-strip-types --no-warnings scripts/export-quotes.ts",
+    "export:aroflo": "node --experimental-strip-types --no-warnings scripts/aroflo-export/run.ts"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.3",

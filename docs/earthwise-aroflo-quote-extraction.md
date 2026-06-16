@@ -5,14 +5,31 @@ from AroFlo **now**, park the files, and import them into Captain v2's Job
 module **later** (once that module is finalised). Then verify Captain, then
 switch AroFlo off.
 
-> Scope of this pass: **quotes only** (headers + line items). Jobs, invoices,
-> timesheets, materials and attachments are a later pass — see
-> `captain-aroflo-xero-integration.md` for the full decommission dataset.
+> Scope: the **full decommission dataset** — clients, jobs/tasks, quotes,
+> invoices, timesheets, inventory and attachments. A quotes-only run is also
+> available for a quick first canary.
 
-The tooling is already built and tested:
-`src/lib/aroflo.ts` (`exportAllQuotes`) + `scripts/export-quotes.ts`
-(`npm run export:quotes`). Nothing else needs writing to extract — the
-importer comes once Captain is ready.
+Two extractors are built and tested (both write to `./exports`, git-ignored):
+
+| Command | Covers | Output |
+|---|---|---|
+| `npm run export:quotes` | quotes + line items only | JSON + 2 CSVs |
+| `npm run export:aroflo` | **everything** (clients, jobs, quotes, invoices, timesheets, inventory, attachments) | per-entity JSON + CSV + `manifest.json` |
+
+The Captain importer is **not** built yet — it's written later against
+`EWG-Captain/modules/job` once that's finalised, reading these files.
+
+### Full extractor — `npm run export:aroflo`
+
+```bash
+npm run export:aroflo                              # all entities, all history
+npm run export:aroflo -- --since=2023-07-01        # only modified since date
+npm run export:aroflo -- --entities=clients,jobs,quotes,invoices
+npm run export:aroflo -- --download-attachments    # also pull file binaries
+```
+
+Output lands in `exports/aroflo-<timestamp>/` with one `.json` + `.csv` per
+entity, plus `manifest.json` (counts + dollar totals for reconciliation).
 
 ---
 

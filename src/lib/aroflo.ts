@@ -31,6 +31,7 @@ interface AroFloHeaders {
   'Content-Type': string;
   'x-aroflo-hmac': string;
   'x-aroflo-timestamp': string;
+  [key: string]: string; // satisfies fetch()'s HeadersInit
 }
 
 // Build HMAC-signed headers for every AroFlo request
@@ -315,7 +316,7 @@ const FIELD = {
   liMarkup:    ['markup', 'markuppct', 'margin'],
 } as const;
 
-function pick(obj: Record<string, unknown>, keys: readonly string[]): unknown {
+export function pick(obj: Record<string, unknown>, keys: readonly string[]): unknown {
   for (const k of keys) {
     if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') {
       return obj[k];
@@ -324,7 +325,7 @@ function pick(obj: Record<string, unknown>, keys: readonly string[]): unknown {
   return undefined;
 }
 
-function num(v: unknown): number {
+export function num(v: unknown): number {
   if (typeof v === 'number') return v;
   if (typeof v === 'string') {
     const n = parseFloat(v.replace(/[^0-9.\-]/g, ''));
@@ -333,7 +334,7 @@ function num(v: unknown): number {
   return 0;
 }
 
-function str(v: unknown): string {
+export function str(v: unknown): string {
   return v === undefined || v === null ? '' : String(v);
 }
 
@@ -375,13 +376,13 @@ export interface QuoteRecord {
 }
 
 // Coerce AroFlo's "array OR single object OR missing" shapes into an array.
-function asArray<T>(v: T | T[] | undefined | null): T[] {
+export function asArray<T>(v: T | T[] | undefined | null): T[] {
   if (v === undefined || v === null) return [];
   return Array.isArray(v) ? v : [v];
 }
 
 // Generic signed GET returning parsed JSON (null on failure).
-async function getJson(path: string): Promise<any | null> {
+export async function getJson(path: string): Promise<any | null> {
   const headers = buildHeaders('GET', path);
   try {
     const res = await fetch(`${BASE_URL}${path}`, { headers });
