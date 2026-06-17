@@ -131,8 +131,8 @@ src/
 ## Integrations
 - **HubSpot Portal ID:** [INSERT] → set in `.env.local` as `HUBSPOT_PORTAL_ID`
 - **HubSpot Form IDs:** [INSERT after HubSpot setup] → `HUBSPOT_CONTACT_FORM_ID`, etc.
-- **AroFlo:** Direct REST API with HMAC-SHA256 auth — see `src/lib/aroflo.ts`
-  - Set: `AROFLO_ORG_HASH`, `AROFLO_USERNAME`, `AROFLO_PASSWORD`, `AROFLO_ZONE`
+- **AroFlo:** Direct REST API with HMAC-SHA512 auth — see `src/lib/aroflo.ts`
+  - Set: `AROFLO_UENCODED`, `AROFLO_PENCODED`, `AROFLO_ORGENCODED`, `AROFLO_SECRET_KEY`
 - **Xero:** via AroFlo native integration (no frontend connection needed)
 - **Google Tag Manager:** [INSERT GTM ID] → `PUBLIC_GTM_ID` in `.env.local`
 - **Google Analytics 4:** [INSERT GA4 ID] → `PUBLIC_GA4_ID` in `.env.local`

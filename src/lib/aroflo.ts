@@ -1,326 +1,198 @@
 // src/lib/aroflo.ts
-// AroFlo REST API service — server-side only
-// Auth: Basic (base64) + HMAC-SHA256 signing
-// Docs: https://apidocs.aroflo.com
+// AroFlo REST API client — server-side only.
+//
+// Auth & request model verified against the official Postman collection
+// (https://apidocs.aroflo.com, fetched 2026-06). Key facts:
+//   • Single endpoint: GET/POST https://api.aroflo.com/?<varString>
+//   • varString for GET = "zone=...&where=...&order=...&join=...&page=N"
+//     (each value URI-encoded, NO leading "?"). The request URL is
+//     BASE_URL + "/?" + varString, and the SAME varString is what gets signed.
+//   • Auth = HMAC-SHA512 (hex) of  payload.join('+')  with the API Secret Key,
+//     where payload = [METHOD, (HostIP?), urlPath='', accept, authorization,
+//     isoTimestamp, varString].
+//   • Required headers: Authentication: HMAC <sig>, Authorization: <authz>,
+//     Accept: text/json, afdatetimeutc: <isoTimestamp> (+ HostIP if used).
+//   • Response shape: { status:"0", statusmessage, zoneresponse:{ <zone>:[…],
+//     pagenumber, maxpageresults, currentpageresults } }.  status "0" == OK.
+//   • ⚠️ EVERY zone applies a "last 30 days" default filter when NO where
+//     clause is supplied. A full export MUST pass an explicit where to override
+//     it (see scripts/aroflo-export/entities.ts).
 
-import { createHmac, createHash } from 'node:crypto';
+import { createHmac } from 'node:crypto';
 import { config as dotenvConfig } from 'dotenv';
 import { resolve } from 'node:path';
 
-// In dev the Vercel adapter's SSR worker runs in an isolated context that
-// doesn't inherit Vite's env loading. Load .env.local directly so
-// process.env is populated. In production (Vercel) the file won't exist
-// and dotenv silently no-ops — process.env is already set by the platform.
+// In dev the SSR worker doesn't inherit Vite's env loading; load .env.local
+// directly. In production the file won't exist and dotenv silently no-ops.
 dotenvConfig({ path: resolve(process.cwd(), '.env.local') });
 
 function env(key: string): string {
-  // import.meta.env exists under Vite/Astro SSR but not in a plain Node
-  // script run (e.g. scripts/export-quotes.ts), so guard against it.
   const viteEnv = (import.meta as { env?: Record<string, string> }).env;
   return (process.env[key] ?? viteEnv?.[key] ?? '') as string;
 }
 
-const BASE_URL = env('AROFLO_BASE_URL') || 'https://api.aroflo.com';
-const USERNAME = env('AROFLO_USERNAME');
-const PASSWORD = env('AROFLO_PASSWORD');
-const SECRET   = env('AROFLO_SECRET_KEY');
+const BASE_URL = (env('AROFLO_BASE_URL') || 'https://api.aroflo.com').replace(/\/+$/, '');
+const UENCODED = env('AROFLO_UENCODED');
+const PENCODED = env('AROFLO_PENCODED');
+const ORGENCODED = env('AROFLO_ORGENCODED');
+const SECRET = env('AROFLO_SECRET_KEY');
+const HOSTIP = env('AROFLO_HOSTIP'); // optional; omit in cloud/serverless
+const ACCEPT = 'text/json';
 
-interface AroFloHeaders {
-  Authorization: string;
-  Accept: string;
-  'Content-Type': string;
-  'x-aroflo-hmac': string;
-  'x-aroflo-timestamp': string;
-  [key: string]: string; // satisfies fetch()'s HeadersInit
+// ──────────────────────────────────────────────────────────────────────────
+// Auth
+// ──────────────────────────────────────────────────────────────────────────
+
+// The Authorization header value (also one field of the signed payload).
+function authorizationValue(): string {
+  return (
+    `uencoded=${encodeURIComponent(UENCODED)}` +
+    `&pencoded=${encodeURIComponent(PENCODED)}` +
+    `&orgEncoded=${encodeURIComponent(ORGENCODED)}`
+  );
 }
 
-// Build HMAC-signed headers for every AroFlo request
-function buildHeaders(
-  method: string,
-  path: string,
-  body?: string
-): AroFloHeaders {
-  const credentials = Buffer.from(
-    `${USERNAME}:${PASSWORD}`
-  ).toString('base64');
+// HMAC-SHA512 (hex) over the '+'-joined payload, keyed with the secret.
+function signPayload(method: string, authz: string, iso: string, varString: string): string {
+  const urlPath = ''; // documented constant — do not change
+  const payload: string[] = [method];
+  if (HOSTIP) payload.push(HOSTIP);
+  payload.push(urlPath, ACCEPT, authz, iso, varString);
+  return createHmac('sha512', SECRET).update(payload.join('+')).digest('hex');
+}
 
-  const timestamp = new Date().toISOString();
-
-  // Hash the request body (empty string if no body)
-  const bodyHash = createHash('sha256')
-    .update(body || '')
-    .digest('hex');
-
-  // Build canonical string to sign
-  const canonical = [
-    method.toUpperCase(),
-    path,
-    timestamp,
-    bodyHash
-  ].join('\n');
-
-  // HMAC-SHA256 sign with secret key
-  const signature = createHmac('sha256', SECRET)
-    .update(canonical)
-    .digest('hex');
-
-  return {
-    Authorization: `Basic ${credentials}`,
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'x-aroflo-hmac': signature,
-    'x-aroflo-timestamp': timestamp,
+function authHeaders(method: string, varString: string): Record<string, string> {
+  const iso = new Date().toISOString();
+  const authz = authorizationValue();
+  const sig = signPayload(method, authz, iso, varString);
+  const headers: Record<string, string> = {
+    Authentication: `HMAC ${sig}`,
+    Authorization: authz,
+    Accept: ACCEPT,
+    afdatetimeutc: iso,
   };
+  if (HOSTIP) headers.HostIP = HOSTIP;
+  return headers;
 }
 
-// Map service type string to AroFlo task type
-function mapTaskType(serviceType: string): string {
-  const map: Record<string, string> = {
-    'Emergency':    'Emergency Repair',
-    'Maintenance':  'Maintenance',
-    'Commercial':   'Commercial Plumbing',
-    'Residential':  'Residential Plumbing',
-    'Gas':          'Gas Fitting',
-    'Drainage':     'Blocked Drain',
-    'Hot Water':    'Hot Water System',
-    'CCTV':         'CCTV Drain Camera',
-    'Backflow':     'Backflow Prevention',
-    'Civil':        'Civil Enquiry',
-  };
-  return map[serviceType] || 'General Enquiry';
+export function arofloConfigured(): boolean {
+  return Boolean(UENCODED && PENCODED && ORGENCODED && SECRET);
 }
 
-// Find existing client by email address
-export async function findClientByEmail(
-  email: string
-): Promise<{ clientId: string } | null> {
-  const path = `/clients?where=email%3D'${encodeURIComponent(email)}'&fields=clientid,clientname,email`;
-  const headers = buildHeaders('GET', path);
+// ──────────────────────────────────────────────────────────────────────────
+// Core request helpers
+// ──────────────────────────────────────────────────────────────────────────
 
+// Build the varString (query string without leading "?"). Order is preserved.
+function buildVarString(params: Record<string, string | undefined>): string {
+  const parts: string[] = [];
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== '') parts.push(`${k}=${encodeURIComponent(v)}`);
+  }
+  return parts.join('&');
+}
+
+export interface GetParams {
+  zone: string;
+  where?: string; // AroFlo pipe format, e.g. "and|createddate|>|2000/01/01"
+  order?: string; // e.g. "createddate|asc"
+  join?: string; // comma-separated, e.g. "lineitems,task"
+  page?: string | number;
+}
+
+// Signed GET. Returns parsed JSON (or null on network/parse failure).
+export async function arofloGet(p: GetParams): Promise<any | null> {
+  const varString = buildVarString({
+    zone: p.zone,
+    where: p.where,
+    order: p.order,
+    join: p.join,
+    page: p.page === undefined ? undefined : String(p.page),
+  });
+  const headers = authHeaders('GET', varString);
   try {
-    const res = await fetch(`${BASE_URL}${path}`, { headers });
-    if (!res.ok) return null;
-
-    const data = await res.json();
-    const client = data?.response?.clients?.client;
-
-    if (!client) return null;
-
-    // AroFlo returns array or single object
-    const first = Array.isArray(client) ? client[0] : client;
-    return first ? { clientId: String(first.clientid) } : null;
-
+    const res = await fetch(`${BASE_URL}/?${varString}`, { headers });
+    const text = await res.text();
+    let data: any = null;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      console.error(`[AroFlo] GET zone=${p.zone} → non-JSON (${res.status}): ${text.slice(0, 200)}`);
+      return null;
+    }
+    if (String(data?.status) !== '0') {
+      console.error(`[AroFlo] GET zone=${p.zone} → status ${data?.status}: ${data?.statusmessage}`);
+    }
+    return data;
   } catch (err) {
-    console.error('[AroFlo] findClientByEmail error:', err);
+    console.error(`[AroFlo] GET zone=${p.zone} error:`, err);
     return null;
   }
 }
 
-// Create a new AroFlo client
-export async function createClient(data: {
-  name: string;
-  contactName: string;
-  phone: string;
-  email: string;
-  suburb?: string;
-  clientType?: string;
-}): Promise<{ clientId: string; success: boolean }> {
-  const path = '/clients';
-  const [firstName, ...lastParts] = data.contactName.split(' ');
-
-  const body = JSON.stringify({
-    client: {
-      clientname:  data.name || data.contactName,
-      firstname:   firstName || '',
-      lastname:    lastParts.join(' ') || '',
-      phone1:      data.phone,
-      email:       data.email,
-      suburb:      data.suburb || '',
-      clienttype:  data.clientType || 'Residential',
-    }
-  });
-
-  const headers = buildHeaders('POST', path, body);
-
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method: 'POST', headers, body
-  });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`AroFlo createClient failed: ${res.status} ${errText}`);
-  }
-
-  const json = await res.json();
-  const clientId = String(
-    json?.response?.client?.clientid ||
-    json?.response?.clientid ||
-    ''
-  );
-
-  return { clientId, success: !!clientId };
-}
-
-// Create a new AroFlo task (job)
-export async function createTask(data: {
-  clientId: string;
-  taskName: string;
-  description: string;
-  taskType: string;
-  priority: 'Normal' | 'Urgent' | 'High';
-  source: string;
-  suburb?: string;
-}): Promise<{ taskId: string; success: boolean }> {
-  const path = '/tasks';
-
-  const body = JSON.stringify({
-    task: {
-      clientid:    data.clientId,
-      taskname:    data.taskName,
-      description: data.description,
-      tasktype:    data.taskType,
-      priority:    data.priority,
-      source:      data.source,
-      suburb:      data.suburb || '',
-      status:      'Scheduled',
-    }
-  });
-
-  const headers = buildHeaders('POST', path, body);
-
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method: 'POST', headers, body
-  });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`AroFlo createTask failed: ${res.status} ${errText}`);
-  }
-
-  const json = await res.json();
-  const taskId = String(
-    json?.response?.task?.taskid ||
-    json?.response?.taskid ||
-    ''
-  );
-
-  return { taskId, success: !!taskId };
-}
-
-// Main orchestration: form → AroFlo client + task
-export async function createLeadFromForm(form: {
-  name: string;
-  company?: string;
-  phone: string;
-  email: string;
-  serviceType: string;
-  industry?: string;
-  suburb?: string;
-  message?: string;
-}): Promise<{
-  success: boolean;
-  taskId?: string;
-  arofloError?: boolean
-}> {
+// Signed POST (zone + postxml form body). Used by the lead-creation helpers.
+export async function arofloPost(zone: string, postxml: string): Promise<any | null> {
+  const varString = buildVarString({ zone, postxml });
+  const headers = {
+    ...authHeaders('POST', varString),
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
   try {
-    // 1. Find or create client
-    let clientId: string;
-    const existing = await findClientByEmail(form.email);
-
-    if (existing) {
-      clientId = existing.clientId;
-    } else {
-      const created = await createClient({
-        name:        form.company || form.name,
-        contactName: form.name,
-        phone:       form.phone,
-        email:       form.email,
-        suburb:      form.suburb,
-        clientType:  form.industry === 'Civil' ? 'Civil' :
-                     (form.company ? 'Commercial' : 'Residential'),
-      });
-      clientId = created.clientId;
+    const res = await fetch(`${BASE_URL}/`, { method: 'POST', headers, body: varString });
+    const data = await res.json();
+    if (String(data?.status) !== '0') {
+      console.error(`[AroFlo] POST zone=${zone} → status ${data?.status}: ${data?.statusmessage}`);
     }
-
-    // 2. Set task priority
-    const priority =
-      form.serviceType === 'Emergency' ? 'Urgent' :
-      ['Commercial','Civil'].includes(form.industry || '') ? 'High' :
-      'Normal';
-
-    // 3. Build task name and description
-    const taskName =
-      `Website Enquiry — ${form.serviceType} — ${form.suburb || 'QLD'}`;
-
-    const description = [
-      `Source: pulseqld.com.au`,
-      `Service: ${form.serviceType}`,
-      form.industry ? `Industry: ${form.industry}` : null,
-      form.suburb ? `Suburb: ${form.suburb}` : null,
-      form.message ? `\nClient message:\n${form.message}` : null,
-    ].filter(Boolean).join('\n');
-
-    // 4. Create task
-    const task = await createTask({
-      clientId,
-      taskName,
-      description,
-      taskType: mapTaskType(form.serviceType),
-      priority,
-      source: 'Website — pulseqld.com.au',
-      suburb: form.suburb,
-    });
-
-    return { success: true, taskId: task.taskId };
-
+    return data;
   } catch (err) {
-    console.error('[AroFlo] createLeadFromForm error:', err);
-    // Don't fail the whole form submit if AroFlo is down
-    return { success: true, arofloError: true };
+    console.error(`[AroFlo] POST zone=${zone} error:`, err);
+    return null;
   }
 }
 
-// ──────────────────────────────────────────────────────────────────────────
-// QUOTE EXPORT  →  Captain (pipeline / forecast / won-loss)
-//
-// The native AroFlo→Xero integration does NOT push quotes (only invoices,
-// POs, contacts, payments, credit notes, timesheets). So quote data — with
-// line-item cost / sell / description — has to be pulled from the AroFlo API
-// and handed to Captain. These helpers do that pull.
-//
-// NOTE ON FIELD NAMES: AroFlo's JSON keys for quote line items are not 100%
-// stable across zones/versions. The readers below are deliberately defensive
-// (try several key spellings) and the candidate lists are centralised in the
-// `FIELD` map so they're trivial to confirm/adjust against the live Postman
-// collection at https://apidocs.aroflo.com.
-// ──────────────────────────────────────────────────────────────────────────
+// Pull the data array out of zoneresponse (auto-detecting the zone key,
+// e.g. zone "inventory" → key "items", "taskmaterials" → "materials").
+const META_KEYS = new Set(['pagenumber', 'maxpageresults', 'currentpageresults', 'queryresponsetimes']);
+function extractRows(data: any): any[] {
+  const zr = data?.zoneresponse;
+  if (!zr || typeof zr !== 'object') return [];
+  for (const [k, v] of Object.entries(zr)) {
+    if (META_KEYS.has(k)) continue;
+    if (Array.isArray(v)) return v as any[];
+  }
+  for (const [k, v] of Object.entries(zr)) {
+    if (!META_KEYS.has(k) && v && typeof v === 'object') return [v];
+  }
+  return [];
+}
 
-// Candidate JSON keys per logical field — first present wins.
-const FIELD = {
-  quoteId:     ['quoteid', 'quoteID', 'id'],
-  quoteNumber: ['quotenumber', 'quoteno', 'number'],
-  clientId:    ['clientid', 'clientID'],
-  clientName:  ['clientname', 'client'],
-  status:      ['status', 'quotestatus'],
-  totalCost:   ['totalcost', 'cost', 'costtotal'],
-  totalSell:   ['total', 'totalsell', 'selltotal', 'quotetotal', 'amount'],
-  created:     ['datecreated', 'created', 'createddate'],
-  modified:    ['datemodified', 'modified', 'lastmodified'],
-  // line items
-  liDesc:      ['description', 'itemdescription', 'name', 'partname'],
-  liQty:       ['quantity', 'qty', 'units'],
-  liUnitCost:  ['unitcost', 'cost', 'costunit'],
-  liUnitSell:  ['unitsell', 'sell', 'unitprice', 'unitrate', 'price'],
-  liLineCost:  ['linecost', 'totalcost'],
-  liLineSell:  ['linesell', 'total', 'linetotal', 'selltotal'],
-  liMarkup:    ['markup', 'markuppct', 'margin'],
-} as const;
+// Fetch all pages of a zone. Stops when a page returns fewer than
+// maxpageresults rows (or zero).
+export async function fetchZone(
+  zone: string,
+  opts: { where?: string; order?: string; join?: string } = {}
+): Promise<Record<string, unknown>[]> {
+  const out: Record<string, unknown>[] = [];
+  for (let page = 1; ; page++) {
+    const data = await arofloGet({ zone, where: opts.where, order: opts.order, join: opts.join, page });
+    if (!data) break;
+    const rows = extractRows(data);
+    if (rows.length === 0) break;
+    out.push(...rows);
+    const max = Number(data?.zoneresponse?.maxpageresults) || 500;
+    const cur = Number(data?.zoneresponse?.currentpageresults) || rows.length;
+    if (cur < max) break; // last page
+  }
+  return out;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Small value helpers (shared with the migration extractor)
+// ──────────────────────────────────────────────────────────────────────────
 
 export function pick(obj: Record<string, unknown>, keys: readonly string[]): unknown {
   for (const k of keys) {
-    if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') {
-      return obj[k];
-    }
+    if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
   }
   return undefined;
 }
@@ -338,15 +210,60 @@ export function str(v: unknown): string {
   return v === undefined || v === null ? '' : String(v);
 }
 
-// Normalise AroFlo's free-text quote status into a pipeline outcome that
-// Captain can forecast against.
+// Coerce AroFlo's "array OR single object OR missing" shapes into an array.
+export function asArray<T>(v: T | T[] | undefined | null): T[] {
+  if (v === undefined || v === null) return [];
+  return Array.isArray(v) ? v : [v];
+}
+
+// Read a sub-field from a nested object field, e.g. record.client.clientname.
+export function sub(obj: Record<string, unknown>, container: string, keys: readonly string[]): string {
+  const c = obj?.[container];
+  if (c && typeof c === 'object' && !Array.isArray(c)) {
+    return str(pick(c as Record<string, unknown>, keys));
+  }
+  return '';
+}
+
+// Unwrap a joined nested list which AroFlo may give as an array, a single
+// object, or a single-key wrapper like { material: [...] }.
+export function unwrapList(v: unknown): Record<string, unknown>[] {
+  if (v === null || v === undefined) return [];
+  if (Array.isArray(v)) return v as Record<string, unknown>[];
+  if (typeof v === 'object') {
+    const vals = Object.values(v as Record<string, unknown>);
+    const arr = vals.find((x) => Array.isArray(x));
+    if (arr) return arr as Record<string, unknown>[];
+    return [v as Record<string, unknown>];
+  }
+  return [];
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// QUOTE EXPORT  →  Captain (pipeline / forecast / won-loss)
+//
+// The native AroFlo→Xero integration does NOT push quotes (only invoices, POs,
+// contacts, payments, credit notes, timesheets). So quote data — with line-item
+// cost / sell — has to be pulled from the AroFlo API. We fetch the `quotes`
+// zone with join=lineitems so each quote arrives with its line items inline
+// (no N+1), and pass an explicit where to defeat the 30-day default filter.
+// ──────────────────────────────────────────────────────────────────────────
+
 export type QuoteOutcome = 'won' | 'lost' | 'open' | 'other';
-function toOutcome(status: string): QuoteOutcome {
+
+// Quotes carry both a free-text `status` and an `acceptancestatus`
+// ('Not Sent' | 'Awaiting Decision' | 'Accepted' | 'Declined' |
+//  'Need More Information'). Prefer acceptancestatus for win/loss.
+function toOutcome(acceptanceStatus: string, status: string): QuoteOutcome {
+  const a = acceptanceStatus.toLowerCase();
+  if (/accept/.test(a)) return 'won';
+  if (/declin|reject/.test(a)) return 'lost';
+  if (/awaiting|not sent|more information|sent|pending/.test(a)) return 'open';
   const s = status.toLowerCase();
   if (/(won|accept|approv|success)/.test(s)) return 'won';
   if (/(lost|declin|reject|unsuccess)/.test(s)) return 'lost';
   if (/(expir|cancel|void|withdrawn)/.test(s)) return 'other';
-  if (/(pending|draft|sent|open|new|review)/.test(s)) return 'open';
+  if (/(pending|draft|sent|open|new|review|progress)/.test(s)) return 'open';
   return 'other';
 }
 
@@ -356,171 +273,229 @@ export interface QuoteLineItem {
   unitCost: number;
   unitSell: number;
   markupPct: number | null;
-  lineCost: number;
-  lineSell: number;
+  lineCost: number; // ex-tax line cost (unitCost × qty if not supplied)
+  lineSell: number; // ex-tax line sell (= totalex when present)
 }
 
 export interface QuoteRecord {
   quoteId: string;
-  quoteNumber: string;
+  quoteNumber: string; // AroFlo jobnumber
+  quoteName: string;
   clientId: string;
   clientName: string;
-  status: string;          // raw AroFlo status
-  outcome: QuoteOutcome;   // normalised for pipeline forecasting
-  totalCost: number;
-  totalSell: number;
+  status: string;
+  acceptanceStatus: string;
+  outcome: QuoteOutcome;
+  totalCost: number; // ex-tax cost (totalEx − totalProfit)
+  totalSell: number; // ex-tax sell (totalEx)
+  totalInc: number;
+  totalTax: number;
   marginPct: number | null;
   dateCreated: string;
   dateModified: string;
   lineItems: QuoteLineItem[];
 }
 
-// Coerce AroFlo's "array OR single object OR missing" shapes into an array.
-export function asArray<T>(v: T | T[] | undefined | null): T[] {
-  if (v === undefined || v === null) return [];
-  return Array.isArray(v) ? v : [v];
-}
+const QLI = {
+  desc: ['item', 'description', 'partno', 'takeoffname'],
+  qty: ['qty', 'quantity'],
+  unitCost: ['cost'],
+  unitSell: ['sell'],
+  lineEx: ['totalex'],
+  lineTax: ['totaltax'],
+  markup: ['markup'],
+} as const;
 
-// Generic signed GET returning parsed JSON (null on failure).
-export async function getJson(path: string): Promise<any | null> {
-  const headers = buildHeaders('GET', path);
-  try {
-    const res = await fetch(`${BASE_URL}${path}`, { headers });
-    if (!res.ok) {
-      console.error(`[AroFlo] GET ${path} → ${res.status}`);
-      return null;
-    }
-    return await res.json();
-  } catch (err) {
-    console.error(`[AroFlo] GET ${path} error:`, err);
-    return null;
-  }
-}
-
-// Pull every quote header, paging through the full result set.
-// `where` is an optional AroFlo filter clause (already URL-safe), e.g.
-//   "datemodified>'2024-01-01'"  — omit to export everything.
-export async function fetchAllQuotes(opts: {
-  where?: string;
-  pageLimit?: number;
-} = {}): Promise<Record<string, unknown>[]> {
-  const pageLimit = opts.pageLimit ?? 100;
-  const whereParam = opts.where ? `&where=${encodeURIComponent(opts.where)}` : '';
-  const out: Record<string, unknown>[] = [];
-
-  for (let page = 1; ; page++) {
-    const path = `/quotes?page=${page}&pagelimit=${pageLimit}${whereParam}`;
-    const data = await getJson(path);
-    const batch = asArray<Record<string, unknown>>(
-      data?.response?.quotes?.quote ?? data?.response?.quotes
-    );
-    if (batch.length === 0) break;
-    out.push(...batch);
-    if (batch.length < pageLimit) break; // last page
-  }
-
-  return out;
-}
-
-// Fetch line items for one quote. AroFlo exposes these either nested in the
-// quote detail or via a quoteitems zone — try the detail endpoint first.
-export async function fetchQuoteLineItems(
-  quoteId: string
-): Promise<QuoteLineItem[]> {
-  const data = await getJson(`/quotes/${encodeURIComponent(quoteId)}`);
-  const q = data?.response?.quotes?.quote ?? data?.response?.quote ?? {};
-
-  // Line items live under a few possible containers.
-  const raw =
-    q?.lineitems?.lineitem ??
-    q?.quoteitems?.quoteitem ??
-    q?.items?.item ??
-    q?.lineitems ??
-    q?.items;
-
-  return asArray<Record<string, unknown>>(raw).map((li) => {
-    const quantity = num(pick(li, FIELD.liQty)) || 1;
-    const unitCost = num(pick(li, FIELD.liUnitCost));
-    const unitSell = num(pick(li, FIELD.liUnitSell));
-    const markupRaw = pick(li, FIELD.liMarkup);
-    // Prefer explicit line totals; otherwise derive from unit × qty.
-    const lineCost = num(pick(li, FIELD.liLineCost)) || unitCost * quantity;
-    const lineSell = num(pick(li, FIELD.liLineSell)) || unitSell * quantity;
+function parseQuoteLines(quote: Record<string, unknown>): QuoteLineItem[] {
+  // With join=lineitems the items arrive under `lines` (zone key would be
+  // `quotelineitems` if fetched standalone).
+  const raw = (quote as any).lines ?? (quote as any).quotelineitems ?? (quote as any).lineitems;
+  return unwrapList(raw).map((li) => {
+    const quantity = num(pick(li, QLI.qty)) || 1;
+    const unitCost = num(pick(li, QLI.unitCost));
+    const unitSell = num(pick(li, QLI.unitSell));
+    const lineSell = num(pick(li, QLI.lineEx)) || unitSell * quantity;
+    const markupRaw = pick(li, QLI.markup);
+    // `item` can be a string or an object {itemid, name/description}.
+    const itemVal = (li as any).item;
+    const description =
+      typeof itemVal === 'object' && itemVal
+        ? str(pick(itemVal, ['name', 'description', 'partno']))
+        : str(pick(li, QLI.desc));
     return {
-      description: str(pick(li, FIELD.liDesc)),
+      description,
       quantity,
       unitCost,
       unitSell,
       markupPct: markupRaw === undefined ? null : num(markupRaw),
-      lineCost,
+      lineCost: unitCost * quantity,
       lineSell,
     };
   });
 }
 
-// Orchestrate the full export: every quote + its line items, normalised into
-// Captain-ready QuoteRecords. `concurrency` throttles the per-quote line-item
-// calls so we don't hammer the AroFlo API.
 export async function exportAllQuotes(opts: {
   where?: string;
-  pageLimit?: number;
-  concurrency?: number;
   includeLineItems?: boolean;
   onProgress?: (done: number, total: number) => void;
 } = {}): Promise<QuoteRecord[]> {
   const includeLineItems = opts.includeLineItems ?? true;
-  const concurrency = Math.max(1, opts.concurrency ?? 4);
+  // Default where defeats the 30-day filter and pulls full history.
+  const where = opts.where ?? 'and|createddate|>|2000/01/01';
+  const join = includeLineItems ? 'lineitems' : undefined;
 
-  const headers = await fetchAllQuotes({
-    where: opts.where,
-    pageLimit: opts.pageLimit,
+  const rows = await fetchZone('quotes', { where, join, order: 'createddate|asc' });
+
+  return rows.map((q, i) => {
+    const totalEx = num(pick(q, ['totalex', 'subtotal']));
+    const totalProfit = num(pick(q, ['totalprofit']));
+    const status = str(pick(q, ['status']));
+    const acceptanceStatus = str(pick(q, ['acceptancestatus']));
+    opts.onProgress?.(i + 1, rows.length);
+    return {
+      quoteId: str(pick(q, ['quoteid'])),
+      quoteNumber: str(pick(q, ['jobnumber', 'refno'])),
+      quoteName: str(pick(q, ['quotename'])),
+      clientId: sub(q, 'client', ['clientid']),
+      clientName: sub(q, 'client', ['clientname']) || str(pick(q, ['contactname'])),
+      status,
+      acceptanceStatus,
+      outcome: toOutcome(acceptanceStatus, status),
+      totalCost: totalEx - totalProfit,
+      totalSell: totalEx,
+      totalInc: num(pick(q, ['totalinc'])),
+      totalTax: num(pick(q, ['totaltax'])),
+      marginPct: num(pick(q, ['totalprofitmarginpercent'])) || (totalEx > 0 ? (totalProfit / totalEx) * 100 : null),
+      dateCreated: str(pick(q, ['createddatetime', 'createddate'])),
+      dateModified: str(pick(q, ['createddatetime', 'createddate'])),
+      lineItems: includeLineItems ? parseQuoteLines(q) : [],
+    };
   });
-
-  const records: QuoteRecord[] = new Array(headers.length);
-  let cursor = 0;
-  let done = 0;
-
-  async function worker() {
-    while (cursor < headers.length) {
-      const i = cursor++;
-      const h = headers[i];
-      const quoteId = str(pick(h, FIELD.quoteId));
-      const totalCost = num(pick(h, FIELD.totalCost));
-      const totalSell = num(pick(h, FIELD.totalSell));
-      const status = str(pick(h, FIELD.status));
-
-      const lineItems =
-        includeLineItems && quoteId ? await fetchQuoteLineItems(quoteId) : [];
-
-      records[i] = {
-        quoteId,
-        quoteNumber: str(pick(h, FIELD.quoteNumber)),
-        clientId: str(pick(h, FIELD.clientId)),
-        clientName: str(pick(h, FIELD.clientName)),
-        status,
-        outcome: toOutcome(status),
-        totalCost,
-        totalSell,
-        marginPct:
-          totalSell > 0 ? ((totalSell - totalCost) / totalSell) * 100 : null,
-        dateCreated: str(pick(h, FIELD.created)),
-        dateModified: str(pick(h, FIELD.modified)),
-        lineItems,
-      };
-
-      done++;
-      opts.onProgress?.(done, headers.length);
-    }
-  }
-
-  await Promise.all(
-    Array.from({ length: Math.min(concurrency, headers.length) }, worker)
-  );
-
-  return records;
 }
 
-// Civil-specific enquiry (separate task type, project fields)
+// ──────────────────────────────────────────────────────────────────────────
+// CONTACT-FORM LEAD SYNC  (separate feature from the migration export)
+//
+// ⚠️ NOTE: these POST helpers now sign correctly against the real API, but the
+// postxml field names and the client-lookup filter still need validating in a
+// live AroFlo zone before relying on them for the website contact form. The
+// migration EXPORT path above does not depend on these.
+// ──────────────────────────────────────────────────────────────────────────
+
+function mapTaskType(serviceType: string): string {
+  const map: Record<string, string> = {
+    Emergency: 'Emergency Repair',
+    Maintenance: 'Maintenance',
+    Commercial: 'Commercial Plumbing',
+    Residential: 'Residential Plumbing',
+    Gas: 'Gas Fitting',
+    Drainage: 'Blocked Drain',
+    'Hot Water': 'Hot Water System',
+    CCTV: 'CCTV Drain Camera',
+    Backflow: 'Backflow Prevention',
+    Civil: 'Civil Enquiry',
+  };
+  return map[serviceType] || 'General Enquiry';
+}
+
+function xmlEscape(s: string): string {
+  return s.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]!));
+}
+
+export async function createClient(data: {
+  name: string;
+  contactName: string;
+  phone: string;
+  email: string;
+  suburb?: string;
+  clientType?: string;
+}): Promise<{ clientId: string; success: boolean }> {
+  const [firstName, ...lastParts] = data.contactName.split(' ');
+  const xml =
+    `<clients><client>` +
+    `<clientname>${xmlEscape(data.name || data.contactName)}</clientname>` +
+    `<firstname>${xmlEscape(firstName || '')}</firstname>` +
+    `<surname>${xmlEscape(lastParts.join(' '))}</surname>` +
+    `<phone>${xmlEscape(data.phone)}</phone>` +
+    `<email>${xmlEscape(data.email)}</email>` +
+    `</client></clients>`;
+  const json = await arofloPost('clients', xml);
+  const inserted = json?.zoneresponse?.postresults?.inserts?.clients;
+  const first = asArray<Record<string, unknown>>(inserted)[0];
+  const clientId = str(first?.clientid);
+  return { clientId, success: !!clientId };
+}
+
+export async function createTask(data: {
+  clientId: string;
+  taskName: string;
+  description: string;
+  taskType: string;
+  priority: string;
+  suburb?: string;
+}): Promise<{ taskId: string; success: boolean }> {
+  const xml =
+    `<tasks><task>` +
+    `<client><clientid>${xmlEscape(data.clientId)}</clientid></client>` +
+    `<taskname>${xmlEscape(data.taskName)}</taskname>` +
+    `<description>${xmlEscape(data.description)}</description>` +
+    `<priority>${xmlEscape(data.priority)}</priority>` +
+    `</task></tasks>`;
+  const json = await arofloPost('tasks', xml);
+  const inserted = json?.zoneresponse?.postresults?.inserts?.tasks;
+  const first = asArray<Record<string, unknown>>(inserted)[0];
+  const taskId = str(first?.taskid);
+  return { taskId, success: !!taskId };
+}
+
+export async function createLeadFromForm(form: {
+  name: string;
+  company?: string;
+  phone: string;
+  email: string;
+  serviceType: string;
+  industry?: string;
+  suburb?: string;
+  message?: string;
+}): Promise<{ success: boolean; taskId?: string; arofloError?: boolean }> {
+  try {
+    const created = await createClient({
+      name: form.company || form.name,
+      contactName: form.name,
+      phone: form.phone,
+      email: form.email,
+      suburb: form.suburb,
+      clientType: form.industry === 'Civil' ? 'Civil' : form.company ? 'Commercial' : 'Residential',
+    });
+    if (!created.clientId) return { success: true, arofloError: true };
+
+    const priority =
+      form.serviceType === 'Emergency' ? 'Urgent' : ['Commercial', 'Civil'].includes(form.industry || '') ? 'High' : 'Normal';
+    const description = [
+      `Source: pulseqld.com.au`,
+      `Service: ${form.serviceType}`,
+      form.industry ? `Industry: ${form.industry}` : null,
+      form.suburb ? `Suburb: ${form.suburb}` : null,
+      form.message ? `\nClient message:\n${form.message}` : null,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    const task = await createTask({
+      clientId: created.clientId,
+      taskName: `Website Enquiry — ${form.serviceType} — ${form.suburb || 'QLD'}`,
+      description,
+      taskType: mapTaskType(form.serviceType),
+      priority,
+      suburb: form.suburb,
+    });
+    return { success: true, taskId: task.taskId };
+  } catch (err) {
+    console.error('[AroFlo] createLeadFromForm error:', err);
+    return { success: true, arofloError: true };
+  }
+}
+
 export async function createCivilEnquiry(form: {
   companyName: string;
   contactName: string;
@@ -533,25 +508,15 @@ export async function createCivilEnquiry(form: {
   timeline?: string;
 }): Promise<{ success: boolean; taskId?: string }> {
   try {
-    let clientId: string;
-    const existing = await findClientByEmail(form.email);
-
-    if (existing) {
-      clientId = existing.clientId;
-    } else {
-      const created = await createClient({
-        name:        form.companyName,
-        contactName: form.contactName,
-        phone:       form.phone,
-        email:       form.email,
-        suburb:      form.projectLocation,
-        clientType:  'Civil',
-      });
-      clientId = created.clientId;
-    }
-
-    const priority =
-      form.projectValue.includes('500K') ? 'High' : 'Normal';
+    const created = await createClient({
+      name: form.companyName,
+      contactName: form.contactName,
+      phone: form.phone,
+      email: form.email,
+      suburb: form.projectLocation,
+      clientType: 'Civil',
+    });
+    if (!created.clientId) return { success: true };
 
     const description = [
       `CIVIL PROJECT ENQUIRY`,
@@ -560,20 +525,19 @@ export async function createCivilEnquiry(form: {
       form.timeline ? `Timeline: ${form.timeline}` : null,
       form.projectLocation ? `Location: ${form.projectLocation}` : null,
       `\nProject Description:\n${form.description}`,
-    ].filter(Boolean).join('\n');
+    ]
+      .filter(Boolean)
+      .join('\n');
 
     const task = await createTask({
-      clientId,
+      clientId: created.clientId,
       taskName: `Civil RFQ — ${form.projectType} — ${form.projectLocation || 'QLD'}`,
       description,
       taskType: 'Civil Enquiry',
-      priority,
-      source: 'Website Civil RFQ — pulseqld.com.au',
+      priority: form.projectValue.includes('500K') ? 'High' : 'Normal',
       suburb: form.projectLocation,
     });
-
     return { success: true, taskId: task.taskId };
-
   } catch (err) {
     console.error('[AroFlo] createCivilEnquiry error:', err);
     return { success: true };

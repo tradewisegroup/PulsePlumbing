@@ -1,86 +1,60 @@
 // AroFlo migration extractors — one fetcher per zone needed to decommission
-// AroFlo. All reuse the signed GET (`getJson`) from the website's AroFlo
-// client so there is a single HMAC implementation.
+// AroFlo. All reuse the signed client (`fetchZone`) from the website's AroFlo
+// module so there is a single HMAC-SHA512 implementation.
 //
-// ⚠️ FIELD NAMES & ZONE PATHS are defensive guesses where AroFlo's docs are
-// ambiguous. Confirm against the Postman collection at
-// https://apidocs.aroflo.com before trusting a production run — each fetcher
-// notes what to verify. Empty results or zeroed money columns => a name/path
-// mismatch to fix here.
+// Field names & zone keys below are taken from the official AroFlo Postman
+// collection (https://apidocs.aroflo.com). IMPORTANT: every zone applies a
+// "last 30 days" default filter unless an explicit `where` is supplied, so each
+// fetcher passes a broad date override to pull FULL history.
+//
+// WHERE format is pipe-delimited: "and|field|operator|value", dates "YYYY/MM/DD".
 
 import {
-  getJson,
+  fetchZone,
   asArray,
+  unwrapList,
   pick,
   num,
   str,
+  sub,
   exportAllQuotes,
   type QuoteRecord,
 } from '../../src/lib/aroflo.ts';
 
 export type { QuoteRecord };
+export { exportAllQuotes };
 
-// ── generic paged list fetch ────────────────────────────────────────────────
-// AroFlo wraps lists as response.<plural>.<singular> (e.g. response.tasks.task).
-export async function fetchAllPaged(
-  zone: string,
-  plural: string,
-  singular: string,
-  opts: { where?: string; fields?: string; pageLimit?: number } = {}
-): Promise<Record<string, unknown>[]> {
-  const pageLimit = opts.pageLimit ?? 100;
-  const whereParam = opts.where ? `&where=${encodeURIComponent(opts.where)}` : '';
-  const fieldsParam = opts.fields ? `&fields=${encodeURIComponent(opts.fields)}` : '';
-  const out: Record<string, unknown>[] = [];
+// Broad lower bound that defeats each zone's 30-day default filter.
+const EPOCH = '2000/01/01';
+const since = (date: string | undefined, field: string) =>
+  `and|${field}|>|${(date ?? EPOCH).replace(/-/g, '/')}`;
 
-  for (let page = 1; ; page++) {
-    const path = `/${zone}?page=${page}&pagelimit=${pageLimit}${whereParam}${fieldsParam}`;
-    const data = await getJson(path);
-    const node = data?.response?.[plural];
-    const batch = asArray<Record<string, unknown>>(node?.[singular] ?? node);
-    if (batch.length === 0) break;
-    out.push(...batch);
-    if (batch.length < pageLimit) break;
-  }
-  return out;
-}
-
-// ── line-item helper (shared shape for quotes/invoices) ─────────────────────
-const LINE = {
-  desc: ['description', 'itemdescription', 'name', 'partname'],
-  qty: ['quantity', 'qty', 'units'],
-  unitCost: ['unitcost', 'cost', 'costunit'],
-  unitSell: ['unitsell', 'sell', 'unitprice', 'unitrate', 'price'],
-  lineCost: ['linecost', 'totalcost'],
-  lineSell: ['linesell', 'total', 'linetotal', 'selltotal'],
-} as const;
-
+// Shared nested line-item shape (quotes/invoices).
 export interface LineItem {
   description: string;
   quantity: number;
   unitCost: number;
   unitSell: number;
-  lineCost: number;
-  lineSell: number;
+  lineEx: number;
+  lineTax: number;
+  lineInc: number;
 }
-
-function parseLineItems(container: any): LineItem[] {
-  const raw =
-    container?.lineitems?.lineitem ??
-    container?.items?.item ??
-    container?.lineitems ??
-    container?.items;
-  return asArray<Record<string, unknown>>(raw).map((li) => {
-    const quantity = num(pick(li, LINE.qty)) || 1;
-    const unitCost = num(pick(li, LINE.unitCost));
-    const unitSell = num(pick(li, LINE.unitSell));
+function parseLines(raw: unknown): LineItem[] {
+  return unwrapList(raw).map((li) => {
+    const quantity = num(pick(li, ['qty', 'quantity'])) || 1;
+    const itemVal = (li as any).item;
+    const description =
+      typeof itemVal === 'object' && itemVal
+        ? str(pick(itemVal, ['name', 'description', 'partno']))
+        : str(pick(li, ['item', 'description', 'partno']));
     return {
-      description: str(pick(li, LINE.desc)),
+      description,
       quantity,
-      unitCost,
-      unitSell,
-      lineCost: num(pick(li, LINE.lineCost)) || unitCost * quantity,
-      lineSell: num(pick(li, LINE.lineSell)) || unitSell * quantity,
+      unitCost: num(pick(li, ['cost'])),
+      unitSell: num(pick(li, ['sell'])),
+      lineEx: num(pick(li, ['totalex'])),
+      lineTax: num(pick(li, ['totaltax'])),
+      lineInc: num(pick(li, ['totalinc'])),
     };
   });
 }
@@ -92,58 +66,158 @@ export interface ClientRecord {
   contactName: string;
   email: string;
   phone: string;
-  suburb: string;
-  clientType: string;
+  mobile: string;
+  abn: string;
+  dateCreated: string;
   raw: Record<string, unknown>;
 }
-export async function fetchClients(where?: string): Promise<ClientRecord[]> {
-  const rows = await fetchAllPaged('clients', 'clients', 'client', { where });
+export async function fetchClients(date?: string): Promise<ClientRecord[]> {
+  const rows = await fetchZone('clients', {
+    where: since(date, 'datecreated'),
+    join: 'locations,contacts',
+  });
   return rows.map((c) => ({
-    clientId: str(pick(c, ['clientid', 'clientID', 'id'])),
-    clientName: str(pick(c, ['clientname', 'client', 'name'])),
-    contactName: str(pick(c, ['contactname', 'firstname'])),
-    email: str(pick(c, ['email', 'email1'])),
-    phone: str(pick(c, ['phone1', 'phone', 'mobile'])),
-    suburb: str(pick(c, ['suburb', 'city'])),
-    clientType: str(pick(c, ['clienttype', 'type'])),
+    clientId: str(pick(c, ['clientid'])),
+    clientName: str(pick(c, ['clientname'])),
+    contactName: `${str(pick(c, ['firstname']))} ${str(pick(c, ['surname']))}`.trim(),
+    email: str(pick(c, ['email'])),
+    phone: str(pick(c, ['phone'])),
+    mobile: str(pick(c, ['mobile'])),
+    abn: str(pick(c, ['abn'])),
+    dateCreated: str(pick(c, ['datecreated', 'datetimeinserted'])),
     raw: c,
   }));
 }
 
-// ── jobs / tasks ─────────────────────────────────────────────────────────────
-// Verify: zone may be 'tasks'; some sites expose projects separately.
+// ── jobs / tasks (+ nested materials, labour, attachments) ───────────────────
+// One tasks pass with joins yields jobs AND their materials/labour/attachments,
+// which the orchestrator splits into separate output files.
 export interface JobRecord {
   taskId: string;
-  taskNumber: string;
+  jobNumber: string;
   clientId: string;
   clientName: string;
   taskName: string;
   taskType: string;
   status: string;
+  subStatus: string;
   priority: string;
   suburb: string;
   dateCreated: string;
   dateModified: string;
+  dateCompleted: string;
   description: string;
+  totalEx: number;
+  totalInc: number;
   raw: Record<string, unknown>;
 }
-export async function fetchJobs(where?: string): Promise<JobRecord[]> {
-  const rows = await fetchAllPaged('tasks', 'tasks', 'task', { where });
-  return rows.map((t) => ({
-    taskId: str(pick(t, ['taskid', 'taskID', 'id'])),
-    taskNumber: str(pick(t, ['tasknumber', 'taskno', 'number'])),
-    clientId: str(pick(t, ['clientid', 'clientID'])),
-    clientName: str(pick(t, ['clientname', 'client'])),
-    taskName: str(pick(t, ['taskname', 'name'])),
-    taskType: str(pick(t, ['tasktype', 'type'])),
-    status: str(pick(t, ['status', 'taskstatus'])),
-    priority: str(pick(t, ['priority'])),
-    suburb: str(pick(t, ['suburb', 'city'])),
-    dateCreated: str(pick(t, ['datecreated', 'created'])),
-    dateModified: str(pick(t, ['datemodified', 'modified'])),
-    description: str(pick(t, ['description', 'notes'])),
-    raw: t,
-  }));
+export interface MaterialRecord {
+  lineId: string;
+  taskId: string;
+  itemId: string;
+  partNumber: string;
+  description: string;
+  quantity: number;
+  cost: number;
+  sell: number;
+  dateUsed: string;
+}
+export interface LabourRecord {
+  lineId: string;
+  taskId: string;
+  user: string;
+  workDate: string;
+  hours: number;
+  cost: number;
+  sell: number;
+  workType: string;
+}
+export interface FileRef {
+  documentId: string;
+  taskId: string;
+  fileName: string;
+  category: string;
+  url: string; // ⚠️ AroFlo document URLs expire ~10 min after fetch
+  sizeBytes: number;
+}
+
+export interface JobBundle {
+  jobs: JobRecord[];
+  materials: MaterialRecord[];
+  labours: LabourRecord[];
+  attachments: FileRef[];
+}
+
+export async function fetchJobs(date?: string): Promise<JobBundle> {
+  const rows = await fetchZone('tasks', {
+    where: since(date, 'createdutc'),
+    join: 'material,labour,documentsandphotos,tasktotals,location',
+  });
+  const jobs: JobRecord[] = [];
+  const materials: MaterialRecord[] = [];
+  const labours: LabourRecord[] = [];
+  const attachments: FileRef[] = [];
+
+  for (const t of rows) {
+    const taskId = str(pick(t, ['taskid']));
+    const totals = (t as any).tasktotals ?? {};
+    jobs.push({
+      taskId,
+      jobNumber: str(pick(t, ['jobnumber'])),
+      clientId: sub(t, 'client', ['clientid']),
+      clientName: sub(t, 'client', ['clientname']),
+      taskName: str(pick(t, ['taskname'])),
+      taskType: str(pick(t, ['tasktype'])) || sub(t, 'tasktasktype', ['name']),
+      status: str(pick(t, ['status'])),
+      subStatus: str(pick(t, ['substatus'])),
+      priority: str(pick(t, ['priority'])),
+      suburb: sub(t, 'location', ['suburb']),
+      dateCreated: str(pick(t, ['createdutc', 'createddatetimeutc'])),
+      dateModified: str(pick(t, ['lastupdatedutc', 'lastupdated'])),
+      dateCompleted: str(pick(t, ['completeddate', 'completeddatetime'])),
+      description: str(pick(t, ['description', 'taskdescription'])),
+      totalEx: num(pick(totals, ['totalex'])),
+      totalInc: num(pick(totals, ['totalinc'])),
+      raw: t,
+    });
+
+    for (const m of unwrapList((t as any).materials)) {
+      materials.push({
+        lineId: str(pick(m, ['lineid'])),
+        taskId,
+        itemId: str(pick(m, ['itemid'])),
+        partNumber: str(pick(m, ['partnumber'])),
+        description: typeof (m as any).item === 'object' ? sub(m, 'item', ['name', 'description']) : str(pick(m, ['item'])),
+        quantity: num(pick(m, ['quantity'])),
+        cost: num(pick(m, ['cost'])),
+        sell: num(pick(m, ['sell'])),
+        dateUsed: str(pick(m, ['dateused'])),
+      });
+    }
+    for (const l of unwrapList((t as any).labours)) {
+      labours.push({
+        lineId: str(pick(l, ['lineid'])),
+        taskId,
+        user: typeof (l as any).user === 'object' ? sub(l, 'user', ['username', 'name']) : str(pick(l, ['user'])),
+        workDate: str(pick(l, ['workdate', 'workdatetimestart'])),
+        hours: num(pick(l, ['hours'])),
+        cost: num(pick(l, ['cost'])),
+        sell: num(pick(l, ['sell'])),
+        workType: str(pick(l, ['worktype'])),
+      });
+    }
+    for (const d of unwrapList((t as any).documentsandphotos)) {
+      attachments.push({
+        documentId: str(pick(d, ['documentid'])),
+        taskId,
+        fileName: str(pick(d, ['name'])),
+        category: str(pick(d, ['category'])),
+        url: str(pick(d, ['url'])),
+        sizeBytes: num(pick(d, ['sizeinbytes'])),
+      });
+    }
+  }
+  return { jobs, materials, labours, attachments };
 }
 
 // ── invoices (+ line items) ──────────────────────────────────────────────────
@@ -154,123 +228,88 @@ export interface InvoiceRecord {
   clientId: string;
   clientName: string;
   status: string;
-  total: number;
-  totalTax: number;
-  dateIssued: string;
-  datePaid: string;
+  totalEx: number;
+  totalGst: number;
+  totalInc: number;
+  dateInvoiced: string;
+  dueDate: string;
   lineItems: LineItem[];
   raw: Record<string, unknown>;
 }
-export async function fetchInvoices(
-  where?: string,
-  includeLineItems = true
-): Promise<InvoiceRecord[]> {
-  const rows = await fetchAllPaged('invoices', 'invoices', 'invoice', { where });
-  const out: InvoiceRecord[] = [];
-  for (const inv of rows) {
-    const invoiceId = str(pick(inv, ['invoiceid', 'invoiceID', 'id']));
-    let lineItems = parseLineItems(inv);
-    if (includeLineItems && lineItems.length === 0 && invoiceId) {
-      const detail = await getJson(`/invoices/${encodeURIComponent(invoiceId)}`);
-      const node = detail?.response?.invoices?.invoice ?? detail?.response?.invoice;
-      lineItems = parseLineItems(node);
-    }
-    out.push({
-      invoiceId,
-      invoiceNumber: str(pick(inv, ['invoicenumber', 'invoiceno', 'number'])),
-      taskId: str(pick(inv, ['taskid', 'taskID'])),
-      clientId: str(pick(inv, ['clientid', 'clientID'])),
-      clientName: str(pick(inv, ['clientname', 'client'])),
-      status: str(pick(inv, ['status', 'invoicestatus'])),
-      total: num(pick(inv, ['total', 'invoicetotal', 'amount'])),
-      totalTax: num(pick(inv, ['totaltax', 'tax', 'gst'])),
-      dateIssued: str(pick(inv, ['dateissued', 'issued', 'datecreated'])),
-      datePaid: str(pick(inv, ['datepaid', 'paid'])),
-      lineItems,
-      raw: inv,
-    });
-  }
-  return out;
+export async function fetchInvoices(date?: string): Promise<InvoiceRecord[]> {
+  const rows = await fetchZone('invoices', {
+    where: since(date, 'lastupdatedutc'),
+    join: 'lineitems,task',
+  });
+  return rows.map((inv) => ({
+    invoiceId: str(pick(inv, ['invoiceid'])),
+    invoiceNumber: str(pick(inv, ['invoicenumber'])),
+    taskId: sub(inv, 'task', ['taskid']),
+    clientId: sub(inv, 'client', ['clientid']),
+    clientName: sub(inv, 'client', ['clientname']),
+    status: str(pick(inv, ['status'])),
+    totalEx: num(pick(inv, ['totalex'])),
+    totalGst: num(pick(inv, ['totalgst'])),
+    totalInc: num(pick(inv, ['totalinc'])),
+    dateInvoiced: str(pick(inv, ['dateinvoiced'])),
+    dueDate: str(pick(inv, ['duedate'])),
+    lineItems: parseLines((inv as any).lines ?? (inv as any).lineitems),
+    raw: inv,
+  }));
 }
 
-// ── timesheets / labour ──────────────────────────────────────────────────────
+// ── timesheets ────────────────────────────────────────────────────────────────
 export interface TimesheetRecord {
   timesheetId: string;
   taskId: string;
-  userId: string;
-  userName: string;
-  date: string;
+  user: string;
+  workDate: string;
   hours: number;
-  costRate: number;
-  sellRate: number;
-  notes: string;
+  cost: number;
+  charge: number;
+  workType: string;
+  note: string;
   raw: Record<string, unknown>;
 }
-export async function fetchTimesheets(where?: string): Promise<TimesheetRecord[]> {
-  const rows = await fetchAllPaged('timesheets', 'timesheets', 'timesheet', { where });
+export async function fetchTimesheets(date?: string): Promise<TimesheetRecord[]> {
+  const rows = await fetchZone('timesheets', { where: since(date, 'workdate') });
   return rows.map((ts) => ({
-    timesheetId: str(pick(ts, ['timesheetid', 'timesheetID', 'id'])),
-    taskId: str(pick(ts, ['taskid', 'taskID'])),
-    userId: str(pick(ts, ['userid', 'userID', 'staffid'])),
-    userName: str(pick(ts, ['username', 'user', 'staffname'])),
-    date: str(pick(ts, ['date', 'datestart', 'workdate'])),
-    hours: num(pick(ts, ['hours', 'totalhours', 'duration'])),
-    costRate: num(pick(ts, ['costrate', 'cost'])),
-    sellRate: num(pick(ts, ['sellrate', 'sell', 'chargerate'])),
-    notes: str(pick(ts, ['notes', 'description'])),
+    timesheetId: str(pick(ts, ['timesheetid'])),
+    taskId: sub(ts, 'task', ['taskid']),
+    user: typeof (ts as any).user === 'object' ? sub(ts, 'user', ['username', 'name']) : str(pick(ts, ['user'])),
+    workDate: str(pick(ts, ['workdate'])),
+    hours: num(pick(ts, ['hours'])),
+    cost: num(pick(ts, ['cost'])),
+    charge: num(pick(ts, ['charge'])),
+    workType: str(pick(ts, ['worktype'])),
+    note: str(pick(ts, ['note'])),
     raw: ts,
   }));
 }
 
 // ── inventory / materials catalogue ──────────────────────────────────────────
-// NOTE: this is the materials *catalogue*. Materials *used on a job* usually
-// live on the task/quote/invoice line items above, not here.
 export interface InventoryRecord {
   itemId: string;
   partNumber: string;
   description: string;
-  cost: number;
-  sell: number;
+  costEx: number;
+  sellTask: number;
+  sellQuote: number;
   supplier: string;
+  manufacturer: string;
   raw: Record<string, unknown>;
 }
-export async function fetchInventory(where?: string): Promise<InventoryRecord[]> {
-  const rows = await fetchAllPaged('inventory', 'inventory', 'item', { where });
+export async function fetchInventory(date?: string): Promise<InventoryRecord[]> {
+  const rows = await fetchZone('inventory', { where: since(date, 'createdutc') });
   return rows.map((it) => ({
-    itemId: str(pick(it, ['itemid', 'inventoryid', 'id'])),
-    partNumber: str(pick(it, ['partnumber', 'partno', 'sku', 'code'])),
-    description: str(pick(it, ['description', 'name', 'partname'])),
-    cost: num(pick(it, ['cost', 'unitcost', 'costprice'])),
-    sell: num(pick(it, ['sell', 'unitsell', 'sellprice', 'price'])),
-    supplier: str(pick(it, ['supplier', 'suppliername'])),
+    itemId: str(pick(it, ['itemid'])),
+    partNumber: str(pick(it, ['partnumber'])),
+    description: str(pick(it, ['description'])),
+    costEx: num(pick(it, ['costex'])),
+    sellTask: num(pick(it, ['sell_task'])),
+    sellQuote: num(pick(it, ['sell_qte'])),
+    supplier: typeof (it as any).supplier === 'object' ? sub(it, 'supplier', ['name', 'suppliername']) : str(pick(it, ['supplier'])),
+    manufacturer: str(pick(it, ['manufacturer'])),
     raw: it,
   }));
 }
-
-// ── attachments / files per job ──────────────────────────────────────────────
-// Verify the files zone/path against apidocs — sites differ. Returns metadata;
-// run.ts downloads the binaries.
-export interface FileRef {
-  fileId: string;
-  taskId: string;
-  fileName: string;
-  url: string;
-  size: number;
-  raw: Record<string, unknown>;
-}
-export async function fetchTaskFiles(taskId: string): Promise<FileRef[]> {
-  const data = await getJson(`/tasks/${encodeURIComponent(taskId)}/files`);
-  const node = data?.response?.files ?? data?.response?.attachments;
-  const raw = node?.file ?? node?.attachment ?? node;
-  return asArray<Record<string, unknown>>(raw).map((f) => ({
-    fileId: str(pick(f, ['fileid', 'id'])),
-    taskId,
-    fileName: str(pick(f, ['filename', 'name', 'title'])),
-    url: str(pick(f, ['url', 'downloadurl', 'href', 'link'])),
-    size: num(pick(f, ['size', 'filesize'])),
-    raw: f,
-  }));
-}
-
-// quotes are handled by the website client's exportAllQuotes
-export { exportAllQuotes };

@@ -30,7 +30,7 @@ const getArg = (name: string): string | undefined => {
   const hit = args.find((a) => a.startsWith(`--${name}=`));
   return hit ? hit.split('=').slice(1).join('=') : undefined;
 };
-const since = getArg('since'); // YYYY-MM-DD → filters on datemodified
+const since = getArg('since'); // YYYY-MM-DD → filters on createddate
 const includeLineItems = !args.includes('--no-line-items');
 
 // ── tiny CSV serialiser (no external dep) ───────────────────────────────────
@@ -48,7 +48,7 @@ function toCsv(rows: Record<string, unknown>[], columns: string[]): string {
 
 // ── main ────────────────────────────────────────────────────────────────────
 async function main() {
-  const where = since ? `datemodified>'${since}'` : undefined;
+  const where = since ? `and|createddate|>|${since.replace(/-/g, '/')}` : undefined;
 
   console.log(
     `[export-quotes] fetching quotes${since ? ` modified since ${since}` : ' (all)'}` +
@@ -58,7 +58,6 @@ async function main() {
   const records = await exportAllQuotes({
     where,
     includeLineItems,
-    concurrency: 4,
     onProgress: (done, total) => {
       if (done === total || done % 25 === 0) {
         process.stdout.write(`\r[export-quotes] ${done}/${total} quotes`);
@@ -70,8 +69,8 @@ async function main() {
   if (records.length === 0) {
     console.warn(
       '[export-quotes] No quotes returned. Check AROFLO_* credentials and ' +
-        'that the quote field names in src/lib/aroflo.ts (FIELD map) match ' +
-        'your AroFlo API response — verify against https://apidocs.aroflo.com.'
+        'that the quote field names in src/lib/aroflo.ts match your AroFlo ' +
+        'API response — verify against https://apidocs.aroflo.com.'
     );
   }
 

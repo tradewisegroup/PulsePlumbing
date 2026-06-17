@@ -36,16 +36,28 @@ entity, plus `manifest.json` (counts + dollar totals for reconciliation).
 ## What you need
 
 **Earthwise's AroFlo API credentials** (Earthwise is a different AroFlo org to
-Pulse, so these are Earthwise-specific):
+Pulse, so these are Earthwise-specific). AroFlo's API uses **HMAC-SHA512** auth
+and the page shows **four** values — copy ALL of them:
 
-- `AROFLO_USERNAME`
-- `AROFLO_PASSWORD`
-- `AROFLO_SECRET_KEY`
+- `AROFLO_UENCODED`  (uEncoded — derived from the username)
+- `AROFLO_PENCODED`  (pEncoded / API Key)
+- `AROFLO_ORGENCODED`  (orgEncoded)
+- `AROFLO_SECRET_KEY`  (API Secret Key — shown **once**, copy it before Save)
 - `AROFLO_BASE_URL` (default `https://api.aroflo.com`)
+- `AROFLO_HOSTIP` (optional; leave blank when running from cloud/serverless)
 
-Get them from AroFlo: **Site Administration → Integrations → AroFlo API**
-(API access must be enabled on the plan). Do this **while the subscription is
-live** — API access ends when AroFlo is cancelled.
+Get them from AroFlo: **Site Administration → Settings → General → AroFlo API**
+(API access must be enabled on the plan; click *Generate Secret Key*, copy all
+fields, then *Save*). Do this **while the subscription is live** — API access
+ends when AroFlo is cancelled.
+
+> **Auth & API model** (verified against <https://apidocs.aroflo.com>, June 2026
+> — the earlier draft of `src/lib/aroflo.ts` was written against a guessed model
+> and has been fully rewritten): single endpoint `https://api.aroflo.com/?zone=…`,
+> HMAC-SHA512 signature, pipe-delimited filters `and|field|op|value`, responses
+> under `zoneresponse.<zone>`. **Every zone defaults to the last 30 days unless
+> an explicit `where` is passed** — the extractor passes a broad date override
+> so you get full history.
 
 ---
 
@@ -55,16 +67,23 @@ live** — API access ends when AroFlo is cancelled.
 
 ```bash
 # in the project folder
-cp .env.example .env.local        # then fill the four AROFLO_* values
+cp .env.example .env.local        # then fill the AROFLO_* values
 npm install
-npm run export:quotes             # full extract, all quotes + line items
+npm run export:quotes             # canary: all quotes + line items
+npm run export:aroflo -- --download-attachments   # full decommission dataset
 ```
 
 ### Option B — have me run it
 
-Add the four `AROFLO_*` values as **environment secrets** on this remote
-session (don't paste secrets into chat), tell me they're set, and I'll run the
-extract and hand back the files.
+Add the `AROFLO_*` values as **environment secrets** on this remote session
+(don't paste secrets into chat), tell me they're set, and I'll run the extract
+and hand back the files.
+
+> **Agreed plan:** *I validate, you run local.* Once the secrets are set here I
+> run a small canary, fix any field/zone mismatches against real data, commit
+> the corrections, then you do the full archived run locally next to Captain v2.
+> After your local run, **rotate the AroFlo Secret Key** so the credential that
+> touched the cloud is retired.
 
 ---
 
@@ -89,7 +108,8 @@ Run it, then confirm against AroFlo's Quotes list:
 1. **Quote count** in the summary ≈ AroFlo's quote count (all statuses).
 2. **Line items are populated** with non-zero `unitSell` / `unitCost`.
 3. If counts/costs look wrong, the AroFlo JSON field names differ for Earthwise
-   — adjust the `FIELD` map in `src/lib/aroflo.ts` against the Postman
+   — adjust the field readers in `src/lib/aroflo.ts` (quotes) and
+   `scripts/aroflo-export/entities.ts` (other zones) against the Postman
    collection at <https://apidocs.aroflo.com>, then re-run.
 
 ---

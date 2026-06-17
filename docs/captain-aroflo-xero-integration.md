@@ -77,7 +77,7 @@ invoices to Xero, so there's no double-invoicing.
 
 ```bash
 # 1. credentials (see .env.example)
-cp .env.example .env.local   # fill AROFLO_USERNAME / PASSWORD / SECRET_KEY
+cp .env.example .env.local   # fill AROFLO_UENCODED / PENCODED / ORGENCODED / SECRET_KEY
 
 # 2. full historical export
 npm run export:quotes

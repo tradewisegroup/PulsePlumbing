@@ -5,16 +5,19 @@
  * verify Captain → switch AroFlo off"). Pulls every entity needed to
  * decommission AroFlo and writes JSON + CSV per entity, plus a manifest with
  * counts and dollar totals for reconciliation. The Captain import is built
- * later (once modules/job is finalised) and reads these files.
+ * later (against EWG-Captain/modules/job) and reads these files.
+ *
+ * The `jobs` pass uses AroFlo joins, so it also yields per-job materials,
+ * labour and attachments in one sweep.
  *
  * Usage:
- *   npm run export:aroflo                         # all entities
- *   npm run export:aroflo -- --since=2023-07-01   # only modified since
+ *   npm run export:aroflo                          # all entities, full history
+ *   npm run export:aroflo -- --since=2023-07-01    # only created/updated since
  *   npm run export:aroflo -- --entities=clients,jobs,quotes,invoices
  *   npm run export:aroflo -- --download-attachments
  *
- * Requires AROFLO_USERNAME / PASSWORD / SECRET_KEY (and optional
- * AROFLO_BASE_URL) — Earthwise's org credentials. See .env.example.
+ * Requires AROFLO_UENCODED / PENCODED / ORGENCODED / SECRET_KEY (Earthwise's
+ * org). See .env.example.
  */
 
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -26,10 +29,9 @@ import {
   fetchInvoices,
   fetchTimesheets,
   fetchInventory,
-  fetchTaskFiles,
   exportAllQuotes,
-  type FileRef,
 } from './entities.ts';
+import { arofloConfigured } from '../../src/lib/aroflo.ts';
 
 // ── args ─────────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -37,18 +39,15 @@ const getArg = (n: string) => {
   const hit = args.find((a) => a.startsWith(`--${n}=`));
   return hit ? hit.split('=').slice(1).join('=') : undefined;
 };
-const since = getArg('since');
-const where = since ? `datemodified>'${since}'` : undefined;
+const since = getArg('since'); // YYYY-MM-DD (optional)
 const downloadAttachments = args.includes('--download-attachments');
-const ALL = ['clients', 'jobs', 'quotes', 'invoices', 'timesheets', 'inventory', 'attachments'];
+const ALL = ['clients', 'jobs', 'quotes', 'invoices', 'timesheets', 'inventory'];
 const selected = (getArg('entities')?.split(',').map((s) => s.trim()) ?? ALL).filter(Boolean);
 const want = (name: string) => selected.includes(name);
 
-// ── output dir ───────────────────────────────────────────────────────────────
 const ts = new Date().toISOString().replace(/[:.]/g, '-');
 const outDir = resolve(process.cwd(), 'exports', `aroflo-${ts}`);
 
-// strip heavy/nested fields for the flat CSV
 function flatten(rows: Record<string, unknown>[]): Record<string, unknown>[] {
   return rows.map((r) => {
     const o: Record<string, unknown> = {};
@@ -60,38 +59,67 @@ function flatten(rows: Record<string, unknown>[]): Record<string, unknown>[] {
   });
 }
 
-async function writeEntity(name: string, rows: Record<string, unknown>[]) {
+async function writeEntity(name: string, rows: Record<string, unknown>[]): Promise<number> {
   await writeFile(resolve(outDir, `${name}.json`), JSON.stringify(rows, null, 2), 'utf8');
   const flat = flatten(rows);
   await writeFile(resolve(outDir, `${name}.csv`), toCsv(flat, inferColumns(flat)), 'utf8');
   return rows.length;
 }
 
-// ── main ─────────────────────────────────────────────────────────────────────
+const rec = (rows: unknown[]) => rows as unknown as Record<string, unknown>[];
+
 async function main() {
   await mkdir(outDir, { recursive: true });
+  if (!arofloConfigured()) {
+    console.warn('[aroflo-export] AROFLO_* credentials not set — every zone will return empty.');
+  }
   console.log(`[aroflo-export] → ${outDir}`);
-  console.log(`[aroflo-export] entities: ${selected.join(', ')}${since ? `  since ${since}` : ''}`);
+  console.log(`[aroflo-export] entities: ${selected.join(', ')}${since ? `  since ${since}` : '  (full history)'}`);
 
-  const manifest: Record<string, unknown> = { generatedAt: new Date().toISOString(), since: since ?? null, counts: {}, totals: {} };
+  const manifest: Record<string, unknown> = {
+    generatedAt: new Date().toISOString(),
+    since: since ?? null,
+    counts: {} as Record<string, number>,
+    totals: {} as Record<string, number>,
+  };
   const counts = manifest.counts as Record<string, number>;
   const totals = manifest.totals as Record<string, number>;
 
-  // clients
-  if (want('clients')) counts.clients = await writeEntity('clients', (await fetchClients(where)) as unknown as Record<string, unknown>[]);
+  if (want('clients')) counts.clients = await writeEntity('clients', rec(await fetchClients(since)));
 
-  // jobs / tasks
-  let jobIds: string[] = [];
-  if (want('jobs') || (want('attachments') && jobIds.length === 0)) {
-    const jobs = await fetchJobs(where);
-    jobIds = jobs.map((j) => j.taskId).filter(Boolean);
-    if (want('jobs')) counts.jobs = await writeEntity('jobs', jobs as unknown as Record<string, unknown>[]);
+  if (want('jobs')) {
+    const { jobs, materials, labours, attachments } = await fetchJobs(since);
+    counts.jobs = await writeEntity('jobs', rec(jobs));
+    counts.materials = await writeEntity('materials', rec(materials));
+    counts.labours = await writeEntity('labours', rec(labours));
+    counts.attachments = await writeEntity('attachments', rec(attachments));
+    totals.jobsTotalEx = jobs.reduce((a, j) => a + j.totalEx, 0);
+
+    if (downloadAttachments && attachments.length) {
+      const dir = resolve(outDir, 'attachments');
+      await mkdir(dir, { recursive: true });
+      let ok = 0;
+      for (const f of attachments) {
+        if (!f.url) continue;
+        try {
+          const res = await fetch(f.url);
+          if (!res.ok) continue;
+          const buf = Buffer.from(await res.arrayBuffer());
+          const safe = `${f.taskId}_${f.documentId}_${f.fileName}`.replace(/[^\w.\-]/g, '_');
+          await writeFile(resolve(dir, safe), buf);
+          ok++;
+        } catch {
+          /* best-effort; AroFlo doc URLs expire ~10 min */
+        }
+      }
+      counts.attachmentsDownloaded = ok;
+    }
   }
 
-  // quotes (+ line items) — reuse the tested quote exporter
   if (want('quotes')) {
-    const quotes = await exportAllQuotes({ where, includeLineItems: true, concurrency: 4 });
-    counts.quotes = await writeEntity('quotes', quotes as unknown as Record<string, unknown>[]);
+    const where = since ? `and|createddate|>|${since.replace(/-/g, '/')}` : undefined;
+    const quotes = await exportAllQuotes({ where, includeLineItems: true });
+    counts.quotes = await writeEntity('quotes', rec(quotes));
     const qLines = quotes.flatMap((q) =>
       q.lineItems.map((li) => ({ quoteNumber: q.quoteNumber, quoteId: q.quoteId, outcome: q.outcome, ...li }))
     );
@@ -101,55 +129,28 @@ async function main() {
     totals.quotesWonSell = quotes.filter((q) => q.outcome === 'won').reduce((a, q) => a + q.totalSell, 0);
   }
 
-  // invoices (+ line items)
   if (want('invoices')) {
-    const invoices = await fetchInvoices(where, true);
-    counts.invoices = await writeEntity('invoices', invoices as unknown as Record<string, unknown>[]);
+    const invoices = await fetchInvoices(since);
+    counts.invoices = await writeEntity('invoices', rec(invoices));
     const iLines = invoices.flatMap((inv) =>
       inv.lineItems.map((li) => ({ invoiceNumber: inv.invoiceNumber, invoiceId: inv.invoiceId, ...li }))
     );
     counts.invoiceLineItems = iLines.length;
     await writeFile(resolve(outDir, 'invoice-line-items.csv'), toCsv(iLines, inferColumns(iLines)), 'utf8');
-    totals.invoicedTotal = invoices.reduce((a, inv) => a + inv.total, 0);
+    totals.invoicedEx = invoices.reduce((a, inv) => a + inv.totalEx, 0);
+    totals.invoicedInc = invoices.reduce((a, inv) => a + inv.totalInc, 0);
   }
 
-  // timesheets
-  if (want('timesheets')) counts.timesheets = await writeEntity('timesheets', (await fetchTimesheets(where)) as unknown as Record<string, unknown>[]);
-
-  // inventory catalogue
-  if (want('inventory')) counts.inventory = await writeEntity('inventory', (await fetchInventory()) as unknown as Record<string, unknown>[]);
-
-  // attachments (metadata always; binaries with --download-attachments)
-  if (want('attachments')) {
-    const files: FileRef[] = [];
-    for (const id of jobIds) files.push(...(await fetchTaskFiles(id)));
-    counts.attachments = await writeEntity('attachments', files as unknown as Record<string, unknown>[]);
-    if (downloadAttachments && files.length) {
-      const dir = resolve(outDir, 'attachments');
-      await mkdir(dir, { recursive: true });
-      let ok = 0;
-      for (const f of files) {
-        if (!f.url) continue;
-        try {
-          const res = await fetch(f.url);
-          if (!res.ok) continue;
-          const buf = Buffer.from(await res.arrayBuffer());
-          const safe = `${f.taskId}_${f.fileId}_${f.fileName}`.replace(/[^\w.\-]/g, '_');
-          await writeFile(resolve(dir, safe), buf);
-          ok++;
-        } catch { /* best-effort */ }
-      }
-      counts.attachmentsDownloaded = ok;
-    }
-  }
+  if (want('timesheets')) counts.timesheets = await writeEntity('timesheets', rec(await fetchTimesheets(since)));
+  if (want('inventory')) counts.inventory = await writeEntity('inventory', rec(await fetchInventory(since)));
 
   await writeFile(resolve(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2), 'utf8');
 
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   if (total === 0) {
     console.warn(
-      '\n[aroflo-export] Nothing extracted. Check AROFLO_* credentials and that ' +
-        'zone paths / field names in scripts/aroflo-export/entities.ts match your ' +
+      '\n[aroflo-export] Nothing extracted. Check AROFLO_* credentials, and that ' +
+        'the zone keys / field names in scripts/aroflo-export/entities.ts match your ' +
         'AroFlo API response (verify at https://apidocs.aroflo.com).'
     );
   }
