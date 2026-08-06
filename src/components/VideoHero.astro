@@ -1,0 +1,170 @@
+---
+/**
+ * VideoHero.astro
+ *
+ * Full-viewport hero with an autoplay video (or YouTube embed) behind a
+ * dark overlay. Falls back to posterSrc when:
+ *   - useYoutube is false and the video file does not exist / cannot load
+ *   - prefers-reduced-motion is set (CSS media query hides the <video>)
+ *
+ * TODO: Add compressed civil-hero.mp4 to /public/videos/ — see strategy doc
+ *       for the ffmpeg command (target ≤ 8 MB, 1080p, H.264 + AAC stripped).
+ */
+
+export interface Props {
+  videoSrc:      string;
+  posterSrc:     string;
+  headline:      string;
+  subheadline:   string;
+  ctaText:       string;
+  ctaHref:       string;
+  /** When true, renders a YouTube iframe instead of an HTML5 <video>. Default: false */
+  useYoutube?:   boolean;
+}
+
+const {
+  videoSrc,
+  posterSrc,
+  headline,
+  subheadline,
+  ctaText,
+  ctaHref,
+  useYoutube = false,
+} = Astro.props;
+
+// For YouTube, extract the video ID and build the embed URL
+// Accepts: full URL (https://www.youtube.com/watch?v=XXX or https://youtu.be/XXX)
+// or just the raw ID string.
+function buildYouTubeEmbed(src: string): string {
+  let id = src;
+  const watchMatch = src.match(/[?&]v=([^&]+)/);
+  const shortMatch = src.match(/youtu\.be\/([^?]+)/);
+  const embedMatch = src.match(/embed\/([^?]+)/);
+  if (watchMatch)      id = watchMatch[1];
+  else if (shortMatch) id = shortMatch[1];
+  else if (embedMatch) id = embedMatch[1];
+  return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&playsinline=1&modestbranding=1&rel=0`;
+}
+---
+
+<section class="video-hero relative overflow-hidden bg-[#000000]" style="min-height: 520px;">
+
+  <!-- ── Media layer ────────────────────────────────────────────────── -->
+
+  {useYoutube ? (
+    <!-- YouTube iframe embed -->
+    <div class="video-hero__media absolute inset-0 pointer-events-none" aria-hidden="true">
+      <!-- Poster shown until iframe loads -->
+      <img
+        src={posterSrc}
+        alt=""
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      />
+      <iframe
+        class="video-hero__iframe absolute inset-0 w-full h-full"
+        src={buildYouTubeEmbed(videoSrc)}
+        title="Hero background video"
+        allow="autoplay; encrypted-media"
+        frameborder="0"
+        style="transform: scale(1.05);"
+      ></iframe>
+    </div>
+  ) : (
+    <!-- HTML5 video — poster shown while loading or when motion is reduced -->
+    <div class="video-hero__media absolute inset-0" aria-hidden="true">
+      <noscript>
+        <img
+          src={posterSrc}
+          alt=""
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      </noscript>
+      <video
+        class="video-hero__video absolute inset-0 w-full h-full object-cover"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="none"
+        poster={posterSrc}
+      >
+        <source src={videoSrc} type="video/mp4" />
+        <!-- Fallback: browser shows poster if source cannot load -->
+      </video>
+      <!-- Poster layer shown when video fails to load (handled by <video poster> attribute) -->
+    </div>
+  )}
+
+  <!-- ── Dark overlay ───────────────────────────────────────────────── -->
+  <div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
+  <!-- Left-side gradient for copy legibility -->
+  <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" aria-hidden="true"></div>
+
+  <!-- ── Content ────────────────────────────────────────────────────── -->
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex items-center">
+    <div class="max-w-2xl">
+
+      <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-5">
+        QBCC Licensed · Civil Plumbing · SE Queensland
+      </p>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
+        {headline}
+      </h1>
+
+      <p class="text-base sm:text-lg text-white/70 leading-relaxed mb-10 max-w-xl">
+        {subheadline}
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a
+          href={ctaHref}
+          class="inline-flex items-center justify-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-[#0172ae]/30"
+        >
+          {ctaText}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </a>
+        <a
+          href="/civil"
+          class="inline-flex items-center justify-center gap-2 border border-white/25 hover:border-white/50 text-white font-semibold px-8 py-3.5 rounded-full transition-colors"
+        >
+          View capability
+        </a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  /*
+   * prefers-reduced-motion: hide the <video> and let the poster image show
+   * (the <video> poster attribute is always visible behind the video).
+   * For YouTube, we cannot suppress autoplay via CSS alone — the iframe
+   * itself handles motion preferences via the mute param.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .video-hero__video {
+      display: none;
+    }
+    .video-hero__iframe {
+      display: none;
+    }
+  }
+
+  /* Ensure the YouTube iframe covers the section correctly */
+  .video-hero__iframe {
+    /* Wider + taller than viewport to hide controls and black bars */
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 56.25vw; /* 16:9 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.1);
+    position: absolute;
+  }
+</style>
