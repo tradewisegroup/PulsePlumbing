@@ -1,0 +1,242 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+  title:             string;
+  description:       string;
+  canonical:         string;
+  publishDate:       Date;
+  lastReviewed:      Date;
+  author:            string;
+  authorCredentials: string;
+  category:          string;
+  tags:              string[];
+  headings:          { depth: number; slug: string; text: string }[];
+  relatedArticles?:  { title: string; slug: string; description: string }[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  publishDate,
+  lastReviewed,
+  author,
+  authorCredentials,
+  category,
+  tags,
+  headings,
+  relatedArticles = [],
+} = Astro.props;
+
+const PHONE        = '0452 188 420';
+const OFFICE_PHONE = '07 2150 4175';
+
+const categoryLabels: Record<string, string> = {
+  compliance:  'Compliance',
+  services:    'Services',
+  civil:       'Civil',
+  costs:       'Costs',
+  residential: 'Residential',
+};
+
+const h2s = headings.filter((h) => h.depth === 2);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: publishDate.toISOString(),
+  dateModified: lastReviewed.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: author,
+    description: authorCredentials,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Pulse Plumbing, Gas & Civil',
+    url: 'https://pulseqld.com.au',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://pulseqld.com.au/images/logo-light.jpeg',
+    },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+};
+---
+
+<BaseLayout {title} {description} {canonical} ogType="article" schema={articleSchema}>
+
+  <!-- ── Breadcrumb ────────────────────────────────────────────────── -->
+  <div class="bg-[#F0F5FA] border-b border-[#D1D5DB]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <nav class="flex items-center gap-2 text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[#0172ae] transition-colors">Home</a>
+        <span>/</span>
+        <a href="/knowledge-base" class="hover:text-[#0172ae] transition-colors">Knowledge Base</a>
+        <span>/</span>
+        <span class="text-slate-700 font-medium truncate max-w-xs">{title}</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ── Article header ────────────────────────────────────────────── -->
+  <div class="bg-[#000000] py-12 lg:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] bg-[#10a2d5]/10 border border-[#10a2d5]/20 rounded-full px-3 py-1">
+            {categoryLabels[category] ?? category}
+          </span>
+          {tags.slice(0, 3).map((tag) => (
+            <span class="text-xs font-medium text-white/40 bg-white/5 border border-white/10 rounded-full px-3 py-1">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">{title}</h1>
+        <p class="text-white/60 text-base leading-relaxed mb-6">{description}</p>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/40">
+          <span>By <span class="text-white/70 font-semibold">{author}</span> · {authorCredentials}</span>
+          <span>Published {formatDate(publishDate)}</span>
+          <span>Last reviewed {formatDate(lastReviewed)}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3-column layout ───────────────────────────────────────────── -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid lg:grid-cols-[220px_1fr_260px] gap-10 items-start">
+
+      <!-- Left: Table of Contents -->
+      <aside class="hidden lg:block sticky top-24 self-start">
+        {h2s.length > 0 && (
+          <div class="bg-[#F0F5FA] rounded-xl border border-[#D1D5DB] p-5">
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">On this page</p>
+            <nav>
+              <ul class="space-y-1.5">
+                {h2s.map((h) => (
+                  <li>
+                    <a
+                      href={`#${h.slug}`}
+                      class="block text-sm text-slate-600 hover:text-[#0172ae] transition-colors leading-snug py-0.5"
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        )}
+      </aside>
+
+      <!-- Main: Article body -->
+      <article class="
+        prose prose-slate max-w-none
+        prose-headings:font-bold prose-headings:text-[#000000] prose-headings:scroll-mt-24
+        prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:border-[#D1D5DB] prose-h2:pb-3
+        prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
+        prose-p:text-[#1a1a1a] prose-p:leading-relaxed prose-p:text-base
+        prose-a:text-[#0172ae] prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-[#000000]
+        prose-table:text-sm prose-th:bg-[#F0F5FA] prose-th:font-semibold prose-th:text-[#000000]
+        prose-td:border-[#D1D5DB] prose-th:border-[#D1D5DB]
+        prose-li:text-[#1a1a1a]
+        prose-blockquote:border-l-[#0172ae] prose-blockquote:bg-[#F0F5FA] prose-blockquote:rounded-r-lg prose-blockquote:py-1
+      ">
+        <slot />
+      </article>
+
+      <!-- Right: Sidebar -->
+      <aside class="hidden lg:flex flex-col gap-5 sticky top-24 self-start">
+
+        <!-- CTA card -->
+        <div class="bg-[#000000] rounded-xl p-5 text-white">
+          <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-2">Need a licensed plumber?</p>
+          <p class="text-sm text-white/70 leading-relaxed mb-4">
+            QBCC-licensed and available 24/7 across Brisbane, Logan, Gold Coast and Ipswich.
+          </p>
+          <div class="space-y-2.5 mb-4">
+            <a href="tel:0452188420"
+               class="flex items-center gap-2 text-sm font-bold text-white hover:text-[#10a2d5] transition-colors">
+              <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              {PHONE}
+            </a>
+            <a href="tel:0721504175"
+               class="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors">
+              <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              {OFFICE_PHONE} <span class="text-white/40 text-xs">office</span>
+            </a>
+          </div>
+          <a href="/contact"
+             class="block text-center bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold py-2.5 rounded-full transition-colors">
+            Get a Free Quote
+          </a>
+        </div>
+
+        <!-- Related articles -->
+        {relatedArticles.length > 0 && (
+          <div class="bg-[#F0F5FA] rounded-xl border border-[#D1D5DB] p-5">
+            <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Related articles</p>
+            <ul class="space-y-3">
+              {relatedArticles.map((a) => (
+                <li>
+                  <a href={`/knowledge-base/${a.slug}`}
+                     class="block text-sm font-semibold text-[#000000] hover:text-[#0172ae] transition-colors leading-snug mb-0.5">
+                    {a.title}
+                  </a>
+                  <p class="text-xs text-slate-400 leading-snug line-clamp-2">{a.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <!-- Compliance check CTA -->
+        <div class="bg-[#0172ae]/5 border border-[#0172ae]/20 rounded-xl p-5">
+          <p class="text-xs font-bold uppercase tracking-widest text-[#0172ae] mb-2">Free compliance check</p>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Is your property plumbing compliant? Take our 2-minute scorecard.
+          </p>
+          <a href="/strata-scorecard"
+             class="block text-center text-sm font-semibold text-[#0172ae] hover:text-[#015d8e] border border-[#0172ae] py-2 rounded-full transition-colors">
+            Take the Scorecard →
+          </a>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- Author block -->
+    <div class="mt-12 pt-8 border-t border-[#D1D5DB] max-w-3xl lg:ml-[230px]">
+      <div class="bg-[#F0F5FA] rounded-xl border border-[#D1D5DB] p-5 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-[#0172ae] flex items-center justify-center flex-shrink-0 text-white font-bold text-sm">
+          LD
+        </div>
+        <div>
+          <p class="font-bold text-[#000000] text-sm">{author}</p>
+          <p class="text-xs text-[#0172ae] font-semibold mb-1">{authorCredentials} · Director, Pulse Plumbing, Gas & Civil</p>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            This article was written by a QBCC-licensed plumber with hands-on experience across residential, commercial, and civil plumbing projects throughout South-East Queensland.
+          </p>
+          <p class="text-xs text-slate-400 mt-2">
+            Published {formatDate(publishDate)} · Last reviewed {formatDate(lastReviewed)}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</BaseLayout>
