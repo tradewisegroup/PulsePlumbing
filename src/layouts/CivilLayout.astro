@@ -338,11 +338,11 @@ const pageSchema = {
   <!-- ══════════════════════════════════════════════════════════════════════════
        §2 HERO — pages can override with <slot name="hero">
        ══════════════════════════════════════════════════════════════════════════ -->
-  {Astro.slots.has('hero') && <slot name="hero" />}
-  {!Astro.slots.has('hero') && <section class="relative overflow-hidden bg-[#0f172a]">
-
-    <!-- Background: solid dark only — no image overlay on sub-pages -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+  {Astro.slots.has('hero') ? (
+    <slot name="hero" />
+  ) : (
+    <section class="bg-[#0f172a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
       <div class="max-w-3xl">
 
         <!-- Copy -->
@@ -404,7 +404,8 @@ const pageSchema = {
 
       </div>
     </div>
-  </section>}
+    </section>
+  )}
 
   <!-- ══════════════════════════════════════════════════════════════════════════
        §3 PAGE CONTENT
