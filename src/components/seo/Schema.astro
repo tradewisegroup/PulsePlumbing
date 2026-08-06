@@ -41,7 +41,8 @@ type PageType =
   | 'location'
   | 'blog'
   | 'civil'
-  | 'contact';
+  | 'contact'
+  | 'job';
 
 export interface FAQ {
   q: string;
@@ -65,6 +66,17 @@ export interface Props {
   authorName?:      string;
   /** Canonical URL — defaults to SITE + Astro.url.pathname */
   canonical?:       string;
+  // ── JobPosting fields (type="job") ──────────────────────────────────────────
+  /** Job title e.g. "Qualified Plumber — All Rounder" */
+  jobTitle?:        string;
+  /** Plain-text job description */
+  jobDescription?:  string;
+  /** ISO date the posting was published e.g. "2026-08-01" */
+  jobDatePosted?:   string;
+  /** ISO date the posting is valid through e.g. "2026-12-31" */
+  jobValidThrough?: string;
+  /** City / region the role is based in e.g. "Ormeau, QLD" */
+  jobLocation?:     string;
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -85,6 +97,11 @@ const {
   articleDate,
   authorName,
   canonical,
+  jobTitle,
+  jobDescription,
+  jobDatePosted,
+  jobValidThrough,
+  jobLocation,
 } = Astro.props;
 
 const pageUrl = canonical ?? (SITE + Astro.url.pathname);
@@ -416,6 +433,37 @@ if (type === 'contact') {
       '@type': 'Organization',
       '@id':   `${SITE}/#business`,
     },
+  });
+}
+
+// ── job ──────────────────────────────────────────────────────────────────────
+// JobPosting schema for careers / job-listing pages.
+// Google indexes JobPosting markup for display in job-search results.
+if (type === 'job' && jobTitle) {
+  graph.push({
+    '@type':          'JobPosting',
+    '@id':            `${pageUrl}#job`,
+    title:            jobTitle,
+    ...(jobDescription ? { description: jobDescription } : {}),
+    ...(jobDatePosted  ? { datePosted:  jobDatePosted  } : {}),
+    ...(jobValidThrough ? { validThrough: jobValidThrough } : {}),
+    employmentType:   'FULL_TIME',
+    hiringOrganization: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+      name:    'Pulse Plumbing, Gas & Civil',
+      sameAs:  SITE,
+    },
+    jobLocation: {
+      '@type': 'Place',
+      address: {
+        '@type':          'PostalAddress',
+        addressLocality:  jobLocation ?? 'Ormeau',
+        addressRegion:    'QLD',
+        addressCountry:   'AU',
+      },
+    },
+    url: pageUrl,
   });
 }
 
