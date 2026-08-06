@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComplianceScorecard from '../components/forms/ComplianceScorecard.jsx';
+
+const title       = 'Commercial Plumbing Compliance Scorecard | Pulse Plumbing, Gas & Civil';
+const description = 'Is your property plumbing compliant? Take our free 2-minute scorecard for property managers and strata managers across Brisbane and SEQ.';
+const canonical   = 'https://pulseqld.com.au/strata-scorecard';
+
+const trustSignals = [
+  {
+    text: 'Based on Plumbing and Drainage Act 2018 (Qld)',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/></svg>`,
+  },
+  {
+    text: 'Takes less than 2 minutes',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  },
+  {
+    text: 'Free — no obligation',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  },
+  {
+    text: 'Personalised compliance report',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>`,
+  },
+];
+---
+
+<BaseLayout {title} {description} {canonical}>
+
+  <!-- ── SECTION 1: Hero ─────────────────────────────────────────────── -->
+  <section class="bg-[#000000] py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#10a2d5] bg-[#10a2d5]/10 border border-[#10a2d5]/20 rounded-full px-4 py-1.5 mb-6">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          Free compliance tool for property managers
+        </span>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Is Your Property<br class="hidden sm:block" /> Plumbing Compliant?
+        </h1>
+        <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10">
+          Answer 5 quick questions and get a personalised compliance report. Free for property managers across SEQ.
+        </p>
+        <a
+          href="#scorecard"
+          class="inline-flex items-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-[#0172ae]/30"
+        >
+          Start the Scorecard
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" transform="rotate(-90 12 12)"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: Trust signals ────────────────────────────────────── -->
+  <section class="bg-[#F0F5FA] border-b border-[#D1D5DB]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+        {trustSignals.map((s) => (
+          <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+            <div class="w-4 h-4 text-[#0172ae] flex-shrink-0" set:html={s.icon} />
+            {s.text}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: Scorecard ────────────────────────────────────────── -->
+  <section id="scorecard" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid lg:grid-cols-5 gap-12 items-start">
+
+        <!-- Left: context panel -->
+        <div class="lg:col-span-2 space-y-6">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Why this matters</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-[#000000] mb-4 leading-tight">
+              Compliance protects your property and your tenants
+            </h2>
+            <p class="text-sm text-[#1a1a1a]/70 leading-relaxed">
+              Under Queensland law, property owners and managers are responsible for ensuring plumbing work is carried out by licensed contractors. Failure to comply can result in significant fines and liability exposure.
+            </p>
+          </div>
+
+          <!-- Who this is for -->
+          <div class="bg-[#F0F5FA] rounded-xl p-5 border border-[#D1D5DB]">
+            <p class="text-sm font-bold text-[#000000] mb-3">Who is this for?</p>
+            <ul class="space-y-2">
+              {[
+                'Strata and body corporate managers',
+                'Commercial property managers',
+                'Facilities managers',
+                'Building owners and investors',
+              ].map((item) => (
+                <li class="flex items-center gap-2.5 text-sm text-[#1a1a1a]/70">
+                  <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- QBCC badge -->
+          <div class="flex items-center gap-3 text-xs text-slate-500">
+            <svg class="w-8 h-8 text-[#0172ae] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 6.627 5.373 12 12 12s12-5.373 12-12c0-2.13-.554-4.133-1.527-5.874"/>
+            </svg>
+            <span>Pulse Plumbing, Gas &amp; Civil — QBCC Contractor Lic 15384771</span>
+          </div>
+        </div>
+
+        <!-- Right: scorecard -->
+        <div class="lg:col-span-3">
+          <ComplianceScorecard client:load />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 4: Compliance explainer ────────────────────────────── -->
+  <section class="py-16 bg-[#F0F5FA] border-t border-[#D1D5DB]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-2xl border border-[#D1D5DB] p-6 sm:p-8">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-[#0172ae]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-[#000000] mb-3">Your obligations under Queensland law</h2>
+            <p class="text-sm text-[#1a1a1a]/70 leading-relaxed">
+              Under the <strong class="text-[#000000]">Plumbing and Drainage Act 2018 (Qld)</strong>, property owners and managers are responsible for ensuring all plumbing and drainage work is carried out by a <strong class="text-[#000000]">QBCC-licensed contractor</strong>. For all notifiable work, licensed contractors are required to obtain compliance certificates (<strong class="text-[#000000]">Form 9</strong>) and provide copies to the property owner. Failure to maintain these records — or to engage unlicensed trades — can expose property owners to penalties and liability for consequential damage. A proactive compliance program, including annual backflow device testing and regular CCTV drain inspections, is the most effective way to manage these obligations and protect property value.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
