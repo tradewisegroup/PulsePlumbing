@@ -72,6 +72,9 @@ export interface Props {
 const SITE  = 'https://pulseqld.com.au';
 const PHONE = '0452188420';
 const EMAIL = 'admin@pulseqld.com.au';
+const FACEBOOK_URL  = import.meta.env.FACEBOOK_URL  ?? '';
+const INSTAGRAM_URL = import.meta.env.INSTAGRAM_URL ?? '';
+const SOCIAL_LINKS  = [FACEBOOK_URL, INSTAGRAM_URL].filter(Boolean);
 
 const {
   type,
@@ -253,7 +256,7 @@ const localBusiness: Record<string, unknown> = {
       },
     },
   ],
-  sameAs: [],
+  sameAs: SOCIAL_LINKS,
 };
 
 // Inject GeoCoordinates when a suburb is provided.

@@ -5,31 +5,41 @@ const NAV = [
   {
     label: 'Services',
     children: [
-      { label: 'Maintenance Plumbing', href: '/services/maintenance-plumbing', icon: '🔧' },
-      { label: 'Commercial',           href: '/services/commercial',           icon: '🏢' },
-      { label: 'Residential',          href: '/services/residential',          icon: '🏠' },
-      { label: 'Gas Fitting',          href: '/services/gas-fitting',          icon: '⛽' },
-      { label: 'Blocked Drains',       href: '/services/blocked-drains',       icon: '🚿' },
-      { label: 'Hot Water',            href: '/services/hot-water-systems',    icon: '🔥' },
-      { label: 'CCTV Drain Camera',    href: '/services/drain-camera',         icon: '📹' },
-      { label: 'Backflow Prevention',  href: '/services/backflow-prevention',  icon: '🔄' },
+      { label: 'Maintenance Plumbing',      href: '/services/maintenance-plumbing' },
+      { label: 'Residential',               href: '/services/residential' },
+      { label: 'Commercial',                href: '/services/commercial' },
+      { label: 'Gas Fitting',               href: '/services/gas-fitting' },
+      { label: 'Blocked Drains',            href: '/services/blocked-drains' },
+      { label: 'Hot Water Systems',         href: '/services/hot-water-systems' },
+      { label: 'CCTV Drain Camera',         href: '/services/drain-camera' },
+      { label: 'Backflow Prevention',       href: '/services/backflow-prevention' },
+      { label: 'InSinkErator Installation', href: '/services/insinkerator' },
     ],
   },
   {
     label: 'Industries',
     children: [
-      { label: 'Retail',                href: '/industries/retail',                icon: '🛒' },
-      { label: 'Childcare',             href: '/industries/childcare',             icon: '👶' },
-      { label: 'Education',             href: '/industries/education',             icon: '🎓' },
-      { label: 'Aged Care',             href: '/industries/aged-care',             icon: '❤️' },
-      { label: 'Student Accommodation', href: '/industries/student-accommodation', icon: '🏘️' },
-      { label: 'Commercial Real Estate',href: '/industries/commercial-real-estate',icon: '🏗️' },
-      { label: 'Property Management',   href: '/industries/property-management',   icon: '🔑' },
-      { label: 'New Builds',            href: '/industries/new-builds',            icon: '🏗️' },
+      { label: 'Retail',                 href: '/industries/retail' },
+      { label: 'Childcare',              href: '/industries/childcare' },
+      { label: 'Education',              href: '/industries/education' },
+      { label: 'Aged Care',              href: '/industries/aged-care' },
+      { label: 'Student Accommodation',  href: '/industries/student-accommodation' },
+      { label: 'Commercial Real Estate', href: '/industries/commercial-real-estate' },
+      { label: 'Property Management',    href: '/industries/property-management' },
+      { label: 'New Builds',             href: '/industries/new-builds' },
     ],
   },
-  { label: 'Civil',    href: '/civil' },
+  { label: 'Civil', href: '/civil' },
+  {
+    label: 'Resources',
+    children: [
+      { label: 'Knowledge Base',       href: '/knowledge-base' },
+      { label: 'Compliance Scorecard', href: '/strata-scorecard' },
+      { label: 'Blog',                 href: '/blog' },
+    ],
+  },
   { label: 'About',   href: '/about' },
+  { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -104,7 +114,7 @@ export default function MobileMenu() {
             {/* Emergency banner — always visible */}
             <a
               href="tel:0452188420"
-              className="flex items-center justify-between gap-3 bg-red-600 hover:bg-red-700 px-5 py-3 transition-colors"
+              className="flex items-center justify-between gap-3 bg-[#f19329] hover:bg-[#d97d1a] px-5 py-3 transition-colors"
             >
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2.5 w-2.5">
@@ -162,7 +172,6 @@ export default function MobileMenu() {
                               onClick={() => setIsOpen(false)}
                               className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded-lg transition-colors"
                             >
-                              <span className="text-base leading-none">{child.icon}</span>
                               {child.label}
                             </a>
                           </li>
