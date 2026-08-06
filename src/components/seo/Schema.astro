@@ -111,6 +111,12 @@ const PHONE        = '0452188420';
 const OFFICE_PHONE = '0721504175';
 const EMAIL = 'admin@pulseqld.com.au';
 
+// Social profiles — populate once pages are live
+// Set FACEBOOK_URL and INSTAGRAM_URL in .env.local / Cloudflare Pages env vars
+const FACEBOOK_URL  = import.meta.env.FACEBOOK_URL  ?? '';
+const INSTAGRAM_URL = import.meta.env.INSTAGRAM_URL ?? '';
+const SOCIAL_LINKS  = [FACEBOOK_URL, INSTAGRAM_URL].filter(Boolean);
+
 const {
   type,
   pageTitle,
@@ -301,7 +307,7 @@ const localBusiness: Record<string, unknown> = {
       },
     },
   ],
-  sameAs: [],
+  sameAs: SOCIAL_LINKS,
   contactPoint: [
     {
       '@type':            'ContactPoint',
