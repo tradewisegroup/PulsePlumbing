@@ -1,0 +1,366 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title       = 'About Pulse Plumbing, Gas & Civil | Brisbane & SEQ';
+const description = 'Meet the team behind Pulse Plumbing, Gas & Civil. Family-run, QBCC licensed (Lic 15384771), serving Brisbane, Logan, Gold Coast and Ipswich across South-East Queensland.';
+const canonical   = 'https://pulseqld.com.au/about';
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': 'https://pulseqld.com.au/about/#page',
+  name: 'About Pulse Plumbing, Gas & Civil',
+  url: canonical,
+  description,
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    '@id': 'https://pulseqld.com.au/#business',
+  },
+};
+
+const credentials = [
+  {
+    label: 'QBCC Contractor Licence',
+    value: '15384771',
+    sub: 'Queensland',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 6.627 5.373 12 12 12s12-5.373 12-12c0-2.13-.554-4.133-1.527-5.874"/></svg>`,
+  },
+  {
+    label: 'Plumbing Licence',
+    value: '476430C',
+    sub: 'New South Wales',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 6.627 5.373 12 12 12s12-5.373 12-12c0-2.13-.554-4.133-1.527-5.874"/></svg>`,
+  },
+  {
+    label: 'ABN',
+    value: '62 652 712 699',
+    sub: 'Australian Business Number',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg>`,
+  },
+  {
+    label: 'ACN',
+    value: '652 712 699',
+    sub: 'Australian Company Number',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg>`,
+  },
+  {
+    label: 'Public Liability Insurance',
+    value: 'Current',
+    sub: 'Fully insured',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 6.627 5.373 12 12 12s12-5.373 12-12c0-2.13-.554-4.133-1.527-5.874"/></svg>`,
+  },
+  {
+    label: 'Workers Compensation',
+    value: 'Current',
+    sub: 'All staff covered',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 6.627 5.373 12 12 12s12-5.373 12-12c0-2.13-.554-4.133-1.527-5.874"/></svg>`,
+  },
+];
+
+const values = [
+  {
+    title: 'Reliability',
+    body: 'We show up when we say we will. 24/7 availability including after hours, weekends, and public holidays.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  },
+  {
+    title: 'Transparency',
+    body: 'Upfront, itemised quotes before we start. No hidden call-out fees. No surprises on the invoice.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>`,
+  },
+  {
+    title: 'Community',
+    body: 'Based in Ormeau, we\'re part of the South-East Queensland community. We take pride in the work we do.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>`,
+  },
+];
+---
+
+<BaseLayout {title} {description} {canonical} schema={aboutSchema}>
+
+  <!-- ── SECTION 1: Hero ─────────────────────────────────────────────── -->
+  <section class="bg-[#000000] py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center text-center gap-8">
+
+        <img
+          src="/images/logo-dark.jpeg"
+          alt="Pulse Plumbing, Gas & Civil logo"
+          width="220"
+          height="86"
+          class="h-16 w-auto"
+          loading="eager"
+        />
+
+        <div class="max-w-3xl">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+            About Pulse Plumbing,<br class="hidden sm:block" /> Gas &amp; Civil
+          </h1>
+          <p class="text-lg sm:text-xl text-white/70 leading-relaxed">
+            A family-run trade business built on reliability, compliance, and genuine care for our community across South-East Queensland.
+          </p>
+        </div>
+
+        <!-- Quick trust stats -->
+        <div class="flex flex-wrap justify-center gap-8 pt-4 border-t border-white/10 w-full max-w-2xl">
+          {[
+            { stat: 'QBCC', label: 'Lic 15384771' },
+            { stat: '24/7', label: 'Emergency response' },
+            { stat: '130+', label: 'Suburbs serviced' },
+            { stat: 'SEQ', label: 'Brisbane to Gold Coast' },
+          ].map((item) => (
+            <div class="text-center">
+              <p class="text-2xl font-bold text-[#10a2d5]">{item.stat}</p>
+              <p class="text-xs text-white/50 mt-0.5">{item.label}</p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: Our Story ────────────────────────────────────────── -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+        <!-- Left: copy -->
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Our Story</p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-[#000000] mb-8 leading-tight">
+            Built on the foundations of trust and technical excellence
+          </h2>
+
+          <div class="space-y-5 text-[#1a1a1a] leading-relaxed">
+            <p>
+              Pulse Plumbing, Gas &amp; Civil was founded with a clear purpose: to deliver reliable, QBCC-licensed plumbing and gas services to residential and commercial clients across South-East Queensland. From day one, every callout has been approached with the same commitment — show up on time, fix it right, and treat every client's property with respect.
+            </p>
+            <p>
+              What began as residential maintenance has grown into a full-service operation spanning commercial plumbing, gas fitting, and civil infrastructure works — including sewer construction, water main installation, and stormwater drainage. Today, Pulse operates across Logan City, Brisbane (south), Redland City, Gold Coast North, and Ipswich, supporting everything from individual homeowners to large commercial facilities managers.
+            </p>
+            <p>
+              Our commitment to QBCC compliance, transparent quoting, and same-day response sets us apart. We don't charge hidden call-out fees, we provide itemised quotes before any work begins, and we back every job with the full credentials required by Queensland and New South Wales licensing bodies.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: image -->
+        <div class="relative">
+          <img
+            src="/images/van-side.jpg"
+            alt="Pulse Plumbing & Civil LDV service van — South-East Queensland"
+            width="640"
+            height="480"
+            class="w-full rounded-2xl shadow-xl object-cover aspect-[4/3]"
+            loading="lazy"
+          />
+          <!-- Floating badge -->
+          <div class="absolute -bottom-5 -left-5 bg-[#0172ae] text-white rounded-xl px-5 py-4 shadow-lg hidden sm:block">
+            <p class="text-2xl font-bold leading-none">24/7</p>
+            <p class="text-xs text-white/80 mt-1">Emergency response</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: Director ─────────────────────────────────────────── -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Leadership</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Meet the Director</h2>
+      </div>
+
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-[#F0F5FA] rounded-2xl p-8 sm:p-10 border border-[#D1D5DB]">
+
+          <!-- Director info -->
+          <div class="flex flex-col sm:flex-row sm:items-start gap-6 mb-8">
+            <div class="w-16 h-16 rounded-full bg-[#0172ae] flex items-center justify-center flex-shrink-0 text-white text-2xl font-bold">
+              LD
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-[#000000]">Lachlan De Santis</h3>
+              <p class="text-[#0172ae] font-semibold text-sm mt-0.5">Director &amp; Licensed Plumber</p>
+              <div class="flex flex-wrap gap-3 mt-3">
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#1a1a1a] bg-white border border-[#D1D5DB] rounded-full px-3 py-1">
+                  <svg class="w-3.5 h-3.5 text-[#0172ae]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  QBCC Lic: 15384771
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#1a1a1a] bg-white border border-[#D1D5DB] rounded-full px-3 py-1">
+                  <svg class="w-3.5 h-3.5 text-[#0172ae]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                  </svg>
+                  Based in Ormeau, QLD
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quote -->
+          <blockquote class="relative">
+            <svg class="absolute -top-2 -left-2 w-8 h-8 text-[#10a2d5]/30" fill="currentColor" viewBox="0 0 32 32">
+              <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+            </svg>
+            <p class="text-[#1a1a1a] text-lg leading-relaxed pl-6 italic">
+              "We built Pulse on the principle that tradespeople should be reliable, transparent, and proud of their work. Every job — whether it's a blocked drain or a civil water main — gets the same standard of care."
+            </p>
+            <footer class="mt-4 pl-6">
+              <p class="text-sm font-semibold text-[#000000]">Lachlan De Santis</p>
+              <p class="text-xs text-slate-500">Director, Pulse Plumbing, Gas &amp; Civil</p>
+            </footer>
+          </blockquote>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 4: Credentials ──────────────────────────────────────── -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Licences &amp; Compliance</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Fully licensed &amp; insured</h2>
+        <p class="mt-4 text-[#1a1a1a]/70 max-w-xl mx-auto">
+          Every credential you need before inviting us on site — verified and current.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {credentials.map((c) => (
+          <div class="bg-white border border-[#D1D5DB] rounded-xl p-5 flex items-start gap-4 hover:border-[#0172ae] transition-colors group">
+            <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0172ae]/15 transition-colors">
+              <div class="w-5 h-5 text-[#0172ae]" set:html={c.icon} />
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-0.5">{c.label}</p>
+              <p class="text-base font-bold text-[#000000] truncate">{c.value}</p>
+              <p class="text-xs text-slate-500 mt-0.5">{c.sub}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 5: Our Fleet ────────────────────────────────────────── -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Equipment</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Our fleet</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="overflow-hidden rounded-2xl shadow-md">
+          <img
+            src="/images/van-hero.jpg"
+            alt="Pulse Plumbing, Gas & Civil branded service van"
+            width="640"
+            height="427"
+            class="w-full h-72 object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="overflow-hidden rounded-2xl shadow-md">
+          <img
+            src="/images/excavator-branded.jpg"
+            alt="Pulse Plumbing, Gas & Civil branded excavator on civil infrastructure project in SEQ"
+            width="640"
+            height="427"
+            class="w-full h-72 object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <p class="text-center text-sm text-slate-500 mt-6">
+        Our fleet operates across Brisbane, Logan, Gold Coast, and Ipswich — 24 hours a day, 7 days a week.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: Our Values ───────────────────────────────────────── -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">What drives us</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Our values</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-6">
+        {values.map((v) => (
+          <div class="bg-white rounded-2xl p-8 border border-[#D1D5DB] hover:border-[#0172ae] transition-colors group text-center">
+            <div class="w-14 h-14 rounded-xl bg-[#0172ae]/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-[#0172ae]/15 transition-colors">
+              <div class="w-7 h-7 text-[#0172ae]" set:html={v.icon} />
+            </div>
+            <h3 class="text-lg font-bold text-[#000000] mb-3">{v.title}</h3>
+            <p class="text-sm text-[#1a1a1a]/70 leading-relaxed">{v.body}</p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 7: CTA ──────────────────────────────────────────────── -->
+  <section class="py-20 bg-[#000000]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+        Ready to work with us?
+      </h2>
+      <p class="text-white/60 text-lg mb-10 max-w-xl mx-auto">
+        Whether you need a quote, want to join our team, or have an emergency — we're here.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/careers"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-white/30 hover:border-white text-white font-semibold px-8 py-3.5 rounded-full transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/>
+          </svg>
+          Join Our Team
+        </a>
+
+        <a
+          href="/contact"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-[#0172ae]/25"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/>
+          </svg>
+          Get a Free Quote
+        </a>
+
+        <a
+          href="tel:0452188420"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#f19329] hover:bg-[#d97d1a] text-white font-bold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-[#f19329]/25"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+          </svg>
+          Call 0452 188 420
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>

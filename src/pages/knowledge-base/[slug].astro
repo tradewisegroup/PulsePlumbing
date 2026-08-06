@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import KnowledgeLayout from '../../layouts/KnowledgeLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('knowledge');
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props:  { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+
+// Related articles: same category, exclude current
+const allArticles = await getCollection('knowledge');
+const related = allArticles
+  .filter((a) => a.id !== article.id && a.data.category === article.data.category)
+  .slice(0, 3)
+  .map((a) => ({ title: a.data.title, slug: a.id, description: a.data.description }));
+
+const canonical = `https://pulseqld.com.au/knowledge-base/${article.id}`;
+---
+
+<KnowledgeLayout
+  title={article.data.title}
+  description={article.data.description}
+  {canonical}
+  publishDate={article.data.publishDate}
+  lastReviewed={article.data.lastReviewed}
+  author={article.data.author}
+  authorCredentials={article.data.authorCredentials}
+  category={article.data.category}
+  tags={article.data.tags}
+  {headings}
+  relatedArticles={related}
+>
+  <Content />
+</KnowledgeLayout>

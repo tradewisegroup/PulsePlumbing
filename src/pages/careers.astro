@@ -1,0 +1,315 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Schema from '../components/seo/Schema.astro';
+import JobApplicationForm from '../components/forms/JobApplicationForm.jsx';
+
+const title       = 'Plumbing & Civil Jobs Brisbane & SEQ | Careers at Pulse';
+const description = 'Join the Pulse Plumbing, Gas & Civil team. We\'re hiring qualified plumbers and civil workers for residential, commercial, and civil projects across Brisbane, Logan, and the Gold Coast.';
+const canonical   = 'https://pulseqld.com.au/careers';
+
+const benefits = [
+  {
+    title: 'Company Vehicle & Fuel Card',
+    body: 'Drive a branded Pulse vehicle. Fuel card included.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>`,
+  },
+  {
+    title: 'Competitive Hourly Rate',
+    body: 'Paid fairly for your skills and experience.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+  },
+  {
+    title: 'Variety of Work',
+    body: 'Residential maintenance, commercial plumbing, civil works, and gas fitting. No two days are the same.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/></svg>`,
+  },
+  {
+    title: 'Supportive Team',
+    body: 'Small, family-run business. We look after our people.',
+    icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>`,
+  },
+];
+
+const requirements = [
+  'Qualified Plumber (QBCC Contractor Licence preferred)',
+  'Current Manual Driver\'s Licence',
+  'Reliable, strong work ethic and takes pride in quality workmanship',
+  'Able to work independently and as part of a team',
+  'Experience in maintenance and commercial work highly regarded',
+  'Civil experience a bonus but not essential',
+];
+
+const workTypes = [
+  'Residential Maintenance',
+  'Commercial Maintenance',
+  'Commercial Plumbing',
+  'Civil Works',
+  'Drainage',
+  'Gas Fitting',
+];
+
+const cultureValues = [
+  { label: 'Small, family-run business', icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>` },
+  { label: 'We value honesty and teamwork', icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 12c0 6.627 5.373 12 12 12s12-5.373 12-12c0-2.13-.554-4.133-1.527-5.874"/></svg>` },
+  { label: 'We take pride in the work we do', icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>` },
+];
+---
+
+<BaseLayout {title} {description} {canonical}>
+
+  <slot name="head" slot="head">
+    <Schema
+      type="job"
+      pageTitle="Qualified Plumber — All Rounder"
+      pageDescription={description}
+      canonical={canonical}
+      jobTitle="Qualified Plumber — All Rounder"
+      jobDescription="Join the Pulse Plumbing, Gas & Civil team as a Qualified Plumber based in Ormeau, QLD. Work across residential maintenance, commercial plumbing, civil works, and gas fitting throughout Brisbane, Logan City, and the Gold Coast. Company vehicle and fuel card provided."
+      jobDatePosted="2026-08-01"
+      jobValidThrough="2026-12-31"
+      jobLocation="Ormeau, QLD"
+    />
+  </slot>
+
+  <!-- ── SECTION 1: Hero ─────────────────────────────────────────────── -->
+  <section class="relative bg-[#000000] min-h-[480px] flex items-center overflow-hidden">
+    <!-- Background image with dark overlay -->
+    <div class="absolute inset-0">
+      <img
+        src="/images/van-hero.jpg"
+        alt="Pulse Plumbing, Gas & Civil branded service van — Brisbane plumber"
+        width="1440"
+        height="480"
+        class="w-full h-full object-cover opacity-30"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+      <div class="max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#10a2d5] mb-4">We're hiring</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Build Your Career<br class="hidden sm:block" /> with Pulse
+        </h1>
+        <p class="text-lg text-white/70 leading-relaxed mb-10 max-w-xl">
+          Join a growing plumbing and civil team based in Ormeau. Variety of work, company vehicle, and a close-knit team that takes pride in every job.
+        </p>
+        <a
+          href="#apply"
+          class="inline-flex items-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-[#0172ae]/30"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/>
+          </svg>
+          Apply Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: Why Pulse ────────────────────────────────────────── -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Benefits</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Why work with Pulse?</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {benefits.map((b) => (
+          <div class="bg-white rounded-2xl p-6 border border-[#D1D5DB] hover:border-[#0172ae] transition-colors group">
+            <div class="w-12 h-12 rounded-xl bg-[#0172ae]/10 flex items-center justify-center mb-4 group-hover:bg-[#0172ae]/15 transition-colors">
+              <div class="w-6 h-6 text-[#0172ae]" set:html={b.icon} />
+            </div>
+            <h3 class="text-base font-bold text-[#000000] mb-2">{b.title}</h3>
+            <p class="text-sm text-[#1a1a1a]/70 leading-relaxed">{b.body}</p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: Current Opening ─────────────────────────────────── -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Open role</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Current opening</h2>
+      </div>
+
+      <div class="max-w-3xl mx-auto bg-[#0172ae] rounded-2xl p-8 sm:p-10 text-white shadow-xl shadow-[#0172ae]/20">
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-2xl font-bold">Qualified Plumber — All Rounder</h3>
+            <div class="flex flex-wrap items-center gap-3 mt-3">
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-white/20 rounded-full px-3 py-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                </svg>
+                Ormeau, QLD — Brisbane, Gold Coast &amp; beyond
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium bg-white/20 rounded-full px-3 py-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Full-time
+              </span>
+            </div>
+          </div>
+          <a
+            href="#apply"
+            class="flex-shrink-0 bg-white text-[#0172ae] font-bold text-sm px-6 py-2.5 rounded-full hover:bg-blue-50 transition-colors"
+          >
+            Apply Now →
+          </a>
+        </div>
+
+        <div class="border-t border-white/20 pt-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-white/60 mb-3">Work types</p>
+          <div class="flex flex-wrap gap-2">
+            {workTypes.map((wt) => (
+              <span class="text-xs font-medium bg-white/15 border border-white/20 rounded-full px-3 py-1">
+                {wt}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 4: What We're Looking For ──────────────────────────── -->
+  <section class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-10">
+          <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Requirements</p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">What we're looking for</h2>
+        </div>
+
+        <ul class="space-y-3">
+          {requirements.map((req) => (
+            <li class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl px-5 py-4">
+              <div class="w-6 h-6 rounded-full bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-[#0172ae]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <p class="text-sm text-[#1a1a1a] leading-relaxed">{req}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 5: Our Work ─────────────────────────────────────────── -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">On the tools</p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">The work you'll do</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-5">
+        <div class="overflow-hidden rounded-2xl shadow-md aspect-[4/3]">
+          <img
+            src="/images/van-side.jpg"
+            alt="Pulse Plumbing & Civil LDV service van — South-East Queensland"
+            width="480"
+            height="360"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="overflow-hidden rounded-2xl shadow-md aspect-[4/3]">
+          <img
+            src="/images/civil-site-1.jpg"
+            alt="Pulse Plumbing civil works — excavation and pipe laying in South-East Queensland"
+            width="480"
+            height="360"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+        <div class="overflow-hidden rounded-2xl shadow-md aspect-[4/3]">
+          <img
+            src="/images/civil-trenching.jpg"
+            alt="Civil plumbing trenching works — Pulse Plumbing, Gas & Civil, SEQ"
+            width="480"
+            height="360"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: Culture Values ──────────────────────────────────── -->
+  <section class="py-16 bg-[#000000]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-3 gap-6">
+        {cultureValues.map((v) => (
+          <div class="flex items-center gap-4 text-white">
+            <div class="w-10 h-10 rounded-xl bg-[#0172ae]/20 border border-[#0172ae]/30 flex items-center justify-center flex-shrink-0">
+              <div class="w-5 h-5 text-[#10a2d5]" set:html={v.icon} />
+            </div>
+            <p class="text-sm font-semibold">{v.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 7: Application Form ────────────────────────────────── -->
+  <section id="apply" class="py-20 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="grid lg:grid-cols-5 gap-12 items-start">
+
+        <!-- Left: heading + info -->
+        <div class="lg:col-span-2">
+          <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Join us</p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">Apply Now</h2>
+          <p class="text-[#1a1a1a]/70 leading-relaxed mb-8">
+            Send us your resume and we'll be in touch within 2 business days.
+          </p>
+
+          <!-- Contact alternative -->
+          <div class="bg-white border border-[#D1D5DB] rounded-xl p-5 space-y-3">
+            <p class="text-sm font-semibold text-[#000000]">Prefer to call?</p>
+            <a href="tel:0452188420" class="flex items-center gap-2.5 text-sm text-[#0172ae] hover:text-[#015d8e] font-semibold transition-colors">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              0452 188 420
+            </a>
+            <a href="mailto:admin@pulseqld.com.au" class="flex items-center gap-2.5 text-sm text-[#1a1a1a]/60 hover:text-[#0172ae] transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              admin@pulseqld.com.au
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="lg:col-span-3 bg-white border border-[#D1D5DB] rounded-2xl p-8">
+          <JobApplicationForm client:load />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

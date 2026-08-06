@@ -25,7 +25,7 @@ export interface Props {
   metaTitle: string;
   /** <head> meta description */
   metaDescription: string;
-  /** Optional hero background image path, e.g. "/images/stock-hot-water.jpg" */
+  /** Optional hero background image path, e.g. "/images/van-hero.jpg" */
   heroImage?: string;
   /** CSS background-size value — defaults to 'cover'. Use 'contain' to show the full image. */
   heroImageFit?: string;
@@ -188,7 +188,7 @@ const pageSchema = {
           <div class="flex justify-center lg:justify-end">
             <img
               src={heroImage}
-              alt={`${serviceName} — Pulse Plumbing & Gas`}
+              alt={`${serviceName} — Pulse Plumbing, Gas & Civil`}
               class={`w-full max-h-[420px] rounded-xl shadow-lg ${heroImageFit === 'contain' ? 'object-contain' : 'object-cover'}`}
               loading="eager"
             />
@@ -307,6 +307,13 @@ const pageSchema = {
         </div>
       </div>
     </section>
+  )}
+
+  <!-- ── Optional offer / price-promise slot (rendered above FAQs) ────────── -->
+  {Astro.slots.has('offer') && (
+    <div class="py-4 bg-[#F0F5FA]">
+      <slot name="offer" />
+    </div>
   )}
 
   <!-- ══════════════════════════════════════════════════════════════════════════
