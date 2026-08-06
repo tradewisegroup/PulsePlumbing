@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import KnowledgeLayout from '../../layouts/KnowledgeLayout.astro';
 
 export async function getStaticPaths() {
@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const { Content, headings } = await article.render();
+const { Content, headings } = await render(article);
 
 // Related articles: same category, exclude current
 const allArticles = await getCollection('knowledge');

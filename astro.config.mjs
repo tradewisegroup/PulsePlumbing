@@ -2,7 +2,7 @@
 import { defineConfig }    from 'astro/config';
 import sitemap             from '@astrojs/sitemap';
 import react               from '@astrojs/react';
-import cloudflare          from '@astrojs/cloudflare';
+import vercel              from '@astrojs/vercel';
 import { statSync }        from 'fs';
 import { resolve, join }   from 'path';
 import { fileURLToPath }   from 'url';
@@ -165,13 +165,13 @@ export default defineConfig({
   // ── Output mode ───────────────────────────────────────────────────────────
   // 'static' pre-renders all pages at build time by default. Individual routes
   // opt into SSR with `export const prerender = false` (used by /api/* routes,
-  // deployed as Cloudflare Workers). 'hybrid' was removed in Astro 6.
+  // deployed as Vercel Serverless Functions). 'hybrid' was removed in Astro 6.
   output: 'static',
 
-  // ── Cloudflare adapter ────────────────────────────────────────────────────
+  // ── Vercel adapter ────────────────────────────────────────────────────────
   // Handles static pages at build time; API routes with prerender = false
-  // are deployed as Cloudflare Workers automatically.
-  adapter: cloudflare(),
+  // are deployed as Vercel Serverless Functions automatically.
+  adapter: vercel(),
 
   // ── Integrations ──────────────────────────────────────────────────────────
   integrations: [
