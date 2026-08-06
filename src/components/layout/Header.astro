@@ -1,8 +1,10 @@
 ---
 import MobileMenu from './MobileMenu.jsx';
 
-const PHONE      = '0452 188 420';
-const PHONE_HREF = 'tel:0452188420';
+const PHONE        = '0452 188 420';
+const PHONE_HREF   = 'tel:0452188420';
+const OFFICE_PHONE = '07 2150 4175';
+const OFFICE_HREF  = 'tel:0721504175';
 
 const services = [
   { label: 'Maintenance Plumbing', href: '/services/maintenance-plumbing', icon: '🔧', desc: 'Scheduled & reactive maintenance'   },
@@ -30,7 +32,7 @@ const industries = [
 <header class="sticky top-0 z-50 w-full">
 
   <!-- ── Utility bar ──────────────────────────────────────────────────── -->
-  <div class="bg-[#046bd2] text-white">
+  <div class="bg-[#0172ae] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between gap-4 text-xs sm:text-sm">
 
       <!-- Left: availability message -->
@@ -44,17 +46,29 @@ const industries = [
         <span class="sm:hidden">24/7 Emergency Plumber</span>
       </div>
 
-      <!-- Right: click-to-call -->
-      <a
-        href={PHONE_HREF}
-        class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
-        aria-label={`Call Pulse Plumbing & Gas on ${PHONE}`}
-      >
-        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-        </svg>
-        {PHONE}
-      </a>
+      <!-- Right: click-to-call (both numbers) -->
+      <div class="flex items-center gap-4">
+        <a
+          href={PHONE_HREF}
+          class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
+          aria-label={`Call Pulse Plumbing 24/7 on ${PHONE}`}
+        >
+          <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+          </svg>
+          <span class="hidden sm:inline">24/7:</span> {PHONE}
+        </a>
+        <a
+          href={OFFICE_HREF}
+          class="hidden sm:flex items-center gap-1.5 font-medium text-white/80 hover:text-white transition-colors"
+          aria-label={`Call Pulse Plumbing office on ${OFFICE_PHONE}`}
+        >
+          <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+          </svg>
+          Office: {OFFICE_PHONE}
+        </a>
+      </div>
     </div>
   </div>
 
@@ -74,8 +88,8 @@ const industries = [
           aria-label="Pulse Plumbing & Gas — Home"
         >
           <img
-            src="/images/logo.png"
-            alt="Pulse Plumbing & Gas"
+            src="/images/logo-light.jpeg"
+            alt="Pulse Plumbing, Gas & Civil"
             width="180"
             height="70"
             class="h-10 lg:h-11 w-auto"
@@ -93,7 +107,7 @@ const industries = [
           <!-- Home -->
           <a
             href="/"
-            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+            class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
           >
             Home
           </a>
@@ -101,13 +115,13 @@ const industries = [
           <!-- Services dropdown -->
           <div class="relative group">
             <button
-              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
               aria-haspopup="true"
               aria-expanded="false"
             >
               Services
               <svg
-                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#046bd2] transition-all duration-200 group-hover:rotate-180"
+                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0172ae] transition-all duration-200 group-hover:rotate-180"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
               >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
@@ -133,7 +147,7 @@ const industries = [
                   >
                     <span class="text-xl leading-none mt-0.5 flex-shrink-0" aria-hidden="true">{s.icon}</span>
                     <div>
-                      <div class="text-sm font-semibold text-slate-800 group-hover/item:text-[#046bd2] transition-colors leading-tight">
+                      <div class="text-sm font-semibold text-slate-800 group-hover/item:text-[#0172ae] transition-colors leading-tight">
                         {s.label}
                       </div>
                       <div class="text-xs text-slate-500 mt-0.5 leading-snug">{s.desc}</div>
@@ -143,7 +157,7 @@ const industries = [
               </div>
               <div class="mt-1 pt-2 px-2 pb-1 border-t border-slate-100 flex items-center justify-between">
                 <span class="text-xs text-slate-400">All services available 24/7</span>
-                <a href="/services" class="text-xs font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors">
+                <a href="/services" class="text-xs font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors">
                   View all →
                 </a>
               </div>
@@ -153,13 +167,13 @@ const industries = [
           <!-- Industries dropdown -->
           <div class="relative group">
             <button
-              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
               aria-haspopup="true"
               aria-expanded="false"
             >
               Industries
               <svg
-                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#046bd2] transition-all duration-200 group-hover:rotate-180"
+                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0172ae] transition-all duration-200 group-hover:rotate-180"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
               >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
@@ -180,14 +194,14 @@ const industries = [
               {industries.map((i) => (
                 <a
                   href={i.href}
-                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] transition-colors"
+                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:text-[#0172ae] hover:bg-[#F0F5FA] transition-colors"
                 >
-                  <span class="w-1 h-1 rounded-full bg-[#046bd2] flex-shrink-0" aria-hidden="true"></span>
+                  <span class="w-1 h-1 rounded-full bg-[#0172ae] flex-shrink-0" aria-hidden="true"></span>
                   {i.label}
                 </a>
               ))}
               <div class="mx-3 mt-1 pt-2 border-t border-slate-100">
-                <a href="/civil" class="flex items-center gap-2 px-1 py-2 text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors">
+                <a href="/civil" class="flex items-center gap-2 px-1 py-2 text-sm font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors">
                   Civil →
                 </a>
               </div>
@@ -197,7 +211,7 @@ const industries = [
           <!-- Civil (standalone) -->
           <a
             href="/civil"
-            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+            class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
           >
             Civil
           </a>
@@ -205,7 +219,7 @@ const industries = [
           <!-- About -->
           <a
             href="/about"
-            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+            class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
           >
             About
           </a>
@@ -213,7 +227,7 @@ const industries = [
           <!-- Contact -->
           <a
             href="/contact"
-            class="px-3 py-2 text-slate-600 hover:text-[#046bd2] rounded-lg hover:bg-[#F0F5FA] transition-colors"
+            class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
           >
             Contact
           </a>
@@ -228,10 +242,10 @@ const industries = [
             href="/contact"
             class="
               hidden lg:inline-flex items-center justify-center
-              bg-[#046bd2] hover:bg-[#045cb4]
+              bg-[#0172ae] hover:bg-[#015d8e]
               text-white text-sm font-semibold
               rounded-full px-6 py-2
-              transition-colors shadow-sm shadow-[#046bd2]/30 hover:shadow-[#046bd2]/40
+              transition-colors shadow-sm shadow-[#0172ae]/30 hover:shadow-[#0172ae]/40
             "
           >
             Get a Quote
@@ -242,7 +256,7 @@ const industries = [
             href={PHONE_HREF}
             class="
               lg:hidden flex items-center gap-1.5
-              bg-red-600 hover:bg-red-700
+              bg-[#f19329] hover:bg-[#d97d1a]
               text-white text-xs font-bold
               rounded-full px-3 py-2
               transition-colors

@@ -30,12 +30,12 @@ const schema = {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
         <ol class="flex items-center gap-2">
-          <li><a href="/" class="hover:text-[#046bd2]">Home</a></li>
+          <li><a href="/" class="hover:text-[#0172ae]">Home</a></li>
           <li class="text-slate-300">/</li>
           <li class="text-slate-700 font-medium">Service Areas</li>
         </ol>
       </nav>
-      <h1 class="text-4xl sm:text-5xl font-bold text-white mb-4 inline-block bg-[#046bd2]/60 px-5 py-3 rounded-xl shadow-md">Service Areas</h1>
+      <h1 class="text-4xl sm:text-5xl font-bold text-white mb-4 inline-block bg-[#0172ae]/60 px-5 py-3 rounded-xl shadow-md">Service Areas</h1>
       <p class="text-lg text-[#334155] max-w-2xl">
         We service {suburbs.length}+ suburbs across South-East Queensland — from the Brisbane southside and Logan City through to Redland, northern Gold Coast, and Ipswich. Available 24/7.
       </p>
@@ -48,7 +48,7 @@ const schema = {
       {suburbsByRegion.map((region) => (
         <div>
           <div class="flex items-center gap-3 mb-6">
-            <h2 class="text-2xl font-bold text-[#1e293b]">{region.label}</h2>
+            <h2 class="text-2xl font-bold text-[#000000]">{region.label}</h2>
             <span class="bg-[#F0F5FA] border border-[#D1D5DB] text-[#334155] text-sm px-2.5 py-0.5 rounded-full">
               {region.suburbs.length} suburbs
             </span>
@@ -56,12 +56,12 @@ const schema = {
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
             {region.suburbs.map((s) => (
               <a href={`/plumber-${s.slug}`}
-                 class="group flex items-start gap-2 bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] rounded-lg px-3 py-2.5 transition-all">
-                <svg class="w-3.5 h-3.5 text-[#046bd2] group-hover:text-white flex-shrink-0 mt-0.5 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                 class="group flex items-start gap-2 bg-[#F0F5FA] hover:bg-[#0172ae] border border-[#D1D5DB] hover:border-[#0172ae] rounded-lg px-3 py-2.5 transition-all">
+                <svg class="w-3.5 h-3.5 text-[#0172ae] group-hover:text-white flex-shrink-0 mt-0.5 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                 </svg>
                 <div>
-                  <div class="text-sm font-medium text-[#1e293b] group-hover:text-white transition-colors leading-tight">{s.name}</div>
+                  <div class="text-sm font-medium text-[#000000] group-hover:text-white transition-colors leading-tight">{s.name}</div>
                   <div class="text-xs text-[#334155] group-hover:text-blue-100 transition-colors">{s.postcode}</div>
                 </div>
               </a>
@@ -73,7 +73,7 @@ const schema = {
   </section>
 
   <!-- CTA -->
-  <section class="bg-[#046bd2] py-14">
+  <section class="bg-[#0172ae] py-14">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl font-bold text-white mb-4">Can't find your suburb?</h2>
       <p class="text-blue-100 text-lg mb-8">
@@ -88,7 +88,7 @@ const schema = {
           Call 0452 188 420
         </a>
         <a href="/contact"
-           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors">
+           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#0172ae] font-semibold px-8 py-4 rounded text-lg transition-colors">
           Send an Enquiry
         </a>
       </div>

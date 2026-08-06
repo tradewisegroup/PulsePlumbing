@@ -1,7 +1,9 @@
 ---
-const PHONE = '0452 188 420';
-const PHONE_HREF = 'tel:0452188420';
-const EMAIL = 'admin@pulseqld.com.au';
+const PHONE        = '0452 188 420';
+const PHONE_HREF   = 'tel:0452188420';
+const OFFICE_PHONE = '07 2150 4175';
+const OFFICE_HREF  = 'tel:0721504175';
+const EMAIL        = 'admin@pulseqld.com.au';
 
 const services = [
   { label: 'Blocked Drains', href: '/services/blocked-drains' },
@@ -34,20 +36,20 @@ const year = new Date().getFullYear();
 
 <footer>
   <!-- Emergency band -->
-  <div class="bg-red-600">
+  <div class="bg-[#f19329]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p class="text-white font-semibold text-sm text-center sm:text-left">
         Plumbing emergency? We respond 24/7 — including nights, weekends &amp; public holidays.
       </p>
       <a href={PHONE_HREF}
-         class="flex-shrink-0 bg-white text-red-600 font-bold text-sm px-5 py-2.5 rounded hover:bg-red-50 transition-colors">
+         class="flex-shrink-0 bg-white text-[#f19329] font-bold text-sm px-5 py-2.5 rounded hover:bg-orange-50 transition-colors">
         Call Now — {PHONE}
       </a>
     </div>
   </div>
 
   <!-- Main footer body -->
-  <div class="bg-[#1e293b] text-white">
+  <div class="bg-[#000000] text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
 
@@ -55,11 +57,11 @@ const year = new Date().getFullYear();
         <div class="lg:col-span-2">
           <a href="/" class="inline-block mb-5" aria-label="Pulse Plumbing & Gas — Home">
             <img
-              src="/images/logo.png"
-              alt="Pulse Plumbing & Gas"
+              src="/images/logo-dark.jpeg"
+              alt="Pulse Plumbing, Gas & Civil"
               width="180"
               height="70"
-              class="h-11 w-auto brightness-0 invert"
+              class="h-11 w-auto"
               loading="lazy"
             />
           </a>
@@ -69,14 +71,21 @@ const year = new Date().getFullYear();
           <div class="space-y-2.5 text-sm">
             <a href={PHONE_HREF}
                class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
-              <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              {PHONE}
+              <span class="text-white/40 text-xs mr-0.5">24/7</span>{PHONE}
+            </a>
+            <a href={OFFICE_HREF}
+               class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
+              <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+              </svg>
+              <span class="text-white/40 text-xs mr-0.5">Office</span>{OFFICE_PHONE}
             </a>
             <a href={`mailto:${EMAIL}`}
                class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
-              <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
               {EMAIL}

@@ -3,7 +3,8 @@
 ## Business
 - **Company:** Pulse Plumbing & Gas
 - **Domain:** pulseqld.com.au
-- **Phone:** 0452 188 420
+- **Mobile (24/7):** 0452 188 420
+- **Office Phone:** 07 2150 4175
 - **Email:** admin@pulseqld.com.au
 - **ABN:** [INSERT ABN]
 - **QLD Licence:** [INSERT QBCC LICENCE NUMBER]
@@ -73,35 +74,46 @@ src/
 
 ---
 
-## Design System (verified against pulseqld.com.au — DO NOT change these)
+## Design System (updated for Pulse Plumbing, Gas & Civil logo)
 
 ### Colours
 | Token | Hex | Use |
 |---|---|---|
-| `#046bd2` | Primary blue | Buttons, links, accents, borders |
-| `#045cb4` | Blue hover | Button hover states |
-| `#1e293b` | Dark slate | Headings, dark sections, footer bg |
-| `#334155` | Medium slate | Body text |
-| `#F0F5FA` | Light blue-grey | Page backgrounds, cards, hero sections |
-| `#D1D5DB` | Light grey | Borders, dividers |
+| `#0172ae` | Deep Electric Blue | Primary — buttons, links, accents, borders |
+| `#015d8e` | Blue hover | Button hover states |
+| `#10a2d5` | Cyan Accent | Links, dividers, icon tints |
+| `#19619d` | Heartbeat Blue | Secondary accents, underlines |
+| `#000000` | Black | Primary dark background — headings, dark sections, footer bg |
+| `#f19329` | Orange | Emergency CTAs |
+| `#bcc0c4` | Silver Highlight | Metallic accents |
+| `#1a1a1a` | Near-black | Body text on light backgrounds |
+| `#F0F5FA` | Light Blue-Grey | Page backgrounds, cards, hero sections |
+| `#D1D5DB` | Light Grey | Borders, dividers |
 | `#FFFFFF` | White | Header bg, card bg |
-| Red-600 (`#DC2626`) | Emergency red | Emergency CTA only |
 
 ### Typography
-- **Font:** `Plus Jakarta Sans` (Google Fonts, weights 400/500/600/700/800)
+- **Font:** `Montserrat` (Google Fonts, weights 400/500/600/700/800)
 - **Fallback:** `system-ui, sans-serif`
 - **Body weight:** 400
 - **Heading weight:** 600–700
 
+### Contact
+- **Mobile (24/7):** 0452 188 420
+- **Office Phone:** 07 2150 4175
+
 ### Component patterns
-- **Primary button:** `bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold px-5 py-2.5 rounded`
-- **Emergency CTA:** `bg-red-600 hover:bg-red-700 text-white font-bold` — label: "Call Now — Emergency Response"
-- **Cards:** `bg-white border border-[#D1D5DB] rounded-lg hover:border-[#046bd2]`
+- **Primary button:** `bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-5 py-2.5 rounded`
+- **Emergency CTA:** `bg-[#f19329] hover:bg-[#d97d1a] text-white font-bold` — label: "Call Now — Emergency Response"
+- **Cards:** `bg-white border border-[#D1D5DB] rounded-lg hover:border-[#0172ae]`
 - **Hero bg:** `bg-[#F0F5FA]`
 - **Section alt bg:** `bg-[#F0F5FA]`
-- **Dark section:** `bg-[#1e293b] text-white`
+- **Dark section:** `bg-[#000000] text-white`
 - **Border radius:** `rounded` (4px) for buttons, `rounded-lg` for cards, `rounded-xl` for large panels
 - **Box shadow:** `shadow-sm` standard, `shadow-lg` for dropdowns
+
+### Logo paths
+- **Light backgrounds:** `/images/logo-light.jpeg`
+- **Dark backgrounds:** `/images/logo-dark.jpeg`
 
 ---
 

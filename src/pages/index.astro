@@ -71,7 +71,7 @@ const homepageSchema = {
             Available 24/7 — Afterhours &amp; Weekends
           </div>
 
-          <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-5 inline-block bg-[#046bd2]/60 px-5 py-3 rounded-xl shadow-md">
+          <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-5 inline-block bg-[#0172ae]/60 px-5 py-3 rounded-xl shadow-md">
             Reliable Plumbing &amp; Gas Services Across Brisbane
           </h1>
 
@@ -88,7 +88,7 @@ const homepageSchema = {
               Call Now — Emergency Response
             </a>
             <a href="/contact"
-               class="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white font-semibold px-6 py-3.5 rounded text-base transition-colors">
+               class="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-6 py-3.5 rounded text-base transition-colors">
               Get a Free Quote
             </a>
           </div>
@@ -102,7 +102,7 @@ const homepageSchema = {
               'SE Queensland',
             ].map((t) => (
               <span class="flex items-center gap-1.5">
-                <svg class="w-4 h-4 text-[#046bd2] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
                 {t}
@@ -130,7 +130,7 @@ const homepageSchema = {
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">Our Services</h2>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">Our Services</h2>
         <p class="text-lg text-[#334155] max-w-2xl mx-auto">
           From emergency callouts to scheduled commercial maintenance — we handle it all.
         </p>
@@ -138,9 +138,9 @@ const homepageSchema = {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {services.map((s) => (
           <a href={s.href}
-             class="group flex flex-col items-center text-center bg-white border border-[#D1D5DB] hover:border-[#046bd2] rounded-lg p-8 transition-all hover:shadow-md">
-            <div class="w-10 h-10 text-[#046bd2] mb-4 group-hover:text-[#045cb4] transition-colors" set:html={s.icon}></div>
-            <h3 class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] mb-2 transition-colors">{s.label}</h3>
+             class="group flex flex-col items-center text-center bg-white border border-[#D1D5DB] hover:border-[#0172ae] rounded-lg p-8 transition-all hover:shadow-md">
+            <div class="w-10 h-10 text-[#0172ae] mb-4 group-hover:text-[#015d8e] transition-colors" set:html={s.icon}></div>
+            <h3 class="font-semibold text-[#000000] group-hover:text-[#0172ae] mb-2 transition-colors">{s.label}</h3>
             <p class="text-sm text-[#334155] leading-relaxed">{s.desc}</p>
           </a>
         ))}
@@ -153,7 +153,7 @@ const homepageSchema = {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-14 items-start">
         <div>
-          <h2 class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-8">
+          <h2 class="text-3xl sm:text-4xl font-bold text-[#000000] mb-8">
             Why South-East Queensland chooses Pulse
           </h2>
           <div class="space-y-6">
@@ -176,13 +176,13 @@ const homepageSchema = {
               },
             ].map((item) => (
               <div class="flex gap-4">
-                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[#046bd2] flex items-center justify-center mt-0.5">
+                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-[#0172ae] flex items-center justify-center mt-0.5">
                   <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-[#1e293b] mb-1">{item.title}</h3>
+                  <h3 class="font-semibold text-[#000000] mb-1">{item.title}</h3>
                   <p class="text-sm text-[#334155] leading-relaxed">{item.desc}</p>
                 </div>
               </div>
@@ -192,11 +192,11 @@ const homepageSchema = {
 
         <!-- Industries panel -->
         <div class="bg-white border border-[#D1D5DB] rounded-xl p-8 shadow-sm">
-          <h3 class="font-semibold text-[#1e293b] text-lg mb-5">Industries we serve</h3>
+          <h3 class="font-semibold text-[#000000] text-lg mb-5">Industries we serve</h3>
           <div class="flex flex-wrap gap-2">
             {industries.map((i) => (
               <a href={i.href}
-                 class="bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] text-sm text-[#334155] hover:text-white px-3 py-1.5 rounded transition-colors">
+                 class="bg-[#F0F5FA] hover:bg-[#0172ae] border border-[#D1D5DB] hover:border-[#0172ae] text-sm text-[#334155] hover:text-white px-3 py-1.5 rounded transition-colors">
                 {i.label}
               </a>
             ))}
@@ -205,7 +205,7 @@ const homepageSchema = {
             We build long-term maintenance relationships with commercial clients across all sectors.
           </p>
           <a href="/contact"
-             class="mt-5 inline-block bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-5 py-2.5 rounded transition-colors">
+             class="mt-5 inline-block bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-5 py-2.5 rounded transition-colors">
             Discuss a Maintenance Contract
           </a>
         </div>
@@ -216,14 +216,14 @@ const homepageSchema = {
   <!-- ── Locations ── -->
   <section class="py-16 bg-white border-t border-[#D1D5DB]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-2xl font-bold text-[#1e293b] mb-3">Servicing South-East Queensland</h2>
+      <h2 class="text-2xl font-bold text-[#000000] mb-3">Servicing South-East Queensland</h2>
       <p class="text-[#334155] mb-8">Based in QLD — covering the full South-East corridor.</p>
       <div class="flex flex-wrap justify-center gap-4">
         {locations.map((l) => (
           <a href={l.href}
              target="_blank"
              rel="noopener noreferrer"
-             class="bg-[#F0F5FA] hover:bg-[#046bd2] border border-[#D1D5DB] hover:border-[#046bd2] text-[#334155] hover:text-white font-medium px-6 py-3 rounded transition-colors">
+             class="bg-[#F0F5FA] hover:bg-[#0172ae] border border-[#D1D5DB] hover:border-[#0172ae] text-[#334155] hover:text-white font-medium px-6 py-3 rounded transition-colors">
             📍 Plumber {l.label}
           </a>
         ))}
@@ -232,7 +232,7 @@ const homepageSchema = {
   </section>
 
   <!-- ── CTA ── -->
-  <section class="bg-[#046bd2] py-16">
+  <section class="bg-[#0172ae] py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Need a plumber now?</h2>
       <p class="text-xl text-blue-100 mb-8">
@@ -247,7 +247,7 @@ const homepageSchema = {
           Call Now — Emergency Response
         </a>
         <a href="/contact"
-           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors border border-white">
+           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#0172ae] font-semibold px-8 py-4 rounded text-lg transition-colors border border-white">
           Send an Enquiry
         </a>
       </div>

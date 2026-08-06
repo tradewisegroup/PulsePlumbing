@@ -49,7 +49,7 @@ export default function MobileMenu() {
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen}
         aria-controls="mobile-nav"
-        className="lg:hidden p-2 -mr-1 text-slate-600 hover:text-[#046bd2] transition-colors rounded focus:outline-none focus:ring-2 focus:ring-[#046bd2]"
+        className="lg:hidden p-2 -mr-1 text-slate-600 hover:text-[#0172ae] transition-colors rounded focus:outline-none focus:ring-2 focus:ring-[#0172ae]"
       >
         {isOpen ? (
           /* X icon */
@@ -93,7 +93,7 @@ export default function MobileMenu() {
               <button
                 onClick={() => setIsOpen(false)}
                 aria-label="Close menu"
-                className="p-2 text-slate-400 hover:text-slate-900 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-[#046bd2]"
+                className="p-2 text-slate-400 hover:text-slate-900 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-[#0172ae]"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -125,7 +125,7 @@ export default function MobileMenu() {
                       <a
                         href={item.href}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded-lg transition-colors"
+                        className="flex items-center px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-[#0172ae] hover:bg-[#F0F5FA] rounded-lg transition-colors"
                       >
                         {item.label}
                       </a>
@@ -139,7 +139,7 @@ export default function MobileMenu() {
                     <button
                       onClick={() => toggleGroup(item.label)}
                       aria-expanded={expanded}
-                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded-lg transition-colors"
+                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-[#0172ae] hover:bg-[#F0F5FA] rounded-lg transition-colors"
                     >
                       {item.label}
                       <svg
@@ -154,13 +154,13 @@ export default function MobileMenu() {
                     </button>
 
                     {expanded && (
-                      <ul className="mt-1 ml-3 pl-3 border-l-2 border-[#046bd2]/20 space-y-0.5">
+                      <ul className="mt-1 ml-3 pl-3 border-l-2 border-[#0172ae]/20 space-y-0.5">
                         {item.children.map((child) => (
                           <li key={child.href}>
                             <a
                               href={child.href}
                               onClick={() => setIsOpen(false)}
-                              className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:text-[#046bd2] hover:bg-[#F0F5FA] rounded-lg transition-colors"
+                              className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:text-[#0172ae] hover:bg-[#F0F5FA] rounded-lg transition-colors"
                             >
                               <span className="text-base leading-none">{child.icon}</span>
                               {child.label}
@@ -179,7 +179,7 @@ export default function MobileMenu() {
               <a
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center w-full bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
+                className="flex items-center justify-center w-full bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
               >
                 Get a Free Quote
               </a>

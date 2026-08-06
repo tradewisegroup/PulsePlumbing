@@ -58,7 +58,7 @@
  *               in smaller type. Useful for setting scope ("for childcare in QLD").
  *   id          Optional HTML id for the wrapper. Default: "at-a-glance".
  *   class       Optional extra classes for the outer wrapper element.
- *   accentColor Optional Tailwind border-color class. Default: "border-[#046bd2]"
+ *   accentColor Optional Tailwind border-color class. Default: "border-[#0172ae]"
  */
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ const {
   context,
   id          = 'at-a-glance',
   class: extraClass = '',
-  accentColor = 'border-[#046bd2]',
+  accentColor = 'border-[#0172ae]',
 } = Astro.props;
 
 // DEV guard: too few items loses the "list" benefit; too many dilutes impact.
@@ -125,7 +125,7 @@ if (import.meta.env.DEV) {
     <div class="flex items-start gap-3 mb-4">
       <!-- Blue shield icon — visually signals "verified summary" -->
       <div
-        class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#046bd2] flex items-center justify-center mt-0.5"
+        class="flex-shrink-0 w-8 h-8 rounded-lg bg-[#0172ae] flex items-center justify-center mt-0.5"
         aria-hidden="true"
       >
         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -141,7 +141,7 @@ if (import.meta.env.DEV) {
         <!-- Visible heading — h2 or h3 depending on page structure.
              Using <p> with bold styling so consumers can wrap in any heading
              level they need via the heading slot or just replace this line. -->
-        <p class="font-bold text-[#1e293b] text-sm sm:text-base leading-snug" itemprop="name">
+        <p class="font-bold text-[#000000] text-sm sm:text-base leading-snug" itemprop="name">
           {heading}
         </p>
         {context && (
@@ -165,7 +165,7 @@ if (import.meta.env.DEV) {
         >
           <!-- Filled blue dot — visually matches brand; semantically neutral -->
           <span
-            class="flex-shrink-0 w-4 h-4 rounded-full bg-[#046bd2] flex items-center justify-center mt-0.5"
+            class="flex-shrink-0 w-4 h-4 rounded-full bg-[#0172ae] flex items-center justify-center mt-0.5"
             aria-hidden="true"
           >
             <span class="w-1.5 h-1.5 rounded-full bg-white block"></span>
@@ -174,7 +174,7 @@ if (import.meta.env.DEV) {
           <!-- itemprop="name" is the correct microdata property for ListItem text -->
           <meta itemprop="position" content={String(i + 1)} />
           <span
-            class="text-sm text-[#1e293b] leading-relaxed"
+            class="text-sm text-[#000000] leading-relaxed"
             itemprop="name"
           >
             {item}

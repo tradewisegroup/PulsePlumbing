@@ -100,7 +100,7 @@ function Label({ id, required, children }) {
 const inputCls = (hasErr) =>
   `w-full bg-slate-800 border ${hasErr ? 'border-red-500/60' : 'border-slate-700'} ` +
   `rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 ` +
-  `focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition`;
+  `focus:outline-none focus:ring-2 focus:ring-[#0172ae] focus:border-transparent transition`;
 
 const selectCls = (hasErr) =>
   `${inputCls(hasErr)} appearance-none pr-9 cursor-pointer`;
@@ -258,11 +258,11 @@ export default function CivilRFQForm({ formId = '' }) {
         </p>
         <p className="text-slate-400 text-sm leading-relaxed mb-6">
           For urgent infrastructure matters, call us directly on{' '}
-          <a href="tel:0452188420" className="font-semibold text-[#046bd2] hover:underline">0452 188 420</a>.
+          <a href="tel:0452188420" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
         <a
           href="/civil"
-          className="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
+          className="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
         >
           Back to Civil Services
         </a>
@@ -281,7 +281,7 @@ export default function CivilRFQForm({ formId = '' }) {
           <h3 className="text-base font-bold text-white">RFQ Submission Form</h3>
           <p className="text-xs text-slate-400 mt-0.5">All enquiries receive a response within one business day.</p>
         </div>
-        <span className="inline-flex items-center gap-1.5 flex-shrink-0 text-[10px] font-bold text-[#046bd2] bg-[#046bd2]/10 border border-[#046bd2]/20 rounded-full px-2.5 py-1">
+        <span className="inline-flex items-center gap-1.5 flex-shrink-0 text-[10px] font-bold text-[#0172ae] bg-[#0172ae]/10 border border-[#0172ae]/20 rounded-full px-2.5 py-1">
           <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
             <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
           </svg>
@@ -474,7 +474,7 @@ export default function CivilRFQForm({ formId = '' }) {
                 <p className="text-xs font-semibold text-slate-300 mb-0.5">Attaching DA documents or specifications?</p>
                 <p className="text-xs text-slate-500 leading-relaxed">
                   Email drawings, DA conditions or specification documents directly to{' '}
-                  <a href="mailto:admin@pulseqld.com.au" className="text-[#046bd2] hover:underline font-medium">
+                  <a href="mailto:admin@pulseqld.com.au" className="text-[#0172ae] hover:underline font-medium">
                     admin@pulseqld.com.au
                   </a>
                   {' '}with your company name and project location in the subject line.
@@ -516,7 +516,7 @@ export default function CivilRFQForm({ formId = '' }) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full flex items-center justify-center gap-2 bg-[#046bd2] hover:bg-[#045cb4] disabled:bg-[#046bd2]/60 text-white font-semibold text-sm px-6 py-3.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-[#046bd2]"
+          className="w-full flex items-center justify-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] disabled:bg-[#0172ae]/60 text-white font-semibold text-sm px-6 py-3.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-[#0172ae]"
           aria-busy={status === 'loading'}
         >
           {status === 'loading'

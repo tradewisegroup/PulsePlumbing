@@ -67,7 +67,7 @@ const schema = {
 <BaseLayout {title} {description} canonical="https://pulseqld.com.au/services" schema={schema}>
 
   <!-- Hero -->
-  <section class="bg-[#1e293b] py-16 lg:py-20">
+  <section class="bg-[#000000] py-16 lg:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
         <ol class="flex items-center gap-2">
@@ -76,7 +76,7 @@ const schema = {
           <li class="text-white/70">Services</li>
         </ol>
       </nav>
-      <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4 inline-block bg-[#046bd2]/60 px-5 py-3 rounded-xl shadow-md">
+      <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4 inline-block bg-[#0172ae]/60 px-5 py-3 rounded-xl shadow-md">
         Our Services
       </h1>
       <p class="text-lg text-white/70 max-w-2xl mt-4">
@@ -91,11 +91,11 @@ const schema = {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((s) => (
           <a href={s.href}
-             class="group flex flex-col items-center text-center bg-white border border-[#D1D5DB] hover:border-[#046bd2] rounded-xl p-8 transition-all hover:shadow-md">
-            <div class="w-10 h-10 text-[#046bd2] mb-4 group-hover:text-[#045cb4] transition-colors" set:html={s.icon}></div>
-            <h2 class="font-semibold text-[#1e293b] group-hover:text-[#046bd2] mb-2 transition-colors text-lg">{s.label}</h2>
+             class="group flex flex-col items-center text-center bg-white border border-[#D1D5DB] hover:border-[#0172ae] rounded-xl p-8 transition-all hover:shadow-md">
+            <div class="w-10 h-10 text-[#0172ae] mb-4 group-hover:text-[#015d8e] transition-colors" set:html={s.icon}></div>
+            <h2 class="font-semibold text-[#000000] group-hover:text-[#0172ae] mb-2 transition-colors text-lg">{s.label}</h2>
             <p class="text-sm text-[#334155] leading-relaxed">{s.desc}</p>
-            <span class="mt-4 text-xs font-semibold text-[#046bd2] group-hover:text-[#045cb4] transition-colors">Learn more →</span>
+            <span class="mt-4 text-xs font-semibold text-[#0172ae] group-hover:text-[#015d8e] transition-colors">Learn more →</span>
           </a>
         ))}
       </div>
@@ -103,7 +103,7 @@ const schema = {
   </section>
 
   <!-- CTA -->
-  <section class="bg-[#046bd2] py-14">
+  <section class="bg-[#0172ae] py-14">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl font-bold text-white mb-4">Need a plumber now?</h2>
       <p class="text-blue-100 mb-8">Available 24/7 including afterhours and weekends across South-East Queensland.</p>
@@ -116,7 +116,7 @@ const schema = {
           Call Now — Emergency Response
         </a>
         <a href="/contact"
-           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors">
+           class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#0172ae] font-semibold px-8 py-4 rounded text-lg transition-colors">
           Get a Free Quote
         </a>
       </div>

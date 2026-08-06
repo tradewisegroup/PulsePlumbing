@@ -90,10 +90,10 @@ const schema = {
         <!-- Left: section identity -->
         <div class="lg:pt-1">
           <div class="flex items-center gap-2 mb-3" aria-hidden="true">
-            <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+            <div class="w-1 h-5 bg-[#0172ae] rounded-full"></div>
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Before You Submit</span>
           </div>
-          <h2 id="checklist-heading" class="text-2xl sm:text-3xl font-bold text-[#1e293b] mb-4 leading-snug">
+          <h2 id="checklist-heading" class="text-2xl sm:text-3xl font-bold text-[#000000] mb-4 leading-snug">
             What to include in your enquiry
           </h2>
           <p class="text-[#334155] text-sm leading-relaxed mb-6">
@@ -101,7 +101,7 @@ const schema = {
           </p>
           <p class="text-sm text-[#334155] leading-relaxed">
             If you have drawings or DA documents ready, email them to{' '}
-            <a href={`mailto:${EMAIL}`} class="text-[#046bd2] hover:underline font-medium">{EMAIL}</a>{' '}
+            <a href={`mailto:${EMAIL}`} class="text-[#0172ae] hover:underline font-medium">{EMAIL}</a>{' '}
             with your company name in the subject line, then reference the project in the form below.
           </p>
         </div>
@@ -109,15 +109,15 @@ const schema = {
         <!-- Right: checklist items -->
         <div class="space-y-3">
           {CHECKLIST_ITEMS.map((item, i) => (
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-start gap-4 hover:border-[#046bd2]/30 hover:shadow-sm transition-all group">
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 flex items-start gap-4 hover:border-[#0172ae]/30 hover:shadow-sm transition-all group">
               <!-- Diamond bullet -->
-              <div class="w-9 h-9 rounded-lg bg-[#046bd2]/8 group-hover:bg-[#046bd2]/14 flex items-center justify-center text-lg flex-shrink-0 transition-colors" aria-hidden="true">
+              <div class="w-9 h-9 rounded-lg bg-[#0172ae]/8 group-hover:bg-[#0172ae]/14 flex items-center justify-center text-lg flex-shrink-0 transition-colors" aria-hidden="true">
                 {item.icon}
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 mb-1">
-                  <span class="text-[10px] font-bold text-[#046bd2] tabular-nums">◆ {String(i + 1).padStart(2, '0')}</span>
-                  <h3 class="font-semibold text-[#1e293b] text-sm leading-snug">{item.heading}</h3>
+                  <span class="text-[10px] font-bold text-[#0172ae] tabular-nums">◆ {String(i + 1).padStart(2, '0')}</span>
+                  <h3 class="font-semibold text-[#000000] text-sm leading-snug">{item.heading}</h3>
                 </div>
                 <p class="text-[#334155] text-xs leading-relaxed">{item.detail}</p>
               </div>
@@ -140,10 +140,10 @@ const schema = {
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
           <div class="flex items-center gap-2 mb-2" aria-hidden="true">
-            <div class="w-1 h-4 bg-[#046bd2] rounded-full"></div>
+            <div class="w-1 h-4 bg-[#0172ae] rounded-full"></div>
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Contractor Details</span>
           </div>
-          <h2 id="credentials-heading" class="text-xl font-bold text-[#1e293b]">
+          <h2 id="credentials-heading" class="text-xl font-bold text-[#000000]">
             Contact details &amp; credentials
           </h2>
         </div>
@@ -161,12 +161,12 @@ const schema = {
             {item.href ? (
               <a
                 href={item.href}
-                class={`text-sm font-semibold text-[#046bd2] hover:text-[#045cb4] transition-colors ${item.mono ? 'font-mono' : ''}`}
+                class={`text-sm font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors ${item.mono ? 'font-mono' : ''}`}
               >
                 {item.value}
               </a>
             ) : (
-              <span class={`text-sm font-semibold text-[#1e293b] ${item.mono ? 'font-mono' : ''}`}>
+              <span class={`text-sm font-semibold text-[#000000] ${item.mono ? 'font-mono' : ''}`}>
                 {item.value}
               </span>
             )}
@@ -175,16 +175,16 @@ const schema = {
       </div>
 
       <!-- Response time commitment -->
-      <div class="mt-6 bg-[#046bd2]/5 border border-[#046bd2]/15 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
+      <div class="mt-6 bg-[#0172ae]/5 border border-[#0172ae]/15 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
           ⏱️
         </div>
         <div>
-          <div class="font-semibold text-[#1e293b] text-sm mb-0.5">Response time commitment</div>
+          <div class="font-semibold text-[#000000] text-sm mb-0.5">Response time commitment</div>
           <p class="text-[#334155] text-xs leading-relaxed">
             We confirm capability and availability for all civil project enquiries within <strong>one business day</strong>.
             For formal tender submissions with a closing date, note the deadline in your enquiry and we will prioritise accordingly.
-            For urgent infrastructure matters, call <a href="tel:0452188420" class="text-[#046bd2] font-semibold hover:underline">{PHONE}</a>.
+            For urgent infrastructure matters, call <a href="tel:0452188420" class="text-[#0172ae] font-semibold hover:underline">{PHONE}</a>.
           </p>
         </div>
       </div>

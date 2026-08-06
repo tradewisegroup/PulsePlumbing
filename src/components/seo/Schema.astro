@@ -70,7 +70,8 @@ export interface Props {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const SITE  = 'https://pulseqld.com.au';
-const PHONE = '0452188420';
+const PHONE        = '0452188420';
+const OFFICE_PHONE = '0721504175';
 const EMAIL = 'admin@pulseqld.com.au';
 
 const {
@@ -193,9 +194,9 @@ const localBusiness: Record<string, unknown> = {
   name:          'Pulse Plumbing & Gas',
   legalName:     'Pulse Plumbing and Gas Pty Ltd',
   url:           SITE,
-  logo:          `${SITE}/images/logo.png`,
+  logo:          `${SITE}/images/logo-light.jpeg`,
   image:         `${SITE}/images/og-default.jpg`,
-  telephone:     PHONE,
+  telephone:     [PHONE, OFFICE_PHONE],
   email:         EMAIL,
   description:
     suburb
@@ -373,7 +374,7 @@ if (type === 'blog') {
       name:    'Pulse Plumbing & Gas',
       logo: {
         '@type': 'ImageObject',
-        url:     `${SITE}/images/logo.png`,
+        url:     `${SITE}/images/logo-light.jpeg`,
       },
     },
     mainEntityOfPage: {

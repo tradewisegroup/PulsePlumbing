@@ -1,22 +1,25 @@
 @import "tailwindcss";
 
-/* ── Google Font: Plus Jakarta Sans ── */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* ── Google Font: Montserrat ── */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 @theme {
-  /* ── Pulse Plumbing & Gas brand colours (from pulseqld.com.au) ── */
-  --color-pulse-blue:     #046bd2;   /* primary — buttons, links, accents  */
-  --color-pulse-blue-dk:  #045cb4;   /* hover state                        */
-  --color-pulse-dark:     #1e293b;   /* headings, dark sections            */
-  --color-pulse-slate:    #334155;   /* body text                          */
+  /* ── Pulse Plumbing, Gas & Civil brand colours ── */
+  --color-pulse-blue:     #0172ae;   /* primary — buttons, links, accents  */
+  --color-pulse-blue-dk:  #015d8e;   /* hover state                        */
+  --color-pulse-cyan:     #10a2d5;   /* links, dividers, icon tints        */
+  --color-pulse-hb-blue:  #19619d;   /* secondary accents, underlines      */
+  --color-pulse-dark:     #000000;   /* primary dark background            */
+  --color-pulse-orange:   #f19329;   /* emergency CTAs                     */
+  --color-pulse-silver:   #bcc0c4;   /* metallic accents                   */
+  --color-pulse-body:     #1a1a1a;   /* body text on light backgrounds     */
   --color-pulse-light:    #F0F5FA;   /* page backgrounds, cards            */
   --color-pulse-gray:     #D1D5DB;   /* borders, dividers                  */
   --color-pulse-white:    #FFFFFF;
-  --color-pulse-black:    #111111;
 
   /* ── Typography ── */
-  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Montserrat', system-ui, sans-serif;
+  --font-heading: 'Montserrat', system-ui, sans-serif;
 }
 
 /* Base resets */
@@ -24,7 +27,7 @@
 
 body {
   font-family: var(--font-body);
-  color: #334155;
+  color: #1a1a1a;
   background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,5 +36,5 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 600;
-  color: #1e293b;
+  color: #000000;
 }
