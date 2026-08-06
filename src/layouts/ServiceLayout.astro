@@ -309,6 +309,13 @@ const pageSchema = {
     </section>
   )}
 
+  <!-- ── Optional offer / price-promise slot (rendered above FAQs) ────────── -->
+  {Astro.slots.has('offer') && (
+    <div class="py-4 bg-[#F0F5FA]">
+      <slot name="offer" />
+    </div>
+  )}
+
   <!-- ══════════════════════════════════════════════════════════════════════════
        6. FAQ ACCORDION
        ══════════════════════════════════════════════════════════════════════════ -->
