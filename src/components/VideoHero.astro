@@ -1,0 +1,103 @@
+---
+/**
+ * VideoHero.astro
+ * Full-viewport hero with an autoplay looping video behind a dark overlay.
+ * Falls back to posterSrc when prefers-reduced-motion is set.
+ */
+
+export interface Props {
+  videoSrc:    string;
+  posterSrc:   string;
+  headline:    string;
+  subheadline: string;
+  ctaText:     string;
+  ctaHref:     string;
+  secondaryCtaText?: string;
+  secondaryCtaHref?: string;
+}
+
+const {
+  videoSrc,
+  posterSrc,
+  headline,
+  subheadline,
+  ctaText,
+  ctaHref,
+  secondaryCtaText,
+  secondaryCtaHref,
+} = Astro.props;
+---
+
+<section class="video-hero relative overflow-hidden bg-[#000000]" style="min-height: 560px;">
+
+  <!-- Video layer -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <noscript>
+      <img src={posterSrc} alt="" class="absolute inset-0 w-full h-full object-cover" />
+    </noscript>
+    <video
+      class="video-hero__video absolute inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={posterSrc}
+    >
+      <source src={videoSrc} type="video/mp4" />
+    </video>
+  </div>
+
+  <!-- Dark overlays for legibility -->
+  <div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex items-center">
+    <div class="max-w-2xl">
+
+      <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-5">
+        QBCC Licensed · Civil Plumbing · SE Queensland
+      </p>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
+        {headline}
+      </h1>
+
+      <p class="text-base sm:text-lg text-white/70 leading-relaxed mb-10 max-w-xl">
+        {subheadline}
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a
+          href={ctaHref}
+          class="inline-flex items-center justify-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-8 py-3.5 rounded-full transition-colors shadow-lg shadow-[#0172ae]/30"
+        >
+          {ctaText}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </a>
+        {secondaryCtaText && secondaryCtaHref && (
+          <a
+            href={secondaryCtaHref}
+            class="inline-flex items-center justify-center gap-2 border border-white/30 hover:border-white/60 text-white font-semibold px-8 py-3.5 rounded-full transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            {secondaryCtaText}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  /* Respect prefers-reduced-motion — poster shows via the video poster attribute */
+  @media (prefers-reduced-motion: reduce) {
+    .video-hero__video { display: none; }
+  }
+</style>

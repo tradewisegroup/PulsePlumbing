@@ -336,11 +336,10 @@ const pageSchema = {
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════════
-       §2 HERO
-       Corporate tone. Left: breadcrumb + credential + H1 + subtitle + CTAs.
-       Right: capability highlights panel (imagery placeholder).
+       §2 HERO — pages can override with <slot name="hero">
        ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="relative overflow-hidden bg-[#0f172a]">
+  {Astro.slots.has('hero') && <slot name="hero" />}
+  {!Astro.slots.has('hero') && <section class="relative overflow-hidden bg-[#0f172a]">
 
     {heroImage && (
       <div
@@ -470,7 +469,7 @@ const pageSchema = {
 
       </div>
     </div>
-  </section>
+  </section>}
 
   <!-- ══════════════════════════════════════════════════════════════════════════
        §3 PAGE CONTENT

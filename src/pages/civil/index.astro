@@ -1,6 +1,7 @@
 ---
 import CivilLayout from '../../layouts/CivilLayout.astro';
 import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+import VideoHero from '../../components/VideoHero.astro';
 
 const FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
 const SITE    = 'https://pulseqld.com.au';
@@ -220,7 +221,7 @@ const schema = {
   metaTitle="Civil Plumbing Contractor Brisbane & SE Queensland"
   metaDescription="QBCC civil plumbing — water mains, sewer construction and stormwater across SE Queensland. WSAA compliant delivery for councils, developers and civil contractors."
   activeSlug=""
-  heroImage="/images/civil-excavator.jpg"
+  heroImage=""
   faqs={FAQS}
   schema={schema}
 >
@@ -499,5 +500,18 @@ const schema = {
 
   <!-- ── Civil enquiry form ──────────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} client:load slot="enquiry-form" />
+
+  <!-- ── Video hero — replaces the static CivilLayout hero ───────────────────── -->
+  <VideoHero
+    slot="hero"
+    videoSrc="/videos/civil-hero.mp4"
+    posterSrc="/images/excavator-branded.jpg"
+    headline="Civil Plumbing Infrastructure for SEQ Developers, Councils & Builders"
+    subheadline="Sewer reticulation, water main installation, stormwater drainage, and civil infrastructure maintenance. QBCC licensed. Formal RFQ response within one business day."
+    ctaText="Submit an RFQ"
+    ctaHref="/civil/contact"
+    secondaryCtaText="Request Capability Statement"
+    secondaryCtaHref="/civil/contact"
+  />
 
 </CivilLayout>
