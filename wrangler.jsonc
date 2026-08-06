@@ -1,6 +1,5 @@
 {
 	"name": "pulse-plumbing-website",
 	"compatibility_date": "2026-04-10",
-	"compatibility_flags": ["nodejs_compat"],
-	"pages_build_output_dir": "./dist"
+	"compatibility_flags": ["nodejs_compat"]
 }
