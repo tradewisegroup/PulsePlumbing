@@ -3,10 +3,43 @@ import { defineConfig }    from 'astro/config';
 import sitemap             from '@astrojs/sitemap';
 import react               from '@astrojs/react';
 import cloudflare          from '@astrojs/cloudflare';
-import { statSync }        from 'fs';
+import { statSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve, join }   from 'path';
 import { fileURLToPath }   from 'url';
 import { loadEnv }         from 'vite';
+
+// ─── Cloudflare Pages ASSETS binding fix ────────────────────────────────────
+//
+// Cloudflare Pages injects pages_build_output_dir into the environment before
+// the build runs. The @cloudflare/vite-plugin detects this and enters strict
+// Pages mode, where it rejects any binding named 'ASSETS' (Pages reserves it).
+// The @astrojs/cloudflare adapter generates dist/server/.prerender/wrangler.json
+// with assets: { binding: 'ASSETS' } which then fails validation.
+//
+// Fix: a Vite plugin with enforce:'pre' runs its config hook before the
+// cloudflare vite plugin, removing the ASSETS binding from the generated file.
+//
+/** @returns {import('vite').Plugin} */
+function patchCloudflareAssetsPlugin() {
+  return {
+    name:    'pulse-patch-cf-assets',
+    enforce: 'pre',
+    async config(_, { command }) {
+      if (command !== 'preview') return;
+      const p = 'dist/server/.prerender/wrangler.json';
+      if (!existsSync(p)) return;
+      try {
+        const cfg = JSON.parse(readFileSync(p, 'utf8'));
+        if (cfg.assets?.binding === 'ASSETS') {
+          delete cfg.assets;
+          writeFileSync(p, JSON.stringify(cfg));
+        }
+      } catch {
+        // Non-fatal — allow build to continue
+      }
+    },
+  };
+}
 
 // Load all env vars (including non-PUBLIC_) into process.env for SSR routes
 const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
@@ -205,4 +238,14 @@ export default defineConfig({
     // The Vite plugin is NOT used here to avoid double-processing.
     react(),
   ],
+
+  // ── Vite plugins ──────────────────────────────────────────────────────────
+  vite: {
+    plugins: [
+      // Removes the reserved 'ASSETS' binding from the adapter-generated
+      // prerender wrangler.json before @cloudflare/vite-plugin validates it.
+      // Required for Cloudflare Pages compatibility (Pages reserves 'ASSETS').
+      patchCloudflareAssetsPlugin(),
+    ],
+  },
 });
