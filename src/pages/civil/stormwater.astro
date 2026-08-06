@@ -128,19 +128,19 @@ const schema = {
       <div class="grid lg:grid-cols-2 gap-14 items-start">
 
         <div>
-          <div class="inline-flex items-center gap-2 bg-[#046bd2]/10 border border-[#046bd2]/20 rounded-full px-3 py-1 mb-5">
-            <span class="text-xs font-semibold text-[#046bd2]">Stormwater Capability</span>
+          <div class="inline-flex items-center gap-2 bg-[#0172ae]/10 border border-[#0172ae]/20 rounded-full px-3 py-1 mb-5">
+            <span class="text-xs font-semibold text-[#0172ae]">Stormwater Capability</span>
           </div>
-          <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-5 leading-tight">
+          <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-5 leading-tight">
             Stormwater drainage for developments across SEQ
           </h2>
-          <p class="text-[#334155] text-base leading-relaxed mb-5">
+          <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
             We design and construct stormwater infrastructure for residential subdivisions, commercial and industrial sites, and civil infrastructure projects across South-East Queensland. Our scope covers underground stormwater pit and pipe networks, open channel drainage, detention basins, inlet/outlet structures, WSUD treatment trains, biofiltration rain gardens and gross pollutant trap installations.
           </p>
-          <p class="text-[#334155] text-base leading-relaxed mb-5">
+          <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
             All stormwater works are delivered to AS/NZS 3500.3, council stormwater design standards and the relevant local government's WSUD guidelines. We prepare or review erosion and sediment control (ESC) plans in accordance with the Queensland Environmental Protection Act 1994, and manage all CCTV inspection and documentation required for council stormwater infrastructure acceptance.
           </p>
-          <p class="text-[#334155] text-base leading-relaxed">
+          <p class="text-[#1a1a1a] text-base leading-relaxed">
             We operate as both principal contractor and civil plumbing subcontractor. For developers and civil contractors who need a licensed civil plumber to deliver the stormwater scope under their head contract, we provide a fixed-price or schedule-of-rates subcontract and attend all inspection hold points.
           </p>
         </div>
@@ -154,12 +154,12 @@ const schema = {
             { icon: '📋', title: 'Council compliance documentation', desc: 'ESC plans, GPS as-constructeds in MGA94 format, CCTV inspection footage and WSUD as-built confirmation for council stormwater design compliance and infrastructure acceptance.' },
           ].map(item => (
             <div class="bg-white border border-slate-200 rounded-xl p-5 flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
+              <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
                 {item.icon}
               </div>
               <div>
-                <h3 class="font-semibold text-[#1e293b] text-sm mb-1">{item.title}</h3>
-                <p class="text-[#334155] text-xs leading-relaxed">{item.desc}</p>
+                <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
+                <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -175,10 +175,10 @@ const schema = {
   <section class="py-20 bg-white" aria-labelledby="process-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mb-12">
-        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
           How we deliver stormwater projects
         </h2>
-        <p class="text-[#334155] text-lg">
+        <p class="text-[#1a1a1a] text-lg">
           From design review to council handover — our stormwater delivery process.
         </p>
       </div>
@@ -186,12 +186,12 @@ const schema = {
       <div class="space-y-4">
         {PROCESS_STEPS.map(step => (
           <div class="bg-[#F0F5FA] border border-slate-200 rounded-2xl p-7 flex gap-6 items-start">
-            <div class="text-4xl font-black text-[#046bd2]/20 leading-none flex-shrink-0 w-12 text-center">
+            <div class="text-4xl font-black text-[#0172ae]/20 leading-none flex-shrink-0 w-12 text-center">
               {step.step}
             </div>
             <div>
-              <h3 class="font-bold text-[#1e293b] text-lg mb-2">{step.title}</h3>
-              <p class="text-[#334155] text-sm leading-relaxed">{step.description}</p>
+              <h3 class="font-bold text-[#000000] text-lg mb-2">{step.title}</h3>
+              <p class="text-[#1a1a1a] text-sm leading-relaxed">{step.description}</p>
             </div>
           </div>
         ))}
@@ -202,7 +202,7 @@ const schema = {
   <!-- ══════════════════════════════════════════════════════════════════════════
        3. STANDARDS & COMPLIANCE
        ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="py-20 bg-[#1e293b]" aria-labelledby="standards-heading">
+  <section class="py-20 bg-[#000000]" aria-labelledby="standards-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mb-10">
         <h2 id="standards-heading" class="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -216,7 +216,7 @@ const schema = {
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {STANDARDS.map(s => (
           <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
-            <div class="inline-block bg-[#046bd2]/20 text-[#046bd2] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
+            <div class="inline-block bg-[#0172ae]/20 text-[#0172ae] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
               {s.code}
             </div>
             <div class="font-semibold text-white text-sm mb-1">{s.title}</div>
@@ -233,10 +233,10 @@ const schema = {
   <section class="py-20 bg-[#F0F5FA]" aria-labelledby="faq-heading">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-10">
-        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
           Stormwater FAQs
         </h2>
-        <p class="text-[#334155] text-lg">
+        <p class="text-[#1a1a1a] text-lg">
           Common questions from developers and civil contractors about stormwater infrastructure and council compliance in SE Queensland.
         </p>
       </div>
@@ -247,7 +247,7 @@ const schema = {
             class="bg-white border border-slate-200 rounded-2xl overflow-hidden group"
             open={i === 0}
           >
-            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#1e293b] hover:text-[#046bd2] transition-colors select-none">
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#000000] hover:text-[#0172ae] transition-colors select-none">
               {faq.q}
               <svg
                 class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform"
@@ -256,7 +256,7 @@ const schema = {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
               </svg>
             </summary>
-            <div class="px-6 pb-6 text-[#334155] text-sm leading-relaxed">
+            <div class="px-6 pb-6 text-[#1a1a1a] text-sm leading-relaxed">
               {faq.a}
             </div>
           </details>

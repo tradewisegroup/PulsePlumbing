@@ -92,7 +92,7 @@ function Label({ id, required, children }) {
 const inputCls = (hasErr) =>
   `w-full bg-slate-800 border ${hasErr ? 'border-red-500/60' : 'border-slate-700'} ` +
   `rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 ` +
-  `focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition`;
+  `focus:outline-none focus:ring-2 focus:ring-[#0172ae] focus:border-transparent transition`;
 
 const selectCls = (hasErr) =>
   `${inputCls(hasErr)} appearance-none pr-9 cursor-pointer`;
@@ -243,11 +243,11 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
         <p className="text-slate-400 text-sm leading-relaxed mb-6">
           Thanks for your enquiry. A member of our civil team will review your project details and respond
           within one business day. For urgent matters, call us on{' '}
-          <a href="tel:0452188420" className="font-semibold text-[#046bd2] hover:underline">0452 188 420</a>.
+          <a href="tel:0452188420" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
         <a
           href="/civil"
-          className="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
+          className="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
         >
           Back to Civil Services
         </a>
@@ -434,7 +434,7 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full flex items-center justify-center gap-2 bg-[#046bd2] hover:bg-[#045cb4] disabled:bg-[#046bd2]/60 text-white font-semibold text-sm px-6 py-3.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-[#046bd2]"
+          className="w-full flex items-center justify-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] disabled:bg-[#0172ae]/60 text-white font-semibold text-sm px-6 py-3.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-[#0172ae]"
           aria-busy={status === 'loading'}
         >
           {status === 'loading' ? (<><Spinner/>Submitting…</>) : 'Submit Enquiry'}

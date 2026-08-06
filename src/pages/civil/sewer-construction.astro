@@ -129,19 +129,19 @@ const schema = {
       <div class="grid lg:grid-cols-2 gap-14 items-start">
 
         <div>
-          <div class="inline-flex items-center gap-2 bg-[#046bd2]/10 border border-[#046bd2]/20 rounded-full px-3 py-1 mb-5">
-            <span class="text-xs font-semibold text-[#046bd2]">Sewer Construction Capability</span>
+          <div class="inline-flex items-center gap-2 bg-[#0172ae]/10 border border-[#0172ae]/20 rounded-full px-3 py-1 mb-5">
+            <span class="text-xs font-semibold text-[#0172ae]">Sewer Construction Capability</span>
           </div>
-          <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-5 leading-tight">
+          <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-5 leading-tight">
             Sewer construction and connections for subdivisions and civil projects
           </h2>
-          <p class="text-[#334155] text-base leading-relaxed mb-5">
+          <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
             We construct gravity sewer reticulation mains, perform sewer connections to lots, build manholes, install sewage pump stations, rising mains and pressure sewer systems for residential subdivisions, commercial precincts and civil infrastructure projects across South-East Queensland. Our delivery is compliant with WSAA WSA 02:2014, AS/NZS 3500.2, and the Queensland Urban Utilities and SEQ Water distributor-retailer infrastructure standards.
           </p>
-          <p class="text-[#334155] text-base leading-relaxed mb-5">
+          <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
             We manage the full documentation sequence required to progress through your infrastructure agreement — from design approval through CCTV inspection of new mains, pressure testing and GPS as-constructed survey to conditional acceptance by the distributor-retailer.
           </p>
-          <p class="text-[#334155] text-base leading-relaxed">
+          <p class="text-[#1a1a1a] text-base leading-relaxed">
             Civil contractors and developers can engage us as a licensed civil plumbing subcontractor under their head contract. We provide a fixed-price or schedule-of-rates subcontract, attend all hold points and witnessed inspections, and deliver the complete sewer documentation package.
           </p>
         </div>
@@ -155,12 +155,12 @@ const schema = {
             { icon: '📹', title: 'CCTV inspection of new mains', desc: 'Crawler CCTV of all gravity mains prior to handover. WRC defect coding, condition reports and rectification works to QUU and SEQ Water requirements.' },
           ].map(item => (
             <div class="bg-white border border-slate-200 rounded-xl p-5 flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
+              <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
                 {item.icon}
               </div>
               <div>
-                <h3 class="font-semibold text-[#1e293b] text-sm mb-1">{item.title}</h3>
-                <p class="text-[#334155] text-xs leading-relaxed">{item.desc}</p>
+                <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
+                <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -176,10 +176,10 @@ const schema = {
   <section class="py-20 bg-white" aria-labelledby="process-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mb-12">
-        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
           Our sewer construction process
         </h2>
-        <p class="text-[#334155] text-lg">
+        <p class="text-[#1a1a1a] text-lg">
           How we manage sewer construction from design approval to distributor-retailer handover.
         </p>
       </div>
@@ -187,12 +187,12 @@ const schema = {
       <div class="space-y-4">
         {PROCESS_STEPS.map(step => (
           <div class="bg-[#F0F5FA] border border-slate-200 rounded-2xl p-7 flex gap-6 items-start">
-            <div class="text-4xl font-black text-[#046bd2]/20 leading-none flex-shrink-0 w-12 text-center">
+            <div class="text-4xl font-black text-[#0172ae]/20 leading-none flex-shrink-0 w-12 text-center">
               {step.step}
             </div>
             <div>
-              <h3 class="font-bold text-[#1e293b] text-lg mb-2">{step.title}</h3>
-              <p class="text-[#334155] text-sm leading-relaxed">{step.description}</p>
+              <h3 class="font-bold text-[#000000] text-lg mb-2">{step.title}</h3>
+              <p class="text-[#1a1a1a] text-sm leading-relaxed">{step.description}</p>
             </div>
           </div>
         ))}
@@ -203,7 +203,7 @@ const schema = {
   <!-- ══════════════════════════════════════════════════════════════════════════
        3. STANDARDS & COMPLIANCE
        ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="py-20 bg-[#1e293b]" aria-labelledby="standards-heading">
+  <section class="py-20 bg-[#000000]" aria-labelledby="standards-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mb-10">
         <h2 id="standards-heading" class="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -217,7 +217,7 @@ const schema = {
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {STANDARDS.map(s => (
           <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
-            <div class="inline-block bg-[#046bd2]/20 text-[#046bd2] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
+            <div class="inline-block bg-[#0172ae]/20 text-[#0172ae] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
               {s.code}
             </div>
             <div class="font-semibold text-white text-sm mb-1">{s.title}</div>
@@ -234,10 +234,10 @@ const schema = {
   <section class="py-20 bg-[#F0F5FA]" aria-labelledby="faq-heading">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-10">
-        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-4">
+        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
           Sewer construction FAQs
         </h2>
-        <p class="text-[#334155] text-lg">
+        <p class="text-[#1a1a1a] text-lg">
           Common questions from developers, civil contractors and project managers about sewer construction and connections in SE Queensland.
         </p>
       </div>
@@ -248,7 +248,7 @@ const schema = {
             class="bg-white border border-slate-200 rounded-2xl overflow-hidden group"
             open={i === 0}
           >
-            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#1e293b] hover:text-[#046bd2] transition-colors select-none">
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#000000] hover:text-[#0172ae] transition-colors select-none">
               {faq.q}
               <svg
                 class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform"
@@ -257,7 +257,7 @@ const schema = {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
               </svg>
             </summary>
-            <div class="px-6 pb-6 text-[#334155] text-sm leading-relaxed">
+            <div class="px-6 pb-6 text-[#1a1a1a] text-sm leading-relaxed">
               {faq.a}
             </div>
           </details>

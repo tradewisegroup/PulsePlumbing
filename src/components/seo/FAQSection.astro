@@ -177,10 +177,10 @@ const faqSchema = {
     <!-- Section header -->
     <header class="mb-10">
       <div class="flex items-center gap-2 mb-3" aria-hidden="true">
-        <div class="w-1 h-5 bg-[#046bd2] rounded-full"></div>
+        <div class="w-1 h-5 bg-[#0172ae] rounded-full"></div>
         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">FAQ</span>
       </div>
-      <h2 id={`${id}-heading`} class="text-2xl sm:text-3xl font-bold text-[#1e293b] leading-snug">
+      <h2 id={`${id}-heading`} class="text-2xl sm:text-3xl font-bold text-[#000000] leading-snug">
         {heading}
       </h2>
       {subheading && (
@@ -198,7 +198,7 @@ const faqSchema = {
 
         return (
           <details
-            class="group border border-slate-200 rounded-2xl overflow-hidden bg-white hover:border-[#046bd2]/40 open:border-[#046bd2]/50 transition-colors"
+            class="group border border-slate-200 rounded-2xl overflow-hidden bg-white hover:border-[#0172ae]/40 open:border-[#0172ae]/50 transition-colors"
             open={isFirst || undefined}
             itemscope
             itemprop="mainEntity"
@@ -219,10 +219,10 @@ const faqSchema = {
               transition-colors
             ">
               <h3
-                class="font-semibold text-[#1e293b] text-sm sm:text-base leading-snug pr-2 m-0 font-[inherit]"
+                class="font-semibold text-[#000000] text-sm sm:text-base leading-snug pr-2 m-0 font-[inherit]"
                 itemprop="name"
               >
-                <span class="text-[10px] font-bold text-[#046bd2] tabular-nums mr-2 align-middle" aria-hidden="true">
+                <span class="text-[10px] font-bold text-[#0172ae] tabular-nums mr-2 align-middle" aria-hidden="true">
                   ◆ {String(i + 1).padStart(2, '0')}
                 </span>
                 {faq.question}
@@ -233,7 +233,7 @@ const faqSchema = {
                 class="
                   flex-shrink-0 w-7 h-7 rounded-full
                   border-2 border-slate-200
-                  group-open:border-[#046bd2] group-open:bg-[#046bd2]
+                  group-open:border-[#0172ae] group-open:bg-[#0172ae]
                   flex items-center justify-center
                   transition-all duration-200
                 "
@@ -264,7 +264,7 @@ const faqSchema = {
             >
               <div class="space-y-3" itemprop="text">
                 {paragraphs.map((para, pi) => (
-                  <p class={`text-sm leading-relaxed ${pi === 0 ? 'text-[#1e293b] font-medium' : 'text-[#334155]'}`}>
+                  <p class={`text-sm leading-relaxed ${pi === 0 ? 'text-[#000000] font-medium' : 'text-[#334155]'}`}>
                     {para}
                   </p>
                 ))}

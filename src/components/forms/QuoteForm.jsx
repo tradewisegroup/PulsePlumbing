@@ -100,7 +100,7 @@ function Label({ htmlFor, required, children }) {
 
 const inputBase =
   'w-full border rounded-lg px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-400 ' +
-  'focus:outline-none focus:ring-2 focus:ring-[#046bd2] focus:border-transparent transition bg-white';
+  'focus:outline-none focus:ring-2 focus:ring-[#0172ae] focus:border-transparent transition bg-white';
 
 function inputClass(hasError) {
   return `${inputBase} ${hasError ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
@@ -256,19 +256,19 @@ export default function QuoteForm({ initialService = '' }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="text-xl font-bold text-[#1e293b] mb-2">
+        <h3 className="text-xl font-bold text-[#000000] mb-2">
           Thanks! We'll call you within 2 hours.
         </h3>
         <p className="text-[#334155] text-sm leading-relaxed mb-6">
           Your quote request has been received. One of our licensed plumbers will be in touch shortly.
           For urgent jobs, call us directly on{' '}
-          <a href="tel:0452188420" className="font-bold text-[#046bd2] hover:underline">
+          <a href="tel:0452188420" className="font-bold text-[#0172ae] hover:underline">
             0452 188 420
           </a>.
         </p>
         <a
           href="/"
-          className="inline-flex items-center justify-center bg-[#046bd2] hover:bg-[#045cb4] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
+          className="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
         >
           Back to home
         </a>
@@ -283,7 +283,7 @@ export default function QuoteForm({ initialService = '' }) {
 
       {/* Form header */}
       <div className="bg-[#F0F5FA] border-b border-slate-200 px-6 py-5">
-        <h2 className="text-lg font-bold text-[#1e293b]">Get a free quote</h2>
+        <h2 className="text-lg font-bold text-[#000000]">Get a free quote</h2>
         <p className="text-sm text-[#334155] mt-0.5">
           We respond within 2 hours during business hours.
         </p>
@@ -479,8 +479,8 @@ export default function QuoteForm({ initialService = '' }) {
                     inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium cursor-pointer
                     transition-all select-none
                     ${checked
-                      ? 'bg-[#046bd2] border-[#046bd2] text-white shadow-sm shadow-[#046bd2]/20'
-                      : 'bg-white border-slate-200 text-slate-600 hover:border-[#046bd2] hover:text-[#046bd2]'
+                      ? 'bg-[#0172ae] border-[#0172ae] text-white shadow-sm shadow-[#0172ae]/20'
+                      : 'bg-white border-slate-200 text-slate-600 hover:border-[#0172ae] hover:text-[#0172ae]'
                     }
                   `}
                 >
@@ -518,11 +518,11 @@ export default function QuoteForm({ initialService = '' }) {
           disabled={status === 'loading'}
           className="
             w-full flex items-center justify-center gap-2
-            bg-[#046bd2] hover:bg-[#045cb4] disabled:bg-[#046bd2]/70
+            bg-[#0172ae] hover:bg-[#015d8e] disabled:bg-[#0172ae]/70
             text-white font-semibold text-sm
             px-6 py-3.5 rounded-full
-            transition-colors shadow-sm shadow-[#046bd2]/30
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#046bd2]
+            transition-colors shadow-sm shadow-[#0172ae]/30
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0172ae]
           "
           aria-busy={status === 'loading'}
         >
