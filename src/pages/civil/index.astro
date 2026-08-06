@@ -11,7 +11,7 @@ const SERVICE_AREAS = [
   {
     slug:        'water-mains',
     href:        '/civil/water-mains',
-    icon:        '💧',
+    icon:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6 8 4 12 4 15a8 8 0 0 0 16 0c0-3-2-7-8-13z"/><path d="M12 15a3 3 0 0 0 3-3"/></svg>`,
     label:       'Water Mains',
     line1:       'Installation, extension and live tie-ins for residential subdivisions and commercial precincts.',
     line2:       'WSA 03:2011 compliant. Full infrastructure agreement documentation for QUU, Logan Water and Gold Coast Water.',
@@ -20,7 +20,7 @@ const SERVICE_AREAS = [
   {
     slug:        'stormwater',
     href:        '/civil/stormwater',
-    icon:        '🌊',
+    icon:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/><path d="M2 17c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/><path d="M2 7c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/></svg>`,
     label:       'Stormwater',
     line1:       'Underground pipe networks, kerb drainage, WSUD treatment trains and gross pollutant trap installation.',
     line2:       'AS/NZS 3500.3 compliant. ESC plans to EPAct 1994. CCTV inspection and council as-constructed documentation.',
@@ -29,7 +29,7 @@ const SERVICE_AREAS = [
   {
     slug:        'sewer-construction',
     href:        '/civil/sewer-construction',
-    icon:        '⚙️',
+    icon:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
     label:       'Sewer Construction',
     line1:       'Gravity mains, pump stations, rising mains and lot connections for subdivision and civil projects.',
     line2:       'WSA 02:2014 compliant. CCTV inspection with WRC defect coding. Full documentation for distributor-retailer handover.',
@@ -38,7 +38,7 @@ const SERVICE_AREAS = [
   {
     slug:        'infrastructure-maintenance',
     href:        '/civil/infrastructure-maintenance',
-    icon:        '🛠️',
+    icon:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
     label:       'Infrastructure Maintenance',
     line1:       'Programmed CCTV condition assessment, high-pressure jetting, emergency response and trenchless rehabilitation.',
     line2:       'WSA 05:2013 aligned. ISO 55000 asset management reporting. Contract arrangements for councils and utilities.',
@@ -90,27 +90,27 @@ const COMPLIANCE_STANDARDS = [
 
 const PROCUREMENT_POINTS = [
   {
-    icon: '📋',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
     heading: 'Formal RFQ & tender processes',
     detail:  'We respond to written RFQs, formal tenders and expression of interest processes. Our submissions include capability statement, QBCC licence, insurance certificates, relevant project references and fee proposal.',
   },
   {
-    icon: '✅',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
     heading: 'Pre-qualified supplier registration',
     detail:  'We can register on your supplier panel or pre-qualification system. We hold current documentation required for most Queensland council and state government pre-qualification processes — QBCC licence, public liability CoC, Workers Compensation CoC, financial statements.',
   },
   {
-    icon: '🔒',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
     heading: 'Insurance certificates of currency',
     detail:  'Public liability ($20M) and Workers Compensation certificates are available on request at any time. Professional indemnity insurance is available for design-and-construct engagements. All certificates are issued by the insurer directly.',
   },
   {
-    icon: '⛑️',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a8 8 0 0 1 16 0v3"/></svg>`,
     heading: 'SWMS and WHS documentation',
     detail:  'Site-specific Safe Work Method Statements are prepared for all high-risk construction work in accordance with the WHS Act 2011 (QLD). SWMS templates for our common civil plumbing activities — excavation, confined space entry, live main tie-ins, bypass pumping — are available in advance of project commencement.',
   },
   {
-    icon: '🧾',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
     heading: 'Progress claim invoicing via Xero',
     detail:  'We issue progress claims and invoices through Xero, with PDF and digital delivery. We can accommodate standard head contractor invoice timing requirements and will provide a schedule of values for lump-sum contracts on request.',
   },
@@ -120,27 +120,27 @@ const PROCUREMENT_POINTS = [
 
 const PROJECT_TYPES = [
   {
-    icon:   '🏘️',
+    icon:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
     label:  'Estate Subdivisions',
     detail: 'Full civil plumbing package for residential and commercial estates — water reticulation, sewer mains, lot connections and stormwater kerb drainage.',
   },
   {
-    icon:   '🚧',
+    icon:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/></svg>`,
     label:  'Road Corridor Relocations',
     detail: 'Water main relocations within road reserves for road widening, intersection upgrades and infrastructure improvement projects. Shutdown and tie-in coordination managed.',
   },
   {
-    icon:   '🏛️',
+    icon:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>`,
     label:  'Council Maintenance Programmes',
     detail: 'Programmed CCTV condition assessment and high-pressure cleaning across council-maintained sewer and stormwater networks. Annual and multi-year contract arrangements.',
   },
   {
-    icon:   '📄',
+    icon:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
     label:  'Development Approval Connections',
     detail: 'Civil plumbing connections required as conditions of development approval — sewer extensions, water service connections, stormwater connections to council infrastructure.',
   },
   {
-    icon:   '🚨',
+    icon:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
     label:  'Emergency Infrastructure Repair',
     detail: 'Emergency response for sewer overflows, water main breaks and blocked infrastructure in council and utility-managed networks. Bypass pumping, jetting and emergency excavation.',
   },
@@ -259,7 +259,7 @@ const schema = {
                   class="w-12 h-12 rounded-xl bg-[#046bd2]/8 group-hover:bg-[#046bd2]/14 flex items-center justify-center text-2xl flex-shrink-0 transition-colors"
                   aria-hidden="true"
                 >
-                  {sa.icon}
+                  <div class="w-7 h-7 text-[#0172ae]" set:html={sa.icon}></div>
                 </div>
                 <h3 class="font-bold text-[#1e293b] group-hover:text-[#046bd2] text-lg leading-snug transition-colors pt-1">
                   {sa.label}
@@ -422,7 +422,7 @@ const schema = {
                 class="w-10 h-10 rounded-lg bg-[#046bd2]/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-[#046bd2]/30 transition-colors"
                 aria-hidden="true"
               >
-                {pt.icon}
+                <div class="w-6 h-6 text-[#10a2d5]" set:html={pt.icon}></div>
               </div>
               <div class="min-w-0">
                 <div class="font-semibold text-white text-sm mb-1">{pt.heading}</div>
@@ -464,7 +464,7 @@ const schema = {
               class="w-11 h-11 rounded-lg bg-[#046bd2]/8 group-hover:bg-[#046bd2]/14 flex items-center justify-center text-2xl mb-4 transition-colors"
               aria-hidden="true"
             >
-              {pt.icon}
+              <div class="w-7 h-7 text-[#0172ae]" set:html={pt.icon}></div>
             </div>
             <h3 class="font-bold text-[#1e293b] text-sm mb-2">{pt.label}</h3>
             <p class="text-[#334155] text-xs leading-relaxed">{pt.detail}</p>
