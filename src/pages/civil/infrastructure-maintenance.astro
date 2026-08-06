@@ -7,32 +7,32 @@ const SITE    = 'https://pulseqld.com.au';
 
 const SERVICES = [
   {
-    icon: '📹',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="8" width="13" height="8" rx="2"/><circle cx="7.5" cy="12" r="2.5"/><path d="M14 10.5l5.5-3.5v10L14 13.5"/></svg>`,
     title: 'CCTV condition assessment',
     description: 'Planned and reactive crawler CCTV of gravity sewer and stormwater mains. WRC defect coding, quantified condition reports and prioritised maintenance schedules. Footage and reports delivered in the format required by your asset management system — Infor EAM, Conquest, Assetic or equivalent.',
   },
   {
-    icon: '💦',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6 8 4 12 4 15a8 8 0 0 0 16 0c0-3-2-7-8-13z"/><path d="M12 15a3 3 0 0 0 3-3"/></svg>`,
     title: 'High-pressure water jetting',
     description: 'Sewer and stormwater main cleaning using high-pressure water jetting (HPWJ) to remove grease accumulations, root intrusion, silt and debris. Jetting is combined with CCTV inspection to confirm the pipe is clear and identify structural defects exposed by the cleaning process.',
   },
   {
-    icon: '🌱',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
     title: 'Root cutting & grease removal',
     description: 'Mechanical root cutting and high-pressure grease removal for recurring blockage locations. We identify root entry points via CCTV and provide options for permanent remediation — chemical root treatment, relining or excavation and repair — to reduce reblocking frequency and ongoing maintenance costs.',
   },
   {
-    icon: '🔧',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/></svg>`,
     title: 'Manhole inspection & rehabilitation',
     description: 'Inspection, cleaning and condition assessment of sewer and stormwater manholes. Rehabilitation options include chemical grouting for joint infiltration, epoxy or polyurea lining of corroded benching and invert, and precast ring replacement where structural deterioration is identified.',
   },
   {
-    icon: '🚨',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
     title: 'Emergency response for infrastructure failures',
     description: 'Emergency response for sewer overflows, main breaks, pump station failures and blockages affecting public health or the environment. We maintain a response capability for local government and utility clients and are available for emergency call-out on a contracted basis with agreed response times.',
   },
   {
-    icon: '🔄',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10h7v4H2z"/><path d="M15 10h7v4h-7z"/><path d="M9 10l6 2-6 2z"/><line x1="15" y1="10" x2="15" y2="14"/></svg>`,
     title: 'Trenchless rehabilitation',
     description: 'Cured-in-place pipe (CIPP) lining, pipe bursting and lateral lining for structurally defective mains where open-cut excavation is not practical. We project-manage rehabilitation with specialist subcontractors and manage all pre and post-lining CCTV inspection.',
   },
@@ -155,9 +155,7 @@ const schema = {
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {SERVICES.map(s => (
           <div class="bg-white border border-slate-200 rounded-2xl p-6 hover:border-[#0172ae]/40 hover:shadow-md transition-all">
-            <div class="w-12 h-12 rounded-xl bg-[#0172ae]/10 flex items-center justify-center text-2xl mb-4" aria-hidden="true">
-              {s.icon}
-            </div>
+            <div class="w-12 h-12 rounded-xl bg-[#0172ae]/10 flex items-center justify-center mb-4 text-[#0172ae]" aria-hidden="true" set:html={s.icon}></div>
             <h3 class="font-bold text-[#000000] text-base mb-2">{s.title}</h3>
             <p class="text-[#1a1a1a] text-sm leading-relaxed">{s.description}</p>
           </div>

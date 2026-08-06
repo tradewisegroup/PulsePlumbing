@@ -147,16 +147,14 @@ const schema = {
 
         <div class="space-y-4">
           {[
-            { icon: '🌊', title: 'Stormwater pit & pipe installation', desc: 'UPVC and RCCP stormwater pipe networks from DN150 to DN1200. Pre-cast and in-situ pit installations, kerb inlets, junction structures, headwalls and outlet protection.' },
-            { icon: '🏞️', title: 'Open channel drainage', desc: 'Grassed swales, concrete-lined channels and earthen drains constructed to council-approved hydraulic design. Grade control structures and energy dissipators at outlets.' },
-            { icon: '🏗️', title: 'Detention basins', desc: 'Earthworks, liner, inlet/outlet structures and erosion protection for on-site detention basins. Sized by hydraulic engineer to meet council peak flow attenuation requirements.' },
-            { icon: '🌿', title: 'WSUD treatment trains', desc: 'Biofiltration rain gardens, bioretention cells, sedimentation basins and inlet pre-treatment structures to Healthy Waterways WSUD Technical Design Guidelines for SEQ.' },
-            { icon: '📋', title: 'Council compliance documentation', desc: 'ESC plans, GPS as-constructeds in MGA94 format, CCTV inspection footage and WSUD as-built confirmation for council stormwater design compliance and infrastructure acceptance.' },
+            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/><path d="M2 17c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/><path d="M2 7c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0"/></svg>`, title: 'Stormwater pit & pipe installation', desc: 'UPVC and RCCP stormwater pipe networks from DN150 to DN1200. Pre-cast and in-situ pit installations, kerb inlets, junction structures, headwalls and outlet protection.' },
+            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/><path d="M7 3v18M17 3v18"/></svg>`, title: 'Open channel drainage', desc: 'Grassed swales, concrete-lined channels and earthen drains constructed to council-approved hydraulic design. Grade control structures and energy dissipators at outlets.' },
+            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>`, title: 'Detention basins', desc: 'Earthworks, liner, inlet/outlet structures and erosion protection for on-site detention basins. Sized by hydraulic engineer to meet council peak flow attenuation requirements.' },
+            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M12 12C12 7 7 3 2 3c0 5 3.5 9 10 9zM12 12c0-5 5-9 10-9-1 5-4 9-10 9"/></svg>`, title: 'WSUD treatment trains', desc: 'Biofiltration rain gardens, bioretention cells, sedimentation basins and inlet pre-treatment structures to Healthy Waterways WSUD Technical Design Guidelines for SEQ.' },
+            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`, title: 'Council compliance documentation', desc: 'ESC plans, GPS as-constructeds in MGA94 format, CCTV inspection footage and WSUD as-built confirmation for council stormwater design compliance and infrastructure acceptance.' },
           ].map(item => (
             <div class="bg-white border border-slate-200 rounded-xl p-5 flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center text-xl flex-shrink-0" aria-hidden="true">
-                {item.icon}
-              </div>
+              <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 text-[#0172ae]" aria-hidden="true" set:html={item.icon}></div>
               <div>
                 <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
                 <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>

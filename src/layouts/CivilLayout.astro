@@ -341,18 +341,11 @@ const pageSchema = {
   {Astro.slots.has('hero') && <slot name="hero" />}
   {!Astro.slots.has('hero') && <section class="relative overflow-hidden bg-[#0f172a]">
 
-    {heroImage && (
-      <div
-        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={`background-image: url('${heroImage}')`}
-        aria-hidden="true"
-      ></div>
-    )}
+    <!-- Background: solid dark only — no image overlay on sub-pages -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-      <div class="grid lg:grid-cols-[1fr_420px] gap-12 lg:gap-16 items-center">
+      <div class="max-w-3xl">
 
-        <!-- Left: copy -->
-        <div>
+        <!-- Copy -->
           <!-- Breadcrumb -->
           <nav class="mb-5 text-xs text-white/35" aria-label="Breadcrumb">
             <ol class="flex items-center gap-2">
@@ -406,64 +399,6 @@ const pageSchema = {
               </svg>
               Request Capability Statement
             </a>
-          </div>
-        </div>
-
-        <!-- Right: capability panel — professional imagery placeholder -->
-        <div class="hidden lg:block">
-          <div class="bg-white/4 border border-white/10 rounded-2xl overflow-hidden">
-
-            <!-- Imagery placeholder — replace with real project photography -->
-            <div
-              class="h-44 relative flex items-end"
-              style="background: linear-gradient(160deg, #1e3a5f 0%, #0d2038 60%, #0f172a 100%);"
-              aria-hidden="true"
-            >
-              <!-- Blueprint-style corner marks -->
-              <div class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-[#0172ae]/40 rounded-tl"></div>
-              <div class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-[#0172ae]/40 rounded-tr"></div>
-              <div class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-[#0172ae]/40 rounded-bl"></div>
-              <div class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-[#0172ae]/40 rounded-br"></div>
-              <div class="w-full px-5 pb-4">
-                <p class="text-[10px] font-mono text-white/25 uppercase tracking-widest text-center">
-                  Project imagery placeholder
-                </p>
-              </div>
-            </div>
-
-            <!-- Capability stats grid -->
-            <div class="grid grid-cols-2 divide-x divide-y divide-white/8">
-              {[
-                { label: 'QBCC Licensed',     value: 'Civil & Drainage' },
-                { label: 'WSAA Compliant',    value: 'WSA 02 / 03 / 05' },
-                { label: 'As-Constructeds',   value: 'GPS MGA94 / 12d'  },
-                { label: 'Area Served',       value: 'SE Queensland'    },
-              ].map(stat => (
-                <div class="px-4 py-3">
-                  <div class="text-[10px] font-semibold text-white/35 uppercase tracking-wide mb-0.5">{stat.label}</div>
-                  <div class="text-sm font-semibold text-white">{stat.value}</div>
-                </div>
-              ))}
-            </div>
-
-            <!-- Quick contact strip -->
-            <div class="border-t border-white/8 px-4 py-3 flex items-center justify-between gap-3">
-              <span class="text-xs text-white/40">Enquiries:</span>
-              <a
-                href={PHONE_HREF}
-                class="text-xs font-bold text-white hover:text-[#7ab8f5] transition-colors"
-                aria-label={`Call civil team on ${PHONE}`}
-              >
-                {PHONE}
-              </a>
-              <a
-                href={`mailto:${EMAIL}`}
-                class="text-xs font-semibold text-[#0172ae] hover:text-[#7ab8f5] transition-colors"
-              >
-                {EMAIL}
-              </a>
-            </div>
-
           </div>
         </div>
 
