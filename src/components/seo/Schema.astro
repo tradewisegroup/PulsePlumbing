@@ -20,7 +20,9 @@
  * ─── Prop reference ──────────────────────────────────────────────────────────
  *
  *   type            Required. Controls which type-specific nodes are added.
- *   pageTitle       H1 / headline of the page. Used in Service, Article, etc.
+ *                   Values: homepage | service | industry | location | blog |
+ *                           civil | contact | job | video
+ *   pageTitle       H1 / headline of the page. Used in Service, Article, HowTo, etc.
  *   pageDescription Short description of the page content.
  *   serviceType     Schema.org serviceType string, e.g. "Blocked Drain Clearing".
  *   suburb          Suburb name for location pages. Adds geo + scoped areaServed.
@@ -30,6 +32,16 @@
  *   authorName      Author display name for blog articles.
  *   canonical       Canonical URL for this page (used in @id fields).
  *                   Defaults to SITE + Astro.url.pathname.
+ *   jobTitle        Job title (type="job").
+ *   jobDescription  Plain-text job description (type="job").
+ *   jobDatePosted   ISO date the posting was published (type="job").
+ *   jobValidThrough ISO date the posting expires (type="job").
+ *   videoTitle      Video name (type="video").
+ *   videoDescription Plain-text video description (type="video").
+ *   videoUrl        Direct URL to the video file or page (type="video").
+ *   videoPosterUrl  URL to the video thumbnail/poster image (type="video").
+ *   videoUploadDate ISO 8601 upload date (type="video").
+ *   howToSteps      Array of {name, text} — outputs HowTo schema on any page type.
  */
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -42,7 +54,8 @@ type PageType =
   | 'blog'
   | 'civil'
   | 'contact'
-  | 'job';
+  | 'job'
+  | 'video';
 
 export interface FAQ {
   q: string;
@@ -75,8 +88,20 @@ export interface Props {
   jobDatePosted?:   string;
   /** ISO date the posting is valid through e.g. "2026-12-31" */
   jobValidThrough?: string;
-  /** City / region the role is based in e.g. "Ormeau, QLD" */
-  jobLocation?:     string;
+  // ── VideoObject fields (type="video") ──────────────────────────────────────
+  /** Video name / title */
+  videoTitle?:       string;
+  /** Plain-text video description */
+  videoDescription?: string;
+  /** Direct URL to the video file or YouTube page */
+  videoUrl?:         string;
+  /** URL to the video poster/thumbnail image */
+  videoPosterUrl?:   string;
+  /** ISO 8601 upload date e.g. "2026-08-01" */
+  videoUploadDate?:  string;
+  // ── HowTo fields (any page type) ───────────────────────────────────────────
+  /** Steps for a HowTo schema node — triggers HowTo output when provided */
+  howToSteps?:       { name: string; text: string }[];
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -101,7 +126,12 @@ const {
   jobDescription,
   jobDatePosted,
   jobValidThrough,
-  jobLocation,
+  videoTitle,
+  videoDescription,
+  videoUrl,
+  videoPosterUrl,
+  videoUploadDate,
+  howToSteps,
 } = Astro.props;
 
 const pageUrl = canonical ?? (SITE + Astro.url.pathname);
@@ -272,6 +302,26 @@ const localBusiness: Record<string, unknown> = {
     },
   ],
   sameAs: [],
+  contactPoint: [
+    {
+      '@type':            'ContactPoint',
+      telephone:          PHONE,
+      contactType:        'emergency',
+      availableLanguage:  'English',
+      hoursAvailable: {
+        '@type':   'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        opens:     '00:00',
+        closes:    '23:59',
+      },
+    },
+    {
+      '@type':           'ContactPoint',
+      telephone:         OFFICE_PHONE,
+      contactType:       'customer service',
+      availableLanguage: 'English',
+    },
+  ],
 };
 
 // Inject GeoCoordinates when a suburb is provided.
@@ -458,13 +508,105 @@ if (type === 'job' && jobTitle) {
       '@type': 'Place',
       address: {
         '@type':          'PostalAddress',
-        addressLocality:  jobLocation ?? 'Ormeau',
+        addressLocality:  'Ormeau',
         addressRegion:    'QLD',
+        postalCode:       '4208',
         addressCountry:   'AU',
       },
     },
     url: pageUrl,
   });
+}
+
+// ── video ─────────────────────────────────────────────────────────────────────
+// VideoObject schema for pages featuring a primary video.
+// Google indexes VideoObject for video carousel and rich-result display.
+if (type === 'video' && videoTitle) {
+  graph.push({
+    '@type':        'VideoObject',
+    '@id':          `${pageUrl}#video`,
+    name:           videoTitle,
+    ...(videoDescription ? { description: videoDescription } : {}),
+    ...(videoPosterUrl   ? { thumbnailUrl: videoPosterUrl  } : {}),
+    ...(videoUploadDate  ? { uploadDate:   videoUploadDate  } : {}),
+    ...(videoUrl         ? { contentUrl:   videoUrl         } : {}),
+    publisher: {
+      '@type': 'Organization',
+      '@id':   `${SITE}/#business`,
+    },
+  });
+}
+
+// ── HowTo ─────────────────────────────────────────────────────────────────────
+// Appended for any page type when howToSteps are provided.
+// Enables Google's HowTo rich result (numbered step list in SERPs).
+if (howToSteps && howToSteps.length > 0) {
+  graph.push({
+    '@type': 'HowTo',
+    '@id':   `${pageUrl}#howto`,
+    name:    pageTitle ?? 'How To',
+    step:    howToSteps.map((s, i) => ({
+      '@type':  'HowToStep',
+      position: i + 1,
+      name:     s.name,
+      text:     s.text,
+    })),
+  });
+}
+
+// ── BreadcrumbList — all page types ──────────────────────────────────────────
+// Location pages already push their own BreadcrumbList above.
+// All other page types get one here.
+// Each type maps to its canonical breadcrumb trail.
+if (type !== 'location') {
+  const crumbs: { name: string; item?: string }[] = [
+    { name: 'Home', item: SITE },
+  ];
+
+  if (type === 'service') {
+    crumbs.push(
+      { name: 'Services', item: `${SITE}/services` },
+      { name: pageTitle ?? 'Service', item: pageUrl },
+    );
+  } else if (type === 'industry') {
+    crumbs.push(
+      { name: 'Industries', item: `${SITE}/industries` },
+      { name: pageTitle ?? 'Industry', item: pageUrl },
+    );
+  } else if (type === 'civil') {
+    crumbs.push(
+      { name: 'Civil', item: `${SITE}/civil` },
+      { name: pageTitle ?? 'Civil Services', item: pageUrl },
+    );
+  } else if (type === 'blog') {
+    crumbs.push(
+      { name: 'Blog', item: `${SITE}/blog` },
+      { name: pageTitle ?? 'Article', item: pageUrl },
+    );
+  } else if (type === 'contact') {
+    crumbs.push({ name: 'Contact', item: pageUrl });
+  } else if (type === 'job') {
+    crumbs.push(
+      { name: 'Careers', item: `${SITE}/careers` },
+      { name: pageTitle ?? jobTitle ?? 'Job Listing', item: pageUrl },
+    );
+  } else if (type === 'video') {
+    crumbs.push({ name: pageTitle ?? 'Video', item: pageUrl });
+  }
+  // homepage — breadcrumb is just Home; not useful to output
+
+  if (crumbs.length > 1) {
+    graph.push({
+      '@type':           'BreadcrumbList',
+      '@id':             `${pageUrl}#breadcrumb`,
+      itemListElement:   crumbs.map((c, i) => ({
+        '@type':    'ListItem',
+        position:   i + 1,
+        name:       c.name,
+        ...(c.item ? { item: c.item } : {}),
+      })),
+    });
+  }
 }
 
 // ── FAQPage ──────────────────────────────────────────────────────────────────
