@@ -68,7 +68,7 @@ export interface Props {
   complianceRefs?: ComplianceRef[];
   /** Additional page-level schema — merged into @graph */
   schema?:         Record<string, unknown>;
-  /** Optional hero background image path, e.g. "/images/civil-excavator.jpg" */
+  /** Optional hero background image path, e.g. "/images/excavator-branded.jpg" */
   heroImage?:      string;
 }
 
@@ -162,9 +162,9 @@ const organisationSchema = {
   name:        'Pulse Plumbing & Gas',
   legalName:   'Pulse Plumbing and Gas Pty Ltd',
   url:         SITE,
-  logo:        `${SITE}/images/logo.png`,
-  image:       `${SITE}/images/civil-excavator.jpg`,
-  telephone:   '0452188420',
+  logo:        `${SITE}/images/logo-light.jpeg`,
+  image:       `${SITE}/images/excavator-branded.jpg`,
+  telephone:   ['0452188420', '0721504175'],
   email:       EMAIL,
   description:
     'QBCC-licensed civil plumbing contractor specialising in water main installation, sewer construction, stormwater infrastructure and maintenance contracts across South-East Queensland.',
@@ -258,7 +258,7 @@ const pageSchema = {
   title={metaTitle ?? pageTitle}
   description={metaDescription}
   canonical={`${SITE}${Astro.url.pathname}`}
-  ogImage="/images/civil-excavator.jpg"
+  ogImage="/images/excavator-branded.jpg"
   schema={pageSchema}
 >
 

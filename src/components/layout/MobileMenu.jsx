@@ -83,8 +83,8 @@ export default function MobileMenu() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
               <a href="/" onClick={() => setIsOpen(false)}>
                 <img
-                  src="/images/logo.png"
-                  alt="Pulse Plumbing & Gas"
+                  src="/images/logo-light.jpeg"
+                  alt="Pulse Plumbing, Gas & Civil logo"
                   width={140}
                   height={54}
                   className="h-9 w-auto"
