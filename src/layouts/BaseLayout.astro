@@ -41,6 +41,7 @@ const {
 const SITE = 'https://pulseqld.com.au';
 const GTM_ID = import.meta.env.GTM_ID ?? 'GTM-XXXXXXX';
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
+const GSC_VERIFICATION = import.meta.env.GSC_VERIFICATION ?? '';
 
 // Resolve ogImage to an absolute URL regardless of whether it was passed as
 // a root-relative path ("/images/foo.jpg") or already absolute.
@@ -121,6 +122,13 @@ const localBusinessSchema = {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- ── Google Search Console verification ────────────────────────── -->
+    <!-- Set GSC_VERIFICATION env var in Cloudflare Pages to the content value -->
+    <!-- from the <meta name="google-site-verification"> tag Google provides.  -->
+    {GSC_VERIFICATION && (
+      <meta name="google-site-verification" content={GSC_VERIFICATION} />
+    )}
 
     <!-- ── Primary SEO ────────────────────────────────────────────────── -->
     <title>{title} | Pulse Plumbing &amp; Gas Brisbane</title>
