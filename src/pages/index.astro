@@ -103,72 +103,65 @@ const triageCards = [
 
 <BaseLayout {title} {description} schema={homepageSchema}>
 
-  <!-- ── Hero ── -->
-  <section class="bg-[#F0F5FA]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
+  <!-- ── Hero — full-screen dark, matching civil page style ── -->
+  <section class="relative overflow-hidden bg-[#000000]" style="min-height: 560px;">
 
-        <!-- Copy -->
-        <div>
-          <div class="inline-flex items-center gap-2 bg-white border border-[#D1D5DB] rounded-full px-4 py-1.5 text-sm text-[#1a1a1a] font-medium mb-6 shadow-sm">
-            <span class="relative flex h-2 w-2 flex-shrink-0">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            Available 24/7 — Afterhours &amp; Weekends
+    <!-- Background image with dark overlay -->
+    <div class="absolute inset-0" aria-hidden="true">
+      <img
+        src="/images/van-hero.jpg"
+        alt=""
+        class="absolute inset-0 w-full h-full object-cover opacity-40"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 lg:py-40 flex items-center">
+      <div class="max-w-2xl">
+
+        <!-- Tag -->
+        <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-5">
+          QBCC Licensed · Residential · Commercial · Civil · SE Queensland
+        </p>
+
+        <!-- H1 -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          SEQ's Most Responsive Plumbing, Gas &amp; Civil Contractor
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-lg text-white/70 leading-relaxed mb-10 max-w-xl">
+          Trusted 24/7 on-call plumber and civil contractor in Brisbane and across South-East Queensland. Residential, commercial, and civil infrastructure — no surprises, no shortcuts.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <a href="tel:0452188420"
+             class="inline-flex items-center justify-center gap-2 bg-[#f19329] hover:bg-[#d97d1a] text-white font-bold px-8 py-4 rounded-full text-base transition-colors shadow-lg shadow-[#f19329]/30">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+            </svg>
+            Call Now — Emergency
+          </a>
+          <a href="/contact"
+             class="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-8 py-4 rounded-full text-base transition-colors shadow-lg shadow-[#0172ae]/25">
+            Get a Free Quote
+            </a>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl font-bold text-[#000000] leading-tight mb-5">
-            SEQ's Most Responsive Plumbing, Gas &amp; Civil Contractor
-          </h1>
-
-          <p class="text-lg text-[#1a1a1a]/70 leading-relaxed mb-8">
-            Trusted 24/7 on-call plumber and civil contractor in Brisbane and across South-East Queensland. Residential, commercial, and civil infrastructure — no surprises, no shortcuts.
-          </p>
-
-          <div class="flex flex-col sm:flex-row gap-3 mb-8">
-            <a href="tel:0452188420"
-               class="inline-flex items-center justify-center gap-2 bg-[#f19329] hover:bg-[#d97d1a] text-white font-bold px-6 py-3.5 rounded-full text-base transition-colors shadow-lg shadow-[#f19329]/25">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-              </svg>
-              Call Now — Emergency Response
-            </a>
-            <a href="/contact"
-               class="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-6 py-3.5 rounded-full text-base transition-colors">
-              Get a Free Quote
-            </a>
-          </div>
-
-          <!-- Trust signals -->
-          <div class="flex flex-wrap items-center gap-5 text-sm text-[#1a1a1a]/60">
-            {[
-              'QBCC Licensed',
-              'Fully Insured',
-              'Residential & Civil',
-              'SE Queensland',
-            ].map((t) => (
+          <!-- Trust badges -->
+          <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/50">
+            {['QBCC Licensed', 'Fully Insured', 'Residential & Civil', 'SE Queensland'].map((t) => (
               <span class="flex items-center gap-1.5">
-                <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-3.5 h-3.5 text-[#10a2d5] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
                 {t}
               </span>
             ))}
           </div>
-        </div>
 
-        <!-- Hero image -->
-        <div class="flex justify-center lg:justify-end">
-          <img
-            src="/images/van-hero.jpg"
-            alt="Pulse Plumbing, Gas & Civil branded service van — Brisbane plumber"
-            width="562"
-            height="550"
-            class="w-full max-w-md lg:max-w-none rounded-xl shadow-lg object-cover"
-            loading="eager"
-          />
-        </div>
       </div>
     </div>
   </section>
