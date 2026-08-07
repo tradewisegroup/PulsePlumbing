@@ -2,6 +2,7 @@
 import CivilLayout from '../../layouts/CivilLayout.astro';
 import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
 import VideoHero from '../../components/VideoHero.astro';
+import CapabilityModal from '../../components/forms/CapabilityModal.jsx';
 
 const FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
 const SITE    = 'https://pulseqld.com.au';
@@ -402,16 +403,11 @@ const schema = {
             >
               Submit an RFQ
             </a>
-            <a
-              href="/docs/pulse-plumbing-civil-capability.pdf"
-              class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/35 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
-              aria-label="Download capability statement PDF"
-            >
-              <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-              </svg>
-              Download Capability Statement
-            </a>
+            <CapabilityModal
+              client:load
+              buttonText="Download Capability Statement"
+              buttonClass="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/35 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
+            />
           </div>
         </div>
 
@@ -510,7 +506,7 @@ const schema = {
     subheadline="Sewer reticulation, water main installation, stormwater drainage, and civil infrastructure maintenance. QBCC licensed. Formal RFQ response within one business day."
     ctaText="Submit an RFQ"
     ctaHref="/civil/contact"
-    secondaryCtaText="Request Capability Statement"
+    secondaryCtaText="Submit an RFQ"
     secondaryCtaHref="/civil/contact"
   />
 

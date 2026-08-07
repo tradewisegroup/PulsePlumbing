@@ -17,6 +17,7 @@
  *  7. Civil footer   — ABN, QBCC, insurance, accreditations
  */
 import BaseLayout from './BaseLayout.astro';
+import CapabilityModal from '../components/forms/CapabilityModal.jsx';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -313,16 +314,11 @@ const pageSchema = {
 
         <!-- Capability statement + RFQ CTAs (desktop only) -->
         <div class="hidden md:flex items-center gap-2 flex-shrink-0 pl-4 border-l border-white/10">
-          <a
-            href="/docs/pulse-plumbing-civil-capability.pdf"
-            class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-3 py-1 transition-colors"
-            aria-label="Download capability statement PDF"
-          >
-            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-            Capability Statement
-          </a>
+          <CapabilityModal
+            client:load
+            buttonText="Capability Statement"
+            buttonClass="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-3 py-1 transition-colors"
+          />
           <a
             href="#civil-enquiry"
             class="inline-flex items-center gap-1.5 text-[11px] font-semibold bg-[#0172ae] hover:bg-[#015d8e] text-white rounded-full px-3 py-1 transition-colors"
@@ -389,16 +385,11 @@ const pageSchema = {
             >
               Submit an RFQ
             </a>
-            <a
-              href="/docs/pulse-plumbing-civil-capability.pdf"
-              class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0f172a] focus:ring-white/30"
-              aria-label="Download capability statement PDF"
-            >
-              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-              </svg>
-              Request Capability Statement
-            </a>
+            <CapabilityModal
+              client:load
+              buttonText="Request Capability Statement"
+              buttonClass="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors"
+            />
           </div>
         </div>
 

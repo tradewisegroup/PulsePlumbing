@@ -1,8 +1,8 @@
 ---
-const PHONE = '0452 188 420';
-const PHONE_HREF = 'tel:0452188420';
-const PHONE_OFFICE = '07 2150 4175';
-const PHONE_OFFICE_HREF = 'tel:0721504175';
+const PHONE      = '07 2150 4175';
+const PHONE_HREF = 'tel:0721504175';
+const AFTER_HOURS = '0452 188 420';
+const AFTER_HREF  = 'tel:0452188420';
 const EMAIL = 'admin@pulseqld.com.au';
 const FACEBOOK_URL  = import.meta.env.FACEBOOK_URL  ?? 'https://www.facebook.com/Pulseqld';
 const INSTAGRAM_URL = import.meta.env.INSTAGRAM_URL ?? 'https://www.instagram.com/pulseplumbinggascivil';
@@ -40,14 +40,14 @@ const year = new Date().getFullYear();
 
 <footer>
   <!-- Emergency band -->
-  <div class="bg-[#e12a39]">
+  <div class="bg-[#f19329]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p class="text-white font-semibold text-sm text-center sm:text-left">
         Plumbing emergency? We respond 24/7 — including nights, weekends &amp; public holidays.
       </p>
-      <a href={PHONE_HREF}
-         class="flex-shrink-0 bg-white text-[#e12a39] font-bold text-sm px-5 py-2.5 rounded hover:bg-red-50 transition-colors">
-        Call Now — {PHONE}
+      <a href={AFTER_HREF}
+         class="flex-shrink-0 bg-white text-[#f19329] font-bold text-sm px-5 py-2.5 rounded hover:bg-orange-50 transition-colors">
+        Call After Hours — {AFTER_HOURS}
       </a>
     </div>
   </div>
@@ -78,14 +78,14 @@ const year = new Date().getFullYear();
               <svg class="w-4 h-4 text-[#e12a39] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              {PHONE} <span class="text-white/35 text-xs ml-1">24/7 Emergency</span>
+              {PHONE} <span class="text-white/35 text-xs ml-1">Office</span>
             </a>
-            <a href={PHONE_OFFICE_HREF}
+            <a href={AFTER_HREF}
                class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
               <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              {PHONE_OFFICE} <span class="text-white/35 text-xs ml-1">Office</span>
+              {AFTER_HOURS} <span class="text-white/35 text-xs ml-1">Office</span>
             </a>
             <a href={`mailto:${EMAIL}`}
                class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">

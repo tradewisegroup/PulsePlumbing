@@ -1,8 +1,10 @@
 ---
 import MobileMenu from './MobileMenu.jsx';
 
-const PHONE      = '0452 188 420';
-const PHONE_HREF = 'tel:0452188420';
+const PHONE        = '07 2150 4175';
+const PHONE_HREF   = 'tel:0721504175';
+const AFTER_HOURS  = '0452 188 420';
+const AFTER_HREF   = 'tel:0452188420';
 
 const services = [
   { label: 'Maintenance Plumbing', href: '/services/maintenance-plumbing', desc: 'Scheduled & reactive maintenance',
@@ -54,17 +56,17 @@ const industries = [
         <span class="sm:hidden">24/7 Emergency Plumber</span>
       </div>
 
-      <!-- Right: click-to-call -->
-      <a
-        href={PHONE_HREF}
-        class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
-        aria-label={`Call Pulse Plumbing & Gas on ${PHONE}`}
-      >
-        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-        </svg>
-        {PHONE}
-      </a>
+      <!-- Right: both phone numbers -->
+      <div class="flex items-center gap-4">
+        <a href={PHONE_HREF} class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors" aria-label={`Office: ${PHONE}`}>
+          <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+          <span class="hidden sm:inline text-white/60 text-xs mr-0.5">Office</span>{PHONE}
+        </a>
+        <a href={AFTER_HREF} class="hidden sm:flex items-center gap-1.5 font-medium text-white/70 hover:text-white transition-colors" aria-label={`After hours: ${AFTER_HOURS}`}>
+          <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+          <span class="text-white/50 text-xs mr-0.5">After hours</span>{AFTER_HOURS}
+        </a>
+      </div>
     </div>
   </div>
 
@@ -108,101 +110,15 @@ const industries = [
             Home
           </a>
 
-          <!-- Services dropdown -->
-          <div class="relative group">
-            <button
-              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Services
-              <svg
-                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0172ae] transition-all duration-200 group-hover:rotate-180"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
+          <!-- Services — direct link -->
+          <a href="/services" class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors">
+            Services
+          </a>
 
-            <!-- Services panel -->
-            <div
-              class="
-                absolute top-full left-1/2 -translate-x-1/2 mt-2
-                w-[520px] bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60
-                opacity-0 invisible translate-y-1
-                group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-                transition-all duration-200 ease-out
-                z-50 p-2
-              "
-            >
-              <div class="grid grid-cols-2 gap-0.5">
-                {services.map((s) => (
-                  <a
-                    href={s.href}
-                    class="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-[#F0F5FA] group/item transition-colors"
-                  >
-                    <div class="w-5 h-5 text-[#0172ae] flex-shrink-0 mt-0.5 group-hover/item:text-[#015d8e] transition-colors" set:html={s.icon} aria-hidden="true"></div>
-                    <div>
-                      <div class="text-sm font-semibold text-slate-800 group-hover/item:text-[#0172ae] transition-colors leading-tight">
-                        {s.label}
-                      </div>
-                      <div class="text-xs text-slate-500 mt-0.5 leading-snug">{s.desc}</div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-              <div class="mt-1 pt-2 px-2 pb-1 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-xs text-slate-400">All services available 24/7</span>
-                <a href="/services" class="text-xs font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors">
-                  View all →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Industries dropdown -->
-          <div class="relative group">
-            <button
-              class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Industries
-              <svg
-                class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0172ae] transition-all duration-200 group-hover:rotate-180"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-
-            <!-- Industries panel -->
-            <div
-              class="
-                absolute top-full left-0 mt-2
-                w-56 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60
-                opacity-0 invisible translate-y-1
-                group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
-                transition-all duration-200 ease-out
-                z-50 py-2
-              "
-            >
-              {industries.map((i) => (
-                <a
-                  href={i.href}
-                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-600 hover:text-[#0172ae] hover:bg-[#F0F5FA] transition-colors"
-                >
-                  <span class="w-1 h-1 rounded-full bg-[#0172ae] flex-shrink-0" aria-hidden="true"></span>
-                  {i.label}
-                </a>
-              ))}
-              <div class="mx-3 mt-1 pt-2 border-t border-slate-100">
-                <a href="/civil" class="flex items-center gap-2 px-1 py-2 text-sm font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors">
-                  Civil →
-                </a>
-              </div>
-            </div>
-          </div>
+          <!-- Industries — direct link -->
+          <a href="/industries" class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors">
+            Industries
+          </a>
 
           <!-- Civil (standalone) -->
           <a
@@ -272,15 +188,15 @@ const industries = [
 
           <!-- Emergency phone — always visible on mobile -->
           <a
-            href={PHONE_HREF}
+            href={AFTER_HREF}
             class="
               lg:hidden flex items-center gap-1.5
-              bg-red-600 hover:bg-red-700
+              bg-[#f19329] hover:bg-[#d97d1a]
               text-white text-xs font-bold
               rounded-full px-3 py-2
               transition-colors
             "
-            aria-label={`Emergency plumber — call ${PHONE}`}
+            aria-label={`After hours — call ${AFTER_HOURS}`}
           >
             <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>

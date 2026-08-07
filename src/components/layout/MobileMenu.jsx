@@ -2,33 +2,8 @@ import { useState } from 'react';
 
 const NAV = [
   { label: 'Home', href: '/' },
-  {
-    label: 'Services',
-    children: [
-      { label: 'Maintenance Plumbing',      href: '/services/maintenance-plumbing' },
-      { label: 'Residential',               href: '/services/residential' },
-      { label: 'Commercial',                href: '/services/commercial' },
-      { label: 'Gas Fitting',               href: '/services/gas-fitting' },
-      { label: 'Blocked Drains',            href: '/services/blocked-drains' },
-      { label: 'Hot Water Systems',         href: '/services/hot-water-systems' },
-      { label: 'CCTV Drain Camera',         href: '/services/drain-camera' },
-      { label: 'Backflow Prevention',       href: '/services/backflow-prevention' },
-      { label: 'InSinkErator Installation', href: '/services/insinkerator' },
-    ],
-  },
-  {
-    label: 'Industries',
-    children: [
-      { label: 'Retail',                 href: '/industries/retail' },
-      { label: 'Childcare',              href: '/industries/childcare' },
-      { label: 'Education',              href: '/industries/education' },
-      { label: 'Aged Care',              href: '/industries/aged-care' },
-      { label: 'Student Accommodation',  href: '/industries/student-accommodation' },
-      { label: 'Commercial Real Estate', href: '/industries/commercial-real-estate' },
-      { label: 'Property Management',    href: '/industries/property-management' },
-      { label: 'New Builds',             href: '/industries/new-builds' },
-    ],
-  },
+  { label: 'Services',    href: '/services' },
+  { label: 'Industries',  href: '/industries' },
   { label: 'Civil', href: '/civil' },
   {
     label: 'Resources',
