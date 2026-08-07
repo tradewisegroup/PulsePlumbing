@@ -8,6 +8,7 @@ const NAV = [
   {
     label: 'Resources',
     children: [
+      { label: 'Testimonials',         href: '/testimonials' },
       { label: 'Knowledge Base',       href: '/knowledge-base' },
       { label: 'Compliance Scorecard', href: '/strata-scorecard' },
       { label: 'Blog',                 href: '/blog' },

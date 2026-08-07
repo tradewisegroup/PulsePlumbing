@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title       = 'Client Testimonials | Pulse Plumbing, Gas & Civil';
+const description = 'Read and watch what our clients say about Pulse Plumbing, Gas & Civil — residential, commercial and civil plumbing services across Brisbane, Logan, Gold Coast and Ipswich.';
+const canonical   = 'https://pulseqld.com.au/testimonials';
+
+// ── Written testimonials ───────────────────────────────────────────────────
+// Replace placeholder data with real client testimonials.
+const written = [
+  {
+    name:     'Sarah M.',
+    company:  'Property Manager',
+    location: 'Logan City',
+    rating:   5,
+    text:     'Pulse responded within the hour for a burst pipe at one of our managed properties. Professional, clean and upfront with the quote. They've become our go-to for all maintenance across our portfolio.',
+    date:     '2026-07',
+  },
+  {
+    name:     'James T.',
+    company:  'Facility Manager — Commercial Precinct',
+    location: 'Brisbane South',
+    rating:   5,
+    text:     'We've been using Pulse for our annual backflow prevention testing and compliance certificates across six properties. Always on time, documentation sorted, no chasing needed. Exactly what a facilities manager needs.',
+    date:     '2026-06',
+  },
+  {
+    name:     'Anita K.',
+    company:  'Director — Childcare Centre',
+    location: 'Ormeau',
+    rating:   5,
+    text:     'Lachlan and the team installed our TMV systems and have been doing our annual servicing ever since. They understand the requirements for childcare licensing and make the whole process easy.',
+    date:     '2026-05',
+  },
+  {
+    name:     'David R.',
+    company:  'Owner-Builder',
+    location: 'Coomera',
+    rating:   5,
+    text:     'Used Pulse for all the rough-in and fit-off on our new build. Turned up when they said they would, did the job properly, and got the Form 9 done without me having to chase it. Would recommend to anyone building in the area.',
+    date:     '2026-04',
+  },
+  {
+    name:     'Marcus H.',
+    company:  'Civil Project Manager',
+    location: 'Gold Coast North',
+    rating:   5,
+    text:     'We subcontracted Pulse for sewer reticulation on a 48-lot subdivision. WSA 02 compliance documentation was thorough, CCTV inspection done before handover, and QUU sign-off was smooth. A professional outfit.',
+    date:     '2026-03',
+  },
+  {
+    name:     'Karen W.',
+    company:  'Homeowner',
+    location: 'Springwood',
+    rating:   5,
+    text:     'Called at 7pm on a Sunday for a blocked drain backing up into the laundry. Lachlan was on site within 45 minutes, sorted it out with the CCTV camera and had everything flowing again within the hour. Unreal service.',
+    date:     '2026-02',
+  },
+];
+
+// ── Video testimonials ─────────────────────────────────────────────────────
+// videoSrc: path to MP4 in /public/videos/ OR a YouTube embed URL
+// posterSrc: thumbnail image (optional)
+const videos = [
+  {
+    name:     'Client Testimonial — Civil Works',
+    company:  'Civil Project, Logan City QLD',
+    quote:    'Professional team, compliant delivery, seamless QUU handover.',
+    videoSrc: '/videos/civil-brand-video.mp4',
+    posterSrc: '/images/excavator-branded.jpg',
+    isFile:   true,
+  },
+  // Add more video testimonials here — either MP4 files in /public/videos/
+  // or YouTube embed URLs (e.g. https://www.youtube.com/embed/XXXXXXXXX)
+];
+
+function stars(n: number) {
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+---
+
+<BaseLayout {title} {description} {canonical}>
+
+  <!-- ── Hero ───────────────────────────────────────────────────────── -->
+  <section class="bg-[#000000] py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="hover:text-white/80 transition-colors">Home</a></li>
+          <li class="text-white/30">/</li>
+          <li class="text-white/70">Testimonials</li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4">
+        What Our Clients Say
+      </h1>
+      <p class="text-lg text-white/60 max-w-2xl mt-4">
+        Written and video testimonials from residential homeowners, property managers, facilities operators, and civil contractors across South-East Queensland.
+      </p>
+      <!-- Google Reviews link — add your Google Review URL below -->
+      <a
+        href="https://g.page/r/REPLACE_WITH_GOOGLE_REVIEW_LINK/review"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 mt-6 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+        </svg>
+        Leave us a Google Review
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Video Testimonials ──────────────────────────────────────────── -->
+  {videos.length > 0 && (
+    <section class="py-16 bg-[#F0F5FA]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="mb-10">
+          <p class="text-xs font-bold uppercase tracking-widest text-[#0172ae] mb-3">On Camera</p>
+          <h2 class="text-3xl font-bold text-[#000000]">Video Testimonials</h2>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {videos.map((v) => (
+            <div class="bg-white rounded-2xl border border-[#D1D5DB] overflow-hidden shadow-sm">
+              <div class="relative aspect-video bg-[#000000]">
+                {v.isFile ? (
+                  <video
+                    class="w-full h-full object-cover"
+                    controls
+                    preload="none"
+                    poster={v.posterSrc}
+                  >
+                    <source src={v.videoSrc} type="video/mp4" />
+                  </video>
+                ) : (
+                  <iframe
+                    class="w-full h-full"
+                    src={v.videoSrc}
+                    title={v.name}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy"
+                  ></iframe>
+                )}
+              </div>
+              <div class="p-5">
+                <p class="text-sm font-bold text-[#000000] mb-0.5">{v.name}</p>
+                <p class="text-xs text-slate-500 mb-3">{v.company}</p>
+                <p class="text-sm text-[#1a1a1a]/70 italic">"{v.quote}"</p>
+              </div>
+            </div>
+          ))}
+
+          <!-- Placeholder card for uploading more video testimonials -->
+          <div class="bg-white rounded-2xl border-2 border-dashed border-[#D1D5DB] flex flex-col items-center justify-center p-8 text-center min-h-[280px]">
+            <div class="w-12 h-12 rounded-full bg-[#0172ae]/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-[#0172ae]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
+              </svg>
+            </div>
+            <p class="text-sm font-semibold text-[#000000] mb-1">Add a Video Testimonial</p>
+            <p class="text-xs text-slate-400 leading-relaxed">Upload an MP4 to /public/videos/ or add a YouTube embed URL in testimonials.astro</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )}
+
+  <!-- ── Written Testimonials ────────────────────────────────────────── -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-10">
+        <p class="text-xs font-bold uppercase tracking-widest text-[#0172ae] mb-3">Client Reviews</p>
+        <h2 class="text-3xl font-bold text-[#000000]">Written Testimonials</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {written.map((t) => (
+          <div class="bg-[#F0F5FA] border border-[#D1D5DB] rounded-2xl p-6 flex flex-col">
+            <!-- Stars -->
+            <div class="text-[#f19329] text-lg mb-3" aria-label={`${t.rating} out of 5 stars`}>
+              {stars(t.rating)}
+            </div>
+            <!-- Quote -->
+            <p class="text-sm text-[#1a1a1a] leading-relaxed flex-1 mb-5">"{t.text}"</p>
+            <!-- Attribution -->
+            <div class="border-t border-[#D1D5DB] pt-4">
+              <p class="text-sm font-bold text-[#000000]">{t.name}</p>
+              <p class="text-xs text-slate-500">{t.company}</p>
+              <p class="text-xs text-slate-400 mt-0.5">{t.location}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Submit a Testimonial CTA ────────────────────────────────────── -->
+  <section class="py-14 bg-[#000000]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold text-white mb-3">Worked with Pulse?</h2>
+      <p class="text-white/60 mb-8">We'd love to hear from you. Leave a Google Review or get in touch to share your experience.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="https://g.page/r/REPLACE_WITH_GOOGLE_REVIEW_LINK/review"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 bg-white text-[#000000] font-bold px-7 py-3.5 rounded-full hover:bg-slate-100 transition-colors"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+          Leave a Google Review
+        </a>
+        <a href="/contact"
+           class="inline-flex items-center justify-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-7 py-3.5 rounded-full transition-colors">
+          Share Your Experience
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
