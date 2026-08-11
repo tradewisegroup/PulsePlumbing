@@ -264,52 +264,65 @@ async function submitToHubSpot(
  * For now, logs the notification body so it is visible in Cloudflare Workers
  * logs and does not block the response.
  */
+// ─── Email credentials ────────────────────────────────────────────────────────
+// Uses the same RESEND_API_KEY set in Cloudflare Pages environment variables.
+// Sign up free at resend.com → add pulseqld.com.au domain → copy API key.
+
+const RESEND_API_KEY  = import.meta.env.RESEND_API_KEY ?? '';
+const NOTIFY_TO       = 'admin@pulseqld.com.au';
+const NOTIFY_FROM     = 'Pulse Website <noreply@pulseqld.com.au>';
+
 async function sendInternalNotification(d: CivilFormData): Promise<void> {
-  const body = [
-    '=== NEW CIVIL PROJECT ENQUIRY ===',
-    '',
-    `Company:          ${d.companyName}`,
-    `Contact:          ${d.firstName} ${d.lastName}`.trim(),
-    `Email:            ${d.email}`,
-    `Phone:            ${d.phone}`,
-    '',
-    `Project Type:     ${d.projectType}`,
-    `Project Value:    ${d.projectValue  || 'Not specified'}`,
-    `Location:         ${d.projectLocation || 'Not specified'}`,
-    `Timeline:         ${d.timeline       || 'Not specified'}`,
-    '',
-    'Project Description:',
-    d.description,
-    '',
-    `How Found:        ${d.howFound    || 'Not specified'}`,
-    `Source:           ${d.source}`,
-    `UTM Source:       ${d.utm_source  || '—'}`,
-    `UTM Medium:       ${d.utm_medium  || '—'}`,
-    `UTM Campaign:     ${d.utm_campaign|| '—'}`,
-  ].join('\n');
+  const rows: [string, string][] = [
+    ['Company',      d.companyName],
+    ['Contact',      [d.firstName, d.lastName].filter(Boolean).join(' ')],
+    ['Email',        d.email],
+    ['Phone',        d.phone],
+    ['Project Type', d.projectType],
+    ['Project Value',d.projectValue   || 'Not specified'],
+    ['Location',     d.projectLocation || 'Not specified'],
+    ['Timeline',     d.timeline        || 'Not specified'],
+    ['Description',  d.description],
+    ['How Found',    d.howFound        || 'Not specified'],
+  ];
 
-  // TODO: replace this log with real email delivery (see options above)
-  console.info('[Civil Notification] New civil enquiry received:\n' + body);
+  const html = `
+<h2 style="margin:0 0 16px;font-family:sans-serif">Civil RFQ — ${d.companyName}</h2>
+<table style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px">
+${rows.map(([k, v]) => `
+  <tr>
+    <td style="padding:6px 16px 6px 0;font-weight:600;white-space:nowrap;vertical-align:top;color:#1a1a1a">${k}</td>
+    <td style="padding:6px 0;color:#334155">${v}</td>
+  </tr>`).join('')}
+</table>`;
 
-  /*
-  // ── SendGrid example (uncomment and set SENDGRID_API_KEY when ready) ─────────
-  const SENDGRID_API_KEY = import.meta.env.SENDGRID_API_KEY;
-  if (!SENDGRID_API_KEY) return;
+  if (!RESEND_API_KEY) {
+    console.warn('[Civil] RESEND_API_KEY not set — logging enquiry instead of emailing.');
+    console.info('[Civil RFQ]', JSON.stringify(Object.fromEntries(rows)));
+    return;
+  }
 
-  await fetch('https://api.sendgrid.com/v3/mail/send', {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${SENDGRID_API_KEY}`,
-    },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email: 'admin@pulseqld.com.au' }] }],
-      from:    { email: 'noreply@pulseqld.com.au', name: 'Pulse Plumbing Civil' },
-      subject: `New Civil Enquiry — ${d.projectType} — ${d.companyName}`,
-      content: [{ type: 'text/plain', value: body }],
-    }),
-  });
-  */
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method:  'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type':  'application/json',
+      },
+      body: JSON.stringify({
+        from:    NOTIFY_FROM,
+        to:      [NOTIFY_TO],
+        subject: `Civil RFQ — ${d.projectType} — ${d.companyName}`,
+        html,
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.status.toString());
+      console.error('[Civil] Resend error:', text);
+    }
+  } catch (err) {
+    console.error('[Civil] Email send failed:', err);
+  }
 }
 
 // ─── Request body parsing ─────────────────────────────────────────────────────
