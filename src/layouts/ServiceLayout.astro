@@ -29,6 +29,8 @@ export interface Props {
   heroImage?: string;
   /** CSS background-size value — defaults to 'cover'. Use 'contain' to show the full image. */
   heroImageFit?: string;
+  /** When true, renders heroImage as a full-bleed background with dark overlay instead of a right-column image */
+  heroImageBackground?: boolean;
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -46,6 +48,7 @@ const {
   metaDescription,
   heroImage,
   heroImageFit = 'cover',
+  heroImageBackground = false,
 } = Astro.props;
 
 const SITE     = 'https://pulseqld.com.au';
@@ -136,12 +139,28 @@ const pageSchema = {
   <!-- ══════════════════════════════════════════════════════════════════════════
        1. HERO
        ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="bg-[#000000]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-      <div class={`grid gap-12 items-center${heroImage ? ' lg:grid-cols-2' : ''}`}>
+  <section class="relative bg-[#000000] overflow-hidden">
+
+    {/* Background image mode — full-bleed with dark overlay */}
+    {heroImage && heroImageBackground && (
+      <>
+        <img
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 w-full h-full object-cover object-center"
+          loading="eager"
+        />
+        <div class="absolute inset-0 bg-black/65"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+      </>
+    )}
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+      <div class={`grid gap-12 items-center${heroImage && !heroImageBackground ? ' lg:grid-cols-2' : ''}`}>
 
         <!-- Copy -->
-        <div>
+        <div class={heroImage && heroImageBackground ? 'max-w-2xl' : ''}>
           <!-- Breadcrumb -->
           <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
             <ol class="flex items-center gap-2">
@@ -154,15 +173,15 @@ const pageSchema = {
           </nav>
 
           <!-- Service badge -->
-          <div class="inline-flex items-center gap-2 bg-[#0172ae]/20 border border-[#0172ae]/40 rounded-full px-4 py-1.5 mb-6">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#0172ae]" aria-hidden="true"></span>
-            <span class="text-sm font-semibold text-[#0172ae]">{serviceName}</span>
+          <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#10a2d5]" aria-hidden="true"></span>
+            <span class="text-sm font-semibold text-white">{serviceName}</span>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight mb-5 inline-block bg-[#0172ae]/60 px-5 py-3 rounded-xl shadow-md">
+          <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight mb-5">
             {heroTitle}
           </h1>
-          <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
+          <p class="text-lg sm:text-xl text-white/75 leading-relaxed mb-10 max-w-2xl">
             {heroSubtitle}
           </p>
           <div class="flex flex-col sm:flex-row gap-3">
@@ -174,7 +193,7 @@ const pageSchema = {
             </a>
             <a
               href={PHONE_HREF}
-              class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold text-base px-7 py-3.5 rounded-full transition-colors"
+              class="inline-flex items-center justify-center gap-2 bg-[#f19329] hover:bg-[#d97d1a] text-white font-bold text-base px-7 py-3.5 rounded-full transition-colors"
             >
               <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
@@ -184,8 +203,8 @@ const pageSchema = {
           </div>
         </div>
 
-        <!-- Hero image (right column) -->
-        {heroImage && (
+        <!-- Hero image (right column — only when NOT in background mode) -->
+        {heroImage && !heroImageBackground && (
           <div class="flex justify-center lg:justify-end">
             <img
               src={heroImage}
