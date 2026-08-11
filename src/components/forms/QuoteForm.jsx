@@ -21,7 +21,7 @@ const INDUSTRY_OPTIONS = [
   { value: 'childcare',             label: 'Childcare' },
   { value: 'education',             label: 'Education' },
   { value: 'aged-care',             label: 'Aged Care' },
-  { value: 'student-accommodation', label: 'Student Accommodation' },
+  { value: 'student-accommodation', label: 'Accommodation' },
   { value: 'commercial-property',   label: 'Commercial Property' },
   { value: 'property-management',   label: 'Property Management' },
   { value: 'new-build',             label: 'New Build' },
