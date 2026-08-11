@@ -133,6 +133,47 @@ function validate(d: FormData): string | null {
   return null;
 }
 
+// ─── Email notification (Resend) ──────────────────────────────────────────────
+// Set RESEND_API_KEY in Cloudflare Pages environment variables.
+// Sign up free at resend.com → Domains → add pulseqld.com.au → copy API key.
+// All quote/contact submissions are emailed to admin@pulseqld.com.au.
+
+const RESEND_API_KEY      = import.meta.env.RESEND_API_KEY ?? '';
+const NOTIFY_EMAIL        = 'admin@pulseqld.com.au';
+const FROM_EMAIL          = 'Pulse Website <noreply@pulseqld.com.au>';
+
+async function sendEmailNotification(d: FormData, pageUri: string): Promise<void> {
+  if (!RESEND_API_KEY) {
+    console.warn('[Resend] RESEND_API_KEY not set — skipping email notification.');
+    return;
+  }
+  const rows = [
+    ['Name',      [d.firstname, d.lastname].filter(Boolean).join(' ')],
+    ['Phone',     d.phone],
+    ['Email',     d.email],
+    ['Company',   d.company],
+    ['Service',   d.service_type],
+    ['Industry',  d.industry],
+    ['Suburb',    d.suburb],
+    ['Message',   d.message],
+    ['Preferred', d.preferred_time],
+    ['Source',    pageUri],
+  ].filter(([, v]) => v);
+  const html = `<h2 style="margin:0 0 16px">New Quote Request — Pulse Plumbing</h2>
+<table style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px">
+${rows.map(([k, v]) => `<tr><td style="padding:6px 12px 6px 0;font-weight:600;white-space:nowrap;vertical-align:top">${k}</td><td style="padding:6px 0">${v}</td></tr>`).join('')}
+</table>`;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method:  'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ from: FROM_EMAIL, to: [NOTIFY_EMAIL], subject: `New enquiry — ${[d.firstname, d.lastname].filter(Boolean).join(' ')} (${d.service_type || 'General'})`, html }),
+    });
+  } catch (err) {
+    console.error('[Resend] Email notification failed:', err);
+  }
+}
+
 // ─── HubSpot ──────────────────────────────────────────────────────────────────
 
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
@@ -265,6 +306,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Allow each form to route to a specific HubSpot form via a hidden form_id field
   const formId = str(raw.form_id) || HUBSPOT_FORM_ID;
+
+  // ── Email notification (non-blocking — runs in parallel with HubSpot) ─────
+  void sendEmailNotification(data, pageUri);
 
   // ── HubSpot ────────────────────────────────────────────────────────────────
   try {

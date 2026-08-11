@@ -79,6 +79,46 @@ function validate(d: ApplicationData): string | null {
   return null;
 }
 
+// ─── Email notification (Resend) ──────────────────────────────────────────────
+// All job applications are emailed to accounts@pulseqld.com.au.
+// Set RESEND_API_KEY in Cloudflare Pages environment variables.
+
+const RESEND_API_KEY     = import.meta.env.RESEND_API_KEY ?? '';
+const CAREERS_EMAIL      = 'accounts@pulseqld.com.au';
+const FROM_EMAIL         = 'Pulse Website <noreply@pulseqld.com.au>';
+
+async function sendApplicationEmail(d: ApplicationData): Promise<void> {
+  if (!RESEND_API_KEY) {
+    console.warn('[Resend] RESEND_API_KEY not set — skipping email notification.');
+    return;
+  }
+  const html = `<h2 style="margin:0 0 16px">New Job Application — Pulse Plumbing</h2>
+<table style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px">
+${[
+  ['Name',   [d.firstname, d.lastname].filter(Boolean).join(' ')],
+  ['Email',  d.email],
+  ['Phone',  d.phone],
+  ['Role',   d.role],
+  ['Cover',  d.cover_note || '(none)'],
+  ['Resume', d.resume_name ? `${d.resume_name} (${d.resume_size})` : 'Not uploaded'],
+].map(([k, v]) => `<tr><td style="padding:6px 12px 6px 0;font-weight:600;white-space:nowrap;vertical-align:top">${k}</td><td style="padding:6px 0">${v}</td></tr>`).join('')}
+</table>`;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method:  'POST',
+      headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        from:    FROM_EMAIL,
+        to:      [CAREERS_EMAIL],
+        subject: `Job Application — ${[d.firstname, d.lastname].filter(Boolean).join(' ')} (${d.role})`,
+        html,
+      }),
+    });
+  } catch (err) {
+    console.error('[Resend] Application email failed:', err);
+  }
+}
+
 // ─── HubSpot ──────────────────────────────────────────────────────────────────
 
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
@@ -196,6 +236,9 @@ export const POST: APIRoute = async ({ request }) => {
     '0.0.0.0';
   const pageUri =
     request.headers.get('referer') ?? 'https://pulseqld.com.au/careers';
+
+  // ── Email notification (non-blocking) ────────────────────────────────────
+  void sendApplicationEmail(data);
 
   // ── HubSpot ───────────────────────────────────────────────────────────────
   try {

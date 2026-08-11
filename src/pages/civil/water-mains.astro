@@ -1,6 +1,7 @@
 ---
 import CivilLayout from '../../layouts/CivilLayout.astro';
 import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+import VideoHero from '../../components/VideoHero.astro';
 
 const FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
 const SITE    = 'https://pulseqld.com.au';
@@ -265,5 +266,16 @@ const schema = {
 
   <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} initialProjectType="water-mains" client:load slot="enquiry-form" />
+
+  <!-- TODO: Upload /public/videos/water-mains-loop.mp4 — branded civil footage, compressed for web -->
+  <VideoHero
+    slot="hero"
+    videoSrc="/videos/water-mains-loop.mp4"
+    posterSrc="/images/civil-trenching.jpg"
+    headline="Water Main Installation & Renewal — South-East Queensland"
+    subheadline="QBCC-licensed civil contractor for water main installation, renewal, relining and service connections. WSA 03:2011 and AS 2032 compliant. RFQ response within one business day."
+    ctaText="Submit an RFQ"
+    ctaHref="/civil/contact"
+  />
 
 </CivilLayout>

@@ -1,6 +1,7 @@
 ---
 import CivilLayout from '../../layouts/CivilLayout.astro';
 import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+import VideoHero from '../../components/VideoHero.astro';
 
 const FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
 const SITE    = 'https://pulseqld.com.au';
@@ -265,5 +266,16 @@ const schema = {
 
   <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} initialProjectType="stormwater" client:load slot="enquiry-form" />
+
+  <!-- TODO: Upload /public/videos/stormwater-loop.mp4 — branded civil footage, compressed for web -->
+  <VideoHero
+    slot="hero"
+    videoSrc="/videos/stormwater-loop.mp4"
+    posterSrc="/images/civil-site-overview.jpg"
+    headline="Stormwater Drainage Construction — South-East Queensland"
+    subheadline="Pipe networks, detention basins, WSUD structures and gross pollutant traps for residential subdivisions, commercial developments and councils across SEQ."
+    ctaText="Submit an RFQ"
+    ctaHref="/civil/contact"
+  />
 
 </CivilLayout>

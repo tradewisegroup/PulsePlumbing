@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title       = 'Plumbing Tips & Industry Insights | Pulse Plumbing, Gas & Civil Blog';
+const description = 'Expert plumbing tips, compliance guides, and industry insights from the Pulse Plumbing, Gas & Civil team. Written by QBCC-licensed plumber Lachlan De Santis — serving Brisbane, Logan, Gold Coast and Ipswich.';
+const canonical   = 'https://pulseqld.com.au/blog';
+
+const allArticles = await getCollection('knowledge');
+const sorted = allArticles.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+const featured = sorted.filter((a) => a.data.featured).slice(0, 3);
+const recent   = sorted.slice(0, 9);
+
+const categoryLabels: Record<string, string> = {
+  compliance:  'Compliance',
+  services:    'Services',
+  civil:       'Civil Works',
+  costs:       'Costs & Pricing',
+  residential: 'Residential',
+};
+
+const categoryColours: Record<string, string> = {
+  compliance:  'bg-blue-100 text-blue-700',
+  services:    'bg-cyan-100 text-cyan-700',
+  civil:       'bg-slate-100 text-slate-700',
+  costs:       'bg-amber-100 text-amber-700',
+  residential: 'bg-green-100 text-green-700',
+};
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-AU', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+---
+
+<BaseLayout {title} {description} {canonical}>
+
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section class="bg-[#000000] py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2">
+          <li><a href="/" class="hover:text-white/80 transition-colors">Home</a></li>
+          <li class="text-white/30">/</li>
+          <li class="text-white/70">Blog</li>
+        </ol>
+      </nav>
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-4">Insights from the Pulse team</p>
+        <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-5">
+          Plumbing Tips &amp; Industry Insights
+        </h1>
+        <p class="text-lg text-white/60 leading-relaxed">
+          Practical guides, compliance information, and expert advice from the Pulse Plumbing, Gas &amp; Civil team — written by QBCC-licensed plumber Lachlan De Santis.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Articles ──────────────────────────────────────────── -->
+  {featured.length > 0 && (
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="mb-10">
+          <p class="text-xs font-bold uppercase tracking-widest text-[#0172ae] mb-3">Must reads</p>
+          <h2 class="text-3xl font-bold text-[#000000]">Featured Articles</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          {featured.map((article) => (
+            <a
+              href={`/knowledge-base/${article.id}`}
+              class="group bg-white border border-[#D1D5DB] rounded-xl overflow-hidden hover:border-[#0172ae] hover:shadow-md transition-all"
+            >
+              <div class="p-6">
+                <span class={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full mb-4 ${categoryColours[article.data.category] ?? 'bg-slate-100 text-slate-700'}`}>
+                  {categoryLabels[article.data.category] ?? article.data.category}
+                </span>
+                <h3 class="text-lg font-bold text-[#000000] mb-3 group-hover:text-[#0172ae] transition-colors leading-snug">
+                  {article.data.title}
+                </h3>
+                <p class="text-sm text-[#1a1a1a]/60 leading-relaxed mb-4 line-clamp-3">
+                  {article.data.description}
+                </p>
+                <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#D1D5DB]">
+                  <div>
+                    <p class="text-xs font-semibold text-[#000000]">{article.data.author}</p>
+                    <p class="text-xs text-slate-400">{formatDate(article.data.publishDate)}</p>
+                  </div>
+                  <span class="text-xs font-semibold text-[#0172ae] group-hover:underline">Read →</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )}
+
+  <!-- ── All Articles ───────────────────────────────────────────────── -->
+  <section class="py-16 bg-[#F0F5FA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-10">
+        <p class="text-xs font-bold uppercase tracking-widest text-[#0172ae] mb-3">All posts</p>
+        <h2 class="text-3xl font-bold text-[#000000]">Recent Articles</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {recent.map((article) => (
+          <a
+            href={`/knowledge-base/${article.id}`}
+            class="group bg-white border border-[#D1D5DB] rounded-xl p-5 hover:border-[#0172ae] hover:shadow-md transition-all flex flex-col"
+          >
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <span class={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full shrink-0 ${categoryColours[article.data.category] ?? 'bg-slate-100 text-slate-700'}`}>
+                {categoryLabels[article.data.category] ?? article.data.category}
+              </span>
+              <span class="text-xs text-slate-400 shrink-0">{formatDate(article.data.publishDate)}</span>
+            </div>
+            <h3 class="text-base font-bold text-[#000000] mb-2 group-hover:text-[#0172ae] transition-colors leading-snug">
+              {article.data.title}
+            </h3>
+            <p class="text-sm text-[#1a1a1a]/60 leading-relaxed line-clamp-2 flex-1">
+              {article.data.description}
+            </p>
+            <div class="flex items-center gap-2 mt-4 pt-3 border-t border-[#D1D5DB]">
+              <div class="w-6 h-6 rounded-full bg-[#0172ae] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                {article.data.author.charAt(0)}
+              </div>
+              <span class="text-xs text-slate-500">{article.data.author}</span>
+              <span class="ml-auto text-xs font-semibold text-[#0172ae] group-hover:underline">Read →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────────────── -->
+  <section class="py-16 bg-[#000000]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-4">Got a question?</p>
+      <h2 class="text-3xl font-bold text-white mb-4">Talk to a Licensed Plumber</h2>
+      <p class="text-white/60 mb-8">
+        If you can't find what you're looking for, our team is available 24/7 — call us or send a message and we'll respond the same day.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="tel:0452188420" class="inline-flex items-center gap-2 bg-[#f19329] hover:bg-[#d97f1e] text-white font-bold px-6 py-3 rounded transition-colors">
+          Call 0452 188 420
+        </a>
+        <a href="/contact" class="inline-flex items-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-6 py-3 rounded transition-colors">
+          Send a Message
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

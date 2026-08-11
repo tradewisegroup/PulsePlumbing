@@ -1,6 +1,7 @@
 ---
 import CivilLayout from '../../layouts/CivilLayout.astro';
 import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+import VideoHero from '../../components/VideoHero.astro';
 
 const FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
 const SITE    = 'https://pulseqld.com.au';
@@ -275,5 +276,16 @@ const schema = {
 
   <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} initialProjectType="infrastructure-maintenance" client:load slot="enquiry-form" />
+
+  <!-- TODO: Upload /public/videos/infrastructure-maintenance-loop.mp4 — branded civil footage, compressed for web -->
+  <VideoHero
+    slot="hero"
+    videoSrc="/videos/infrastructure-maintenance-loop.mp4"
+    posterSrc="/images/excavator-branded.jpg"
+    headline="Civil Infrastructure Maintenance — South-East Queensland"
+    subheadline="CCTV condition assessment, high-pressure jetting, root cutting, manhole rehabilitation and pipe relining for councils, water utilities and commercial asset owners across SEQ."
+    ctaText="Submit an RFQ"
+    ctaHref="/civil/contact"
+  />
 
 </CivilLayout>

@@ -1,6 +1,7 @@
 ---
 import CivilLayout from '../../layouts/CivilLayout.astro';
 import CivilEnquiryForm from '../../components/forms/CivilEnquiryForm.jsx';
+import VideoHero from '../../components/VideoHero.astro';
 
 const FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
 const SITE    = 'https://pulseqld.com.au';
@@ -266,5 +267,16 @@ const schema = {
 
   <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} initialProjectType="sewer-construction" client:load slot="enquiry-form" />
+
+  <!-- TODO: Upload /public/videos/sewer-construction-loop.mp4 — branded civil footage, compressed for web -->
+  <VideoHero
+    slot="hero"
+    videoSrc="/videos/sewer-construction-loop.mp4"
+    posterSrc="/images/civil-site-1.jpg"
+    headline="Sewer Construction & Reticulation — South-East Queensland"
+    subheadline="Gravity sewer installation, pump stations, rising mains and pressure sewer systems for residential subdivisions and commercial developments across SEQ. WSA 02:2014 compliant."
+    ctaText="Submit an RFQ"
+    ctaHref="/civil/contact"
+  />
 
 </CivilLayout>

@@ -146,20 +146,20 @@ const values = [
           </div>
         </div>
 
-        <!-- Right: image -->
+        <!-- Right: Lachlan portrait -->
         <div class="relative">
           <img
-            src="/images/team-hero.jpg"
-            alt="The Pulse Plumbing, Gas & Civil team — South-East Queensland"
+            src="/images/director-portrait.jpg"
+            alt="Lachlan De Santis — Director, Pulse Plumbing, Gas & Civil"
             width="640"
-            height="480"
-            class="w-full rounded-2xl shadow-xl object-cover aspect-[4/3]"
+            height="800"
+            class="w-full rounded-2xl shadow-xl object-cover object-top aspect-[3/4] max-h-[560px]"
             loading="lazy"
           />
-          <!-- Floating badge -->
+          <!-- Floating credential badge -->
           <div class="absolute -bottom-5 -left-5 bg-[#0172ae] text-white rounded-xl px-5 py-4 shadow-lg hidden sm:block">
-            <p class="text-2xl font-bold leading-none">24/7</p>
-            <p class="text-xs text-white/80 mt-1">Emergency response</p>
+            <p class="text-sm font-bold leading-none">Lachlan De Santis</p>
+            <p class="text-xs text-white/80 mt-1">Director · QBCC Lic 15384771</p>
           </div>
         </div>
 
@@ -212,7 +212,7 @@ const values = [
           </div>
 
           <!-- Quote -->
-          <blockquote class="relative">
+          <blockquote class="relative mb-8">
             <svg class="absolute -top-2 -left-2 w-8 h-8 text-[#10a2d5]/30" fill="currentColor" viewBox="0 0 32 32">
               <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
             </svg>
@@ -224,6 +224,34 @@ const values = [
               <p class="text-xs text-slate-500">Director, Pulse Plumbing, Gas &amp; Civil</p>
             </footer>
           </blockquote>
+
+          <!-- Intro video — replace the YouTube URL below with Lachlan's intro video -->
+          {/* TODO: Replace src with Lachlan's YouTube embed URL e.g. https://www.youtube.com/embed/XXXXXXXXX */}
+          <div class="rounded-xl overflow-hidden border border-[#D1D5DB]">
+            <div class="relative aspect-video bg-[#000000]">
+              <video
+                class="w-full h-full object-cover"
+                controls
+                preload="none"
+                poster="/images/director-portrait.jpg"
+              >
+                <source src="/videos/lachlan-intro.mp4" type="video/mp4" />
+                <!-- Fallback: replace with YouTube iframe when video is ready -->
+              </video>
+              <!-- Play button overlay (shows when video not loaded) -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none" id="about-video-overlay">
+                <div class="w-16 h-16 rounded-full bg-[#0172ae]/90 flex items-center justify-center">
+                  <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="bg-[#000000] px-4 py-3">
+              <p class="text-sm font-semibold text-white">Lachlan De Santis — Director Intro</p>
+              <p class="text-xs text-white/50">Pulse Plumbing, Gas &amp; Civil · Ormeau, QLD</p>
+            </div>
+          </div>
 
         </div>
       </div>
