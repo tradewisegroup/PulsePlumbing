@@ -73,32 +73,6 @@ const socialProofItems = [
   'Residential & Civil',
 ];
 
-const triageCards = [
-  {
-    heading: 'Emergency Plumbing',
-    body: 'Burst pipes, blocked drains, gas leaks. We\'re on call 24/7.',
-    cta: 'Call Now',
-    href: 'tel:0452188420',
-    accent: '#f19329',
-    dark: false,
-  },
-  {
-    heading: 'Commercial & Strata',
-    body: 'Maintenance contracts, compliance certificates, priority response.',
-    cta: 'Get a Quote',
-    href: '/contact',
-    accent: '#0172ae',
-    dark: false,
-  },
-  {
-    heading: 'Civil Infrastructure',
-    body: 'Sewer construction, water mains, stormwater. RFQ within 1 business day.',
-    cta: 'Submit RFQ',
-    href: '/civil/contact',
-    accent: '#10a2d5',
-    dark: true,
-  },
-];
 ---
 
 <BaseLayout {title} {description} schema={homepageSchema}>
@@ -181,33 +155,6 @@ const triageCards = [
       </div>
     </div>
   </div>
-
-  <!-- ── Three-Path Triage ── -->
-  <section class="py-10 bg-[#F0F5FA]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid sm:grid-cols-3 gap-4">
-        {triageCards.map((card) => (
-          <div class={`rounded-2xl p-6 flex flex-col ${card.dark ? 'bg-[#000000] text-white' : 'bg-white border border-[#D1D5DB] text-[#000000]'}`}>
-            <div class="flex-1">
-              <div class="w-2 h-6 rounded-full mb-4" style={`background-color: ${card.accent}`}></div>
-              <h3 class={`text-lg font-bold mb-2 ${card.dark ? 'text-white' : 'text-[#000000]'}`}>{card.heading}</h3>
-              <p class={`text-sm leading-relaxed mb-6 ${card.dark ? 'text-white/60' : 'text-[#1a1a1a]/60'}`}>{card.body}</p>
-            </div>
-            <a
-              href={card.href}
-              class="inline-flex items-center justify-center gap-2 font-bold text-sm px-5 py-2.5 rounded-full transition-colors text-white"
-              style={`background-color: ${card.accent}`}
-            >
-              {card.cta}
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-              </svg>
-            </a>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <!-- ── Services grid ── -->
   <section class="py-20 bg-white">
