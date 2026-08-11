@@ -284,7 +284,7 @@ const pageSchema = {
               <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
             </svg>
           </div>
-          <span class="text-[10px] font-bold text-white/35 uppercase tracking-[0.15em]">Civil</span>
+          <span class="text-[10px] font-bold text-white/70 uppercase tracking-[0.15em]">Civil</span>
         </div>
 
         <!-- Nav links -->
@@ -301,7 +301,7 @@ const pageSchema = {
                   ? 'border-[#0172ae] text-white'
                   : isContact
                     ? 'border-transparent text-[#0172ae] hover:text-[#7ab8f5] hover:border-[#0172ae]/40'
-                    : 'border-transparent text-white/55 hover:text-white hover:border-white/25',
+                    : 'border-transparent text-white/90 hover:text-white hover:border-white/25',
               ].join(' ')}
             >
               {item.label}
@@ -317,7 +317,7 @@ const pageSchema = {
           <CapabilityModal
             client:load
             buttonText="Capability Statement"
-            buttonClass="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-3 py-1 transition-colors"
+            buttonClass="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/80 hover:text-white border border-white/25 hover:border-white/30 rounded-full px-3 py-1 transition-colors"
           />
           <a
             href="#civil-enquiry"
@@ -343,36 +343,36 @@ const pageSchema = {
 
         <!-- Copy -->
           <!-- Breadcrumb -->
-          <nav class="mb-5 text-xs text-white/35" aria-label="Breadcrumb">
+          <nav class="mb-5 text-xs text-white/80" aria-label="Breadcrumb">
             <ol class="flex items-center gap-2">
-              <li><a href="/" class="hover:text-white/60 transition-colors">Home</a></li>
-              <li aria-hidden="true" class="text-white/20">›</li>
+              <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+              <li aria-hidden="true" class="text-white/40">›</li>
               {activeService ? (
                 <>
-                  <li><a href="/civil" class="hover:text-white/60 transition-colors">Civil</a></li>
-                  <li aria-hidden="true" class="text-white/20">›</li>
-                  <li class="text-white/55" aria-current="page">{activeLabel}</li>
+                  <li><a href="/civil" class="hover:text-white transition-colors">Civil</a></li>
+                  <li aria-hidden="true" class="text-white/40">›</li>
+                  <li class="text-white" aria-current="page">{activeLabel}</li>
                 </>
               ) : (
-                <li class="text-white/55" aria-current="page">Civil</li>
+                <li class="text-white" aria-current="page">Civil</li>
               )}
             </ol>
           </nav>
 
           <!-- Credential pill -->
-          <div class="inline-flex items-center gap-2 bg-[#0172ae]/12 border border-[#0172ae]/25 rounded-full px-3.5 py-1.5 mb-6">
-            <svg class="w-3.5 h-3.5 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <div class="inline-flex items-center gap-2 bg-white/15 border border-white/30 rounded-full px-3.5 py-1.5 mb-6">
+            <svg class="w-3.5 h-3.5 text-[#10a2d5] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
             </svg>
-            <span class="text-sm font-semibold text-[#0172ae]">QBCC Licensed — Civil Plumbing Contractor</span>
+            <span class="text-sm font-semibold text-white">QBCC Licensed — Civil Plumbing Contractor</span>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-white leading-[1.1] tracking-tight mb-5 inline-block bg-[#0172ae]/60 px-5 py-3 rounded-xl shadow-md">
+          <h1 class="text-3xl sm:text-4xl lg:text-[2.85rem] font-bold text-white leading-[1.1] tracking-tight mb-5 drop-shadow-lg">
             {pageTitle}
           </h1>
 
           {pageSubtitle && (
-            <p class="text-base sm:text-lg text-white/60 leading-relaxed mb-8 max-w-xl">
+            <p class="text-base sm:text-lg text-white leading-relaxed mb-8 max-w-xl drop-shadow">
               {pageSubtitle}
             </p>
           )}
@@ -606,13 +606,13 @@ const pageSchema = {
 
           <div class="flex items-center gap-2 mb-5">
             <div class="w-1 h-5 bg-[#0172ae] rounded-full flex-shrink-0" aria-hidden="true"></div>
-            <span class="text-[10px] font-bold text-white/35 uppercase tracking-[0.15em]">Civil Enquiries</span>
+            <span class="text-[10px] font-bold text-white/70 uppercase tracking-[0.15em]">Civil Enquiries</span>
           </div>
 
           <h2 id="civil-cta-heading" class="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
             Submit a project enquiry
           </h2>
-          <p class="text-white/55 text-sm leading-relaxed mb-8">
+          <p class="text-white/90 text-sm leading-relaxed mb-8">
             Whether you're tendering a subdivision, seeking a subcontractor for an
             infrastructure project, or need a maintenance contractor for an existing
             network — tell us about the scope and we'll respond with our capability
@@ -663,7 +663,7 @@ const pageSchema = {
             ].map((c) => (
               <div>
                 <div class="text-xs font-bold text-white mb-0.5">{c.label}</div>
-                <div class="text-[11px] text-white/40 leading-snug">{c.sub}</div>
+                <div class="text-[11px] text-white/70 leading-snug">{c.sub}</div>
               </div>
             ))}
           </div>
@@ -691,9 +691,9 @@ const pageSchema = {
 
         <!-- Column 1: Identity -->
         <div>
-          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Contractor</div>
+          <div class="text-xs font-bold text-white/70 uppercase tracking-[0.12em] mb-3">Contractor</div>
           <div class="font-bold text-white text-sm mb-1">Pulse Plumbing &amp; Gas</div>
-          <div class="text-xs text-white/45 leading-relaxed space-y-0.5">
+          <div class="text-xs text-white/80 leading-relaxed space-y-0.5">
             <div>ABN: 62 652 712 699</div>
             <div>Brisbane, Queensland, Australia</div>
             <div>
@@ -707,7 +707,7 @@ const pageSchema = {
 
         <!-- Column 2: Licensing -->
         <div>
-          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Licensing</div>
+          <div class="text-xs font-bold text-white/70 uppercase tracking-[0.12em] mb-3">Licensing</div>
           <div class="space-y-2 text-xs text-white/50">
             <div>
               <div class="font-semibold text-white/75 mb-0.5">QBCC Contractor Licence</div>
@@ -723,7 +723,7 @@ const pageSchema = {
 
         <!-- Column 3: Insurance -->
         <div>
-          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Insurance</div>
+          <div class="text-xs font-bold text-white/70 uppercase tracking-[0.12em] mb-3">Insurance</div>
           <div class="space-y-2 text-xs text-white/50">
             <div>
               <div class="font-semibold text-white/75 mb-0.5">Public Liability</div>
@@ -742,7 +742,7 @@ const pageSchema = {
 
         <!-- Column 4: Accreditations & standards -->
         <div>
-          <div class="text-xs font-bold text-white/35 uppercase tracking-[0.12em] mb-3">Standards</div>
+          <div class="text-xs font-bold text-white/70 uppercase tracking-[0.12em] mb-3">Standards</div>
           <div class="flex flex-wrap gap-1.5">
             {[
               'WSAA WSA 02:2014',
