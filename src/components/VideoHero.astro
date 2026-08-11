@@ -37,11 +37,10 @@ const {
     </noscript>
     <video
       class="video-hero__video absolute inset-0 w-full h-full object-cover"
-      autoplay
       muted
       loop
       playsinline
-      preload="none"
+      preload="auto"
       poster={posterSrc}
     >
       <source src={videoSrc} type="video/mp4" />
@@ -101,3 +100,19 @@ const {
     .video-hero__video { display: none; }
   }
 </style>
+
+<script>
+  // Start video 3 seconds after page load. Respects prefers-reduced-motion.
+  (function () {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    document.querySelectorAll<HTMLVideoElement>('.video-hero__video').forEach((video) => {
+      setTimeout(() => {
+        video.play().catch(() => {
+          // Autoplay blocked by browser — poster remains visible, no error shown.
+        });
+      }, 3000);
+    });
+  })();
+</script>
