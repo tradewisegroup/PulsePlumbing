@@ -94,13 +94,25 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
   <div slot="offer" class="max-w-3xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
     <div class="bg-[#0172ae] text-white rounded-2xl px-8 py-10">
 
-      <h2 class="text-2xl font-bold mb-6">InSinkErator Installation — Pulse Price Promise</h2>
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-1.5 mb-6">
+        <svg class="w-4 h-4 text-[#f19329]" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <span class="text-sm font-bold uppercase tracking-wide">Price Beat Guarantee</span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold mb-3">We'll Beat Any Like-for-Like Quote by 5%</h2>
+      <p class="text-white/75 text-base leading-relaxed mb-7">
+        Found a lower price from another QBCC-licensed plumber for the same InSinkErator model and installation scope? Show us the written quote and we'll beat it by 5% — guaranteed.
+      </p>
 
       <ul class="space-y-3 mb-8">
         {[
+          'Beat any like-for-like written quote from a licensed plumber by 5%',
           'Upfront price confirmed before we start — no surprises on the invoice',
           'Same-day installation available across Brisbane, Logan and Gold Coast',
-          'We supply the unit or install yours — all InSinkErator models',
+          'We supply the unit or install yours — all InSinkErator models and configurations',
         ].map((point) => (
           <li class="flex items-start gap-3 text-sm leading-relaxed">
             <svg class="w-5 h-5 text-[#10a2d5] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -111,9 +123,8 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
         ))}
       </ul>
 
-      <p class="text-sm opacity-80 mb-8 leading-relaxed">
-        All plumbing work carried out by QBCC-licensed plumbers. Lic 15384771.<br />
-        Pricing subject to on-site assessment. Call for a same-day quote.
+      <p class="text-xs opacity-60 mb-8 leading-relaxed">
+        Guarantee applies to like-for-like quotes — same InSinkErator model, same installation scope, from a QBCC-licensed plumber. Written quote required. All work carried out by QBCC-licensed plumbers. Lic 15384771.
       </p>
 
       <div class="flex flex-col sm:flex-row gap-3">
