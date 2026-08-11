@@ -131,35 +131,41 @@ const resolvedServices = relatedServices
        ══════════════════════════════════════════════════════════════════════════ -->
   <section class="relative overflow-hidden bg-[#000000]">
     {heroImage && (
-      <div
-        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={`background-image: url('${heroImage}')`}
-        aria-hidden="true"
-      ></div>
+      <>
+        <img
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 w-full h-full object-cover object-center"
+          loading="eager"
+        />
+        <div class="absolute inset-0 bg-black/75"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20"></div>
+      </>
     )}
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
       <!-- Breadcrumb -->
-      <nav class="mb-6 text-xs text-white/50" aria-label="Breadcrumb">
+      <nav class="mb-6 text-xs text-white/80" aria-label="Breadcrumb">
         <ol class="flex items-center gap-2">
-          <li><a href="/" class="hover:text-white/80 transition-colors">Home</a></li>
-          <li aria-hidden="true" class="text-white/30">/</li>
-          <li><a href="/industries" class="hover:text-white/80 transition-colors">Industries</a></li>
-          <li aria-hidden="true" class="text-white/30">/</li>
-          <li class="text-white/70">{industryName}</li>
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true" class="text-white/40">/</li>
+          <li><a href="/industries" class="hover:text-white transition-colors">Industries</a></li>
+          <li aria-hidden="true" class="text-white/40">/</li>
+          <li class="text-white">{industryName}</li>
         </ol>
       </nav>
 
       <!-- Industry badge -->
-      <div class="inline-flex items-center gap-2 bg-[#0172ae]/20 border border-[#0172ae]/40 rounded-full px-4 py-1.5 mb-6">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#0172ae]" aria-hidden="true"></span>
-        <span class="text-sm font-semibold text-[#0172ae]">{industryName}</span>
+      <div class="inline-flex items-center gap-2 bg-white/15 border border-white/30 rounded-full px-4 py-1.5 mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#10a2d5]" aria-hidden="true"></span>
+        <span class="text-sm font-semibold text-white">{industryName}</span>
       </div>
 
       <div class="max-w-3xl">
-        <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight mb-5 inline-block bg-[#0172ae]/60 px-5 py-3 rounded-xl shadow-md">
+        <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.12] tracking-tight mb-5 drop-shadow-lg">
           {heroTitle}
         </h1>
-        <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
+        <p class="text-lg sm:text-xl text-white leading-relaxed mb-10 max-w-2xl drop-shadow">
           {heroSubtitle}
         </p>
 
