@@ -3,7 +3,22 @@ import { useState } from 'react';
 const NAV = [
   { label: 'Home', href: '/' },
   { label: 'Services',    href: '/services' },
-  { label: 'Industries',  href: '/industries' },
+  {
+    label: 'Industries',
+    href: '/industries',
+    children: [
+      { label: 'All Industries',        href: '/industries'                       },
+      { label: 'Retail',                href: '/industries/retail'                },
+      { label: 'Hospitality',           href: '/industries/hospitality'           },
+      { label: 'Childcare',             href: '/industries/childcare'             },
+      { label: 'Education',             href: '/industries/education'             },
+      { label: 'Aged Care',             href: '/industries/aged-care'             },
+      { label: 'Accommodation',         href: '/industries/student-accommodation' },
+      { label: 'Commercial Real Estate',href: '/industries/commercial-real-estate'},
+      { label: 'Property Management',   href: '/industries/property-management'   },
+      { label: 'New Builds',            href: '/industries/new-builds'            },
+    ],
+  },
   { label: 'Civil', href: '/civil' },
   {
     label: 'Resources',

@@ -116,10 +116,26 @@ const industries = [
             Services
           </a>
 
-          <!-- Industries — direct link -->
-          <a href="/industries" class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors">
-            Industries
-          </a>
+          <!-- Industries dropdown -->
+          <div class="relative group">
+            <button class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true">
+              Industries
+              <svg class="w-3.5 h-3.5 mt-0.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="absolute left-0 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-[#D1D5DB] py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+              <a href="/industries" class="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#0172ae] hover:bg-[#F0F5FA]">
+                All Industries →
+              </a>
+              <div class="border-t border-[#D1D5DB] my-1"></div>
+              {industries.map((ind) => (
+                <a href={ind.href} class="block px-4 py-2 text-sm text-slate-700 hover:bg-[#F0F5FA] hover:text-[#0172ae] transition-colors">
+                  {ind.label}
+                </a>
+              ))}
+            </div>
+          </div>
 
           <!-- Civil (standalone) -->
           <a
