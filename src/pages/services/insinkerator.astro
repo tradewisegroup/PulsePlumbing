@@ -104,16 +104,30 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
       </div>
 
       <h2 class="text-2xl sm:text-3xl font-bold mb-3">We'll Beat Any Like-for-Like Quote by 5%</h2>
-      <p class="text-white/75 text-base leading-relaxed mb-7">
-        Found a lower price from another QBCC-licensed plumber for the same InSinkErator model and installation scope? Show us the written quote and we'll beat it by 5% — guaranteed.
+      <p class="text-white/90 text-base leading-relaxed mb-5">
+        Supply and installation of the InSinkErator <strong>Next Generation SR range</strong> food waste disposers and InSinkErator <strong>boiling hot water solutions</strong> — by QBCC-licensed plumbers across Brisbane, Logan, Gold Coast and Ipswich.
       </p>
+
+      <!-- Product range highlight -->
+      <div class="grid sm:grid-cols-2 gap-3 mb-7">
+        <div class="bg-white/10 rounded-xl p-4 border border-white/20">
+          <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-1">Food Waste Disposers</p>
+          <p class="text-sm font-semibold text-white">Next Generation SR Range</p>
+          <p class="text-xs text-white/75 mt-1 leading-relaxed">Supply and installation by licensed plumbers. All SR models stocked.</p>
+        </div>
+        <div class="bg-white/10 rounded-xl p-4 border border-white/20">
+          <p class="text-xs font-bold uppercase tracking-widest text-[#10a2d5] mb-1">Boiling Hot Water</p>
+          <p class="text-sm font-semibold text-white">InSinkErator Hot Water Solutions</p>
+          <p class="text-xs text-white/75 mt-1 leading-relaxed">Instant boiling water dispensers — supply, install and connect.</p>
+        </div>
+      </div>
 
       <ul class="space-y-3 mb-8">
         {[
           'Beat any like-for-like written quote from a licensed plumber by 5%',
+          'Supply and installation — Next Generation SR range food disposers',
+          'Supply and installation — InSinkErator boiling hot water solutions',
           'Upfront price confirmed before we start — no surprises on the invoice',
-          'Quick turnaround installation available across Brisbane, Logan and Gold Coast',
-          'We supply the unit or install yours — all InSinkErator models and configurations',
         ].map((point) => (
           <li class="flex items-start gap-3 text-sm leading-relaxed">
             <svg class="w-5 h-5 text-[#10a2d5] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -125,7 +139,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
       </ul>
 
       <p class="text-xs opacity-60 mb-8 leading-relaxed">
-        Guarantee applies to like-for-like quotes — same InSinkErator model, same installation scope, from a QBCC-licensed plumber. Written quote required. All work carried out by QBCC-licensed plumbers. Lic 15384771.
+        Guarantee applies to like-for-like quotes — same InSinkErator model and installation scope, from a QBCC-licensed plumber. Written quote required. All work carried out by QBCC-licensed plumbers. Lic 15384771.
       </p>
 
       <div class="flex flex-col gap-3">
