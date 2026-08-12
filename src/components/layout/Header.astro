@@ -118,12 +118,16 @@ const industries = [
 
           <!-- Industries dropdown -->
           <div class="relative nav-dropdown">
-            <button class="nav-dropdown-btn flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true" aria-expanded="false">
-              Industries
-              <svg class="w-3.5 h-3.5 mt-0.5 transition-transform nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
+            <div class="flex items-center">
+              <a href="/industries" class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-l-lg hover:bg-[#F0F5FA] transition-colors font-medium">
+                Industries
+              </a>
+              <button class="nav-dropdown-btn px-1.5 py-2 text-slate-400 hover:text-[#0172ae] rounded-r-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true" aria-expanded="false" aria-label="Industries menu">
+                <svg class="w-3.5 h-3.5 transition-transform nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+            </div>
             <div class="nav-dropdown-menu absolute left-0 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-[#D1D5DB] py-2 opacity-0 invisible transition-all duration-150 z-50">
               <a href="/industries" class="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#0172ae] hover:bg-[#F0F5FA]">
                 All Industries →
@@ -147,12 +151,16 @@ const industries = [
 
           <!-- Resources dropdown -->
           <div class="relative nav-dropdown">
-            <button class="nav-dropdown-btn flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true" aria-expanded="false">
-              Resources
-              <svg class="w-3.5 h-3.5 text-slate-400 transition-all duration-200 nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
+            <div class="flex items-center">
+              <a href="/knowledge-base" class="px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-l-lg hover:bg-[#F0F5FA] transition-colors font-medium">
+                Resources
+              </a>
+              <button class="nav-dropdown-btn px-1.5 py-2 text-slate-400 hover:text-[#0172ae] rounded-r-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true" aria-expanded="false" aria-label="Resources menu">
+                <svg class="w-3.5 h-3.5 transition-all duration-200 nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+            </div>
             <div class="nav-dropdown-menu absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60 opacity-0 invisible transition-all duration-200 ease-out z-50 py-2">
               <a href="/testimonials" class="flex items-start gap-3 px-4 py-3 hover:bg-[#F0F5FA] transition-colors group/item">
                 <div>
