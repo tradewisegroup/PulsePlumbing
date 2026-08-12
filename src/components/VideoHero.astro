@@ -7,7 +7,7 @@
 
 export interface Props {
   videoSrc:    string;
-  posterSrc:   string;
+  posterSrc?:  string;
   headline:    string;
   subheadline: string;
   ctaText:     string;
@@ -33,7 +33,7 @@ const {
   <!-- Video layer -->
   <div class="absolute inset-0" aria-hidden="true">
     <noscript>
-      <img src={posterSrc} alt="" class="absolute inset-0 w-full h-full object-cover" />
+      {posterSrc && <img src={posterSrc} alt="" class="absolute inset-0 w-full h-full object-cover" />}
     </noscript>
     <video
       class="video-hero__video absolute inset-0 w-full h-full object-cover"
@@ -41,7 +41,7 @@ const {
       loop
       playsinline
       preload="auto"
-      poster={posterSrc}
+      poster={posterSrc || undefined}
     >
       <source src={videoSrc} type="video/mp4" />
     </video>
