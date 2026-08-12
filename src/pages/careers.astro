@@ -113,21 +113,109 @@ const cultureValues = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="text-center mb-12">
-        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Benefits</p>
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">Life at Pulse</p>
         <h2 class="text-3xl sm:text-4xl font-bold text-[#000000]">Why work with Pulse?</h2>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {benefits.map((b) => (
-          <div class="bg-white rounded-2xl p-6 border border-[#D1D5DB] hover:border-[#0172ae] transition-colors group">
-            <div class="w-12 h-12 rounded-xl bg-[#0172ae]/10 flex items-center justify-center mb-4 group-hover:bg-[#0172ae]/15 transition-colors">
-              <div class="w-6 h-6 text-[#0172ae]" set:html={b.icon} />
-            </div>
-            <h3 class="text-base font-bold text-[#000000] mb-2">{b.title}</h3>
-            <p class="text-sm text-[#1a1a1a]/70 leading-relaxed">{b.body}</p>
+      <!-- Video + Recruitment image tiles -->
+      <div class="grid sm:grid-cols-2 gap-5 mb-16">
+
+        <!-- Loop video tile -->
+        <div class="relative overflow-hidden rounded-2xl bg-[#000000] min-h-[280px]">
+          <video
+            class="absolute inset-0 w-full h-full object-cover opacity-90"
+            autoplay muted loop playsinline preload="none"
+            style="animation-delay: 3s"
+          >
+            <source src="/videos/hospitality-intro.mp4" type="video/mp4" />
+          </video>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <div class="relative h-full flex items-end p-6">
+            <p class="text-white font-semibold text-sm drop-shadow">A day in the life at Pulse</p>
           </div>
+        </div>
+
+        <!-- Recruitment advert image tile -->
+        <div class="relative overflow-hidden rounded-2xl min-h-[280px]">
+          <img
+            src="/images/hiring-flyer.jpg"
+            alt="Pulse Plumbing, Gas & Civil — Now Hiring licensed plumbers and civil workers in South-East Queensland"
+            class="absolute inset-0 w-full h-full object-cover object-top"
+            loading="lazy"
+          />
+        </div>
+
+      </div>
+
+      <!-- Employee testimonials — scroll-snap carousel -->
+      <div class="mb-4">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#0172ae] mb-3">From the team</p>
+        <h3 class="text-2xl font-bold text-[#000000] mb-8">What our team says</h3>
+      </div>
+
+      <!-- All quotes in DOM for full SEO/GEO/AEO indexing — scroll-snap for UX -->
+      <div
+        class="flex gap-5 overflow-x-auto scroll-smooth pb-4"
+        style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;"
+        role="list"
+        aria-label="Employee testimonials"
+      >
+        {[
+          {
+            quote: 'Testimonial coming soon.',
+            name: 'Team Member',
+            role: 'Qualified Plumber',
+            tenure: 'Pulse Plumbing, Gas & Civil',
+          },
+          {
+            quote: 'Testimonial coming soon.',
+            name: 'Team Member',
+            role: 'Civil Labourer',
+            tenure: 'Pulse Plumbing, Gas & Civil',
+          },
+          {
+            quote: 'Testimonial coming soon.',
+            name: 'Team Member',
+            role: 'Apprentice Plumber',
+            tenure: 'Pulse Plumbing, Gas & Civil',
+          },
+        ].map((t) => (
+          <article
+            class="flex-shrink-0 w-80 sm:w-96 bg-white rounded-2xl border border-[#D1D5DB] p-7 flex flex-col"
+            style="scroll-snap-align: start;"
+            role="listitem"
+            itemscope
+            itemtype="https://schema.org/Review"
+          >
+            <!-- Stars -->
+            <div class="flex gap-0.5 mb-5" aria-label="5 stars">
+              {Array(5).fill(0).map(() => (
+                <svg class="w-4 h-4 text-[#f19329]" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              ))}
+            </div>
+            <blockquote
+              class="text-[#1a1a1a] text-sm leading-relaxed flex-1 mb-6 italic"
+              itemprop="reviewBody"
+            >
+              "{t.quote}"
+            </blockquote>
+            <footer class="flex items-center gap-3 pt-5 border-t border-[#D1D5DB]">
+              <div class="w-10 h-10 rounded-full bg-[#0172ae] flex items-center justify-center text-white text-sm font-bold shrink-0">
+                {t.name.charAt(0)}
+              </div>
+              <div>
+                <p class="text-sm font-bold text-[#000000]" itemprop="author">{t.name}</p>
+                <p class="text-xs text-slate-500">{t.role} · {t.tenure}</p>
+              </div>
+            </footer>
+          </article>
         ))}
       </div>
+
+      <!-- Scroll hint on mobile -->
+      <p class="text-xs text-slate-400 text-center mt-4 sm:hidden">Swipe to read more →</p>
 
     </div>
   </section>
