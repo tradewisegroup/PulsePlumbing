@@ -117,14 +117,14 @@ const industries = [
           </a>
 
           <!-- Industries dropdown -->
-          <div class="relative group">
-            <button class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true">
+          <div class="relative nav-dropdown">
+            <button class="nav-dropdown-btn flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true" aria-expanded="false">
               Industries
-              <svg class="w-3.5 h-3.5 mt-0.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <svg class="w-3.5 h-3.5 mt-0.5 transition-transform nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
               </svg>
             </button>
-            <div class="absolute left-0 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-[#D1D5DB] py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+            <div class="nav-dropdown-menu absolute left-0 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-[#D1D5DB] py-2 opacity-0 invisible transition-all duration-150 z-50">
               <a href="/industries" class="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#0172ae] hover:bg-[#F0F5FA]">
                 All Industries →
               </a>
@@ -146,14 +146,14 @@ const industries = [
           </a>
 
           <!-- Resources dropdown -->
-          <div class="relative group">
-            <button class="flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true">
+          <div class="relative nav-dropdown">
+            <button class="nav-dropdown-btn flex items-center gap-1 px-3 py-2 text-slate-600 hover:text-[#0172ae] rounded-lg hover:bg-[#F0F5FA] transition-colors" aria-haspopup="true" aria-expanded="false">
               Resources
-              <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0172ae] transition-all duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="w-3.5 h-3.5 text-slate-400 transition-all duration-200 nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
               </svg>
             </button>
-            <div class="absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 ease-out z-50 py-2">
+            <div class="nav-dropdown-menu absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60 opacity-0 invisible transition-all duration-200 ease-out z-50 py-2">
               <a href="/testimonials" class="flex items-start gap-3 px-4 py-3 hover:bg-[#F0F5FA] transition-colors group/item">
                 <div>
                   <p class="text-sm font-semibold text-slate-800 group-hover/item:text-[#0172ae] transition-colors">Testimonials</p>
@@ -236,3 +236,68 @@ const industries = [
   </div>
 
 </header>
+
+<script>
+  // Click-toggle for nav dropdowns — works alongside hover on desktop
+  function initDropdowns() {
+    const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+    dropdowns.forEach((dropdown) => {
+      const btn  = dropdown.querySelector('.nav-dropdown-btn');
+      const menu = dropdown.querySelector('.nav-dropdown-menu');
+      const chevron = dropdown.querySelector('.nav-chevron');
+      if (!btn || !menu) return;
+
+      // Toggle on click
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !menu.classList.contains('invisible');
+        // Close all first
+        document.querySelectorAll('.nav-dropdown-menu').forEach((m) => {
+          m.classList.add('opacity-0', 'invisible');
+        });
+        document.querySelectorAll('.nav-chevron').forEach((c) => {
+          c.style.transform = '';
+        });
+        document.querySelectorAll('.nav-dropdown-btn').forEach((b) => {
+          b.setAttribute('aria-expanded', 'false');
+        });
+        // Open this one if it was closed
+        if (!isOpen) {
+          menu.classList.remove('opacity-0', 'invisible');
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Also open on hover
+      dropdown.addEventListener('mouseenter', () => {
+        menu.classList.remove('opacity-0', 'invisible');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+        btn.setAttribute('aria-expanded', 'true');
+      });
+      dropdown.addEventListener('mouseleave', () => {
+        menu.classList.add('opacity-0', 'invisible');
+        if (chevron) chevron.style.transform = '';
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.nav-dropdown-menu').forEach((m) => {
+        m.classList.add('opacity-0', 'invisible');
+      });
+      document.querySelectorAll('.nav-chevron').forEach((c) => {
+        c.style.transform = '';
+      });
+      document.querySelectorAll('.nav-dropdown-btn').forEach((b) => {
+        b.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Run on load and after Astro page transitions
+  document.addEventListener('DOMContentLoaded', initDropdowns);
+  document.addEventListener('astro:page-load', initDropdowns);
+</script>
