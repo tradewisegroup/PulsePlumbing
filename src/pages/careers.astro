@@ -120,12 +120,11 @@ const cultureValues = [
       <!-- Video + Recruitment image tiles -->
       <div class="grid sm:grid-cols-2 gap-5 mb-16">
 
-        <!-- Loop video tile -->
-        <div class="relative overflow-hidden rounded-2xl bg-[#000000] min-h-[280px]">
+        <!-- Loop video tile — 9:16 portrait to match vertical video format -->
+        <div class="relative overflow-hidden rounded-2xl bg-[#000000] aspect-[9/16]">
           <video
             class="absolute inset-0 w-full h-full object-cover opacity-90"
             autoplay muted loop playsinline preload="none"
-            style="animation-delay: 3s"
           >
             <source src="/videos/hospitality-intro.mp4" type="video/mp4" />
           </video>
@@ -135,12 +134,12 @@ const cultureValues = [
           </div>
         </div>
 
-        <!-- Recruitment advert image tile -->
-        <div class="relative overflow-hidden rounded-2xl min-h-[280px]">
+        <!-- Recruitment advert image tile — 9:16 portrait -->
+        <div class="relative overflow-hidden rounded-2xl bg-[#000000] aspect-[9/16]">
           <img
             src="/images/hiring-flyer.jpg"
             alt="Pulse Plumbing, Gas & Civil — Now Hiring licensed plumbers and civil workers in South-East Queensland"
-            class="absolute inset-0 w-full h-full object-cover object-top"
+            class="w-full h-full object-contain"
             loading="lazy"
           />
         </div>
