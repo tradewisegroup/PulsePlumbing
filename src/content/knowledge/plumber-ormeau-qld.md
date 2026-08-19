@@ -32,7 +32,7 @@ Pulse Plumbing, Gas & Civil provides a full range of residential, commercial, an
 - Leaking taps, toilets, pipes and fixtures
 - Gas fitting — appliance connections, gas lines, safety checks
 - Backflow prevention device testing and certification
-- InSinkErator food waste disposer installation and repair
+- Insinkerator food waste disposer installation and repair
 
 ### Commercial Plumbing
 - Maintenance programmes for commercial facilities and strata buildings
