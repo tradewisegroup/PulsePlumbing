@@ -10,59 +10,40 @@ const PROCESS_STEPS = [
   {
     step: '01',
     title: 'Design & approvals',
-    description: 'We review the hydraulic design against WSA 03:2011 and the relevant distributor-retailer\'s design guidelines (QUU, Logan Water or Gold Coast Water). Where design-and-construct is required, we prepare or check hydraulic drawings, submit engineering design documentation and obtain all relevant infrastructure agreement approvals before breaking ground.',
+    description: 'We review the hydraulic design and work through the relevant infrastructure agreement approvals with QUU, Logan Water or Gold Coast Water before breaking ground. For design-and-construct projects, we prepare or check the hydraulic drawings and manage the submission process.',
   },
   {
     step: '02',
-    title: 'Excavation & pipe laying',
-    description: 'All trenching is completed in accordance with AS/NZS 3500.1 and WSAA WorksSpecs. Pipe material — UPVC installed per AS 2032, HDPE per AS 2033, DI or MSCL depending on operating pressure and service conditions — is selected to specification. Bedding, haunching and backfill are placed and compacted to the relevant standard. All fittings, hydrants and valves are installed to alignment drawings.',
+    title: 'Excavation & installation',
+    description: 'We trench, lay pipe, install fittings, hydrants and valves, and make all service connections to property boundaries. Live network tie-ins are coordinated directly with the distributor-retailer to minimise supply interruption.',
   },
   {
     step: '03',
-    title: 'Tie-ins & service connections',
-    description: 'Live network tie-ins are coordinated directly with the distributor-retailer\'s asset management team. We manage the shutdown notice, isolation, disinfection and tie-in sequence to minimise supply interruption. Service connections to property boundaries are installed to AS/NZS 3500.1 and the distributor-retailer\'s standard connection detail. All connections are chlorine-dosed and swabbed in accordance with Australian Drinking Water Guidelines and WSAA procedures.',
+    title: 'Testing & handover',
+    description: 'Every main is pressure-tested and disinfected before commissioning. We compile the full as-constructed documentation package and manage the infrastructure agreement submission through to conditional acceptance.',
   },
-  {
-    step: '04',
-    title: 'Pressure testing & disinfection',
-    description: 'Every main is hydrostatically pressure-tested to 1.5× working pressure and held for the required duration under AS/NZS 3500.1. Chlorination, flushing and bacteriological sampling follows AS/NZS 4020 and AS 1657 procedures. All test records and lab results are provided to the distributor-retailer as part of the infrastructure agreement documentation package.',
-  },
-  {
-    step: '05',
-    title: 'As-constructed documentation',
-    description: 'GPS as-constructed drawings are produced in MGA94 coordinate system and exported to 12d format for submission to the distributor-retailer. Documentation includes: pipe schedule, material certification records, joint records, pressure test certificates, bacteriological clearance, and CCTV footage of any appurtenance installations. We manage the infrastructure agreement submission through to conditional acceptance.',
-  },
-];
-
-const STANDARDS = [
-  { code: 'WSA 03:2011',   title: 'WSAA Water Reticulation Code',        note: 'Governs design, materials and construction of reticulation mains in SEQ' },
-  { code: 'AS/NZS 3500.1', title: 'Water Services',                      note: 'Covers cold water services, pressure testing and backflow prevention' },
-  { code: 'AS 2032',        title: 'Installation of UPVC Pipe Systems',   note: 'Installation requirements for UPVC pressure pipe in water main reticulation' },
-  { code: 'AS 2033',        title: 'Installation of PE Pipe Systems',     note: 'Installation requirements for HDPE pipe — HDD crossings and trenchless mains' },
-  { code: 'QUU Design Guidelines', title: 'Queensland Urban Utilities',   note: 'Distributor-retailer specific design requirements for SEQ' },
-  { code: 'ADWG 2022',     title: 'Australian Drinking Water Guidelines', note: 'Disinfection procedures and bacteriological sampling requirements' },
 ];
 
 const FAQS = [
   {
-    q: 'What pipe materials do you use for water main installation in SEQ?',
-    a: 'The pipe material is selected to match the operating conditions and distributor-retailer specification. For residential and commercial reticulation mains we most commonly use unplasticised PVC (UPVC) pressure pipe to AS/NZS 1477, installed in accordance with AS 2032, rated at PN12.5 or PN16 depending on system operating pressure. HDPE is specified for trenchless installations (horizontal directional drilling, pipe bursting) and locations with aggressive soils, installed in accordance with AS 2033. Ductile iron (DI) is used where high mechanical protection is required — such as road crossings and large-diameter mains. For trunk mains carrying higher pressures, mild steel cement-lined (MSCL) pipe may be specified. All materials conform to WSA 03:2011 and AS/NZS 4020 to ensure they are suitable for use in contact with drinking water.',
+    q: 'Do you install water mains for residential subdivisions?',
+    a: 'Yes. Water main installation for residential and commercial subdivisions is a core part of what we do across Brisbane, Logan, Gold Coast and Ipswich. We install reticulation mains, hydrants, gate valves and service connections to property boundaries, then coordinate handover with the relevant distributor-retailer — QUU, Logan Water or Gold Coast Water.',
   },
   {
-    q: 'Do you carry out water main renewal and relining as well as new installation?',
-    a: 'Yes — water main renewal and rehabilitation are part of our scope alongside new installation work. For aging or deteriorated mains, we carry out pipe-in-pipe relining using HDPE slip-lining or cured-in-place lining where the host pipe is structurally compromised but the alignment and grade are acceptable. Where the main has failed or is beyond rehabilitation, we carry out open-cut renewal — removing the old main and installing new UPVC or HDPE pipe to the current distributor-retailer standard. We also carry out localised repairs to existing mains — collar repairs, joint repairs and section replacements — as reactive maintenance for councils and utilities. All renewal and relining works include post-completion CCTV inspection and pressure testing, with updated as-constructed documentation provided for the distributor-retailer\'s asset management system.',
+    q: 'Can you connect a new development to the existing council water network?',
+    a: 'Yes. We manage live water main connections and tie-ins to existing council mains. This includes coordinating the shutdown with the distributor-retailer, completing the physical connection, disinfecting and pressure-testing the new section, and collecting bacteriological clearance before commissioning.',
   },
   {
-    q: 'How do you manage a live water main tie-in without disrupting supply?',
-    a: 'Live tie-ins require careful coordination with the distributor-retailer (QUU, Logan Water or Gold Coast Water). We submit a shutdown notice at least 10 business days prior to the tie-in date, confirming the isolation valve locations, estimated supply interruption duration and downstream customers affected. On the day, our crew arrives with all pre-fabricated connection fittings, chlorine dosing equipment and a standby pump in case of unexpected supply issues. The isolation is confirmed by the distributor-retailer\'s representative before we commence. Post-connection, we dose and flush the new section to AS/NZS 4020 levels, collect bacteriological samples and do not commission the main until we receive clearance from the lab. The whole sequence — shutdown, connection, disinfection, commissioning — is documented and submitted with the infrastructure agreement package.',
+    q: 'Do you carry out water main connections to individual lots?',
+    a: 'Yes. We install individual property service connections from the water main to the property boundary, including road opening permits, traffic control and road reinstatement where required. All connections are documented on as-constructed plans.',
   },
   {
-    q: 'What documentation do you provide for a water main infrastructure agreement?',
-    a: 'Our standard documentation package for a water main infrastructure agreement includes: GPS as-constructed drawings in MGA94 coordinates exported to 12d or DWG format; a pipe and fitting schedule with AS/NZS 4020 material certification for all products; joint records and installation inspection sheets; hydrostatic pressure test certificates signed by a licensed plumber; chlorination and flushing records; NATA-accredited laboratory bacteriological clearance certificates; and a completed infrastructure works notice (IWN). Where required by the distributor-retailer, we also prepare an operation and maintenance manual for any appurtenances (air valves, pressure reducing valves, hydrants) installed as part of the works. All documentation is presented in the format specified by the relevant distributor-retailer\'s infrastructure agreement template.',
+    q: 'What documentation do you provide at project completion?',
+    a: 'We provide GPS as-constructed drawings, pressure test certificates, disinfection and bacteriological clearance records, and all material certification required for the infrastructure agreement submission. We manage the submission through to conditional acceptance with the distributor-retailer.',
   },
   {
-    q: 'Which distributor-retailers are you familiar with in South-East Queensland?',
-    a: 'We work across the South-East Queensland combined service area and have practical experience with Queensland Urban Utilities (QUU), Logan Water (Allconnex Water legacy network, now managed by Logan City Council), Unitywater (Moreton Bay and Sunshine Coast), and Gold Coast Water (Gold Coast City Council). Each distributor-retailer has its own design guidelines, approved materials list and infrastructure agreement template that supplements WSA 03:2011. We are familiar with the QUU Design and Construction Standards for Reticulation Networks, Logan Water specifications and their respective hold-point and witnessed inspection requirements. This means less back-and-forth on documentation and a smoother path to conditional acceptance for your development.',
+    q: 'Which areas of South-East Queensland do you cover?',
+    a: 'We operate across Brisbane, Logan City, Redland City, Gold Coast (north) and Ipswich — working with QUU, Logan Water, Gold Coast Water and Unitywater across their respective service areas.',
   },
 ];
 
@@ -71,7 +52,7 @@ const schema = {
     {
       '@type':       'Service',
       '@id':         `${SITE}/civil/water-mains#service`,
-      name:          'Water Main Installation & Renewal — QLD',
+      name:          'Water Main Installation — South-East Queensland',
       serviceType:   'Water Main Installation',
       provider: {
         '@type': 'Organization',
@@ -85,17 +66,15 @@ const schema = {
         { '@type': 'State', name: 'Queensland'},
       ],
       description:
-        'QBCC-licensed water main installation contractor delivering new water main installation, main renewal and relining, service connections to property boundaries, pressure testing and connection to council mains across Brisbane and SE Queensland. WSA 03:2011, AS 2032, AS 2033 and WSAA compliant.',
-      keywords: 'water main installation Brisbane, water main contractor QLD, water main connection Brisbane',
+        'QBCC-licensed water main installation for residential subdivisions, commercial developments and councils across Brisbane and South-East Queensland. New water main installation, service connections, live tie-ins and full infrastructure agreement documentation.',
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name:    'Water Main Services',
         itemListElement: [
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Water Main Installation' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Water Main Renewal & Relining' } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Service Connections to Property Boundaries' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Live Water Main Connections & Tie-ins' } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pressure Testing & Disinfection' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Connection to Council Mains' } },
         ],
       },
     },
@@ -112,54 +91,45 @@ const schema = {
 ---
 
 <CivilLayout
-  pageTitle="Water Main Installation & Renewal — QLD"
-  pageSubtitle="QBCC-licensed civil plumbing contractor for water main installation, renewal, relining, service connections to property boundaries and connection to council mains across Brisbane and SE Queensland. WSA 03:2011, AS 2032 and AS 2033 compliant."
-  metaTitle="Water Main Installation Brisbane | Water Main Contractor QLD"
-  metaDescription="Water main installation, renewal and relining across SE Queensland. WSAA WSA 03:2011, AS 2032 and AS 2033 compliant. Service connections to property boundaries, pressure testing and full as-constructed documentation for QUU, Logan Water and Gold Coast Water infrastructure agreements."
+  pageTitle="Water Main Installation — South-East Queensland"
+  pageSubtitle="New water main installation, service connections and live tie-ins for residential subdivisions, commercial developments and councils across Brisbane, Logan, Gold Coast and Ipswich. QBCC licensed."
+  metaTitle="Water Main Installation Brisbane & SEQ | Pulse Plumbing Civil"
+  metaDescription="QBCC-licensed water main installation across Brisbane, Logan and Gold Coast. New water main installation, service connections to property boundaries, live tie-ins and full infrastructure agreement documentation."
   activeSlug="water-mains"
-  
   schema={schema}
 >
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       1. CAPABILITY OVERVIEW
-       ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- Capability overview -->
   <section class="py-20 bg-[#F0F5FA]" aria-labelledby="capability-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-14 items-start">
 
         <div>
           <div class="inline-flex items-center gap-2 bg-[#0172ae]/10 border border-[#0172ae]/20 rounded-full px-3 py-1 mb-5">
-            <span class="text-xs font-semibold text-[#0172ae]">Water Mains Capability</span>
+            <span class="text-xs font-semibold text-[#0172ae]">Water Mains</span>
           </div>
           <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-5 leading-tight">
-            Water main installation and renewal for developers, councils and contractors
+            Water main installation for developers, builders and councils
           </h2>
           <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
-            We deliver the full water main scope on residential subdivisions, commercial precincts and industrial estates across South-East Queensland — from greenfield DN100 reticulation and service connections to property boundaries through to large-diameter trunk main extensions connecting new growth areas to the council mains network.
-          </p>
-          <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
-            Our work complies with WSAA WSA 03:2011, AS/NZS 3500.1, AS 2032 (UPVC installation) and AS 2033 (PE installation), together with the distributor-retailer's specific design and construction guidelines. We carry out all hold-point inspections and manage the documentation required to progress through your infrastructure agreement — from initial design submission through to conditional acceptance and handover.
+            We deliver the full water main scope on residential subdivisions, commercial precincts and council infrastructure projects across South-East Queensland — from new reticulation and service connections through to live tie-ins on the existing network.
           </p>
           <p class="text-[#1a1a1a] text-base leading-relaxed">
-            We operate as both principal contractor (design-and-construct) and subcontractor. Civil contractors and developers can engage us directly under a fixed-price or schedule-of-rates subcontract. We attend all witness and hold points, coordinate the shut-down and tie-in with the distributor-retailer, and deliver the full as-constructed documentation package.
+            We work as both principal contractor and subcontractor. Civil contractors and developers can engage us directly. We manage the shutdown and tie-in with the distributor-retailer, attend all hold points, and deliver the full as-constructed documentation package for infrastructure agreement submission.
           </p>
         </div>
 
         <div class="space-y-4">
           {[
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6 8 4 12 4 15a8 8 0 0 0 16 0c0-3-2-7-8-13z"/><path d="M12 15a3 3 0 0 0 3-3"/></svg>`, title: 'New water main installation', desc: 'DN100–DN300 UPVC pressure pipe to AS 2032 for residential and commercial subdivision reticulation. Hydrant installations, gate valves, air valves and pressure reducing valves included.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`, title: 'Main renewal & relining', desc: 'Pipe-in-pipe relining (HDPE slip-lining, CIPP) and open-cut renewal of deteriorated mains. Post-completion CCTV and pressure testing, with updated as-constructed documentation for asset management.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`, title: 'Service connections to property boundaries', desc: 'Individual property service connections installed to AS/NZS 3500.1 and distributor-retailer standard connection details. Traffic control, road opening permits and reinstatement managed.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`, title: 'Connection to council mains', desc: 'Live network connections and tie-ins to existing mains under live pressure. Shutdown coordination with QUU, Logan Water and Gold Coast Water. Disinfection, flushing and bacteriological clearance.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`, title: 'Infrastructure agreement support', desc: 'Full documentation package — GPS as-constructeds in MGA94/12d, pressure test certificates, bacteriological clearances, material certifications to AS/NZS 4020.' },
+            { title: 'New water main installation', desc: 'Reticulation mains for residential and commercial subdivisions. Hydrants, gate valves, air valves and pressure reducing valves included.' },
+            { title: 'Service connections to property boundaries', desc: 'Individual property connections from the water main to the property boundary. Road opening permits, traffic control and reinstatement managed.' },
+            { title: 'Live connections & tie-ins', desc: 'Live connections to the existing council mains network. Shutdown coordination with QUU, Logan Water and Gold Coast Water.' },
+            { title: 'Pressure testing & disinfection', desc: 'Pressure testing, disinfection, flushing and bacteriological sampling completed before any main is commissioned.' },
+            { title: 'As-constructed documentation', desc: 'Full documentation for infrastructure agreement submission — GPS as-constructeds, pressure test certificates and clearance records.' },
           ].map(item => (
-            <div class="bg-white border border-slate-200 rounded-xl p-5 flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 text-[#0172ae]" aria-hidden="true" set:html={item.icon}></div>
-              <div>
-                <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
-                <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>
-              </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
+              <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -168,26 +138,17 @@ const schema = {
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       2. PROCESS STEPS
-       ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- Process -->
   <section class="py-20 bg-white" aria-labelledby="process-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mb-12">
-        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
-          Our water main delivery process
-        </h2>
-        <p class="text-[#1a1a1a] text-lg">
-          From design submission to conditional acceptance — how we manage water main projects from start to handover.
-        </p>
+        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">How we deliver a water main project</h2>
+        <p class="text-[#1a1a1a] text-lg">From design submission to handover — straightforward, documented at every step.</p>
       </div>
-
       <div class="space-y-4">
         {PROCESS_STEPS.map(step => (
           <div class="bg-[#F0F5FA] border border-slate-200 rounded-2xl p-7 flex gap-6 items-start">
-            <div class="text-4xl font-black text-[#0172ae]/20 leading-none flex-shrink-0 w-12 text-center">
-              {step.step}
-            </div>
+            <div class="text-4xl font-black text-[#0172ae]/20 leading-none flex-shrink-0 w-12 text-center">{step.step}</div>
             <div>
               <h3 class="font-bold text-[#000000] text-lg mb-2">{step.title}</h3>
               <p class="text-[#1a1a1a] text-sm leading-relaxed">{step.description}</p>
@@ -198,81 +159,33 @@ const schema = {
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       3. STANDARDS & COMPLIANCE
-       ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="py-20 bg-[#000000]" aria-labelledby="standards-heading">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-10">
-        <h2 id="standards-heading" class="text-3xl sm:text-4xl font-bold text-white mb-4">
-          Standards &amp; compliance
-        </h2>
-        <p class="text-white/65 text-base leading-relaxed">
-          Water main installation in Queensland must satisfy WSAA codes (WSA 03:2011), Australian Standards (AS 2032, AS 2033, AS/NZS 3500.1) and the relevant distributor-retailer's design guidelines. We deliver to all applicable standards and provide documentation to satisfy every hold point.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {STANDARDS.map(s => (
-          <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
-            <div class="inline-block bg-[#0172ae]/20 text-[#0172ae] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
-              {s.code}
-            </div>
-            <div class="font-semibold text-white text-sm mb-1">{s.title}</div>
-            <div class="text-white/50 text-xs leading-relaxed">{s.note}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       4. FAQs
-       ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- FAQs -->
   <section class="py-20 bg-[#F0F5FA]" aria-labelledby="faq-heading">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-10">
-        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
-          Water main FAQs
-        </h2>
-        <p class="text-[#1a1a1a] text-lg">
-          Common questions from developers, civil contractors and project managers about water main installation and renewal in SE Queensland.
-        </p>
-      </div>
-
-      <div class="space-y-3">
-        {FAQS.map((faq, i) => (
-          <details
-            class="bg-white border border-slate-200 rounded-2xl overflow-hidden group"
-            open={i === 0}
-          >
-            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#000000] hover:text-[#0172ae] transition-colors select-none">
+      <h2 id="faq-heading" class="text-3xl font-bold text-[#000000] mb-10">Frequently asked questions</h2>
+      <div class="space-y-4">
+        {FAQS.map(faq => (
+          <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#000000] hover:text-[#0172ae] transition-colors">
               {faq.q}
-              <svg
-                class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
               </svg>
             </summary>
-            <div class="px-6 pb-6 text-[#1a1a1a] text-sm leading-relaxed">
-              {faq.a}
-            </div>
+            <div class="px-6 pb-6 text-[#1a1a1a] text-sm leading-relaxed">{faq.a}</div>
           </details>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} initialProjectType="water-mains" client:load slot="enquiry-form" />
 
-  <!-- TODO: Upload /public/videos/water-mains-loop.mp4 — branded civil footage, compressed for web -->
   <VideoHero
     slot="hero"
     videoSrc="/videos/civil-excavator-wide.mp4"
-    headline="Water Main Installation & Renewal — South-East Queensland"
-    subheadline="QBCC-licensed civil contractor for water main installation, renewal, relining and service connections. WSA 03:2011 and AS 2032 compliant. RFQ response within one business day."
+    headline="Water Main Installation — South-East Queensland"
+    subheadline="New water main installation, service connections and live tie-ins for residential subdivisions, commercial developments and councils across Brisbane, Logan, Gold Coast and Ipswich."
     ctaText="Submit an RFQ"
     ctaHref="/civil/contact"
   />

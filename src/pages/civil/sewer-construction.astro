@@ -9,60 +9,41 @@ const SITE    = 'https://pulseqld.com.au';
 const PROCESS_STEPS = [
   {
     step: '01',
-    title: 'Design review & approvals',
-    description: 'We review or prepare sewer reticulation designs against WSA 02:2014 and the relevant distributor-retailer\'s infrastructure standards (Queensland Urban Utilities Infrastructure Standards, Logan Water or Unitywater specifications). For design-and-construct, we engage a civil engineer to prepare hydraulic and structural design documentation and manage the submission through the distributor-retailer\'s works approval process. Gravity sewer design, pump station design and pressure sewer system specifications are all assessed against applicable SEQ Water standards before commencement.',
+    title: 'Design & approvals',
+    description: 'We review the sewer design and manage the infrastructure agreement approvals with QUU, Logan Water or Unitywater. For design-and-construct projects, we engage a civil engineer to prepare hydraulic documentation and manage the distributor-retailer submission process.',
   },
   {
     step: '02',
-    title: 'Gravity sewer installation',
-    description: 'Gravity sewer mains are installed in accordance with WSA 02:2014 and AS/NZS 3500.2 using UPVC sewer pipe to AS/NZS 1260. Trench excavation and bedding are completed to structural design requirements. Manholes are constructed using precast concrete rings to AS 1379 or approved proprietary systems. Minimum cover is maintained throughout, with casing pipes used where required under roads and services.',
+    title: 'Installation',
+    description: 'We excavate, lay gravity sewer mains, install manholes, connect lots and construct pump stations where required. Road opening permits, traffic control and road reinstatement are all managed by our team.',
   },
   {
     step: '03',
-    title: 'Sewer connections to lots',
-    description: 'Individual sewer connections to lots (house connections) and new property connections to the reticulation network are installed in accordance with AS/NZS 3500.2 and Queensland Urban Utilities standards. We coordinate road opening permits, manage traffic control during live road connections and reinstate road surfaces to the road authority\'s requirements. All connections are documented on as-constructed plans.',
+    title: 'CCTV inspection & handover',
+    description: 'Every gravity sewer main is CCTV inspected before handover. Pressure testing, manhole inspections and as-constructed documentation are compiled and submitted to the distributor-retailer for infrastructure agreement sign-off.',
   },
-  {
-    step: '04',
-    title: 'Pump stations, rising mains & pressure sewer systems',
-    description: 'Where gravity drainage is not achievable, we design and construct sewage pump stations (SPS) and pressure sewer systems to the distributor-retailer\'s standard specifications. Pressure sewer systems — using individual property grinder pumps connected to a common rising main — are designed and installed where deep gravity sewers are not economically viable. Wet well dimensions, pump selection, emergency storage and pressure sewer system controls are designed in accordance with WSA 02:2014 and SEQ Water guidelines.',
-  },
-  {
-    step: '05',
-    title: 'CCTV inspection, manhole construction & handover',
-    description: 'Prior to distributor-retailer handover, every gravity sewer main is CCTV inspected using a crawler camera and coded to WRC defect coding standards. Manholes are constructed, inspected and tested for infiltration. Rising mains are hydrostatically pressure-tested to 1.5× operating pressure. CCTV footage, defect reports, pressure test certificates, manhole inspection records and as-constructed drawings (GPS survey, MGA94, 12d format) are compiled for the Queensland Urban Utilities or relevant distributor-retailer infrastructure agreement submission.',
-  },
-];
-
-const STANDARDS = [
-  { code: 'WSA 02:2014',        title: 'WSAA Sewerage Code',                    note: 'Design, materials and construction of sewer reticulation systems in SEQ' },
-  { code: 'AS/NZS 3500.2',     title: 'Sanitary Plumbing & Drainage',           note: 'Installation of sanitary plumbing and drainage systems' },
-  { code: 'AS/NZS 1260',       title: 'UPVC Pipes & Fittings for Drain & Sewer', note: 'Material standard for UPVC sewer pipe and fittings' },
-  { code: 'QUU Infrastructure', title: 'Queensland Urban Utilities Standards',   note: 'Distributor-retailer specific construction requirements and approved materials for SEQ' },
-  { code: 'SEQ Water Standards', title: 'SEQ Distributor-Retailer Guidelines',  note: 'Logan Water, Unitywater and Gold Coast Water infrastructure standards supplementing WSA 02:2014' },
-  { code: 'WRC Defect Coding',  title: 'CCTV Pipe Condition Assessment',         note: 'International standard for coding CCTV inspection defects in sewer mains prior to handover' },
 ];
 
 const FAQS = [
   {
-    q: 'What pipe materials are used for gravity sewer construction in Queensland?',
-    a: 'The standard pipe material for gravity sewer reticulation in South-East Queensland is unplasticised PVC sewer pipe (UPVC) to AS/NZS 1260, in either rubber-ring joint (RRJ) or solvent cement joint configurations. UPVC DN100 to DN375 is used for the majority of residential and commercial reticulation gravity mains, and must appear on the relevant distributor-retailer\'s approved materials list — either Queensland Urban Utilities, Logan Water, Unitywater or Gold Coast Water. For larger-diameter gravity mains and where higher structural loads are present, glass-reinforced concrete (GRC) or reinforced concrete (RC) pipe may be specified. Where trenchless installation is required (pipe bursting, horizontal directional drilling, microtunnelling), HDPE is the preferred pipe material. All pipe and fitting selection is cross-checked against the applicable SEQ Water standard before ordering.',
+    q: 'Do you install sewer mains for residential subdivisions?',
+    a: 'Yes. Sewer reticulation for residential and commercial subdivisions is a core part of our civil scope across Brisbane, Logan, Gold Coast and Ipswich. We install gravity sewer mains, connect individual lots and construct manholes, then coordinate handover with QUU, Logan Water or Unitywater.',
   },
   {
-    q: 'Do you design and install pressure sewer systems as well as gravity sewers?',
-    a: 'Yes — pressure sewer systems are part of our civil sewer scope. A pressure sewer system uses individual grinder pumps installed at each property, connected via a small-diameter rising main to a common receiving sewer or pump station. They are used in situations where the site topography, soil conditions or distance to the gravity network make a conventional gravity sewer design uneconomical. Pressure sewer systems are designed in accordance with WSA 02:2014 and the relevant distributor-retailer\'s pressure sewer specifications — Queensland Urban Utilities, Logan Water and Unitywater all have their own approved pressure sewer system guidelines that determine pump unit type, rising main diameter, flow control and alarm requirements. We design, supply and install pressure sewer systems and manage the infrastructure agreement documentation required for distributor-retailer acceptance.',
+    q: 'Do you connect individual lots to the sewer network?',
+    a: 'Yes. We install individual lot connections from the sewer main to the property boundary. For live road connections, we manage the road opening permit, traffic control and road reinstatement. All connections are documented on as-constructed plans.',
   },
   {
-    q: 'What CCTV inspection is required before sewer infrastructure handover to Queensland Urban Utilities?',
-    a: 'Prior to Queensland Urban Utilities (or other SEQ distributor-retailer) accepting sewer reticulation infrastructure, CCTV inspection of all gravity mains is required. The crawler camera inspects the pipe from manhole to manhole, recording the condition on video and coding any defects using WRC (Water Research Centre) defect coding standards. Defects are classified by type and severity. Any structural defects — joint displacement greater than 30% of the pipe diameter, cracking, deformation — must be rectified before the infrastructure agreement can proceed to conditional acceptance. Manholes are also inspected for infiltration and structural integrity, and new rising mains are pressure-tested. Pulse Plumbing & Gas manages the CCTV inspection, defect coding report and any required rectification works as part of our civil sewer construction package, with all documentation formatted to Queensland Urban Utilities and SEQ Water requirements.',
+    q: 'Can you construct pump stations and rising mains?',
+    a: 'Yes. Where gravity drainage is not achievable, we design and construct sewage pump stations and rising mains to the relevant distributor-retailer specification. We manage wet well construction, pump installation and rising main installation as part of the complete scope.',
   },
   {
-    q: 'When is a sewage pump station required and what are the design requirements?',
-    a: 'A sewage pump station (SPS) is required when the topography of a development area prevents gravity drainage to the existing sewer network. This occurs when the development site is lower than the downstream manhole invert, or when the distance to the downstream connection point is too great to achieve minimum grade without unreasonably deep excavation. The decision to use a pump station is an economic and operational one — pump stations have higher ongoing maintenance costs and introduce a risk of overflow if power or pumps fail. Pump stations are designed to the distributor-retailer\'s standard SPS specification, which supplements WSA 02:2014 and sets requirements for wet well volume, pump duty/standby configuration, emergency storage, electrical supply redundancy and control panel specification. Queensland Urban Utilities and Logan Water each publish their own standard pump station specification. We prepare design documentation to this specification and manage the infrastructure agreement submission through to conditional acceptance.',
+    q: 'What does the CCTV inspection process involve before handover?',
+    a: 'Before handover to the distributor-retailer, every gravity sewer main is inspected with a crawler CCTV camera. The footage is reviewed, any defects are documented and repaired, and a CCTV report is prepared as part of the infrastructure agreement documentation package.',
   },
   {
-    q: 'Can you manage a live sewer connection without causing a sewer overflow?',
-    a: 'Live sewer connections are managed using bypass pumping where the connection point is in a manhole with active flow. The bypass pump is sized to handle at least 150% of the estimated peak wet-weather flow at the connection point. We use inflatable stoppers or mechanical plugs to isolate the section of main being worked on, and the bypass pump is monitored continuously to prevent overflow. Our crew holds site-specific SWMS for live sewer connections compliant with the WHS Act 2011 (QLD) and notifies the distributor-retailer\'s network operations centre prior to commencing work. The connection process, isolation sequence and bypass pumping are documented and included in the as-constructed documentation package submitted to Queensland Urban Utilities or the relevant SEQ Water distributor-retailer upon completion.',
+    q: 'Which areas do you cover for sewer construction?',
+    a: 'We operate across Brisbane, Logan City, Redland City, Gold Coast (north) and Ipswich — working with QUU, Logan Water, Gold Coast Water and Unitywater across their respective service areas in South-East Queensland.',
   },
 ];
 
@@ -71,7 +52,7 @@ const schema = {
     {
       '@type':       'Service',
       '@id':         `${SITE}/civil/sewer-construction#service`,
-      name:          'Sewer Construction & Connections — QLD',
+      name:          'Sewer Construction — South-East Queensland',
       serviceType:   'Sewer Construction',
       provider: {
         '@type': 'Organization',
@@ -85,18 +66,16 @@ const schema = {
         { '@type': 'State', name: 'Queensland'},
       ],
       description:
-        'QBCC-licensed sewer construction contractor delivering new sewer main installation, sewer connections to lots, CCTV inspection of new mains, manhole construction, pump stations, gravity sewer design and pressure sewer systems across Brisbane and SE Queensland. Compliant with Queensland Urban Utilities and SEQ Water standards.',
-      keywords: 'sewer contractor Brisbane, sewer construction QLD, sewer connection Brisbane',
+        'QBCC-licensed sewer construction across Brisbane and South-East Queensland. Gravity sewer installation, lot connections, manhole construction, pump stations and full infrastructure agreement documentation for QUU, Logan Water and Unitywater.',
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name:    'Sewer Construction Services',
         itemListElement: [
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'New Sewer Main Installation' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Sewer Connections to Lots' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Gravity Sewer Main Installation' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Lot Connections' } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Manhole Construction' } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pump Stations & Rising Mains' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pressure Sewer Systems' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'CCTV Inspection of New Mains' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'CCTV Inspection & Handover' } },
         ],
       },
     },
@@ -113,54 +92,45 @@ const schema = {
 ---
 
 <CivilLayout
-  pageTitle="Sewer Construction & Connections — QLD"
-  pageSubtitle="New sewer main installation, sewer connections to lots, manhole construction, pump stations, gravity sewer design and pressure sewer systems across Brisbane, Logan and Gold Coast. Compliant with Queensland Urban Utilities and SEQ Water standards, with full CCTV inspection and infrastructure agreement documentation."
-  metaTitle="Sewer Contractor Brisbane | Sewer Construction QLD"
-  metaDescription="Sewer construction contractor across SE Queensland. New sewer main installation, sewer connections to lots, manhole construction, pump stations and pressure sewer systems. Queensland Urban Utilities and SEQ Water compliant delivery, CCTV inspection and full infrastructure agreement documentation."
+  pageTitle="Sewer Construction — South-East Queensland"
+  pageSubtitle="Gravity sewer installation, lot connections, manhole construction, pump stations and rising mains for residential subdivisions and commercial developments across Brisbane, Logan, Gold Coast and Ipswich. QBCC licensed."
+  metaTitle="Sewer Construction Brisbane & SEQ | Pulse Plumbing Civil"
+  metaDescription="QBCC-licensed sewer construction across Brisbane, Logan and Gold Coast. Gravity sewer installation, lot connections, pump stations and full infrastructure agreement documentation for QUU, Logan Water and Unitywater."
   activeSlug="sewer-construction"
-  
   schema={schema}
 >
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       1. CAPABILITY OVERVIEW
-       ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- Capability overview -->
   <section class="py-20 bg-[#F0F5FA]" aria-labelledby="capability-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-14 items-start">
 
         <div>
           <div class="inline-flex items-center gap-2 bg-[#0172ae]/10 border border-[#0172ae]/20 rounded-full px-3 py-1 mb-5">
-            <span class="text-xs font-semibold text-[#0172ae]">Sewer Construction Capability</span>
+            <span class="text-xs font-semibold text-[#0172ae]">Sewer Construction</span>
           </div>
           <h2 id="capability-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-5 leading-tight">
-            Sewer construction and connections for subdivisions and civil projects
+            Sewer construction for developers, builders and councils
           </h2>
           <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
-            We construct gravity sewer reticulation mains, perform sewer connections to lots, build manholes, install sewage pump stations, rising mains and pressure sewer systems for residential subdivisions, commercial precincts and civil infrastructure projects across South-East Queensland. Our delivery is compliant with WSAA WSA 02:2014, AS/NZS 3500.2, and the Queensland Urban Utilities and SEQ Water distributor-retailer infrastructure standards.
-          </p>
-          <p class="text-[#1a1a1a] text-base leading-relaxed mb-5">
-            We manage the full documentation sequence required to progress through your infrastructure agreement — from design approval through CCTV inspection of new mains, pressure testing and GPS as-constructed survey to conditional acceptance by the distributor-retailer.
+            We deliver the full sewer construction scope on residential subdivisions, commercial precincts and council infrastructure projects across South-East Queensland — from gravity sewer mains and lot connections through to pump stations and rising mains.
           </p>
           <p class="text-[#1a1a1a] text-base leading-relaxed">
-            Civil contractors and developers can engage us as a licensed civil plumbing subcontractor under their head contract. We provide a fixed-price or schedule-of-rates subcontract, attend all hold points and witnessed inspections, and deliver the complete sewer documentation package.
+            We work as both principal contractor and subcontractor. We manage the infrastructure agreement approvals with the distributor-retailer, attend all hold points, complete CCTV inspection prior to handover, and deliver the full as-constructed documentation package.
           </p>
         </div>
 
         <div class="space-y-4">
           {[
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`, title: 'New sewer main installation', desc: 'DN100–DN375 UPVC gravity sewer reticulation to WSA 02:2014. Full infrastructure agreement documentation for Queensland Urban Utilities, Logan Water and Unitywater.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`, title: 'Sewer connections to lots', desc: 'Individual property sewer connections to reticulation network to AS/NZS 3500.2 and QUU standards. Road opening permits, traffic control and pavement reinstatement managed.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/></svg>`, title: 'Manhole construction', desc: 'Precast concrete manholes to AS 1379, inspection openings and junction structures. Infiltration testing and condition inspection prior to distributor-retailer handover.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10h7v4H2z"/><path d="M15 10h7v4h-7z"/><path d="M9 10l6 2-6 2z"/><line x1="15" y1="10" x2="15" y2="14"/></svg>`, title: 'Pump stations & pressure sewer systems', desc: 'Sewage pump stations and pressure sewer systems to distributor-retailer standard specs. UPVC and HDPE rising mains with air valves and isolation valves.' },
-            { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="8" width="13" height="8" rx="2"/><circle cx="7.5" cy="12" r="2.5"/><path d="M14 10.5l5.5-3.5v10L14 13.5"/></svg>`, title: 'CCTV inspection of new mains', desc: 'Crawler CCTV of all gravity mains prior to handover. WRC defect coding, condition reports and rectification works to QUU and SEQ Water requirements.' },
+            { title: 'Gravity sewer main installation', desc: 'Gravity sewer reticulation for residential and commercial subdivisions. Precast concrete manholes included.' },
+            { title: 'Lot connections', desc: 'Individual property connections from the sewer main to the property boundary. Road opening permits, traffic control and reinstatement managed.' },
+            { title: 'Manhole construction', desc: 'Precast concrete manhole construction and installation to distributor-retailer specification.' },
+            { title: 'Pump stations & rising mains', desc: 'Sewage pump stations and rising mains where gravity drainage is not achievable. Full design and construction scope available.' },
+            { title: 'CCTV inspection & handover', desc: 'Crawler CCTV inspection of all gravity sewer mains before handover. Full as-constructed documentation for infrastructure agreement submission.' },
           ].map(item => (
-            <div class="bg-white border border-slate-200 rounded-xl p-5 flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 text-[#0172ae]" aria-hidden="true" set:html={item.icon}></div>
-              <div>
-                <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
-                <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>
-              </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 class="font-semibold text-[#000000] text-sm mb-1">{item.title}</h3>
+              <p class="text-[#1a1a1a] text-xs leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -169,26 +139,17 @@ const schema = {
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       2. PROCESS STEPS
-       ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- Process -->
   <section class="py-20 bg-white" aria-labelledby="process-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mb-12">
-        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
-          Our sewer construction process
-        </h2>
-        <p class="text-[#1a1a1a] text-lg">
-          How we manage sewer construction from design approval to distributor-retailer handover.
-        </p>
+        <h2 id="process-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">How we deliver a sewer construction project</h2>
+        <p class="text-[#1a1a1a] text-lg">From design approvals to CCTV inspection and handover — documented at every step.</p>
       </div>
-
       <div class="space-y-4">
         {PROCESS_STEPS.map(step => (
           <div class="bg-[#F0F5FA] border border-slate-200 rounded-2xl p-7 flex gap-6 items-start">
-            <div class="text-4xl font-black text-[#0172ae]/20 leading-none flex-shrink-0 w-12 text-center">
-              {step.step}
-            </div>
+            <div class="text-4xl font-black text-[#0172ae]/20 leading-none flex-shrink-0 w-12 text-center">{step.step}</div>
             <div>
               <h3 class="font-bold text-[#000000] text-lg mb-2">{step.title}</h3>
               <p class="text-[#1a1a1a] text-sm leading-relaxed">{step.description}</p>
@@ -199,81 +160,33 @@ const schema = {
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       3. STANDARDS & COMPLIANCE
-       ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="py-20 bg-[#000000]" aria-labelledby="standards-heading">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-10">
-        <h2 id="standards-heading" class="text-3xl sm:text-4xl font-bold text-white mb-4">
-          Standards &amp; compliance
-        </h2>
-        <p class="text-white/65 text-base leading-relaxed">
-          Sewer construction in Queensland must satisfy the WSAA Sewerage Code (WSA 02:2014), AS/NZS 3500.2, and the Queensland Urban Utilities and SEQ Water distributor-retailer design and construction standards. We deliver to all applicable standards and provide documentation to satisfy every hold point.
-        </p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {STANDARDS.map(s => (
-          <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
-            <div class="inline-block bg-[#0172ae]/20 text-[#0172ae] text-xs font-bold px-2.5 py-1 rounded-full mb-3">
-              {s.code}
-            </div>
-            <div class="font-semibold text-white text-sm mb-1">{s.title}</div>
-            <div class="text-white/50 text-xs leading-relaxed">{s.note}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       4. FAQs
-       ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- FAQs -->
   <section class="py-20 bg-[#F0F5FA]" aria-labelledby="faq-heading">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-10">
-        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
-          Sewer construction FAQs
-        </h2>
-        <p class="text-[#1a1a1a] text-lg">
-          Common questions from developers, civil contractors and project managers about sewer construction and connections in SE Queensland.
-        </p>
-      </div>
-
-      <div class="space-y-3">
-        {FAQS.map((faq, i) => (
-          <details
-            class="bg-white border border-slate-200 rounded-2xl overflow-hidden group"
-            open={i === 0}
-          >
-            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#000000] hover:text-[#0172ae] transition-colors select-none">
+      <h2 id="faq-heading" class="text-3xl font-bold text-[#000000] mb-10">Frequently asked questions</h2>
+      <div class="space-y-4">
+        {FAQS.map(faq => (
+          <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-semibold text-[#000000] hover:text-[#0172ae] transition-colors">
               {faq.q}
-              <svg
-                class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              <svg class="w-4 h-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
               </svg>
             </summary>
-            <div class="px-6 pb-6 text-[#1a1a1a] text-sm leading-relaxed">
-              {faq.a}
-            </div>
+            <div class="px-6 pb-6 text-[#1a1a1a] text-sm leading-relaxed">{faq.a}</div>
           </details>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ── Civil enquiry form ──────────────────────────────────────────────── -->
   <CivilEnquiryForm formId={FORM_ID} initialProjectType="sewer-construction" client:load slot="enquiry-form" />
 
-  <!-- TODO: Upload /public/videos/sewer-construction-loop.mp4 — branded civil footage, compressed for web -->
   <VideoHero
     slot="hero"
     videoSrc="/videos/civil-rochdale-digger.mp4"
-    headline="Sewer Construction & Reticulation — South-East Queensland"
-    subheadline="Gravity sewer installation, pump stations, rising mains and pressure sewer systems for residential subdivisions and commercial developments across SEQ. WSA 02:2014 compliant."
+    headline="Sewer Construction — South-East Queensland"
+    subheadline="Gravity sewer installation, lot connections, manhole construction and pump stations for residential subdivisions and commercial developments across Brisbane, Logan, Gold Coast and Ipswich."
     ctaText="Submit an RFQ"
     ctaHref="/civil/contact"
   />

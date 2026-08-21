@@ -101,7 +101,6 @@ const NAV_ITEMS = [
   { label: 'Water Mains',               slug: 'water-mains',               href: '/civil/water-mains'                  },
   { label: 'Stormwater',                slug: 'stormwater',                href: '/civil/stormwater'                   },
   { label: 'Sewer Construction',        slug: 'sewer-construction',         href: '/civil/sewer-construction'           },
-  { label: 'Maintenance',               slug: 'infrastructure-maintenance', href: '/civil/infrastructure-maintenance'   },
   { label: 'Civil Contact',             slug: '__contact',                  href: '/civil/contact'                      },
 ];
 
@@ -136,13 +135,6 @@ const ALL_CIVIL_SERVICES: CivilService[] = [
     label:       'Sewer Construction',
     icon:        '⚙️',
     description: 'Gravity mains, pump stations, rising mains and lot connections. CCTV inspection and WSA 02:2014 compliant documentation.',
-  },
-  {
-    slug:        'infrastructure-maintenance',
-    href:        '/civil/infrastructure-maintenance',
-    label:       'Infrastructure Maintenance',
-    icon:        '🛠️',
-    description: 'Programmed CCTV condition assessment, high-pressure jetting, emergency response and trenchless rehabilitation. WSA 05:2013 aligned.',
   },
 ];
 
@@ -184,11 +176,7 @@ const organisationSchema = {
     'Water main installation',
     'Sewer construction',
     'Stormwater infrastructure',
-    'Infrastructure maintenance',
-    'WSAA standards',
-    'WSA 02 Sewerage Code',
-    'WSA 03 Water Reticulation Code',
-    'WSA 05 Conduit Inspection Reporting Code',
+    'QBCC licensed civil contractor',
   ],
   hasCredential: [
     {
