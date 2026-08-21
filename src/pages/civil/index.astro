@@ -37,15 +37,7 @@ const SERVICE_AREAS = [
     line2:       'WSA 02:2014 compliant. CCTV inspection with WRC defect coding. Full documentation for distributor-retailer handover.',
     standards:   ['WSA 02:2014', 'AS/NZS 3500.2'],
   },
-  {
-    slug:        'infrastructure-maintenance',
-    href:        '/civil/infrastructure-maintenance',
-    icon:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
-    label:       'Infrastructure Maintenance',
-    line1:       'Programmed CCTV condition assessment, high-pressure jetting, emergency response and trenchless rehabilitation.',
-    line2:       'WSA 05:2013 aligned. ISO 55000 asset management reporting. Contract arrangements for councils and utilities.',
-    standards:   ['WSA 05:2013', 'ISO 55000'],
-  },
+
 ];
 
 // ─── Compliance & standards ───────────────────────────────────────────────────
@@ -208,7 +200,6 @@ const schema = {
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Water Main Installation' } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Stormwater Infrastructure Construction' } },
           { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Sewer Construction' } },
-          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Civil Infrastructure Maintenance' } },
         ],
       },
     },
@@ -217,10 +208,10 @@ const schema = {
 ---
 
 <CivilLayout
-  pageTitle="Civil Plumbing Infrastructure — Queensland"
-  pageSubtitle="Delivering civil plumbing infrastructure across South East Queensland. QBCC licensed. Compliant with WSAA standards and Queensland guidelines."
-  metaTitle="Civil Plumbing Contractor Brisbane & SE Queensland"
-  metaDescription="QBCC civil plumbing — water mains, sewer construction and stormwater across SE Queensland. WSAA compliant delivery for councils, developers and civil contractors."
+  pageTitle="Civil Plumbing for SEQ Developers, Builders & Councils"
+  pageSubtitle="Water mains, sewer construction and stormwater drainage for residential subdivisions, commercial developments and councils across South-East Queensland. QBCC licensed."
+  metaTitle="Civil Plumbing Contractor Brisbane & SE Queensland | Pulse Plumbing Civil"
+  metaDescription="QBCC-licensed civil plumbing across Brisbane, Logan and Gold Coast — water main installation, sewer construction and stormwater drainage for residential and commercial developments."
   activeSlug=""
   heroImage=""
   faqs={FAQS}
@@ -243,7 +234,7 @@ const schema = {
           Civil plumbing services
         </h2>
         <p class="text-[#1a1a1a] text-lg leading-relaxed">
-          We deliver the full civil plumbing scope across South-East Queensland — from greenfield subdivision reticulation through to existing network maintenance.
+          We deliver the full civil plumbing scope across South-East Queensland — from new subdivision reticulation and service connections through to live tie-ins on the existing network.
           Each engagement is supported by full infrastructure agreement documentation.
         </p>
       </div>
@@ -268,22 +259,10 @@ const schema = {
                 </h3>
               </div>
 
-              <!-- Two-line description -->
-              <p class="text-[#1a1a1a] text-sm leading-relaxed mb-1">
+              <!-- Description -->
+              <p class="text-[#1a1a1a] text-sm leading-relaxed mb-5">
                 {sa.line1}
               </p>
-              <p class="text-slate-400 text-xs leading-relaxed mb-5">
-                {sa.line2}
-              </p>
-
-              <!-- Standards badges -->
-              <div class="flex flex-wrap gap-1.5 mb-5">
-                {sa.standards.map(s => (
-                  <span class="inline-block font-mono text-[10px] font-semibold text-[#0172ae] bg-[#0172ae]/8 border border-[#0172ae]/15 rounded px-2 py-0.5">
-                    {s}
-                  </span>
-                ))}
-              </div>
 
               <!-- CTA row -->
               <div class="flex items-center gap-1.5 text-sm font-semibold text-[#0172ae] group-hover:gap-3 transition-all">
@@ -297,76 +276,6 @@ const schema = {
         ))}
       </div>
 
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       §3  COMPLIANCE & STANDARDS PANEL
-       Documentation-style list of applicable standards, styled for
-       procurement officers who need to verify contractor compliance.
-       ══════════════════════════════════════════════════════════════════════════ -->
-  <section class="py-20 bg-white border-t border-slate-100" aria-labelledby="compliance-heading">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-      <div class="grid lg:grid-cols-[320px_1fr] gap-12 lg:gap-16 items-start">
-
-        <!-- Left: section identity -->
-        <div class="lg:pt-1">
-          <div class="flex items-center gap-2 mb-3" aria-hidden="true">
-            <div class="w-1 h-5 bg-[#0172ae] rounded-full"></div>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Standards Compliance</span>
-          </div>
-          <h2 id="compliance-heading" class="text-2xl sm:text-3xl font-bold text-[#000000] mb-4 leading-snug">
-            Work compliant with:
-          </h2>
-          <p class="text-[#1a1a1a] text-sm leading-relaxed mb-6">
-            All civil plumbing work is delivered in accordance with applicable
-            Australian Standards, WSAA codes and Queensland legislation.
-            Compliance evidence — hold-point inspection records, material
-            certification, test certificates and as-constructed documentation —
-            is provided as a standard deliverable on every project.
-          </p>
-          <a
-            href="#civil-enquiry"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors"
-          >
-            Request compliance documentation →
-          </a>
-        </div>
-
-        <!-- Right: standards reference list -->
-        <div class="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden">
-
-          {COMPLIANCE_STANDARDS.map((std, i) => (
-            <div class={`flex items-start gap-4 px-5 py-4 ${i % 2 === 0 ? 'bg-white' : 'bg-[#F0F5FA]/50'} hover:bg-[#EFF6FF]/60 transition-colors group`}>
-
-              <!-- Check icon -->
-              <div class="w-6 h-6 rounded-full bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#0172ae]/20 transition-colors" aria-hidden="true">
-                <svg class="w-3.5 h-3.5 text-[#0172ae]" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                </svg>
-              </div>
-
-              <div class="min-w-0">
-                <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 mb-1">
-                  <span class="font-mono text-xs font-bold text-[#0172ae] bg-[#0172ae]/8 border border-[#0172ae]/15 rounded px-2 py-0.5 flex-shrink-0">
-                    {std.code}
-                  </span>
-                  <span class="font-semibold text-[#000000] text-sm leading-snug">
-                    {std.title}
-                  </span>
-                </div>
-                <p class="text-[#1a1a1a] text-xs leading-relaxed">
-                  {std.context}
-                </p>
-              </div>
-
-            </div>
-          ))}
-
-        </div>
-
-      </div>
     </div>
   </section>
 
