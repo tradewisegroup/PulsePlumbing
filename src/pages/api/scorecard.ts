@@ -21,7 +21,9 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { sendLeadNotification, leadRef, LEAD_NOTIFY_TO } from '../../lib/notify';
+import type { Attribution } from '../../lib/attribution';
+import { leadRef } from '../../lib/lead';
+import { sendLeadNotification, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 

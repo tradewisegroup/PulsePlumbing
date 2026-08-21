@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { getAttribution } from '../../lib/attribution';
 
 const ROLES = [
   'Qualified Plumber — All Rounder',
@@ -27,7 +28,13 @@ export default function JobApplicationForm() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | submitting | success | error
   const [serverError, setServerError] = useState('');
+  const [leadRef, setLeadRef] = useState('');
+  const [attribution, setAttribution] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setAttribution(getAttribution());
+  }, []);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -83,20 +90,28 @@ export default function JobApplicationForm() {
     setServerError('');
 
     const body = new FormData();
-    body.append('full_name',   fields.full_name.trim());
-    body.append('email',       fields.email.trim().toLowerCase());
-    body.append('phone',       fields.phone.trim());
-    body.append('role',        fields.role);
-    body.append('cover_note',  fields.cover_note.trim());
-    body.append('source',      'Careers Page');
-    body.append('page_source', 'Careers Page');
+    body.append('full_name',  fields.full_name.trim());
+    body.append('email',      fields.email.trim().toLowerCase());
+    body.append('phone',      fields.phone.trim());
+    body.append('role',       fields.role);
+    body.append('cover_note', fields.cover_note.trim());
+    body.append('attribution', JSON.stringify(attribution ?? {}));
     if (resumeFile) body.append('resume', resumeFile);
 
     try {
       const res  = await fetch('/api/job-application', { method: 'POST', body });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success !== false) {
+        setLeadRef(data.ref ?? '');
         setStatus('success');
+        if (typeof window !== 'undefined') {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event:     'lead_submitted',
+            form_name: 'careers',
+            lead_ref:  data.ref,
+          });
+        }
       } else {
         throw new Error(
           data.error ?? "We couldn't submit your application. Please call 0452 188 420.",
@@ -119,9 +134,14 @@ export default function JobApplicationForm() {
           </svg>
         </div>
         <h3 className="text-xl font-bold text-[#000000] mb-2">Application received!</h3>
-        <p className="text-[#1a1a1a]/70">
+        <p className="text-[#1a1a1a]/70 mb-3">
           Thanks! We'll be in touch within 2 business days.
         </p>
+        {leadRef && (
+          <p className="text-xs text-slate-400">
+            Your reference: <strong className="font-mono text-slate-500">{leadRef}</strong>
+          </p>
+        )}
       </div>
     );
   }

@@ -17,15 +17,14 @@
  * ─────────────────
  * JOBS_NOTIFY_TO      Recipient (default: accounts@pulseqld.com.au)
  * CORS_ORIGIN         Allowed origin (default: https://pulseqld.com.au)
- *
- * Note: Resume files are captured as filename + size metadata.
- *       Full file storage via Cloudflare R2 is a future enhancement.
  */
 
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { sendLeadNotification, leadRef, JOBS_NOTIFY_TO } from '../../lib/notify';
+import type { Attribution } from '../../lib/attribution';
+import { buildLead, leadRef } from '../../lib/lead';
+import { sendLeadNotification, JOBS_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 
@@ -103,7 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // ── Extract fields ─────────────────────────────────────────────────────────
-  const rawName     = str(fd.get('full_name'));
+  const rawName    = str(fd.get('full_name'));
   const { firstname, lastname } = splitName(rawName);
   const resumeEntry = fd.get('resume');
   const resumeFile  = resumeEntry instanceof File ? resumeEntry : null;
@@ -132,11 +131,24 @@ export const POST: APIRoute = async ({ request }) => {
     request.headers.get('cf-connecting-ip') ??
     request.headers.get('x-forwarded-for')  ??
     '0.0.0.0';
-  const pageUri =
-    request.headers.get('referer') ?? 'https://pulseqld.com.au/careers';
 
+  // ── Attribution ────────────────────────────────────────────────────────────
+  let attribution: Attribution;
+  try {
+    const raw = str(fd.get('attribution'));
+    attribution = raw ? JSON.parse(raw) : ({} as Attribution);
+  } catch {
+    attribution = {} as Attribution;
+  }
+
+  // ── Lead ───────────────────────────────────────────────────────────────────
   const ref      = leadRef();
   const fullName = [data.firstname, data.lastname].filter(Boolean).join(' ');
+  const lead     = buildLead(
+    { full_name: fullName, email: data.email, phone: data.phone, source_form: 'careers' },
+    attribution,
+    ref,
+  );
 
   // ── Email notification (PRIMARY — hard failure) ────────────────────────────
   try {
@@ -145,20 +157,18 @@ export const POST: APIRoute = async ({ request }) => {
       ref,
       subjectSuffix: `Job Application — ${data.role} — ${fullName}`,
       fields: [
-        ['Name',    fullName],
-        ['Email',   data.email],
-        ['Phone',   data.phone],
-        ['Role',    data.role],
+        ['Name',       fullName],
+        ['Email',      data.email],
+        ['Phone',      data.phone],
+        ['Phone (E.164)', lead.phone_e164 !== data.phone ? lead.phone_e164 : undefined],
+        ['Role',       data.role],
         ['Cover Note', data.cover_note || '(none)'],
-        ['Resume',  data.resume_name
+        ['Resume',     data.resume_name
           ? `${data.resume_name} (${data.resume_size})`
           : 'Not uploaded'],
-        ['Source',  'Careers Page'],
       ],
-      attribution: {
-        pageUri,
-        ipAddress,
-      },
+      attribution,
+      ipAddress,
     });
   } catch (err) {
     console.error('[notify] Job application email failed:', err);
@@ -168,6 +178,5 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // ── Success ────────────────────────────────────────────────────────────────
   return json({ success: true, message: "Thanks! We'll be in touch within 2 business days.", ref });
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getAttribution } from '../../lib/attribution';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -148,29 +149,19 @@ export default function QuoteForm({ initialService = '' }) {
     preferredTime:      'anytime',
   });
 
-  // ── Hidden tracking fields — populated on mount ─────────────────────────────
-  const [tracking, setTracking] = useState({
-    page_source:    '',
-    utm_source:     '',
-    utm_medium:     '',
-    utm_campaign:   '',
-  });
+  // ── Attribution — populated on mount ────────────────────────────────────────
+  const [attribution, setAttribution] = useState(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setTracking({
-      page_source:  window.location.pathname,
-      utm_source:   params.get('utm_source')   ?? '',
-      utm_medium:   params.get('utm_medium')   ?? '',
-      utm_campaign: params.get('utm_campaign') ?? '',
-    });
+    setAttribution(getAttribution());
   }, []);
 
-  // ── Validation / submission state ───────────────────────────────────────────
+  // ── Submission state ────────────────────────────────────────────────────────
   const [errors, setErrors]           = useState({});
   const [touched, setTouched]         = useState({});
   const [status, setStatus]           = useState('idle'); // idle | loading | success | error
   const [serverError, setServerError] = useState('');
+  const [leadRef, setLeadRef]         = useState('');
 
   // ── Derived ─────────────────────────────────────────────────────────────────
   const showCompany = COMMERCIAL_SERVICE_TYPES.has(fields.serviceType);
@@ -214,32 +205,43 @@ export default function QuoteForm({ initialService = '' }) {
 
     try {
       const body = new URLSearchParams({
-        // User-entered fields
-        full_name:        fields.fullName,
-        company_name:     fields.companyName,
-        phone:            fields.phone,
-        email:            fields.email,
-        service_type:     fields.serviceType,
-        industry:         fields.industry,
-        suburb:           fields.suburb,
-        message:          fields.message,
-        preferred_time:   fields.preferredTime,
-        // Tracking
-        ...tracking,
+        full_name:      fields.fullName,
+        company_name:   fields.companyName,
+        phone:          fields.phone,
+        email:          fields.email,
+        service_type:   fields.serviceType,
+        industry:       fields.industry,
+        suburb:         fields.suburb,
+        message:        fields.message,
+        preferred_time: fields.preferredTime,
+        attribution:    JSON.stringify(attribution ?? {}),
       });
 
-      const res = await fetch('/api/contact', {
+      const res  = await fetch('/api/contact', {
         method:  'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body:    body.toString(),
       });
 
-      const json = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ({}));
 
-      if (res.ok && json.success !== false) {
+      if (res.ok && data.success !== false) {
+        setLeadRef(data.ref ?? '');
         setStatus('success');
+        // GTM dataLayer event — fired only after confirmed API success
+        if (typeof window !== 'undefined') {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event:        'lead_submitted',
+            form_name:    'quote',
+            lead_ref:     data.ref,
+            service_type: fields.serviceType,
+            suburb:       fields.suburb,
+            industry:     fields.industry,
+          });
+        }
       } else {
-        throw new Error(json.error ?? 'Something went wrong. Please try again or call us directly.');
+        throw new Error(data.error ?? 'Something went wrong. Please try again or call us directly.');
       }
     } catch (err) {
       setStatus('error');
@@ -260,13 +262,18 @@ export default function QuoteForm({ initialService = '' }) {
         <h3 className="text-xl font-bold text-[#000000] mb-2">
           Thanks! We'll call you within 2 hours.
         </h3>
-        <p className="text-[#334155] text-sm leading-relaxed mb-6">
+        <p className="text-[#334155] text-sm leading-relaxed mb-3">
           Your quote request has been received. One of our licensed plumbers will be in touch shortly.
           For urgent jobs, call us directly on{' '}
           <a href="tel:0452188420" className="font-bold text-[#0172ae] hover:underline">
             0452 188 420
           </a>.
         </p>
+        {leadRef && (
+          <p className="text-xs text-slate-400 mb-6">
+            Your reference: <strong className="font-mono text-slate-600">{leadRef}</strong>
+          </p>
+        )}
         <a
           href="/"
           className="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
@@ -296,11 +303,7 @@ export default function QuoteForm({ initialService = '' }) {
         aria-label="Quote request form"
         className="px-6 py-6 space-y-5"
       >
-        {/* Hidden tracking fields */}
-        <input type="hidden" name="page_source"  value={tracking.page_source}  />
-        <input type="hidden" name="utm_source"   value={tracking.utm_source}   />
-        <input type="hidden" name="utm_medium"   value={tracking.utm_medium}   />
-        <input type="hidden" name="utm_campaign" value={tracking.utm_campaign} />
+        {/* Attribution is sent as a JSON field in the POST body — no hidden inputs needed */}
 
         {/* ── Row 1: Full Name ─────────────────────────────────────────────── */}
         <div>

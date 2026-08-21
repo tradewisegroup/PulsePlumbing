@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getAttribution } from '../../lib/attribution';
 
 // ─── Field options ────────────────────────────────────────────────────────────
 
@@ -152,27 +153,17 @@ export default function CivilRFQForm({ formId = '' }) {
     howFound:        '',
   });
 
-  const [tracking, setTracking] = useState({
-    page_source:  '',
-    utm_source:   '',
-    utm_medium:   '',
-    utm_campaign: '',
-  });
+  const [attribution, setAttribution] = useState(null);
 
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search);
-    setTracking({
-      page_source:  window.location.pathname,
-      utm_source:   p.get('utm_source')   ?? '',
-      utm_medium:   p.get('utm_medium')   ?? '',
-      utm_campaign: p.get('utm_campaign') ?? '',
-    });
+    setAttribution(getAttribution());
   }, []);
 
   const [errors, setErrors]           = useState({});
   const [touched, setTouched]         = useState({});
   const [status, setStatus]           = useState('idle'); // idle | loading | success | error
   const [serverError, setServerError] = useState('');
+  const [leadRef, setLeadRef]         = useState('');
   const [charCount, setCharCount]     = useState(0);
 
   function handleChange(e) {
@@ -217,24 +208,33 @@ export default function CivilRFQForm({ formId = '' }) {
         timeline:        fields.timeline,
         description:     fields.description,
         howFound:        fields.howFound,
-        form_id:         formId,
         source:          `Civil RFQ — ${fields.projectType || 'general enquiry'}`,
-        utm_source:      tracking.utm_source,
-        utm_medium:      tracking.utm_medium,
-        utm_campaign:    tracking.utm_campaign,
+        attribution:     JSON.stringify(attribution ?? {}),
       });
 
-      const res = await fetch('/api/civil-contact', {
+      const res  = await fetch('/api/civil-contact', {
         method:  'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body:    body.toString(),
       });
 
-      const json = await res.json().catch(() => ({}));
-      if (res.ok && json.success !== false) {
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success !== false) {
+        setLeadRef(data.ref ?? '');
         setStatus('success');
+        if (typeof window !== 'undefined') {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event:        'lead_submitted',
+            form_name:    'civil-rfq',
+            lead_ref:     data.ref,
+            service_type: fields.projectType,
+            suburb:       fields.projectLocation,
+            industry:     'civil',
+          });
+        }
       } else {
-        throw new Error(json.error ?? 'Submission failed. Please email us directly.');
+        throw new Error(data.error ?? 'Submission failed. Please email us directly.');
       }
     } catch (err) {
       setStatus('error');
@@ -256,10 +256,15 @@ export default function CivilRFQForm({ formId = '' }) {
         <p className="text-slate-400 text-sm leading-relaxed mb-1">
           Thank you. A member of our civil team will review your project details and respond within one business day.
         </p>
-        <p className="text-slate-400 text-sm leading-relaxed mb-6">
+        <p className="text-slate-400 text-sm leading-relaxed mb-3">
           For urgent infrastructure matters, call us directly on{' '}
           <a href="tel:0452188420" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
+        {leadRef && (
+          <p className="text-xs text-slate-500 mb-6">
+            Your reference: <strong className="font-mono text-slate-400">{leadRef}</strong>
+          </p>
+        )}
         <a
           href="/civil"
           className="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
@@ -291,12 +296,7 @@ export default function CivilRFQForm({ formId = '' }) {
 
       <form onSubmit={handleSubmit} noValidate aria-label="Civil RFQ submission form" className="px-6 py-6 space-y-5">
 
-        {/* Hidden tracking fields */}
-        <input type="hidden" name="page_source"  value={tracking.page_source}  />
-        <input type="hidden" name="utm_source"   value={tracking.utm_source}   />
-        <input type="hidden" name="utm_medium"   value={tracking.utm_medium}   />
-        <input type="hidden" name="utm_campaign" value={tracking.utm_campaign} />
-        <input type="hidden" name="form_id"      value={formId}                />
+        {/* Attribution is sent as a JSON field in the POST body — no hidden inputs needed */}
 
         {/* ── Section: Organisation ────────────────────────────────────── */}
         <div>
