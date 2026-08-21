@@ -4,15 +4,15 @@
  *
  * Processes all quote / contact form submissions.
  *
- * Delivery guarantee
- * ──────────────────
- * 1. Validate — 400 on bad input.
- * 2. Send notification email via Resend (PRIMARY path).
- *    Returns 502 if email fails — the lead is never silently discarded.
- * 3. Push to AroFlo (SECONDARY, non-blocking).
+ * Steps
+ * ─────
+ * 1. Parse and validate the request body — 400 on bad input.
+ * 2. Build the canonical Lead object.
+ * 3. Send notification email via Resend (PRIMARY, guaranteed path).
+ *    Returns 502 if the email is not accepted — leads are never silently discarded.
  *
- * Required env vars
- * ─────────────────
+ * Required env var
+ * ────────────────
  * RESEND_API_KEY      Resend API key
  *
  * Optional env vars
@@ -25,8 +25,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import type { Attribution } from '../../lib/attribution';
-import { createLeadFromForm } from '../../lib/aroflo';
-import { buildLead, leadRef, normalisePhoneE164 } from '../../lib/lead';
+import { buildLead, leadRef } from '../../lib/lead';
 import { sendLeadNotification, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
@@ -51,15 +50,15 @@ function json(body: object, status = 200): Response {
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface FormData {
-  firstname:    string;
-  lastname:     string;
-  email:        string;
-  phone:        string;
-  company:      string;
-  service_type: string;
-  industry:     string;
-  suburb:       string;
-  message:      string;
+  firstname:      string;
+  lastname:       string;
+  email:          string;
+  phone:          string;
+  company:        string;
+  service_type:   string;
+  industry:       string;
+  suburb:         string;
+  message:        string;
   preferred_time: string;
 }
 
@@ -143,13 +142,12 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ success: false, error: validationError }, 400);
   }
 
-  // ── Context ────────────────────────────────────────────────────────────────
+  // ── Attribution ────────────────────────────────────────────────────────────
   const ipAddress =
     request.headers.get('cf-connecting-ip') ??
     request.headers.get('x-forwarded-for')  ??
     '0.0.0.0';
 
-  // ── Attribution ────────────────────────────────────────────────────────────
   let attribution: Attribution;
   try {
     attribution = raw.attribution ? JSON.parse(raw.attribution) : ({} as Attribution);
@@ -158,19 +156,15 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // ── Lead ───────────────────────────────────────────────────────────────────
-  const ref  = leadRef();
-  const lead = buildLead(
-    { ...raw, source_form: 'quote' },
-    attribution,
-    ref,
-  );
+  const ref      = leadRef();
+  const lead     = buildLead({ ...raw, source_form: 'quote' }, attribution, ref);
+  const fullName = [data.firstname, data.lastname].filter(Boolean).join(' ');
 
-  const fullName      = [data.firstname, data.lastname].filter(Boolean).join(' ');
   const subjectSuffix = [data.service_type || 'General Enquiry', data.suburb, data.phone]
     .filter(Boolean)
     .join(' — ');
 
-  // ── Email notification (PRIMARY — hard failure) ────────────────────────────
+  // ── Email (PRIMARY — hard failure) ─────────────────────────────────────────
   try {
     await sendLeadNotification({
       to:  LEAD_NOTIFY_TO,
@@ -199,25 +193,5 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // ── AroFlo (SECONDARY — non-blocking) ─────────────────────────────────────
-  const arofloResult = await createLeadFromForm({
-    name:        fullName,
-    company:     data.company    || undefined,
-    phone:       lead.phone_e164 || data.phone,
-    email:       data.email,
-    serviceType: data.service_type,
-    industry:    data.industry   || undefined,
-    suburb:      data.suburb     || undefined,
-    message:     data.message,
-  });
-  if (arofloResult.arofloError) {
-    console.warn('[AroFlo] Lead not created — email notification was delivered.');
-  }
-
-  return json({
-    success: true,
-    message: "Thanks! We'll call you within 2 hours.",
-    ref,
-    arofloTaskId: arofloResult.taskId,
-  });
+  return json({ success: true, message: "Thanks! We'll call you within 2 hours.", ref });
 };

@@ -7,8 +7,8 @@
  * ───────────────
  * • sendLeadNotification() THROWS on any failure.
  * • Callers must catch and return HTTP 502 — never swallow errors.
- * • Email is the ONLY guaranteed delivery path; every downstream system
- *   (AroFlo, future CRM) is a non-blocking secondary push.
+ * • Email is the ONLY guaranteed delivery path; every downstream integration
+ *   is a secondary concern and must never be able to lose a lead.
  *
  * Required env var
  * ────────────────

@@ -4,15 +4,15 @@
  *
  * Handles civil project RFQ submissions.
  *
- * Delivery guarantee
- * ──────────────────
- * 1. Validate — 400 on bad input.
- * 2. Send notification email via Resend (PRIMARY path).
- *    Returns 502 if email fails — the lead is never silently discarded.
- * 3. Push to AroFlo (SECONDARY, non-blocking).
+ * Steps
+ * ─────
+ * 1. Parse and validate the request body — 400 on bad input.
+ * 2. Build the canonical Lead object.
+ * 3. Send notification email via Resend (PRIMARY, guaranteed path).
+ *    Returns 502 if the email is not accepted — leads are never silently discarded.
  *
- * Required env vars
- * ─────────────────
+ * Required env var
+ * ────────────────
  * RESEND_API_KEY      Resend API key
  *
  * Optional env vars
@@ -25,7 +25,6 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import type { Attribution } from '../../lib/attribution';
-import { createCivilEnquiry } from '../../lib/aroflo';
 import { buildLead, leadRef } from '../../lib/lead';
 import { sendLeadNotification, LEAD_NOTIFY_TO } from '../../lib/notify';
 
@@ -63,7 +62,6 @@ interface CivilFormData {
   description:     string;
   timeline:        string;
   howFound:        string;
-  source:          string;
 }
 
 // ─── Field helpers ────────────────────────────────────────────────────────────
@@ -96,7 +94,6 @@ function normalise(raw: Record<string, string>): CivilFormData {
     description:     str(raw.description   ?? raw.message),
     timeline:        str(raw.timeline),
     howFound:        str(raw.howFound      ?? raw.how_found),
-    source:          str(raw.source) || `Civil — ${str(raw.projectType ?? raw.project_type) || 'general enquiry'}`,
   };
 }
 
@@ -150,13 +147,12 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ success: false, error: validationError }, 400);
   }
 
-  // ── Context ────────────────────────────────────────────────────────────────
+  // ── Attribution ────────────────────────────────────────────────────────────
   const ipAddress =
     request.headers.get('cf-connecting-ip') ??
     request.headers.get('x-forwarded-for')  ??
     '0.0.0.0';
 
-  // ── Attribution ────────────────────────────────────────────────────────────
   let attribution: Attribution;
   try {
     attribution = raw.attribution ? JSON.parse(raw.attribution) : ({} as Attribution);
@@ -167,11 +163,7 @@ export const POST: APIRoute = async ({ request }) => {
   // ── Lead ───────────────────────────────────────────────────────────────────
   const ref         = leadRef();
   const contactName = [data.firstName, data.lastName].filter(Boolean).join(' ');
-  const lead        = buildLead(
-    { ...raw, name: contactName, source_form: 'civil-rfq' },
-    attribution,
-    ref,
-  );
+  const lead        = buildLead({ ...raw, name: contactName, source_form: 'civil-rfq' }, attribution, ref);
 
   const subjectSuffix = [
     `Civil RFQ — ${data.projectType || 'General'}`,
@@ -179,25 +171,25 @@ export const POST: APIRoute = async ({ request }) => {
     data.phone,
   ].filter(Boolean).join(' — ');
 
-  // ── Email notification (PRIMARY — hard failure) ────────────────────────────
+  // ── Email (PRIMARY — hard failure) ─────────────────────────────────────────
   try {
     await sendLeadNotification({
       to:  LEAD_NOTIFY_TO,
       ref,
       subjectSuffix,
       fields: [
-        ['Company',         data.companyName],
-        ['Contact',         contactName],
-        ['Role',            data.role],
-        ['Phone',           data.phone],
-        ['Phone (E.164)',   lead.phone_e164 !== data.phone ? lead.phone_e164 : undefined],
-        ['Email',           data.email],
-        ['Project Type',    data.projectType],
-        ['Project Value',   data.projectValue],
-        ['Location',        data.projectLocation],
-        ['Timeline',        data.timeline],
-        ['Description',     data.description],
-        ['How Found',       data.howFound],
+        ['Company',        data.companyName],
+        ['Contact',        contactName],
+        ['Role',           data.role],
+        ['Phone',          data.phone],
+        ['Phone (E.164)',  lead.phone_e164 !== data.phone ? lead.phone_e164 : undefined],
+        ['Email',          data.email],
+        ['Project Type',   data.projectType],
+        ['Project Value',  data.projectValue],
+        ['Location',       data.projectLocation],
+        ['Timeline',       data.timeline],
+        ['Description',    data.description],
+        ['How Found',      data.howFound],
       ],
       attribution,
       ipAddress,
@@ -210,29 +202,9 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // ── AroFlo (SECONDARY — non-blocking) ─────────────────────────────────────
-  let arofloTaskId: string | null = null;
-  try {
-    const civilResult = await createCivilEnquiry({
-      companyName:     data.companyName,
-      contactName,
-      phone:           lead.phone_e164 || data.phone,
-      email:           data.email,
-      projectType:     data.projectType,
-      projectValue:    data.projectValue || 'Not specified',
-      projectLocation: data.projectLocation || undefined,
-      description:     data.description,
-      timeline:        data.timeline || undefined,
-    });
-    arofloTaskId = civilResult.taskId ?? null;
-  } catch (err) {
-    console.warn('[AroFlo] Civil task not created — email notification was delivered:', err);
-  }
-
   return json({
     success: true,
     message: "Enquiry received. We'll be in touch within one business day.",
     ref,
-    arofloTaskId,
   });
 };

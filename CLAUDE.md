@@ -60,7 +60,6 @@ src/
 │   ├── LocationLayout.astro      ← Suburb pages + LocalBusiness + Plumber schema
 │   └── BlogLayout.astro          ← Blog posts + Article schema
 ├── lib/
-│   └── aroflo.ts                 ← AroFlo REST API client (HMAC-SHA256 auth)
 ├── pages/
 │   ├── api/
 │   │   └── contact.ts            ← SSR: validates form → HubSpot
@@ -131,9 +130,7 @@ src/
 ## Integrations
 - **HubSpot Portal ID:** [INSERT] → set in `.env.local` as `HUBSPOT_PORTAL_ID`
 - **HubSpot Form IDs:** [INSERT after HubSpot setup] → `HUBSPOT_CONTACT_FORM_ID`, etc.
-- **AroFlo:** Direct REST API with HMAC-SHA256 auth — see `src/lib/aroflo.ts`
-  - Set: `AROFLO_ORG_HASH`, `AROFLO_USERNAME`, `AROFLO_PASSWORD`, `AROFLO_ZONE`
-- **Xero:** via AroFlo native integration (no frontend connection needed)
+- **Xero:** direct integration (future — not yet connected to the frontend)
 - **Google Tag Manager:** [INSERT GTM ID] → `PUBLIC_GTM_ID` in `.env.local`
 - **Google Analytics 4:** [INSERT GA4 ID] → `PUBLIC_GA4_ID` in `.env.local`
 - Copy `.env.example` to `.env.local` and fill in all values before going live
@@ -196,7 +193,6 @@ npm run preview  # Preview production build locally
 - [ ] Set up HubSpot account → get Portal ID + Form GUIDs → add to `.env.local`
 - [ ] Set up Google Tag Manager → get GTM-XXXXXXX → add to `.env.local`
 - [ ] Set up GA4 → get G-XXXXXXXXXX → add to `.env.local`
-- [ ] Set up AroFlo API credentials → add to `.env.local`
 - [ ] Export PNG favicons from `public/images/flame-mark.svg` (180, 192, 512px)
 - [ ] Create OG default image at `public/og-default.jpg` (1200×630px)
 - [ ] Build all 9 industry pages (`/industries/[slug]`)

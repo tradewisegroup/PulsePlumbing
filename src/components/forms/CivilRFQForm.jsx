@@ -131,8 +131,7 @@ function Spinner() {
  * CivilRFQForm — dedicated RFQ form for /civil/contact.
  *
  * Submits to POST /api/civil-contact, which creates:
- *  - HubSpot contact in the Civil pipeline
- *  - AroFlo task with taskType = "Civil Enquiry"
+ *  Sends notification email to admin@pulseqld.com.au via Resend.
  *
  * Usage:
  *   import CivilRFQForm from '../../components/forms/CivilRFQForm.jsx';
