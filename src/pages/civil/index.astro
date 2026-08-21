@@ -321,7 +321,7 @@ const schema = {
               Submit an RFQ
             </a>
             <CapabilityModal
-              client:load
+              client:idle
               buttonText="Download Capability Statement"
               buttonClass="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/35 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors"
             />
@@ -412,7 +412,7 @@ const schema = {
   </section>
 
   <!-- ── Civil enquiry form ──────────────────────────────────────────────────── -->
-  <CivilEnquiryForm formId={FORM_ID} client:load slot="enquiry-form" />
+  <CivilEnquiryForm formId={FORM_ID} client:visible slot="enquiry-form" />
 
   <!-- ── Video hero — replaces the static CivilLayout hero ───────────────────── -->
   <VideoHero

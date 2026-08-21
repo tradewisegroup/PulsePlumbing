@@ -30,3 +30,11 @@ pnpm-debug.log*
 
 .vercel
 
+
+# Raw/uncompressed media — serve from CDN or Cloudflare R2 instead
+public/videos/*.mp4
+public/videos/*.MP4
+public/images/**/*.mp4
+public/images/**/*.MP4
+public/images/raw/
+public/images/compressed/

@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import teamHeroImg from '../assets/team-hero.png';
 
 const title       = 'About Pulse Plumbing, Gas & Civil | Brisbane & SEQ';
 const description = 'Meet the team behind Pulse Plumbing, Gas & Civil. Family-run, QBCC licensed (Lic 15384771), serving Brisbane, Logan, Gold Coast and Ipswich across South-East Queensland.';
@@ -76,16 +78,21 @@ const values = [
 ];
 ---
 
-<BaseLayout {title} {description} {canonical} schema={aboutSchema}>
+<BaseLayout {title} {description} {canonical} schema={aboutSchema} heroImage="/images/team-hero.png">
 
   <!-- ── SECTION 1: Hero ─────────────────────────────────────────────── -->
   <section class="relative overflow-hidden bg-[#000000] py-20 lg:py-28">
-    <img
-      src="/images/team-hero.png"
+    <Image
+      src={teamHeroImg}
       alt=""
       aria-hidden="true"
       class="absolute inset-0 w-full h-full object-cover object-top opacity-50"
       loading="eager"
+      fetchpriority="high"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      format="webp"
+      quality={75}
     />
     <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -228,15 +235,14 @@ const values = [
           {/* TODO: Replace src with Lachlan's YouTube embed URL e.g. https://www.youtube.com/embed/XXXXXXXXX */}
           <div class="rounded-xl overflow-hidden border border-[#D1D5DB]">
             <div class="relative aspect-video bg-[#000000]">
-              <video
-                class="w-full h-full object-cover"
-                controls
-                preload="none"
-                poster="/images/director-portrait.png"
-              >
-                <source src="/videos/lachlan-intro.mp4" type="video/mp4" />
-                <!-- Fallback: replace with YouTube iframe when video is ready -->
-              </video>
+              <!-- TODO: Upload lachlan-intro.mp4 to public/videos/ or replace with YouTube iframe -->
+              <img
+                src="/images/director-portrait.png"
+                alt="Lachlan De Santis — Director, Pulse Plumbing Gas & Civil"
+                class="w-full h-full object-cover object-top"
+                width="800" height="450"
+                loading="lazy"
+              />
               <!-- Play button overlay (shows when video not loaded) -->
               <div class="absolute inset-0 flex items-center justify-center pointer-events-none" id="about-video-overlay">
                 <div class="w-16 h-16 rounded-full bg-[#0172ae]/90 flex items-center justify-center">

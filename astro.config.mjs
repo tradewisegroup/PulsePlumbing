@@ -3,6 +3,7 @@ import { defineConfig }    from 'astro/config';
 import sitemap             from '@astrojs/sitemap';
 import react               from '@astrojs/react';
 import cloudflare          from '@astrojs/cloudflare';
+import { sharpImageService } from 'astro/config';
 import { statSync }        from 'fs';
 import { resolve, join }   from 'path';
 import { fileURLToPath }   from 'url';
@@ -172,6 +173,14 @@ export default defineConfig({
   // Handles static pages at build time; API routes with prerender = false
   // are deployed as Cloudflare Workers automatically.
   adapter: cloudflare(),
+
+  // ── Image optimisation ────────────────────────────────────────────────────
+  // Sharp processes images at build time: converts to WebP, resizes, strips
+  // EXIF. Images must live in src/assets/ (not public/) to be processed.
+  // Images in public/ are served as-is — use <img> with loading="lazy" there.
+  image: {
+    service: sharpImageService(),
+  },
 
   // ── Integrations ──────────────────────────────────────────────────────────
   integrations: [

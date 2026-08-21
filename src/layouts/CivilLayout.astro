@@ -303,7 +303,7 @@ const pageSchema = {
         <!-- Capability statement + RFQ CTAs (desktop only) -->
         <div class="hidden md:flex items-center gap-2 flex-shrink-0 pl-4 border-l border-white/10">
           <CapabilityModal
-            client:load
+            client:idle
             buttonText="Capability Statement"
             buttonClass="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/80 hover:text-white border border-white/25 hover:border-white/30 rounded-full px-3 py-1 transition-colors"
           />
@@ -374,7 +374,7 @@ const pageSchema = {
               Submit an RFQ
             </a>
             <CapabilityModal
-              client:load
+            client:idle
               buttonText="Request Capability Statement"
               buttonClass="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors"
             />

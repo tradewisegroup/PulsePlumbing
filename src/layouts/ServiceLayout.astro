@@ -149,7 +149,10 @@ const pageSchema = {
           alt=""
           aria-hidden="true"
           class="absolute inset-0 w-full h-full object-cover object-center"
+          width="1920" height="1080"
           loading="eager"
+          fetchpriority="high"
+          decoding="async"
         />
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"></div>
@@ -210,7 +213,10 @@ const pageSchema = {
               src={heroImage}
               alt={`${serviceName} — Pulse Plumbing, Gas & Civil`}
               class={`w-full max-h-[420px] rounded-xl shadow-lg ${heroImageFit === 'contain' ? 'object-contain' : 'object-cover'}`}
+              width="800" height="420"
               loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
           </div>
         )}
@@ -426,7 +432,7 @@ const pageSchema = {
         </div>
 
         <div>
-          <QuoteForm client:load />
+          <QuoteForm client:visible />
         </div>
 
       </div>

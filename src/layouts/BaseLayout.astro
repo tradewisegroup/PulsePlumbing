@@ -19,6 +19,12 @@ export interface Props {
   /** Prevent indexing (404s, thank-you pages, etc.) */
   noindex?: boolean;
   /**
+   * Path to the LCP hero image (e.g. "/images/hero-homepage.png").
+   * When set, emits a high-priority <link rel="preload"> so the browser
+   * fetches the hero before rendering, improving LCP.
+   */
+  heroImage?: string;
+  /**
    * Additional page-level JSON-LD schema object.
    * The LocalBusiness schema is always injected by this layout.
    * Pass a Service, Article, FAQPage, etc. here for page-specific markup.
@@ -35,6 +41,7 @@ const {
   ogImage = '/images/og-default.jpg',
   ogType = 'website',
   noindex = false,
+  heroImage,
   schema,
 } = Astro.props;
 
@@ -101,6 +108,16 @@ const localBusinessSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- ── LCP hero preload — emitted when heroImage prop is set ──────────── -->
+    {heroImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={heroImage}
+        fetchpriority="high"
+      />
+    )}
+
     <!-- ── Google Tag Manager ──────────────────────────────────────────── -->
     <!-- Replace GTM-XXXXXXX with real container ID in .env.local          -->
     <script is:inline define:vars={{ GTM_ID }}>
@@ -116,10 +133,7 @@ const localBusinessSchema = {
       })(window, document, 'script', 'dataLayer', GTM_ID);
     </script>
 
-    <!-- ── Preconnect ─────────────────────────────────────────────────── -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+    <!-- ── Preconnect (font is self-hosted — no Google Fonts round trip) ── -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
@@ -192,7 +206,7 @@ const localBusinessSchema = {
 
   <body
     class="bg-white text-slate-700 antialiased"
-    style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+    style="font-family: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;"
   >
     <!-- ── GTM noscript fallback ─────────────────────────────────────── -->
     <noscript>

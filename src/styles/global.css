@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
-/* ── Google Font: Plus Jakarta Sans ── */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* ── Self-hosted Montserrat variable font (weights 400–800, no third-party round trip) ── */
+@import "@fontsource-variable/montserrat";
 
 @theme {
   /* ── Pulse Plumbing & Gas brand colours (from pulseqld.com.au) ── */
@@ -15,8 +15,8 @@
   --color-pulse-black:    #111111;
 
   /* ── Typography ── */
-  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Montserrat Variable', 'Montserrat', system-ui, sans-serif;
+  --font-heading: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;
 }
 
 /* Base resets */
