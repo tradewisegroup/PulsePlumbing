@@ -93,16 +93,17 @@ export default function JobApplicationForm() {
     if (resumeFile) body.append('resume', resumeFile);
 
     try {
-      const res = await fetch('/api/job-application', { method: 'POST', body });
-      const data = await res.json();
-      if (data.success) {
+      const res  = await fetch('/api/job-application', { method: 'POST', body });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success !== false) {
         setStatus('success');
       } else {
-        setServerError(data.error ?? 'Something went wrong. Please try again.');
-        setStatus('error');
+        throw new Error(
+          data.error ?? "We couldn't submit your application. Please call 0452 188 420.",
+        );
       }
-    } catch {
-      setServerError('Network error. Please check your connection and try again.');
+    } catch (err) {
+      setServerError(err.message ?? "Submission failed. Please call 0452 188 420.");
       setStatus('error');
     }
   }
@@ -269,9 +270,18 @@ export default function JobApplicationForm() {
       </div>
 
       {/* Server error */}
-      {status === 'error' && serverError && (
-        <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-          {serverError}
+      {status === 'error' && (
+        <div
+          role="alert"
+          className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700"
+        >
+          <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <span>
+            {serverError || "We couldn't submit your application."}{' '}
+            <a href="tel:0452188420" className="font-bold underline">Call 0452 188 420</a>.
+          </span>
         </div>
       )}
 

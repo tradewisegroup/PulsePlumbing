@@ -2,21 +2,26 @@
  * POST /api/scorecard
  * OPTIONS /api/scorecard  (CORS preflight)
  *
- * Processes compliance scorecard lead submissions:
- *  1. Validate email server-side
- *  2. Submit to HubSpot Forms API with compliance_score + scorecard-lead tag
- *  3. Return { success } | { success: false, error }
+ * Processes compliance scorecard lead submissions.
  *
- * Required env vars (shared with /api/contact)
- * ────────────────────────────────────────────
- * HUBSPOT_PORTAL_ID
- * HUBSPOT_SCORECARD_FORM_ID   HubSpot form GUID for scorecard leads.
- *                              Falls back to HUBSPOT_FORM_ID if not set.
+ * Delivery guarantee
+ * ──────────────────
+ * Email via Resend is the PRIMARY path.
+ * Returns 502 if email fails — the lead is never silently discarded.
+ *
+ * Required env vars
+ * ─────────────────
+ * RESEND_API_KEY      Resend API key
+ *
+ * Optional env vars
+ * ─────────────────
+ * LEAD_NOTIFY_TO      Recipient (default: admin@pulseqld.com.au)
  */
 
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import { sendLeadNotification, leadRef, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 
@@ -60,66 +65,6 @@ function validate(p: ScorecardPayload): string | null {
   return null;
 }
 
-// ─── HubSpot ──────────────────────────────────────────────────────────────────
-
-const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
-const HUBSPOT_SCORECARD_FORM_ID =
-  import.meta.env.HUBSPOT_SCORECARD_FORM_ID ??
-  import.meta.env.HUBSPOT_FORM_ID           ?? '';
-const HUBSPOT_API_BASE =
-  import.meta.env.HUBSPOT_API_BASE ?? 'https://api-ap1.hsforms.com';
-
-async function submitToHubSpot(
-  p: ScorecardPayload,
-  ipAddress: string,
-  pageUri: string,
-): Promise<void> {
-  if (!HUBSPOT_PORTAL_ID || !HUBSPOT_SCORECARD_FORM_ID) {
-    console.warn('[HubSpot] Scorecard credentials not configured — skipping.');
-    return;
-  }
-
-  // Summarise individual answers as a note for the sales team
-  const answerSummary = Object.entries(p.answers)
-    .map(([q, pts]) => `${q}: ${pts} pts`)
-    .join(' | ');
-
-  const payload = {
-    fields: [
-      { name: 'email',            value: p.email },
-      { name: 'hs_lead_source',   value: 'Strata Scorecard' },
-      // compliance_score is a custom HubSpot property — create it in your portal
-      { name: 'compliance_score', value: String(p.score) },
-      { name: 'message',          value: `Compliance scorecard result: ${p.risk} (${p.score}/10)\n${answerSummary}` },
-    ],
-    context: {
-      ipAddress,
-      pageUri,
-      pageName: 'Strata Compliance Scorecard',
-    },
-    legalConsentOptions: {
-      consent: {
-        consentToProcess: true,
-        text: 'I agree to allow Pulse Plumbing, Gas & Civil to store and process my personal data.',
-      },
-    },
-  };
-
-  const res = await fetch(
-    `${HUBSPOT_API_BASE}/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_SCORECARD_FORM_ID}`,
-    {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-    },
-  );
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => res.status.toString());
-    throw new Error(`HubSpot submission failed (${res.status}): ${text}`);
-  }
-}
-
 // ─── Route handlers ───────────────────────────────────────────────────────────
 
 export const OPTIONS: APIRoute = () =>
@@ -138,7 +83,6 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ success: false, error: 'Invalid JSON body.' }, 400);
   }
 
-  // Normalise email
   payload.email = str(payload.email).toLowerCase();
 
   // ── Validate ───────────────────────────────────────────────────────────────
@@ -155,17 +99,33 @@ export const POST: APIRoute = async ({ request }) => {
   const pageUri =
     request.headers.get('referer') ?? 'https://pulseqld.com.au/strata-scorecard';
 
-  // ── HubSpot ────────────────────────────────────────────────────────────────
+  const ref     = leadRef();
+  const answers = Object.entries(payload.answers)
+    .map(([q, pts]) => `${q}: ${pts} pts`)
+    .join(' | ');
+
+  // ── Email notification (PRIMARY — hard failure) ────────────────────────────
   try {
-    await submitToHubSpot(payload, ipAddress, pageUri);
+    await sendLeadNotification({
+      to:  LEAD_NOTIFY_TO,
+      ref,
+      subjectSuffix: `Scorecard Lead — ${payload.risk} (${payload.score}/10) — ${payload.email}`,
+      fields: [
+        ['Email',        payload.email],
+        ['Score',        `${payload.score} / 10`],
+        ['Risk Level',   payload.risk],
+        ['Answers',      answers],
+        ['Source',       'Strata Compliance Scorecard'],
+      ],
+      attribution: { pageUri, ipAddress },
+    });
   } catch (err) {
-    console.error('[HubSpot] Scorecard submission error:', err);
-    // Non-blocking: the user has already seen their results — log but don't block
+    console.error('[notify] Scorecard email failed:', err);
     return json(
-      { success: false, error: 'Score could not be saved. Please call 0452 188 420.' },
-      500,
+      { success: false, error: "We couldn't submit your enquiry. Please call 0452 188 420." },
+      502,
     );
   }
 
-  return json({ success: true });
+  return json({ success: true, ref });
 };

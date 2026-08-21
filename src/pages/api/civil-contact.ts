@@ -2,35 +2,31 @@
  * POST /api/civil-contact
  * OPTIONS /api/civil-contact  (CORS preflight)
  *
- * Handles civil project enquiry form submissions:
- *  1. Validate required fields server-side
- *  2. Submit to HubSpot Forms API using HUBSPOT_CIVIL_FORM_ID
- *  3. Upsert client + create Civil Enquiry task in AroFlo
- *  4. Send internal notification email to admin@pulseqld.com.au
- *  5. Return { success: true, message } | { success: false, error }
+ * Handles civil project RFQ submissions.
  *
- * Runs on Cloudflare Workers edge (SSR). Never reaches the browser bundle.
+ * Delivery guarantee
+ * ──────────────────
+ * 1. Validate — 400 on bad input.
+ * 2. Send notification email via Resend (PRIMARY path).
+ *    Returns 502 if email fails — the lead is never silently discarded.
+ * 3. Push to AroFlo (SECONDARY, non-blocking).
+ *    AroFlo failure is logged but never surfaces to the user.
  *
  * Required env vars
  * ─────────────────
- * HUBSPOT_PORTAL_ID          HubSpot account portal ID
- * HUBSPOT_CIVIL_FORM_ID      Civil-pipeline HubSpot form GUID
- * AROFLO_BASE_URL            AroFlo base URL (defaults to https://api.aroflo.com)
- * AROFLO_USERNAME            AroFlo API username
- * AROFLO_PASSWORD            AroFlo API password
- * AROFLO_SECRET_KEY          AroFlo HMAC signing secret
+ * RESEND_API_KEY      Resend API key
  *
  * Optional env vars
  * ─────────────────
- * CORS_ORIGIN                Allowed origin — defaults to https://pulseqld.com.au
- * SENDGRID_API_KEY           If set, sends real email notifications via SendGrid
- *                            If unset, logs notification details and no-ops (TODO)
+ * LEAD_NOTIFY_TO      Notification recipient (default: admin@pulseqld.com.au)
+ * CORS_ORIGIN         Allowed origin (default: https://pulseqld.com.au)
  */
 
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { createCivilEnquiry } from '../../lib/aroflo';
+import { sendLeadNotification, leadRef, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 
@@ -58,42 +54,30 @@ interface CivilFormData {
   contactName:     string;
   firstName:       string;
   lastName:        string;
-  /** Contact's job title / role — maps to HubSpot jobtitle property */
   role:            string;
   email:           string;
   phone:           string;
   projectType:     string;
-  /** e.g. "$500k – $1M" | "1m-plus" | "tbd" */
   projectValue:    string;
   projectLocation: string;
   description:     string;
   timeline:        string;
   howFound:        string;
-  formId:          string;
   source:          string;
   utm_source:      string;
   utm_medium:      string;
   utm_campaign:    string;
 }
 
-// ─── Field helpers ─────────────────────────────────────────────────────────────
+// ─── Field helpers ────────────────────────────────────────────────────────────
 
 function str(v: unknown): string {
   return typeof v === 'string' ? v.trim() : '';
 }
 
-/**
- * Split a contact name on the first space.
- * "Jane Smith"     → { firstName: 'Jane', lastName: 'Smith' }
- * "Jane Ann Smith" → { firstName: 'Jane', lastName: 'Ann Smith' }
- * "Cher"           → { firstName: 'Cher', lastName: '' }
- */
 function splitName(full: string): { firstName: string; lastName: string } {
   const parts = full.trim().split(/\s+/);
-  return {
-    firstName: parts[0] ?? '',
-    lastName:  parts.slice(1).join(' '),
-  };
+  return { firstName: parts[0] ?? '', lastName: parts.slice(1).join(' ') };
 }
 
 function normalise(raw: Record<string, string>): CivilFormData {
@@ -113,11 +97,9 @@ function normalise(raw: Record<string, string>): CivilFormData {
     projectType:     str(raw.projectType   ?? raw.project_type),
     projectValue:    str(raw.projectValue  ?? raw.project_value),
     projectLocation: str(raw.projectLocation ?? raw.project_location ?? raw.location),
-    // Accept "description" (API callers) or "message" (form field name)
     description:     str(raw.description   ?? raw.message),
     timeline:        str(raw.timeline),
     howFound:        str(raw.howFound      ?? raw.how_found),
-    formId:          str(raw.form_id),
     source:          str(raw.source) || `Civil — ${str(raw.projectType ?? raw.project_type) || 'general enquiry'}`,
     utm_source:      str(raw.utm_source),
     utm_medium:      str(raw.utm_medium),
@@ -143,207 +125,19 @@ function validate(d: CivilFormData): string | null {
   return null;
 }
 
-// ─── HubSpot ──────────────────────────────────────────────────────────────────
-
-const HUBSPOT_PORTAL_ID     = import.meta.env.HUBSPOT_PORTAL_ID     ?? '';
-const HUBSPOT_CIVIL_FORM_ID = import.meta.env.HUBSPOT_CIVIL_FORM_ID ?? '';
-const HUBSPOT_API_BASE      = import.meta.env.HUBSPOT_API_BASE      ?? 'https://api-ap1.hsforms.com';
-
-/**
- * Submit a civil enquiry to HubSpot Forms v3.
- *
- * Field mapping:
- *   company            → HubSpot company name
- *   firstname/lastname → HubSpot contact name split
- *   phone              → HubSpot phone
- *   email              → HubSpot email (used as contact identity)
- *   project_type       → Custom contact property
- *   project_value      → Custom contact property
- *   project_location   → Custom contact property (maps to suburb/city)
- *   project_description → Custom contact property (maps to message/description)
- *   start_date         → Maps to timeline field
- *   lead_source        → hs_lead_source
- *   industry           → HubSpot "industry" contact property = "Civil"
- *
- * Deal stage note:
- *   HubSpot Forms API does not create deals directly. Configure a HubSpot
- *   workflow triggered by "industry = Civil" to automatically create a deal
- *   in the Civil pipeline at stage "Qualified Lead". Alternatively, use the
- *   HubSpot CRM Deals API in a separate call once the form submits successfully.
- *
- * Skips gracefully (logs warning, does not throw) when credentials are not set.
- */
-async function submitToHubSpot(
-  d: CivilFormData,
-  ipAddress: string,
-  pageUri: string,
-): Promise<void> {
-  const formId = d.formId || HUBSPOT_CIVIL_FORM_ID;
-
-  if (!HUBSPOT_PORTAL_ID || !formId) {
-    console.warn('[HubSpot Civil] Credentials not configured — skipping CRM submission.');
-    return;
-  }
-
-  const optField = (name: string, value: string) =>
-    value ? [{ name, value }] : [];
-
-  const payload = {
-    fields: [
-      { name: 'company',    value: d.companyName },
-      { name: 'firstname',  value: d.firstName   },
-      { name: 'lastname',   value: d.lastName     },
-      { name: 'email',      value: d.email        },
-      { name: 'phone',      value: d.phone        },
-      // HubSpot contact property "industry" — drives the Civil pipeline workflow
-      { name: 'industry',   value: 'Civil'        },
-      ...optField('jobtitle', d.role),
-      ...optField('project_type',        d.projectType),
-      ...optField('project_value',       d.projectValue),
-      ...optField('project_location',    d.projectLocation),
-      // "message" is the standard HubSpot Forms long-text field name
-      ...optField('message',             d.description),
-      // "start_date" maps to project timeline
-      ...optField('start_date',          d.timeline),
-      ...optField('hs_lead_source',      d.source),
-      ...optField('utm_source',          d.utm_source),
-      ...optField('utm_medium',          d.utm_medium),
-      ...optField('utm_campaign',        d.utm_campaign),
-    ],
-    context: {
-      ipAddress,
-      pageUri,
-      pageName: 'Civil Enquiry',
-    },
-    legalConsentOptions: {
-      consent: {
-        consentToProcess: true,
-        text: 'I agree to allow Pulse Plumbing & Gas to store and process my personal data.',
-        communications: [
-          {
-            value: true,
-            subscriptionTypeId: 999,
-            text: 'I agree to receive communications from Pulse Plumbing & Gas.',
-          },
-        ],
-      },
-    },
-  };
-
-  const res = await fetch(
-    `${HUBSPOT_API_BASE}/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${formId}`,
-    {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-    },
-  );
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => res.status.toString());
-    throw new Error(`HubSpot civil submission failed (${res.status}): ${text}`);
-  }
-}
-
-// ─── Internal notification ─────────────────────────────────────────────────────
-
-/**
- * Send an internal notification email to admin@pulseqld.com.au with full
- * project enquiry details.
- *
- * TODO: implement real email delivery.
- *   Option A — SendGrid:
- *     Set SENDGRID_API_KEY env var and call:
- *       POST https://api.sendgrid.com/v3/mail/send
- *       Authorization: Bearer ${SENDGRID_API_KEY}
- *   Option B — Resend (simpler, Cloudflare Workers compatible):
- *       POST https://api.resend.com/emails
- *       Authorization: Bearer ${RESEND_API_KEY}
- *   Option C — Forward to an email address via Cloudflare Email Workers.
- *
- * For now, logs the notification body so it is visible in Cloudflare Workers
- * logs and does not block the response.
- */
-// ─── Email credentials ────────────────────────────────────────────────────────
-// Uses the same RESEND_API_KEY set in Cloudflare Pages environment variables.
-// Sign up free at resend.com → add pulseqld.com.au domain → copy API key.
-
-const RESEND_API_KEY  = import.meta.env.RESEND_API_KEY ?? '';
-const NOTIFY_TO       = 'admin@pulseqld.com.au';
-const NOTIFY_FROM     = 'Pulse Website <noreply@pulseqld.com.au>';
-
-async function sendInternalNotification(d: CivilFormData): Promise<void> {
-  const rows: [string, string][] = [
-    ['Company',      d.companyName],
-    ['Contact',      [d.firstName, d.lastName].filter(Boolean).join(' ')],
-    ['Email',        d.email],
-    ['Phone',        d.phone],
-    ['Project Type', d.projectType],
-    ['Project Value',d.projectValue   || 'Not specified'],
-    ['Location',     d.projectLocation || 'Not specified'],
-    ['Timeline',     d.timeline        || 'Not specified'],
-    ['Description',  d.description],
-    ['How Found',    d.howFound        || 'Not specified'],
-  ];
-
-  const html = `
-<h2 style="margin:0 0 16px;font-family:sans-serif">Civil RFQ — ${d.companyName}</h2>
-<table style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px">
-${rows.map(([k, v]) => `
-  <tr>
-    <td style="padding:6px 16px 6px 0;font-weight:600;white-space:nowrap;vertical-align:top;color:#1a1a1a">${k}</td>
-    <td style="padding:6px 0;color:#334155">${v}</td>
-  </tr>`).join('')}
-</table>`;
-
-  if (!RESEND_API_KEY) {
-    console.warn('[Civil] RESEND_API_KEY not set — logging enquiry instead of emailing.');
-    console.info('[Civil RFQ]', JSON.stringify(Object.fromEntries(rows)));
-    return;
-  }
-
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method:  'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type':  'application/json',
-      },
-      body: JSON.stringify({
-        from:    NOTIFY_FROM,
-        to:      [NOTIFY_TO],
-        subject: `Civil RFQ — ${d.projectType} — ${d.companyName}`,
-        html,
-      }),
-    });
-    if (!res.ok) {
-      const text = await res.text().catch(() => res.status.toString());
-      console.error('[Civil] Resend error:', text);
-    }
-  } catch (err) {
-    console.error('[Civil] Email send failed:', err);
-  }
-}
-
 // ─── Request body parsing ─────────────────────────────────────────────────────
 
 async function parseBody(request: Request): Promise<Record<string, string>> {
   const ct = request.headers.get('content-type') ?? '';
-
   if (ct.includes('application/json')) {
     return request.json();
   }
-
-  if (
-    ct.includes('application/x-www-form-urlencoded') ||
-    ct.includes('multipart/form-data')
-  ) {
+  if (ct.includes('application/x-www-form-urlencoded') || ct.includes('multipart/form-data')) {
     const fd = await request.formData();
     const out: Record<string, string> = {};
     fd.forEach((value, key) => { out[key] = value.toString(); });
     return out;
   }
-
   throw Object.assign(new Error('Unsupported content type.'), { status: 415 });
 }
 
@@ -375,30 +169,55 @@ export const POST: APIRoute = async ({ request }) => {
     '0.0.0.0';
   const pageUri = request.headers.get('referer') ?? 'https://pulseqld.com.au/civil';
 
-  // ── HubSpot ────────────────────────────────────────────────────────────────
-  // Hard failure — if HubSpot rejects the submission the lead is not captured,
-  // so we return a 500 to the user rather than silently dropping the enquiry.
+  const ref           = leadRef();
+  const contactName   = [data.firstName, data.lastName].filter(Boolean).join(' ');
+  const subjectSuffix =
+    [`Civil RFQ — ${data.projectType || 'General'}`, data.companyName, data.phone]
+      .filter(Boolean)
+      .join(' — ');
+
+  // ── Email notification (PRIMARY — hard failure) ────────────────────────────
   try {
-    await submitToHubSpot(data, ipAddress, pageUri);
-  } catch (err) {
-    console.error('[HubSpot Civil] Submission error:', err);
-    return json(
-      {
-        success: false,
-        error:   'We were unable to submit your enquiry. Please email us directly at admin@pulseqld.com.au.',
+    await sendLeadNotification({
+      to:  LEAD_NOTIFY_TO,
+      ref,
+      subjectSuffix,
+      fields: [
+        ['Company',        data.companyName],
+        ['Contact',        contactName],
+        ['Role',           data.role],
+        ['Phone',          data.phone],
+        ['Email',          data.email],
+        ['Project Type',   data.projectType],
+        ['Project Value',  data.projectValue],
+        ['Location',       data.projectLocation],
+        ['Timeline',       data.timeline],
+        ['Description',    data.description],
+        ['How Found',      data.howFound],
+        ['Source',         data.source],
+      ],
+      attribution: {
+        pageUri,
+        ipAddress,
+        utmSource:   data.utm_source,
+        utmMedium:   data.utm_medium,
+        utmCampaign: data.utm_campaign,
       },
-      500,
+    });
+  } catch (err) {
+    console.error('[notify] Civil RFQ email failed:', err);
+    return json(
+      { success: false, error: "We couldn't submit your enquiry. Please call 0452 188 420." },
+      502,
     );
   }
 
-  // ── AroFlo ─────────────────────────────────────────────────────────────────
-  // Soft failure — HubSpot already captured the lead. AroFlo outage should
-  // not block the user response or cause them to resubmit.
+  // ── AroFlo (SECONDARY — non-blocking) ─────────────────────────────────────
   let arofloTaskId: string | null = null;
   try {
     const civilResult = await createCivilEnquiry({
       companyName:     data.companyName,
-      contactName:     `${data.firstName} ${data.lastName}`.trim(),
+      contactName,
       phone:           data.phone,
       email:           data.email,
       projectType:     data.projectType,
@@ -409,19 +228,14 @@ export const POST: APIRoute = async ({ request }) => {
     });
     arofloTaskId = civilResult.taskId ?? null;
   } catch (err) {
-    console.error('[AroFlo Civil] Task creation failed (lead captured in HubSpot):', err);
+    console.warn('[AroFlo] Civil task not created — email notification was delivered:', err);
   }
-
-  // ── Internal notification ──────────────────────────────────────────────────
-  // Fire-and-forget — notification failure must never block the user response.
-  sendInternalNotification(data).catch((err) => {
-    console.error('[Civil Notification] Failed to send internal email:', err);
-  });
 
   // ── Success ────────────────────────────────────────────────────────────────
   return json({
     success: true,
     message: "Enquiry received. We'll be in touch within one business day.",
+    ref,
     arofloTaskId,
   });
 };
