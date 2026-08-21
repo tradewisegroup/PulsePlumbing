@@ -35,7 +35,7 @@ const articleSchema = {
     '@type': 'Organization',
     name: 'Pulse Plumbing & Gas',
     url: 'https://pulseqld.com.au',
-    logo: { '@type': 'ImageObject', url: 'https://pulseqld.com.au/images/logo.svg' },
+    logo: { '@type': 'ImageObject', url: 'https://pulseqld.com.au/images/logo.png' },
   },
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonical ?? Astro.url.href },
   ...(ogImage && { image: new URL(ogImage, Astro.site).href }),

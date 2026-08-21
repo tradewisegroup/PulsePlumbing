@@ -44,7 +44,7 @@ const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 const GSC_VERIFICATION = import.meta.env.GSC_VERIFICATION ?? '';
 
 // Resolve ogImage to an absolute URL regardless of whether it was passed as
-// a root-relative path ("/images/foo.jpg") or already absolute.
+// a root-relative path or an already-absolute URL.
 const ogImageAbsolute = ogImage.startsWith('http')
   ? ogImage
   : new URL(ogImage, SITE).href;
