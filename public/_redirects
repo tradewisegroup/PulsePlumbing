@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects
+# /locations/:suburb was the old rich-template URL (40 pages).
+# All content has been merged into /plumber-:suburb (146 pages).
+# These 301s preserve any inbound links and pass PageRank correctly.
+
+/locations/:suburb  /plumber-:suburb  301
