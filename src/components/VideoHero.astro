@@ -1,23 +1,40 @@
 ---
 /**
  * VideoHero.astro
- * Full-viewport hero with an autoplay looping video behind a dark overlay.
- * Falls back to posterSrc when prefers-reduced-motion is set.
+ *
+ * Full-viewport hero with a looping background video.
+ *
+ * The poster image is the LCP element — it must always resolve and is the
+ * only thing the browser renders on first paint. The video is progressive
+ * enhancement loaded via IntersectionObserver, never blocking the main thread.
+ *
+ * Props
+ * ─────
+ * posterSrc   REQUIRED. Absolute-root path to a WebP/JPEG poster.
+ *             Shown immediately; the video fades in on top when ready.
+ * videoSrc    Path to the optimised .mp4 (H.264, ≤ 3 MB).
+ * webmSrc     Path to the .webm (AV1) alternative. Served first when supported.
+ * headline    H1 text.
+ * subheadline Supporting paragraph.
+ * ctaText / ctaHref          Primary CTA button.
+ * secondaryCtaText / Href    Optional secondary CTA.
  */
 
 export interface Props {
-  videoSrc:    string;
-  posterSrc?:  string;
-  headline:    string;
-  subheadline: string;
-  ctaText:     string;
-  ctaHref:     string;
-  secondaryCtaText?: string;
-  secondaryCtaHref?: string;
+  videoSrc:           string;
+  webmSrc?:           string;
+  posterSrc:          string;
+  headline:           string;
+  subheadline:        string;
+  ctaText:            string;
+  ctaHref:            string;
+  secondaryCtaText?:  string;
+  secondaryCtaHref?:  string;
 }
 
 const {
   videoSrc,
+  webmSrc,
   posterSrc,
   headline,
   subheadline,
@@ -30,28 +47,59 @@ const {
 
 <section class="video-hero relative overflow-hidden bg-[#000000]" style="min-height: 560px;">
 
-  <!-- Video layer -->
+  <!-- ── Media layer ──────────────────────────────────────────────────── -->
   <div class="absolute inset-0" aria-hidden="true">
-    <noscript>
-      {posterSrc && <img src={posterSrc} alt="" class="absolute inset-0 w-full h-full object-cover" />}
-    </noscript>
+
+    <!--
+      Poster: always rendered, always visible until the video loads.
+      fetchpriority="high" because this IS the LCP element.
+      The video fades in over it when IntersectionObserver fires.
+    -->
+    <img
+      class="video-hero__poster absolute inset-0 w-full h-full object-cover"
+      src={posterSrc}
+      alt=""
+      width="1280" height="720"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <!--
+      Video: progressive enhancement.
+      preload="none" — browser must not fetch video bytes during page load.
+      The JS below starts loading + playback via IntersectionObserver.
+      Hidden until JS promotes it (opacity-0 → opacity-100 after canplay).
+    -->
     <video
-      class="video-hero__video absolute inset-0 w-full h-full object-cover"
+      class="video-hero__video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
       muted
       loop
       playsinline
-      preload="auto"
-      poster={posterSrc || undefined}
+      preload="none"
+      poster={posterSrc}
     >
-      <source src={videoSrc} type="video/mp4" />
+      {webmSrc && <source data-src={webmSrc} type="video/webm; codecs=av01" />}
+      <source data-src={videoSrc} type="video/mp4" />
     </video>
+
+    <!-- noscript: poster only — no JS, no video, no broken state -->
+    <noscript>
+      <img
+        class="absolute inset-0 w-full h-full object-cover"
+        src={posterSrc}
+        alt=""
+        width="1280"
+        height="720"
+      />
+    </noscript>
   </div>
 
-  <!-- Dark overlays for legibility -->
+  <!-- ── Overlays ─────────────────────────────────────────────────────── -->
   <div class="absolute inset-0 bg-black/30" aria-hidden="true"></div>
   <div class="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" aria-hidden="true"></div>
 
-  <!-- Content -->
+  <!-- ── Content ──────────────────────────────────────────────────────── -->
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex items-center">
     <div class="max-w-2xl">
 
@@ -94,25 +142,58 @@ const {
 
 </section>
 
-<style>
-  /* Respect prefers-reduced-motion — poster shows via the video poster attribute */
-  @media (prefers-reduced-motion: reduce) {
-    .video-hero__video { display: none; }
-  }
-</style>
-
 <script>
-  // Start video 3 seconds after page load. Respects prefers-reduced-motion.
-  (function () {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mq.matches) return;
+/**
+ * VideoHero progressive-enhancement loader.
+ *
+ * Strategy
+ * ────────
+ * 1. Bail immediately for prefers-reduced-motion — poster stays, no video.
+ * 2. Bail for save-data or slow connections — poster stays.
+ * 3. Otherwise: use IntersectionObserver to start loading the video only
+ *    when the hero is in the viewport (not on page load).
+ * 4. Move `data-src` → `src` on <source> elements just before play, so
+ *    `preload="none"` is honoured until we actually need the video.
+ * 5. Fade the video in (opacity 0 → 1) only once `canplay` fires, so the
+ *    poster never flashes away before there is video content to show.
+ */
+(function () {
+  // ── Reduced-motion check ───────────────────────────────────────────────
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    document.querySelectorAll<HTMLVideoElement>('.video-hero__video').forEach((video) => {
-      setTimeout(() => {
-        video.play().catch(() => {
-          // Autoplay blocked by browser — poster remains visible, no error shown.
+  // ── Data-saver / slow connection check ────────────────────────────────
+  const conn = (navigator as any).connection ?? (navigator as any).mozConnection ?? (navigator as any).webkitConnection;
+  if (conn && (conn.saveData || ['2g', 'slow-2g'].includes(conn.effectiveType))) return;
+
+  function initVideoHero(section: Element) {
+    const video = section.querySelector<HTMLVideoElement>('.video-hero__video');
+    if (!video) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+
+        // Promote data-src → src so the browser starts fetching
+        video.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => {
+          s.src = s.dataset.src!;
         });
-      }, 3000);
-    });
-  })();
+        video.load();
+
+        video.addEventListener('canplay', () => {
+          video.play().catch(() => {
+            // Autoplay policy blocked it — poster stays visible, no error.
+          });
+          // Fade video in over the poster
+          video.classList.remove('opacity-0');
+        }, { once: true });
+      },
+      { threshold: 0.1 },
+    );
+
+    io.observe(section);
+  }
+
+  document.querySelectorAll<HTMLElement>('.video-hero').forEach(initVideoHero);
+})();
 </script>
