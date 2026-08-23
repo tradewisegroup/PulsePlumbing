@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Page not found';
+const description = 'That page has moved. Call Pulse Plumbing, Gas & Civil on 07 2150 4175 or browse our plumbing services across South-East Queensland.';
+
+const SERVICES = [
+  { href: '/services/blocked-drains',          label: 'Blocked Drains' },
+  { href: '/services/hot-water-systems',       label: 'Hot Water Systems' },
+  { href: '/services/gas-fitting',             label: 'Gas Fitting' },
+  { href: '/services/commercial',              label: 'Commercial Plumbing' },
+  { href: '/services/residential',             label: 'Residential Plumbing' },
+  { href: '/services/drain-camera',            label: 'CCTV Drain Camera' },
+];
+---
+
+<BaseLayout
+  {title}
+  {description}
+  noindex
+  canonical="https://pulseqld.com.au/404"
+>
+
+  <section class="bg-[#F0F5FA] py-16 lg:py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-sm font-bold uppercase tracking-[0.18em] text-[#0172ae] mb-4">404</p>
+      <h1 class="text-4xl sm:text-5xl font-bold text-[#000000] leading-tight mb-5">
+        That page has moved
+      </h1>
+      <p class="text-lg text-[#334155] leading-relaxed mb-10">
+        That page has moved. Call us on 07 2150 4175 or try one of these:
+      </p>
+
+      <a
+        href="tel:0721504175"
+        data-track="call"
+        data-call-number="0721504175"
+        data-call-location="hero"
+        class="inline-flex items-center justify-center gap-3 w-full sm:w-auto bg-[#0172ae] hover:bg-[#015d8e] text-white font-bold text-xl px-10 py-5 rounded-full transition-colors shadow-lg shadow-[#0172ae]/30"
+      >
+        <svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+        </svg>
+        Call 07 2150 4175
+      </a>
+      <p class="mt-3 text-sm text-slate-500">
+        After hours emergency:
+        <a
+          href="tel:0452188420"
+          data-track="emergency-cta"
+          data-call-number="0452188420"
+          data-call-location="hero"
+          class="font-semibold text-[#0172ae] hover:underline"
+        >0452 188 420</a>
+      </p>
+
+      <ul class="mt-12 grid sm:grid-cols-2 gap-3 text-left">
+        {SERVICES.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              class="flex items-center justify-between gap-3 bg-white border border-[#D1D5DB] hover:border-[#0172ae] rounded-lg px-5 py-4 text-sm font-semibold text-[#000000] transition-colors"
+            >
+              {s.label}
+              <span class="text-[#0172ae]" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+        <li class="sm:col-span-2">
+          <a
+            href="/service-areas"
+            class="flex items-center justify-between gap-3 bg-white border border-[#D1D5DB] hover:border-[#0172ae] rounded-lg px-5 py-4 text-sm font-semibold text-[#000000] transition-colors"
+          >
+            Find a plumber in your suburb
+            <span class="text-[#0172ae]" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</BaseLayout>
