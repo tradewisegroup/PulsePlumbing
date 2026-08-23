@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -50,5 +52,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Property Management Plumbing Services Brisbane & QLD"
   metaDescription="Fast, reliable plumbing for property managers across Brisbane, Logan and Gold Coast. Same-day attendance, photo job reports and 24/7 emergency response for urgent repairs."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE['property-management'].heading} items={INDUSTRY_GLANCE['property-management'].items} />
+</IndustryLayout>

@@ -1,5 +1,7 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { SERVICE_GLANCE } from '../../data/at-a-glance';
 ---
 
 <ServiceLayout
@@ -69,5 +71,6 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
   ]}
   metaTitle="Backflow Prevention Testing & Certification Brisbane QLD"
   metaDescription="Annual backflow prevention device testing, repair and certification for commercial and residential properties across South-East Queensland and Northern NSW. Test certificates submitted to water authority."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={SERVICE_GLANCE['backflow-prevention'].heading} items={SERVICE_GLANCE['backflow-prevention'].items} />
+</ServiceLayout>

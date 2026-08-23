@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { pushLeadSubmitted } from '../../lib/datalayer';
+import { getAttribution } from '../../lib/attribution';
 
 // ─── Field options ────────────────────────────────────────────────────────────
 
@@ -150,6 +151,7 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
     utm_medium:   '',
     utm_campaign: '',
   });
+  const [attribution, setAttribution] = useState(null);
 
   useEffect(() => {
     const p = new URLSearchParams(window.location.search);
@@ -159,6 +161,7 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
       utm_medium:   p.get('utm_medium')   ?? '',
       utm_campaign: p.get('utm_campaign') ?? '',
     });
+    setAttribution(getAttribution());
   }, []);
 
   const [errors, setErrors]         = useState({});
@@ -210,6 +213,7 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
         utm_source:       tracking.utm_source,
         utm_medium:       tracking.utm_medium,
         utm_campaign:     tracking.utm_campaign,
+        attribution:      JSON.stringify(attribution ?? {}),
       });
 
       const res = await fetch('/api/civil-contact', {

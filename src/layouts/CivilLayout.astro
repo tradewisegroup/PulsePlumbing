@@ -18,6 +18,17 @@
  */
 import BaseLayout from './BaseLayout.astro';
 import CapabilityModal from '../components/forms/CapabilityModal.jsx';
+import Schema from '../components/seo/Schema.astro';
+import {
+  ABN,
+  EMAIL as SITE_EMAIL,
+  LEGAL_NAME,
+  NSW_LICENCE,
+  QBCC_LICENCE,
+  SITE_URL,
+  businessIdentifiers,
+  getSameAs,
+} from '../lib/site';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -89,10 +100,10 @@ const {
 // Resolve active slug from either prop name
 const activeService: string = serviceType ?? activeSlug ?? '';
 
-const SITE     = 'https://pulseqld.com.au';
+const SITE     = SITE_URL;
 const PHONE    = '0452 188 420';
 const PHONE_HREF = 'tel:0452188420';
-const EMAIL    = 'admin@pulseqld.com.au';
+const EMAIL    = SITE_EMAIL;
 
 // ─── Sub-navigation ───────────────────────────────────────────────────────────
 
@@ -153,7 +164,7 @@ const organisationSchema = {
   '@type':     'Organization',
   '@id':       `${SITE}/#organization`,
   name:        'Pulse Plumbing & Gas',
-  legalName:   'Pulse Plumbing and Gas Pty Ltd',
+  legalName:   LEGAL_NAME,
   url:         SITE,
   logo:        `${SITE}/images/logo.png`,
   image:       `${SITE}/images/civil-excavator.jpg`,
@@ -182,7 +193,7 @@ const organisationSchema = {
     {
       '@type':            'EducationalOccupationalCredential',
       credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
-      identifier:         '15021727',
+      identifier:         QBCC_LICENCE,
       recognizedBy: {
         '@type': 'GovernmentOrganization',
         name:    'Queensland Building and Construction Commission',
@@ -192,7 +203,7 @@ const organisationSchema = {
     {
       '@type':            'EducationalOccupationalCredential',
       credentialCategory: 'NSW Plumbing Contractor Licence',
-      identifier:         '476430C',
+      identifier:         NSW_LICENCE,
       recognizedBy: {
         '@type': 'GovernmentOrganization',
         name:    'NSW Fair Trading',
@@ -200,7 +211,8 @@ const organisationSchema = {
       },
     },
   ],
-  sameAs: [],
+  identifier: businessIdentifiers(),
+  sameAs: getSameAs(),
 };
 
 // FAQPage schema — only when faqs are provided
@@ -215,17 +227,13 @@ const faqSchema = faqs.length > 0
     }
   : null;
 
-// Breadcrumb schema
-const breadcrumbSchema = {
-  '@type':           'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home',  item: SITE },
-    { '@type': 'ListItem', position: 2, name: 'Civil', item: `${SITE}/civil` },
-    ...(activeService
-      ? [{ '@type': 'ListItem', position: 3, name: activeLabel, item: `${SITE}/civil/${activeService}` }]
-      : []),
-  ],
-};
+const breadcrumbs = [
+  { name: 'Home', url: SITE },
+  { name: 'Civil', url: `${SITE}/civil` },
+  ...(activeService
+    ? [{ name: activeLabel, url: `${SITE}/civil/${activeService}` }]
+    : []),
+];
 
 // Merge all schemas into a @graph
 const extraGraphItems: unknown[] = [];
@@ -237,7 +245,6 @@ const pageSchema = {
   '@context': 'https://schema.org',
   '@graph': [
     organisationSchema,
-    breadcrumbSchema,
     ...extraGraphItems,
   ],
 };
@@ -251,6 +258,11 @@ const pageSchema = {
   schema={pageSchema}
   pageType="civil"
 >
+  <Schema
+    slot="head"
+    canonical={`${SITE}${Astro.url.pathname}`}
+    breadcrumbs={breadcrumbs}
+  />
 
   <!-- ══════════════════════════════════════════════════════════════════════════
        §1 CIVIL NAV BAR
@@ -699,7 +711,7 @@ const pageSchema = {
           <div class="space-y-2 text-xs text-white/50">
             <div>
               <div class="font-semibold text-white/75 mb-0.5">QBCC Contractor Licence</div>
-              <div>Licence No.: 15021727</div>
+              <div>Licence No.: {QBCC_LICENCE}</div>
               <div>Class: Plumbing &amp; Drainage</div>
             </div>
             <div>
@@ -755,10 +767,10 @@ const pageSchema = {
       <div class="pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-white/30">
         <div>
           © {new Date().getFullYear()} Pulse Plumbing and Gas Pty Ltd. All rights reserved.
-          QBCC Licence 15021727. ABN 62 652 712 699.
+          QBCC Licence {QBCC_LICENCE}. ABN {ABN}.
         </div>
         <div class="flex items-center gap-4">
-          <a href="/privacy" class="hover:text-white/60 transition-colors">Privacy Policy</a>
+          <a href="/privacy-policy" class="hover:text-white/60 transition-colors">Privacy Policy</a>
           <a href="/civil" class="hover:text-white/60 transition-colors">Civil Services</a>
           <a href="/contact" class="hover:text-white/60 transition-colors">Contact</a>
         </div>

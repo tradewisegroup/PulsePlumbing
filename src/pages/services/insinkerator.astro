@@ -1,5 +1,7 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { SERVICE_GLANCE } from '../../data/at-a-glance';
 ---
 
 <ServiceLayout
@@ -90,6 +92,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
   metaTitle="Insinkerator Installation & Repair Brisbane, Logan & Gold Coast | Pulse Plumbing"
   metaDescription="QBCC licensed Insinkerator installation and repair across Brisbane, Logan, Gold Coast and Ipswich. Same-day service, upfront pricing. Call 0452 188 420."
 >
+  <AtAGlance slot="after-hero" heading={SERVICE_GLANCE.insinkerator.heading} items={SERVICE_GLANCE.insinkerator.items} />
 
   <!-- ── Price Promise offer card — renders above FAQ via named slot ── -->
   <div slot="offer" class="max-w-3xl mx-auto my-10 px-4 sm:px-6 lg:px-8">

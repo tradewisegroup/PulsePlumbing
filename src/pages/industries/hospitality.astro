@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -63,4 +65,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Hospitality Plumbing Brisbane — Restaurants, Cafes & Pubs | Pulse Plumbing"
   metaDescription="Licensed plumbers and gas fitters for high-end restaurants, cafes and pubs across Brisbane, Logan and Gold Coast. Commercial kitchen gas fitting, grease trap maintenance, bar fitout and 24/7 emergency response."
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE.hospitality.heading} context={INDUSTRY_GLANCE.hospitality.context} items={INDUSTRY_GLANCE.hospitality.items} />
+</IndustryLayout>

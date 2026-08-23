@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -51,5 +53,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Retail Plumbing Services Brisbane & South-East QLD"
   metaDescription="24/7 plumbing for retail centres, strip shops and food courts across Brisbane, Logan and Gold Coast. After-hours work, grease trap service and full compliance documentation."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE.retail.heading} items={INDUSTRY_GLANCE.retail.items} />
+</IndustryLayout>

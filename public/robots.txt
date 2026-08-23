@@ -10,6 +10,7 @@ Disallow: /_/
 
 # ── Sitemap ───────────────────────────────────────────────────────────────────
 Sitemap: https://pulseqld.com.au/sitemap-index.xml
+LLMs: https://pulseqld.com.au/llms.txt
 
 # ─────────────────────────────────────────────────────────────────────────────
 # AI language model crawlers

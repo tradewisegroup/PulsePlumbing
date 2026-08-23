@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -50,5 +52,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Aged Care Plumbing Services Brisbane & South-East QLD"
   metaDescription="Specialist plumbing for residential aged care and retirement villages across Brisbane, Logan and Gold Coast. TMV testing, Legionella risk management and 24/7 emergency response."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE['aged-care'].heading} context={INDUSTRY_GLANCE['aged-care'].context} items={INDUSTRY_GLANCE['aged-care'].items} />
+</IndustryLayout>

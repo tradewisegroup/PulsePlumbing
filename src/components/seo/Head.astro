@@ -1,0 +1,72 @@
+---
+/**
+ * Shared <head> tags for BaseLayout and MainLayout.
+ * Always emits max-image-preview:large on indexable pages so Google can
+ * use a large image in AI Overviews and rich results.
+ */
+
+export interface Props {
+  /** Fully formatted document title (layouts apply their own suffix). */
+  title: string;
+  description: string;
+  canonical: string;
+  /** Absolute OG image URL. */
+  ogImage: string;
+  ogType?: string;
+  noindex?: boolean;
+  siteName?: string;
+  ogImageAlt?: string;
+  themeColor?: string;
+  fbProfileId?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  siteName = 'Pulse Plumbing, Gas & Civil',
+  ogImageAlt = 'Pulse Plumbing & Gas',
+  themeColor = '#0172ae',
+  fbProfileId,
+} = Astro.props;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex
+  ? <meta name="robots" content="noindex,nofollow" />
+  : <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+}
+
+<meta property="og:type"         content={ogType} />
+<meta property="og:title"        content={title} />
+<meta property="og:description"  content={description} />
+<meta property="og:url"          content={canonical} />
+<meta property="og:image"        content={ogImage} />
+<meta property="og:image:width"  content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt"    content={ogImageAlt} />
+<meta property="og:site_name"    content={siteName} />
+<meta property="og:locale"       content="en_AU" />
+{fbProfileId && <meta property="fb:profile_id" content={fbProfileId} />}
+
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image"       content={ogImage} />
+<meta name="twitter:image:alt"   content={ogImageAlt} />
+
+<link rel="icon"             type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon"             type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="icon"             type="image/png" sizes="512x512" href="/favicon-512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest"         href="/site.webmanifest" />
+<meta name="theme-color"     content={themeColor} />

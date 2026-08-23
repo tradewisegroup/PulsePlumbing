@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import Schema from '../components/seo/Schema.astro';
+import { SITE_URL } from '../lib/site';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -44,7 +46,7 @@ const {
   heroImage,
 } = Astro.props;
 
-const SITE     = 'https://pulseqld.com.au';
+const SITE     = SITE_URL;
 const PHONE    = '07 2150 4175';
 const PHONE_HREF = 'tel:0721504175';
 
@@ -107,6 +109,12 @@ const faqSchema = {
   })),
 };
 
+const breadcrumbs = [
+  { name: 'Home', url: SITE },
+  { name: 'Industries', url: `${SITE}/industries` },
+  { name: industryName, url: `${SITE}/industries/${industrySlug}` },
+];
+
 // Combined schema @graph — one <script> tag with both Service + FAQPage
 const pageSchema = {
   '@context': 'https://schema.org',
@@ -127,6 +135,11 @@ const resolvedServices = relatedServices
   pageType="industry"
   industry={industrySlug}
 >
+  <Schema
+    slot="head"
+    canonical={`${SITE}/industries/${industrySlug}`}
+    breadcrumbs={breadcrumbs}
+  />
 
   <!-- ══════════════════════════════════════════════════════════════════════════
        1. HERO
@@ -215,6 +228,12 @@ const resolvedServices = relatedServices
       </ul>
     </div>
   </section>
+
+  {Astro.slots.has('after-hero') && (
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <slot name="after-hero" />
+    </div>
+  )}
 
   <!-- ══════════════════════════════════════════════════════════════════════════
        3. WHY PULSE FOR [INDUSTRY] — 4 benefit cards

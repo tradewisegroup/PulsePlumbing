@@ -1,5 +1,7 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { SERVICE_GLANCE } from '../../data/at-a-glance';
 
 const includedServices = [
   {
@@ -177,6 +179,7 @@ const costComparison = [
   metaTitle="Preventative Plumbing Maintenance Plans Brisbane & SE Queensland"
   metaDescription="Scheduled preventative plumbing maintenance for commercial properties — TMV testing, backflow certification, drain jetting, hot water servicing and gas inspections. Flat-rate plans, automated scheduling, full compliance across South-East Queensland and Northern NSW."
 >
+  <AtAGlance slot="after-hero" heading={SERVICE_GLANCE['preventative-maintenance'].heading} items={SERVICE_GLANCE['preventative-maintenance'].items} />
 
   <!-- ══════════════════════════════════════════════════════════════════
        WHAT'S INCLUDED — service cards
