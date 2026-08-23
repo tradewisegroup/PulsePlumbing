@@ -1,0 +1,58 @@
+---
+/**
+ * Custom 404 — emitted as dist/client/404.html for Cloudflare Pages.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Page not found';
+const description = 'That page is not on pulseqld.com.au. Call Pulse Plumbing & Gas on 07 2150 4175 or browse our services and service areas.';
+
+const links = [
+  { href: '/services/blocked-drains', label: 'Blocked Drains' },
+  { href: '/services/hot-water-systems', label: 'Hot Water Systems' },
+  { href: '/services/gas-fitting', label: 'Gas Fitting' },
+  { href: '/services/maintenance-plumbing', label: 'Maintenance Plumbing' },
+  { href: '/services/insinkerator', label: 'Insinkerator' },
+  { href: '/civil', label: 'Civil Services' },
+];
+---
+
+<BaseLayout {title} {description} noindex>
+  <section class="bg-[#F0F5FA] py-20 lg:py-28">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-sm font-semibold uppercase tracking-widest text-[#0172ae] mb-3">404</p>
+      <h1 class="text-4xl sm:text-5xl font-bold text-[#000000] leading-tight mb-4">
+        That page isn’t here
+      </h1>
+      <p class="text-lg text-[#334155] mb-8">
+        The link may be out of date. Call the office on 07 2150 4175, or jump to a service or suburb hub below.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-3 mb-12">
+        <a
+          href="tel:0721504175"
+          class="inline-flex items-center justify-center bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-6 py-3 rounded"
+          data-track="call"
+          data-call-number="0721504175"
+          data-call-location="404"
+        >
+          Call 07 2150 4175
+        </a>
+        <a
+          href="/service-areas"
+          class="inline-flex items-center justify-center bg-white border border-[#D1D5DB] hover:border-[#0172ae] text-[#000000] font-semibold px-6 py-3 rounded"
+        >
+          Browse service areas
+        </a>
+      </div>
+      <ul class="grid sm:grid-cols-2 gap-2 text-left">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} class="block bg-white border border-[#D1D5DB] hover:border-[#0172ae] rounded-lg px-4 py-3 text-sm font-semibold text-[#000000]">
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

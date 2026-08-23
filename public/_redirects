@@ -4,3 +4,4 @@
 # These 301s preserve any inbound links and pass PageRank correctly.
 
 /locations/:suburb  /plumber-:suburb  301
+/privacy            /privacy-policy   301

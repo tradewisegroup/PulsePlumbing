@@ -23,6 +23,8 @@
 import type { Attribution } from './attribution';
 
 const RESEND_API_KEY = import.meta.env.RESEND_API_KEY ?? '';
+const RESEND_API_URL =
+  import.meta.env.RESEND_API_URL ?? 'https://api.resend.com/emails';
 const FROM_EMAIL     = 'Pulse Website <noreply@pulseqld.com.au>';
 
 export const LEAD_NOTIFY_TO =
@@ -176,7 +178,7 @@ export async function sendLeadNotification(n: LeadNotification): Promise<void> {
 </div>`;
 
   // ── Send ───────────────────────────────────────────────────────────────────
-  const res = await fetch('https://api.resend.com/emails', {
+  const res = await fetch(RESEND_API_URL, {
     method:  'POST',
     headers: {
       'Authorization': `Bearer ${RESEND_API_KEY}`,
