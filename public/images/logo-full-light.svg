@@ -54,11 +54,11 @@
         stroke-linecap="round"
         stroke-linejoin="round"/>
 
-  <!-- PLUMBING & GAS -->
-  <text x="124" y="86"
+  <!-- PLUMBING, GAS & CIVIL -->
+  <text x="62" y="88"
         font-family="'Arial', sans-serif"
         font-weight="400"
-        font-size="14"
-        letter-spacing="3.5"
-        fill="#046bd2">PLUMBING &amp; GAS</text>
+        font-size="11"
+        letter-spacing="1.8"
+        fill="#046bd2">PLUMBING, GAS &amp; CIVIL</text>
 </svg>

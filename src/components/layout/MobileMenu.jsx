@@ -84,7 +84,7 @@ export default function MobileMenu() {
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 shrink-0">
               <a href="/" onClick={close}>
-                <img src="/images/logo-light.jpeg" alt="Pulse Plumbing, Gas & Civil" width={130} height={50} className="h-9 w-auto" />
+                <img src="/images/logo-light.jpeg" alt="Pulse Plumbing, Gas & Civil" width={180} height={70} className="h-11 w-auto" />
               </a>
               <button
                 type="button"
