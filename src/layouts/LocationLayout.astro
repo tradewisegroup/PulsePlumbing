@@ -1,5 +1,7 @@
 ---
 import MainLayout from './MainLayout.astro';
+import Schema from '../components/seo/Schema.astro';
+import { SITE_URL } from '../lib/site';
 
 export interface Props {
   title: string;
@@ -60,8 +62,19 @@ const faqSchema = faqs.length > 0 ? {
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 } : null;
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE_URL },
+  { name: 'Service Areas', url: `${SITE_URL}/service-areas` },
+  { name: `Plumber ${locationName}`, url: canonical ?? `${SITE_URL}${Astro.url.pathname}` },
+];
 ---
 
 <MainLayout {title} {description} {canonical} {ogImage} schema={[localBusinessSchema, ...(faqSchema ? [faqSchema] : [])]}>
+  <Schema
+    slot="head"
+    canonical={canonical}
+    breadcrumbs={breadcrumbs}
+  />
   <slot />
 </MainLayout>

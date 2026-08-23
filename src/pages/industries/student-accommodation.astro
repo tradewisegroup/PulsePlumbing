@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -50,5 +52,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Accommodation Plumbing Brisbane & Gold Coast QLD"
   metaDescription="Rapid-response plumbing and planned maintenance for hotels, student accommodation, serviced apartments and PBSA operators across Brisbane, Logan and Gold Coast. 24/7 emergency service."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE['student-accommodation'].heading} items={INDUSTRY_GLANCE['student-accommodation'].items} />
+</IndustryLayout>

@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -51,5 +53,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="New Build Plumbing Brisbane & South-East QLD"
   metaDescription="On-time plumbing for residential new builds and multi-unit developments across Brisbane, Logan and Gold Coast. Rough-in, fit-off, Form 9 certificates and pressure testing."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE['new-builds'].heading} items={INDUSTRY_GLANCE['new-builds'].items} />
+</IndustryLayout>

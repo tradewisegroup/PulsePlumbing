@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -49,5 +51,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Civil Plumbing Services Brisbane & South-East QLD"
   metaDescription="Civil plumbing for subdivisions, main extensions and stormwater infrastructure across Brisbane, Logan and Gold Coast. QBCC licensed, fully documented and on-programme delivery."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE.civil.heading} items={INDUSTRY_GLANCE.civil.items} />
+</IndustryLayout>

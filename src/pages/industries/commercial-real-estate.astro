@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -50,5 +52,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="Commercial Property Plumbing Brisbane & South-East QLD"
   metaDescription="Planned maintenance and 24/7 emergency plumbing for commercial real estate, office buildings and industrial properties across Brisbane, Logan and Gold Coast."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE['commercial-real-estate'].heading} items={INDUSTRY_GLANCE['commercial-real-estate'].items} />
+</IndustryLayout>

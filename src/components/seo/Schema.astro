@@ -42,7 +42,24 @@
  *   videoPosterUrl  URL to the video thumbnail/poster image (type="video").
  *   videoUploadDate ISO 8601 upload date (type="video").
  *   howToSteps      Array of {name, text} — outputs HowTo schema on any page type.
+   breadcrumbs     Optional BreadcrumbList trail. When provided, replaces the
+                   auto-generated crumbs for this page.
+   schema          Optional raw JSON-LD object or array (passthrough for layouts
+                   that already build a graph). Emitted as additional script tags.
  */
+
+import {
+  BRAND_NAME,
+  EMAIL,
+  EMERGENCY_PHONE_TEL,
+  LEGAL_NAME,
+  NSW_LICENCE,
+  OFFICE_PHONE_TEL,
+  QBCC_LICENCE,
+  SITE_URL,
+  businessIdentifiers,
+  getSameAs,
+} from '../../lib/site';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -62,8 +79,14 @@ export interface FAQ {
   a: string;
 }
 
+export interface Breadcrumb {
+  name: string;
+  url: string;
+}
+
 export interface Props {
-  type:             PageType;
+  /** When omitted, only breadcrumbs / schema passthrough are emitted. */
+  type?:            PageType;
   pageTitle?:       string;
   pageDescription?: string;
   serviceType?:     string;
@@ -102,17 +125,24 @@ export interface Props {
   // ── HowTo fields (any page type) ───────────────────────────────────────────
   /** Steps for a HowTo schema node — triggers HowTo output when provided */
   howToSteps?:       { name: string; text: string }[];
+  /**
+   * Explicit BreadcrumbList trail. Populated by ServiceLayout, IndustryLayout,
+   * LocationLayout and CivilLayout. Replaces auto-generated crumbs when set.
+   */
+  breadcrumbs?:      Breadcrumb[];
+  /**
+   * Raw JSON-LD passthrough for MainLayout / BlogLayout / service-areas.
+   * Accepts a single object or an array of objects.
+   */
+  schema?:           Record<string, unknown> | Record<string, unknown>[];
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const SITE  = 'https://pulseqld.com.au';
-const PHONE        = '0452188420';
-const OFFICE_PHONE = '0721504175';
-const EMAIL = 'admin@pulseqld.com.au';
-const FACEBOOK_URL  = import.meta.env.FACEBOOK_URL  ?? 'https://www.facebook.com/Pulseqld';
-const INSTAGRAM_URL = import.meta.env.INSTAGRAM_URL ?? 'https://www.instagram.com/pulseplumbinggascivil';
-const SOCIAL_LINKS  = [FACEBOOK_URL, INSTAGRAM_URL].filter(Boolean);
+const SITE         = SITE_URL;
+const PHONE        = EMERGENCY_PHONE_TEL;
+const OFFICE_PHONE = OFFICE_PHONE_TEL;
+const SOCIAL_LINKS = getSameAs();
 
 const {
   type,
@@ -135,6 +165,8 @@ const {
   videoPosterUrl,
   videoUploadDate,
   howToSteps,
+  breadcrumbs,
+  schema: extraSchema,
 } = Astro.props;
 
 const pageUrl = canonical ?? (SITE + Astro.url.pathname);
@@ -241,8 +273,8 @@ function getCoords(name: string): Coords {
 const localBusiness: Record<string, unknown> = {
   '@type':       ['LocalBusiness', 'Plumber'],
   '@id':         `${SITE}/#business`,
-  name:          'Pulse Plumbing & Gas',
-  legalName:     'Pulse Plumbing and Gas Pty Ltd',
+  name:          BRAND_NAME,
+  legalName:     LEGAL_NAME,
   url:           SITE,
   logo:          `${SITE}/images/logo-light.jpeg`,
   image:         `${SITE}/images/og-default.jpg`,
@@ -280,13 +312,14 @@ const localBusiness: Record<string, unknown> = {
     closes:    '23:59',
   },
   priceRange:    '$$',
+  identifier:    businessIdentifiers(),
   // hasCredential accepts either a string or an EducationalOccupationalCredential node.
   // Using the structured form so Google can parse the issuing authority.
   hasCredential: [
     {
       '@type':            'EducationalOccupationalCredential',
       credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
-      identifier:         '15021727',
+      identifier:         QBCC_LICENCE,
       recognizedBy: {
         '@type': 'GovernmentOrganization',
         name:    'Queensland Building and Construction Commission',
@@ -296,7 +329,7 @@ const localBusiness: Record<string, unknown> = {
     {
       '@type':            'EducationalOccupationalCredential',
       credentialCategory: 'NSW Plumbing Contractor Licence',
-      identifier:         '476430C',
+      identifier:         NSW_LICENCE,
       recognizedBy: {
         '@type': 'GovernmentOrganization',
         name:    'NSW Fair Trading',
@@ -341,7 +374,10 @@ if (suburb) {
 
 // ─── @graph node builders ─────────────────────────────────────────────────────
 
-const graph: Record<string, unknown>[] = [localBusiness];
+const graph: Record<string, unknown>[] = [];
+if (type) {
+  graph.push(localBusiness);
+}
 
 // ── homepage ────────────────────────────────────────────────────────────────
 // WebSite node enables Sitelinks Searchbox if Google decides to show it.
@@ -407,18 +443,7 @@ if (type === 'location') {
     url: pageUrl,
   });
 
-  // BreadcrumbList for suburb pages — helps with SERP display and navigation schema
-  if (suburb) {
-    graph.push({
-      '@type':           'BreadcrumbList',
-      '@id':             `${pageUrl}#breadcrumb`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home',          item: SITE },
-        { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${SITE}/service-areas` },
-        { '@type': 'ListItem', position: 3, name: `Plumber ${suburb}`, item: pageUrl },
-      ],
-    });
-  }
+  // BreadcrumbList for suburb pages is added below (explicit prop or auto trail).
 }
 
 // ── blog ─────────────────────────────────────────────────────────────────────
@@ -557,59 +582,70 @@ if (howToSteps && howToSteps.length > 0) {
   });
 }
 
-// ── BreadcrumbList — all page types ──────────────────────────────────────────
-// Location pages already push their own BreadcrumbList above.
-// All other page types get one here.
-// Each type maps to its canonical breadcrumb trail.
-if (type !== 'location') {
-  const crumbs: { name: string; item?: string }[] = [
-    { name: 'Home', item: SITE },
-  ];
+// ── BreadcrumbList ───────────────────────────────────────────────────────────
+// Explicit `breadcrumbs` prop (from ServiceLayout, IndustryLayout,
+// LocationLayout, CivilLayout) wins over the type-based auto trail.
+const crumbTrail: { name: string; item?: string }[] = breadcrumbs?.length
+  ? breadcrumbs.map((c) => ({ name: c.name, item: c.url }))
+  : type === 'location' && suburb
+    ? [
+        { name: 'Home', item: SITE },
+        { name: 'Service Areas', item: `${SITE}/service-areas` },
+        { name: `Plumber ${suburb}`, item: pageUrl },
+      ]
+    : type === 'service'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: 'Services', item: `${SITE}/services` },
+          { name: pageTitle ?? 'Service', item: pageUrl },
+        ]
+    : type === 'industry'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: 'Industries', item: `${SITE}/industries` },
+          { name: pageTitle ?? 'Industry', item: pageUrl },
+        ]
+    : type === 'civil'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: 'Civil', item: `${SITE}/civil` },
+          { name: pageTitle ?? 'Civil Services', item: pageUrl },
+        ]
+    : type === 'blog'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: 'Blog', item: `${SITE}/blog` },
+          { name: pageTitle ?? 'Article', item: pageUrl },
+        ]
+    : type === 'contact'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: 'Contact', item: pageUrl },
+        ]
+    : type === 'job'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: 'Careers', item: `${SITE}/careers` },
+          { name: pageTitle ?? jobTitle ?? 'Job Listing', item: pageUrl },
+        ]
+    : type === 'video'
+      ? [
+          { name: 'Home', item: SITE },
+          { name: pageTitle ?? 'Video', item: pageUrl },
+        ]
+      : [];
 
-  if (type === 'service') {
-    crumbs.push(
-      { name: 'Services', item: `${SITE}/services` },
-      { name: pageTitle ?? 'Service', item: pageUrl },
-    );
-  } else if (type === 'industry') {
-    crumbs.push(
-      { name: 'Industries', item: `${SITE}/industries` },
-      { name: pageTitle ?? 'Industry', item: pageUrl },
-    );
-  } else if (type === 'civil') {
-    crumbs.push(
-      { name: 'Civil', item: `${SITE}/civil` },
-      { name: pageTitle ?? 'Civil Services', item: pageUrl },
-    );
-  } else if (type === 'blog') {
-    crumbs.push(
-      { name: 'Blog', item: `${SITE}/blog` },
-      { name: pageTitle ?? 'Article', item: pageUrl },
-    );
-  } else if (type === 'contact') {
-    crumbs.push({ name: 'Contact', item: pageUrl });
-  } else if (type === 'job') {
-    crumbs.push(
-      { name: 'Careers', item: `${SITE}/careers` },
-      { name: pageTitle ?? jobTitle ?? 'Job Listing', item: pageUrl },
-    );
-  } else if (type === 'video') {
-    crumbs.push({ name: pageTitle ?? 'Video', item: pageUrl });
-  }
-  // homepage — breadcrumb is just Home; not useful to output
-
-  if (crumbs.length > 1) {
-    graph.push({
-      '@type':           'BreadcrumbList',
-      '@id':             `${pageUrl}#breadcrumb`,
-      itemListElement:   crumbs.map((c, i) => ({
-        '@type':    'ListItem',
-        position:   i + 1,
-        name:       c.name,
-        ...(c.item ? { item: c.item } : {}),
-      })),
-    });
-  }
+if (crumbTrail.length > 1) {
+  graph.push({
+    '@type':           'BreadcrumbList',
+    '@id':             `${pageUrl}#breadcrumb`,
+    itemListElement:   crumbTrail.map((c, i) => ({
+      '@type':    'ListItem',
+      position:   i + 1,
+      name:       c.name,
+      ...(c.item ? { item: c.item } : {}),
+    })),
+  });
 }
 
 // ── FAQPage ──────────────────────────────────────────────────────────────────
@@ -634,16 +670,21 @@ if (faqs.length > 0) {
 
 // ─── Final output ─────────────────────────────────────────────────────────────
 
-const schemaJson = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph':   graph,
-});
+const schemaJson = graph.length > 0
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph':   graph,
+    })
+  : '';
+
+const passthrough = extraSchema
+  ? (Array.isArray(extraSchema) ? extraSchema : [extraSchema])
+  : [];
 ---
 
-<!--
-  Single JSON-LD script for this page.
-  set:html bypasses Astro's JSX escaping so the JSON is written verbatim.
-  Do NOT split this into multiple <script> tags — a single @graph is the
-  correct pattern and avoids duplicate @context declarations.
--->
-<script type="application/ld+json" set:html={schemaJson} />
+{schemaJson && (
+  <script type="application/ld+json" set:html={schemaJson} />
+)}
+{passthrough.map((node) => (
+  <script type="application/ld+json" set:html={JSON.stringify(node)} />
+))}
