@@ -159,6 +159,7 @@ const schema = {
             {item.href ? (
               <a
                 href={item.href}
+                {...(item.href.startsWith('tel:') ? { 'data-track': 'call', 'data-call-number': 'emergency', 'data-call-location': 'hero' } : {})}
                 class={`text-sm font-semibold text-[#0172ae] hover:text-[#015d8e] transition-colors ${item.mono ? 'font-mono' : ''}`}
               >
                 {item.value}
@@ -182,7 +183,7 @@ const schema = {
           <p class="text-[#1a1a1a] text-xs leading-relaxed">
             We confirm capability and availability for all civil project enquiries within <strong>one business day</strong>.
             For formal tender submissions with a closing date, note the deadline in your enquiry and we will prioritise accordingly.
-            For urgent infrastructure matters, call <a href="tel:0452188420" class="text-[#0172ae] font-semibold hover:underline">{PHONE}</a>.
+            For urgent infrastructure matters, call <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer" class="text-[#0172ae] font-semibold hover:underline">{PHONE}</a>.
           </p>
         </div>
       </div>

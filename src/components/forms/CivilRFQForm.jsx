@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAttribution } from '../../lib/attribution';
+import { pushLeadSubmitted } from '../../lib/datalayer';
 
 // ─── Field options ────────────────────────────────────────────────────────────
 
@@ -221,17 +222,13 @@ export default function CivilRFQForm({ formId = '' }) {
       if (res.ok && data.success !== false) {
         setLeadRef(data.ref ?? '');
         setStatus('success');
-        if (typeof window !== 'undefined') {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event:        'lead_submitted',
-            form_name:    'civil-rfq',
-            lead_ref:     data.ref,
-            service_type: fields.projectType,
-            suburb:       fields.projectLocation,
-            industry:     'civil',
-          });
-        }
+        pushLeadSubmitted({
+          form_name:    'civil-rfq',
+          lead_ref:     data.ref,
+          service_type: fields.projectType,
+          suburb:       fields.projectLocation,
+          industry:     'civil',
+        });
       } else {
         throw new Error(data.error ?? 'Submission failed. Please email us directly.');
       }
@@ -257,7 +254,7 @@ export default function CivilRFQForm({ formId = '' }) {
         </p>
         <p className="text-slate-400 text-sm leading-relaxed mb-3">
           For urgent infrastructure matters, call us directly on{' '}
-          <a href="tel:0452188420" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
+          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
         {leadRef && (
           <p className="text-xs text-slate-500 mb-6">

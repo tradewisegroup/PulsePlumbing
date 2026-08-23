@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { pushLeadSubmitted } from '../../lib/datalayer';
 
 // ── Questions ─────────────────────────────────────────────────────────────────
 
@@ -168,6 +169,13 @@ export default function ComplianceScorecard() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) throw new Error(data.error ?? 'Submission failed');
       setSubmitStatus('done');
+      pushLeadSubmitted({
+        form_name:    'compliance-scorecard',
+        lead_ref:     data.ref,
+        service_type: '',
+        suburb:       '',
+        industry:     '',
+      });
     } catch (err) {
       console.error('[Scorecard]', err);
       setSubmitStatus('error');
@@ -385,7 +393,7 @@ export default function ComplianceScorecard() {
             {submitStatus === 'error' && (
               <p className="mt-4 text-xs text-white/50">
                 Note: your score could not be saved automatically. Call us on{' '}
-                <a href="tel:0452188420" className="underline hover:text-white transition-colors">0452 188 420</a>
+                <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" className="underline hover:text-white transition-colors">0452 188 420</a>
                 {' '}to discuss your results.
               </p>
             )}

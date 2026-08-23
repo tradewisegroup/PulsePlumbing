@@ -70,7 +70,7 @@ const breadcrumbs = [
 ];
 ---
 
-<MainLayout {title} {description} {canonical} {ogImage} schema={[localBusinessSchema, ...(faqSchema ? [faqSchema] : [])]}>
+<MainLayout {title} {description} {canonical} {ogImage} schema={[localBusinessSchema, ...(faqSchema ? [faqSchema] : [])]} pageType="location" suburb={locationName}>
   <Schema
     slot="head"
     canonical={canonical}

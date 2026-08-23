@@ -256,6 +256,7 @@ const pageSchema = {
   canonical={`${SITE}${Astro.url.pathname}`}
   ogImage="/images/civil-excavator.jpg"
   schema={pageSchema}
+  pageType="civil"
 >
   <Schema
     slot="head"
@@ -623,6 +624,7 @@ const pageSchema = {
           <div class="space-y-3 mb-8">
             <a
               href={PHONE_HREF}
+              data-track="call" data-call-number="emergency" data-call-location="hero"
               class="flex items-center gap-3 group"
               aria-label={`Call civil team on ${PHONE}`}
             >
@@ -695,7 +697,7 @@ const pageSchema = {
             <div>ABN: 62 652 712 699</div>
             <div>Brisbane, Queensland, Australia</div>
             <div>
-              <a href={`tel:${PHONE_HREF.replace('tel:','')}`} class="hover:text-white transition-colors">{PHONE}</a>
+              <a href={`tel:${PHONE_HREF.replace('tel:','')}`} data-track="call" data-call-number="emergency" data-call-location="footer" class="hover:text-white transition-colors">{PHONE}</a>
             </div>
             <div>
               <a href={`mailto:${EMAIL}`} class="text-[#0172ae] hover:text-[#7ab8f5] transition-colors">{EMAIL}</a>

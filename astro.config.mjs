@@ -8,6 +8,7 @@ import { statSync }        from 'fs';
 import { resolve, join }   from 'path';
 import { fileURLToPath }   from 'url';
 import { loadEnv }         from 'vite';
+import rehypeTelTracking   from './src/lib/rehype-tel-tracking.js';
 
 // Load all env vars (including non-PUBLIC_) into process.env for SSR routes
 const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
@@ -180,6 +181,12 @@ export default defineConfig({
   // Images in public/ are served as-is — use <img> with loading="lazy" there.
   image: {
     service: sharpImageService(),
+  },
+
+  // Tag Markdown tel: links with GTM data-track attributes so knowledge-base
+  // (and any future Markdown) call links segment the same way as layouts.
+  markdown: {
+    rehypePlugins: [rehypeTelTracking],
   },
 
   // ── Integrations ──────────────────────────────────────────────────────────

@@ -62,14 +62,14 @@ const industries = [
         <a href={PHONE_HREF}
            class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
            aria-label={`Office: ${PHONE}`}
-           data-track="call" data-call-number="0721504175" data-call-location="header">
+           data-track="call" data-call-number="office" data-call-location="header">
           <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
           <span class="hidden sm:inline text-white/60 text-xs mr-0.5">Office</span>{PHONE}
         </a>
         <a href={AFTER_HREF}
            class="hidden sm:flex items-center gap-1.5 font-medium text-white/70 hover:text-white transition-colors"
            aria-label={`After hours: ${AFTER_HOURS}`}
-           data-track="call" data-call-number="0452188420" data-call-location="header">
+           data-track="call" data-call-number="emergency" data-call-location="header">
           <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
           <span class="text-white/50 text-xs mr-0.5">After hours</span>{AFTER_HOURS}
         </a>
@@ -234,7 +234,7 @@ const industries = [
               transition-colors
             "
             aria-label={`After hours — call ${AFTER_HOURS}`}
-            data-track="emergency-cta" data-call-number="0452188420" data-call-location="header"
+            data-track="emergency-cta" data-call-number="emergency" data-call-location="header"
           >
             <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
