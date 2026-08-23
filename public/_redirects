@@ -1,6 +1,17 @@
 # Cloudflare Pages redirects
-# /locations/:suburb was the old rich-template URL (40 pages).
-# All content has been merged into /plumber-:suburb (146 pages).
-# These 301s preserve any inbound links and pass PageRank correctly.
+# Format: source  destination  status
+# Copied to dist/client/_redirects by the Astro build.
 
-/locations/:suburb  /plumber-:suburb  301
+# WordPress URLs — the only 8 pages on the old live site
+/our-services          /services                    301
+/commercial-plumbing   /services/commercial         301
+/residential-plumbing  /services/residential        301
+/cctv-water-jetting    /services/drain-camera       301
+/child-care-aged-care  /industries/childcare        301
+/feed                  /                            301
+/comments/feed         /                            301
+
+# Suburb consolidation — old /locations/:suburb (40 pages) → /plumber-:suburb
+# Keep this dynamic (one splat rule) rather than listing each suburb.
+# Do NOT redirect /about or /contact — those pages exist.
+/locations/:suburb     /plumber-:suburb             301
