@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
-import teamHeroImg from '../assets/team-hero.png';
 
 const title       = 'About Pulse Plumbing, Gas & Civil | Brisbane & SEQ';
 const description = 'Meet the team behind Pulse Plumbing, Gas & Civil. Family-run, QBCC licensed (Lic 15384771), serving Brisbane, Logan, Gold Coast and Ipswich across South-East Queensland.';
@@ -82,19 +80,18 @@ const values = [
 
   <!-- ── SECTION 1: Hero ─────────────────────────────────────────────── -->
   <section class="relative overflow-hidden bg-[#000000] py-20 lg:py-28">
-    <Image
-      src={teamHeroImg}
+    <img
+      src="/images/team-hero.png"
       alt=""
       aria-hidden="true"
-      class="absolute inset-0 w-full h-full object-cover object-top opacity-50"
+      width="1920"
+      height="1280"
+      class="absolute inset-0 w-full h-full object-cover object-top opacity-80"
       loading="eager"
       fetchpriority="high"
-      widths={[768, 1280, 1920]}
-      sizes="100vw"
-      format="webp"
-      quality={75}
+      decoding="async"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/70"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col items-center text-center gap-8">
 
