@@ -25,6 +25,7 @@ const {
 } = Astro.props;
 
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
+const GA4_ID = import.meta.env.PUBLIC_GA4_ID || 'G-0NV48PLVLP';
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 ---
 
@@ -66,6 +67,21 @@ const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 
     <!-- Schema -->
     {schema && <Schema schema={schema} />}
+
+    <!-- Google Analytics 4 (gtag.js) — G-0NV48PLVLP -->
+    {GA4_ID && (
+      <>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+        <script is:inline define:vars={{ GA4_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', GA4_ID);
+        </script>
+      </>
+    )}
 
     <!-- Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) -->
     {GTM_ID && (

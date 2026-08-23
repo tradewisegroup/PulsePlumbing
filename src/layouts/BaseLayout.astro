@@ -65,6 +65,9 @@ const SITE   = 'https://pulseqld.com.au';
 // Set in Cloudflare Pages → Settings → Environment variables (Production + Preview).
 // Without this var the GTM snippet is omitted entirely — no placeholder requests.
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
+// GA4 measurement ID from Google Analytics (gtag.js). Falls back to the live
+// property so pageviews fire even if PUBLIC_GA4_ID is not set at build time.
+const GA4_ID = import.meta.env.PUBLIC_GA4_ID || 'G-0NV48PLVLP';
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 const GSC_VERIFICATION = import.meta.env.GSC_VERIFICATION ?? '';
 
@@ -136,36 +139,46 @@ const localBusinessSchema = {
       />
     )}
 
-    <!-- ── Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) ── -->
-    {GTM_ID && (
+    <!-- ── dataLayer page context — always, before gtag / GTM ────────── -->
+    <script is:inline define:vars={{ pageType, suburb, service, industry }}>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        page_type: pageType,
+        suburb:    suburb,
+        service:   service,
+        industry:  industry,
+      });
+    </script>
+
+    <!-- ── Google Analytics 4 (gtag.js) — G-0NV48PLVLP ───────────────── -->
+    {GA4_ID && (
       <>
-        {/* dataLayer initialised with page context BEFORE GTM loads.
-            GTM triggers can read page_type/suburb/service/industry without
-            extra configuration or custom dimensions setup. */}
-        <script is:inline define:vars={{ pageType, suburb, service, industry }}>
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            page_type: pageType,
-            suburb:    suburb,
-            service:   service,
-            industry:  industry,
-          });
-        </script>
-        <script is:inline define:vars={{ GTM_ID }}>
-          (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-            var f = d.getElementsByTagName(s)[0],
-              j = d.createElement(s),
-              dl = l !== 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-          })(window, document, 'script', 'dataLayer', GTM_ID);
-        </script>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+        <script is:inline define:vars={{ GA4_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', GA4_ID);
+        </script>
       </>
+    )}
+
+    <!-- ── Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) ── -->
+    {GTM_ID && (
+      <script is:inline define:vars={{ GTM_ID }}>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l !== 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', GTM_ID);
+      </script>
     )}
 
     <!-- ── Google Search Console verification ────────────────────────── -->
