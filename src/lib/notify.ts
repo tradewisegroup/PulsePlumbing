@@ -22,16 +22,21 @@
 
 import type { Attribution } from './attribution';
 
-const RESEND_API_KEY = import.meta.env.RESEND_API_KEY ?? '';
-const RESEND_API_URL =
-  import.meta.env.RESEND_API_URL ?? 'https://api.resend.com/emails';
-const FROM_EMAIL     = 'Pulse Website <noreply@pulseqld.com.au>';
+const FROM_EMAIL = 'Pulse Website <noreply@pulseqld.com.au>';
+
+function runtimeEnv(name: string, fallback = ''): string {
+  const fromVite = (import.meta.env as Record<string, string | undefined>)[name];
+  if (fromVite) return fromVite;
+  const fromProcess =
+    typeof process !== 'undefined' ? process.env?.[name] : undefined;
+  return fromProcess || fallback;
+}
 
 export const LEAD_NOTIFY_TO =
-  import.meta.env.LEAD_NOTIFY_TO ?? 'admin@pulseqld.com.au';
+  runtimeEnv('LEAD_NOTIFY_TO', 'admin@pulseqld.com.au');
 
 export const JOBS_NOTIFY_TO =
-  import.meta.env.JOBS_NOTIFY_TO ?? 'accounts@pulseqld.com.au';
+  runtimeEnv('JOBS_NOTIFY_TO', 'accounts@pulseqld.com.au');
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -130,6 +135,8 @@ function buildAttributionBlock(
  * The caller MUST catch and return HTTP 502.
  */
 export async function sendLeadNotification(n: LeadNotification): Promise<void> {
+  const RESEND_API_KEY = runtimeEnv('RESEND_API_KEY');
+  const RESEND_API_URL = runtimeEnv('RESEND_API_URL', 'https://api.resend.com/emails');
   if (!RESEND_API_KEY) {
     throw new Error('RESEND_API_KEY is not configured — email delivery is unavailable.');
   }
