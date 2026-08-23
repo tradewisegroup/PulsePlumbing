@@ -1,5 +1,7 @@
 ---
 import IndustryLayout from '../../layouts/IndustryLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { INDUSTRY_GLANCE } from '../../data/at-a-glance';
 ---
 
 <IndustryLayout
@@ -51,5 +53,6 @@ import IndustryLayout from '../../layouts/IndustryLayout.astro';
   ]}
   metaTitle="School & Education Facility Plumbing Brisbane QLD"
   metaDescription="Planned plumbing maintenance and emergency response for schools, TAFEs and universities across Brisbane, Logan and Gold Coast. Holiday scheduling, lab plumbing and compliance documentation."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={INDUSTRY_GLANCE.education.heading} items={INDUSTRY_GLANCE.education.items} />
+</IndustryLayout>

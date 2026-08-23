@@ -22,6 +22,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import QuoteForm  from '../components/forms/QuoteForm.jsx';
 import { suburbs, suburbBySlug, REGION_LABELS, suburbsByRegion } from '../data/locations';
 import richSuburbsRaw from '../data/suburbs.json';
+import { businessIdentifiers, getSameAs, QBCC_LICENCE } from '../lib/site';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -177,9 +178,12 @@ const localBusinessSchema: Record<string, unknown> = {
     closes:     '23:59',
   },
   priceRange: '$$',
+  identifier: businessIdentifiers(),
+  sameAs: getSameAs(),
   hasCredential: {
     '@type':            'EducationalOccupationalCredential',
     credentialCategory: 'QBCC Contractor Licence — Plumbing and Drainage',
+    identifier:         QBCC_LICENCE,
     recognizedBy: {
       '@type': 'GovernmentOrganization',
       name:    'Queensland Building and Construction Commission',

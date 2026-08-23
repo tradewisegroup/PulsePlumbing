@@ -1,5 +1,7 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import AtAGlance from '../../components/seo/AtAGlance.astro';
+import { SERVICE_GLANCE } from '../../data/at-a-glance';
 ---
 
 <ServiceLayout
@@ -69,5 +71,6 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
   ]}
   metaTitle="CCTV Drain Camera Inspection Brisbane & South-East QLD"
   metaDescription="Professional drain camera inspections across Brisbane, Logan, Gold Coast and Ipswich. Pinpoint root intrusion, pipe damage and blockages — with written reports for insurance and pre-purchase."
-  
-/>
+>
+  <AtAGlance slot="after-hero" heading={SERVICE_GLANCE['drain-camera'].heading} items={SERVICE_GLANCE['drain-camera'].items} />
+</ServiceLayout>
