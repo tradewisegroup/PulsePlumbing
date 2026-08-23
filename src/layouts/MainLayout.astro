@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Schema from '../components/seo/Schema.astro';
+import { resolveGtmId } from '../lib/analytics';
 
 export interface Props {
   title: string;
@@ -12,6 +13,10 @@ export interface Props {
   ogType?: string;
   noindex?: boolean;
   schema?: object | object[];
+  pageType?: 'home' | 'service' | 'industry' | 'location' | 'civil' | 'contact' | 'about' | 'careers' | 'testimonials' | 'knowledge-base';
+  suburb?:   string;
+  service?:  string;
+  industry?: string;
 }
 
 const {
@@ -22,9 +27,14 @@ const {
   ogType = 'website',
   noindex = false,
   schema,
+  pageType  = '',
+  suburb    = '',
+  service   = '',
+  industry  = '',
 } = Astro.props;
 
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
+const GTM_ID = resolveGtmId(import.meta.env.PUBLIC_GTM_ID);
+const GA4_ID = import.meta.env.PUBLIC_GA4_ID || 'G-0NV48PLVLP';
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 ---
 
@@ -66,6 +76,31 @@ const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 
     <!-- Schema -->
     {schema && <Schema schema={schema} />}
+
+    <!-- dataLayer page context — assigned BEFORE gtag / GTM -->
+    <script is:inline define:vars={{ pageType, suburb, service, industry }}>
+      window.dataLayer = [{
+        page_type: pageType,
+        suburb:    suburb,
+        service:   service,
+        industry:  industry,
+      }];
+    </script>
+
+    <!-- Google Analytics 4 (gtag.js) — G-0NV48PLVLP -->
+    {GA4_ID && (
+      <>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+        <script is:inline define:vars={{ GA4_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', GA4_ID);
+        </script>
+      </>
+    )}
 
     <!-- Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) -->
     {GTM_ID && (

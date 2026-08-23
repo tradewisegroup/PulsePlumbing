@@ -132,7 +132,7 @@ src/
 - **HubSpot Form IDs:** [INSERT after HubSpot setup] → `HUBSPOT_CONTACT_FORM_ID`, etc.
 - **Xero:** direct integration (future — not yet connected to the frontend)
 - **Google Tag Manager:** [INSERT GTM ID] → `PUBLIC_GTM_ID` in `.env.local`
-- **Google Analytics 4:** [INSERT GA4 ID] → `PUBLIC_GA4_ID` in `.env.local`
+- **Google Analytics 4:** `G-0NV48PLVLP` — installed via gtag.js in both layouts (override with `PUBLIC_GA4_ID`)
 - Copy `.env.example` to `.env.local` and fill in all values before going live
 
 ---

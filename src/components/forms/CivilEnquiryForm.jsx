@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { pushLeadSubmitted } from '../../lib/analytics';
 
 // ─── Field options ────────────────────────────────────────────────────────────
 
@@ -220,6 +221,13 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.success !== false) {
         setStatus('success');
+        pushLeadSubmitted({
+          form_name:    'civil-enquiry',
+          lead_ref:     json.ref,
+          service_type: fields.projectType,
+          suburb:       fields.projectLocation,
+          industry:     'civil',
+        });
       } else {
         throw new Error(json.error ?? 'Submission failed. Please email us directly.');
       }
@@ -243,7 +251,7 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
         <p className="text-slate-400 text-sm leading-relaxed mb-6">
           Thanks for your enquiry. A member of our civil team will review your project details and respond
           within one business day. For urgent matters, call us on{' '}
-          <a href="tel:0452188420" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
+          <a href="tel:0452188420" data-track="call" data-call-number="0452188420" data-call-location="sticky" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
         <a
           href="/civil"

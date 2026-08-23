@@ -400,6 +400,15 @@ const socialProofItems = [
       if (res.ok && data.success !== false) {
         form.classList.add('hidden');
         success?.classList.remove('hidden');
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event:        'lead_submitted',
+          form_name:    'lead-magnet',
+          lead_ref:     data.ref ?? '',
+          service_type: 'compliance-checklist',
+          suburb:       '',
+          industry:     'property-management',
+        });
       } else {
         throw new Error(data.error ?? 'Submission failed');
       }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAttribution } from '../../lib/attribution';
+import { pushLeadSubmitted } from '../../lib/analytics';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -228,18 +229,13 @@ export default function QuoteForm({ initialService = '' }) {
       if (res.ok && data.success !== false) {
         setLeadRef(data.ref ?? '');
         setStatus('success');
-        // GTM dataLayer event — fired only after confirmed API success
-        if (typeof window !== 'undefined') {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event:        'lead_submitted',
-            form_name:    'quote',
-            lead_ref:     data.ref,
-            service_type: fields.serviceType,
-            suburb:       fields.suburb,
-            industry:     fields.industry,
-          });
-        }
+        pushLeadSubmitted({
+          form_name:    'quote',
+          lead_ref:     data.ref,
+          service_type: fields.serviceType,
+          suburb:       fields.suburb,
+          industry:     fields.industry,
+        });
       } else {
         throw new Error(data.error ?? 'Something went wrong. Please try again or call us directly.');
       }
@@ -265,7 +261,7 @@ export default function QuoteForm({ initialService = '' }) {
         <p className="text-[#334155] text-sm leading-relaxed mb-3">
           Your quote request has been received. One of our licensed plumbers will be in touch shortly.
           For urgent jobs, call us directly on{' '}
-          <a href="tel:0452188420" className="font-bold text-[#0172ae] hover:underline">
+          <a href="tel:0452188420" data-track="call" data-call-number="0452188420" data-call-location="sticky" className="font-bold text-[#0172ae] hover:underline">
             0452 188 420
           </a>.
         </p>
