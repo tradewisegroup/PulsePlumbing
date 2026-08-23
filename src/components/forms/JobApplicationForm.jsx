@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { getAttribution } from '../../lib/attribution';
+import { pushLeadSubmitted } from '../../lib/analytics';
 
 const ROLES = [
   'Qualified Plumber — All Rounder',
@@ -104,14 +105,10 @@ export default function JobApplicationForm() {
       if (res.ok && data.success !== false) {
         setLeadRef(data.ref ?? '');
         setStatus('success');
-        if (typeof window !== 'undefined') {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event:     'lead_submitted',
-            form_name: 'careers',
-            lead_ref:  data.ref,
-          });
-        }
+        pushLeadSubmitted({
+          form_name: 'careers',
+          lead_ref:  data.ref,
+        });
       } else {
         throw new Error(
           data.error ?? "We couldn't submit your application. Please call 0452 188 420.",
@@ -300,7 +297,7 @@ export default function JobApplicationForm() {
           </svg>
           <span>
             {serverError || "We couldn't submit your application."}{' '}
-            <a href="tel:0452188420" className="font-bold underline">Call 0452 188 420</a>.
+            <a href="tel:0452188420" data-track="call" data-call-number="0452188420" data-call-location="sticky" className="font-bold underline">Call 0452 188 420</a>.
           </span>
         </div>
       )}

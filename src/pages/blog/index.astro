@@ -34,7 +34,7 @@ function formatDate(d: Date) {
 }
 ---
 
-<BaseLayout {title} {description} {canonical}>
+<BaseLayout {title} {description} {canonical} pageType="knowledge-base">
 
   <!-- ── Hero ──────────────────────────────────────────────────────── -->
   <section class="bg-[#000000] py-16 lg:py-20">
@@ -150,7 +150,7 @@ function formatDate(d: Date) {
         If you can't find what you're looking for, our team is available 24/7 — call us or send a message and we'll respond the same day.
       </p>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="tel:0721504175" class="inline-flex items-center gap-2 bg-[#f19329] hover:bg-[#d97f1e] text-white font-bold px-6 py-3 rounded transition-colors">
+        <a href="tel:0721504175" data-track="call" data-call-number="0721504175" data-call-location="sticky" class="inline-flex items-center gap-2 bg-[#f19329] hover:bg-[#d97f1e] text-white font-bold px-6 py-3 rounded transition-colors">
           Call 0452 188 420
         </a>
         <a href="/contact" class="inline-flex items-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-6 py-3 rounded transition-colors">

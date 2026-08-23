@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/Footer.astro';
+import { resolveGtmId } from '../lib/analytics';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -63,8 +64,9 @@ const {
 const SITE   = 'https://pulseqld.com.au';
 // PUBLIC_ prefix required for Astro to expose the variable client-side.
 // Set in Cloudflare Pages → Settings → Environment variables (Production + Preview).
-// Without this var the GTM snippet is omitted entirely — no placeholder requests.
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
+// resolveGtmId treats missing values and the GTM-XXXXXXX placeholder as unset
+// so neither layout requests a container that does not exist.
+const GTM_ID = resolveGtmId(import.meta.env.PUBLIC_GTM_ID);
 // GA4 measurement ID from Google Analytics (gtag.js). Falls back to the live
 // property so pageviews fire even if PUBLIC_GA4_ID is not set at build time.
 const GA4_ID = import.meta.env.PUBLIC_GA4_ID || 'G-0NV48PLVLP';
@@ -139,15 +141,15 @@ const localBusinessSchema = {
       />
     )}
 
-    <!-- ── dataLayer page context — always, before gtag / GTM ────────── -->
+    <!-- ── dataLayer page context — assigned BEFORE gtag / GTM so
+         triggers can segment without extra GTM configuration ────────── -->
     <script is:inline define:vars={{ pageType, suburb, service, industry }}>
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      window.dataLayer = [{
         page_type: pageType,
         suburb:    suburb,
         service:   service,
         industry:  industry,
-      });
+      }];
     </script>
 
     <!-- ── Google Analytics 4 (gtag.js) — G-0NV48PLVLP ───────────────── -->

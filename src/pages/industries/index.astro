@@ -18,7 +18,7 @@ const industries = [
 ];
 ---
 
-<BaseLayout {title} {description} {canonical}>
+<BaseLayout {title} {description} {canonical} pageType="industry">
 
   <!-- Hero -->
   <section class="bg-[#000000] py-16 lg:py-20">
@@ -78,6 +78,7 @@ const industries = [
       <p class="text-blue-100 mb-8">We work across all commercial sectors. Get in touch to discuss your specific requirements.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <a href="tel:0721504175"
+           data-track="call" data-call-number="0721504175" data-call-location="sticky"
            class="inline-flex items-center justify-center gap-2 bg-white text-[#0172ae] font-bold px-8 py-4 rounded-full text-base transition-colors hover:bg-blue-50">
           Call Office — 07 2150 4175
         </a>

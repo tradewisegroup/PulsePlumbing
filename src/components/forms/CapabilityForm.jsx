@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { pushLeadSubmitted } from '../../lib/analytics';
 
 const inputBase =
   'w-full border border-slate-200 rounded-lg px-4 py-3 text-sm text-[#1a1a1a] ' +
@@ -64,6 +65,12 @@ export default function CapabilityForm({ onSuccess, onClose }) {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success !== false) {
         setStatus('done');
+        pushLeadSubmitted({
+          form_name:    'capability-statement',
+          lead_ref:     data.ref,
+          service_type: 'civil',
+          industry:     'civil',
+        });
         onSuccess?.();
       } else {
         throw new Error(data.error ?? 'Submission failed');
