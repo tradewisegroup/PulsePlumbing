@@ -99,6 +99,9 @@ export default function MobileMenu() {
             <a
               href="tel:0452188420"
               onClick={close}
+              data-track="emergency-cta"
+              data-call-number="emergency"
+              data-call-location="header"
               className="flex items-center justify-between gap-3 bg-[#f19329] hover:bg-[#d97d1a] active:bg-[#d97d1a] px-5 py-3.5 transition-colors shrink-0 touch-manipulation"
             >
               <div className="flex items-center gap-2">
@@ -188,6 +191,9 @@ export default function MobileMenu() {
               <a
                 href="tel:0721504175"
                 onClick={close}
+                data-track="call"
+                data-call-number="office"
+                data-call-location="header"
                 className="flex items-center justify-center w-full border border-slate-200 hover:border-[#0172ae] active:border-[#0172ae] text-slate-600 hover:text-[#0172ae] text-sm font-semibold px-6 py-3.5 rounded-full transition-colors touch-manipulation"
               >
                 Office: 07 2150 4175

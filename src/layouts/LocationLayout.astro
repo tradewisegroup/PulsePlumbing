@@ -62,6 +62,6 @@ const faqSchema = faqs.length > 0 ? {
 } : null;
 ---
 
-<MainLayout {title} {description} {canonical} {ogImage} schema={[localBusinessSchema, ...(faqSchema ? [faqSchema] : [])]}>
+<MainLayout {title} {description} {canonical} {ogImage} schema={[localBusinessSchema, ...(faqSchema ? [faqSchema] : [])]} pageType="location" suburb={locationName}>
   <slot />
 </MainLayout>

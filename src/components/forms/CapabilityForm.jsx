@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { pushLeadSubmitted } from '../../lib/datalayer';
 
 const inputBase =
   'w-full border border-slate-200 rounded-lg px-4 py-3 text-sm text-[#1a1a1a] ' +
@@ -14,7 +15,7 @@ function validatePhone(phone) {
   return phone.replace(/\D/g, '').length >= 10;
 }
 
-export default function CapabilityForm({ onSuccess, onClose }) {
+export default function CapabilityForm({ onSuccess, onClose, formName = 'capability' }) {
   const [fields, setFields] = useState({
     name: '', company: '', position: '', mobile: '', email: '',
   });
@@ -64,6 +65,13 @@ export default function CapabilityForm({ onSuccess, onClose }) {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success !== false) {
         setStatus('done');
+        pushLeadSubmitted({
+          form_name:    formName,
+          lead_ref:     data.ref,
+          service_type: 'civil',
+          suburb:       '',
+          industry:     'civil',
+        });
         onSuccess?.();
       } else {
         throw new Error(data.error ?? 'Submission failed');

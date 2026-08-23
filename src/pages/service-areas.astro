@@ -23,7 +23,7 @@ const schema = {
 };
 ---
 
-<MainLayout {title} {description} schema={schema}>
+<MainLayout {title} {description} schema={schema} pageType="location">
 
   <!-- Hero -->
   <section class="bg-[#F0F5FA] border-b border-[#D1D5DB]">
@@ -81,6 +81,7 @@ const schema = {
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <a href="tel:0452188420"
+           data-track="emergency-cta" data-call-number="emergency" data-call-location="footer"
            class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>

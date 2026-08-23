@@ -50,6 +50,7 @@ export default function CapabilityModal({ buttonText = 'Request Capability State
             </div>
 
             <CapabilityForm
+              formName="capability-modal"
               onSuccess={() => setDone(true)}
               onClose={() => setOpen(false)}
             />

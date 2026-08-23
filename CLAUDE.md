@@ -131,8 +131,8 @@ src/
 - **HubSpot Portal ID:** [INSERT] → set in `.env.local` as `HUBSPOT_PORTAL_ID`
 - **HubSpot Form IDs:** [INSERT after HubSpot setup] → `HUBSPOT_CONTACT_FORM_ID`, etc.
 - **Xero:** direct integration (future — not yet connected to the frontend)
-- **Google Tag Manager:** [INSERT GTM ID] → `PUBLIC_GTM_ID` in `.env.local`
-- **Google Analytics 4:** [INSERT GA4 ID] → `PUBLIC_GA4_ID` in `.env.local`
+- **Google Tag Manager:** `GTM-MMNMHPTK` → `PUBLIC_GTM_ID` in `.env.local`
+- **Google Analytics 4:** `G-0NV48PLVLP` → `PUBLIC_GA4_ID` in `.env.local`
 - Copy `.env.example` to `.env.local` and fill in all values before going live
 
 ---
@@ -191,8 +191,8 @@ npm run preview  # Preview production build locally
 - [ ] Insert ABN in `Footer.astro` and `Schema.astro`
 - [ ] Insert QBCC licence number in `Footer.astro` and `Schema.astro`
 - [ ] Set up HubSpot account → get Portal ID + Form GUIDs → add to `.env.local`
-- [ ] Set up Google Tag Manager → get GTM-XXXXXXX → add to `.env.local`
-- [ ] Set up GA4 → get G-XXXXXXXXXX → add to `.env.local`
+- [x] Set up Google Tag Manager → `GTM-MMNMHPTK` → `PUBLIC_GTM_ID` in `.env.local`
+- [x] Set up GA4 → `G-0NV48PLVLP` → `PUBLIC_GA4_ID` in `.env.local`
 - [ ] Export PNG favicons from `public/images/flame-mark.svg` (180, 192, 512px)
 - [ ] Create OG default image at `public/og-default.jpg` (1200×630px)
 - [ ] Build all 9 industry pages (`/industries/[slug]`)

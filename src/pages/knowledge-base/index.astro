@@ -36,7 +36,7 @@ function formatDate(d: Date) {
 }
 ---
 
-<BaseLayout {title} {description} {canonical}>
+<BaseLayout {title} {description} {canonical} pageType="knowledge-base">
 
   <!-- ── Hero ──────────────────────────────────────────────────────── -->
   <section class="bg-[#000000] py-16 lg:py-20">
@@ -146,6 +146,7 @@ function formatDate(d: Date) {
       </div>
       <div class="flex items-center gap-3 flex-shrink-0">
         <a href="tel:0721504175"
+           data-track="call" data-call-number="office" data-call-location="footer"
            class="inline-flex items-center gap-2 border-2 border-[#0172ae] text-[#0172ae] font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-[#0172ae] hover:text-white transition-colors">
           Call 07 2150 4175
         </a>

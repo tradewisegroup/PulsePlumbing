@@ -143,13 +143,12 @@ const localBusinessSchema = {
             GTM triggers can read page_type/suburb/service/industry without
             extra configuration or custom dimensions setup. */}
         <script is:inline define:vars={{ pageType, suburb, service, industry }}>
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
+          window.dataLayer = [{
             page_type: pageType,
             suburb:    suburb,
             service:   service,
             industry:  industry,
-          });
+          }];
         </script>
         <script is:inline define:vars={{ GTM_ID }}>
           (function (w, d, s, l, i) {
