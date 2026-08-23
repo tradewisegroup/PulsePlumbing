@@ -20,11 +20,14 @@
  * JOBS_NOTIFY_TO      Careers/jobs recipient (default: accounts@pulseqld.com.au)
  */
 
+import { env } from 'cloudflare:workers';
 import type { Attribution } from './attribution';
 
 const FROM_EMAIL = 'Pulse Website <noreply@pulseqld.com.au>';
 
 function runtimeEnv(name: string, fallback = ''): string {
+  const fromCf = (env as unknown as Record<string, string | undefined>)[name];
+  if (fromCf) return String(fromCf);
   const fromVite = (import.meta.env as Record<string, string | undefined>)[name];
   if (fromVite) return fromVite;
   const fromProcess =
