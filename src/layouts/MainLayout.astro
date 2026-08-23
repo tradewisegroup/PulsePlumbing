@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Head from '../components/seo/Head.astro';
 import Schema from '../components/seo/Schema.astro';
-import { SITE_URL } from '../lib/site';
+import { SITE_URL, resolveGtmId } from '../lib/site';
 
 export interface Props {
   title: string;
@@ -26,7 +26,7 @@ const {
   schema,
 } = Astro.props;
 
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
+const GTM_ID = resolveGtmId();
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 
 const ogImageAbsolute = ogImage.startsWith('http')
@@ -50,16 +50,15 @@ const ogImageAbsolute = ogImage.startsWith('http')
     {schema && <Schema schema={schema as Record<string, unknown> | Record<string, unknown>[]} />}
     <slot name="head" />
 
-    <!-- Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) -->
-    {GTM_ID && (
-      <script is:inline define:vars={{ GTM_ID }}>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer', GTM_ID);
-      </script>
-    )}
+    <!-- Google Tag Manager -->
+    <script is:inline define:vars={{ GTM_ID }}>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',GTM_ID);
+    </script>
+    <!-- End Google Tag Manager -->
 
     <!-- HubSpot -->
     {HUBSPOT_PORTAL_ID && (
@@ -68,16 +67,10 @@ const ogImageAbsolute = ogImage.startsWith('http')
   </head>
 
   <body class="bg-white text-slate-700 antialiased" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
-    <!-- GTM noscript (omitted when GTM_ID is unset) -->
-    {GTM_ID && (
-      <noscript>
-        <iframe
-          src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-          height="0" width="0"
-          style="display:none;visibility:hidden"
-        ></iframe>
-      </noscript>
-    )}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <Header />
     <main>

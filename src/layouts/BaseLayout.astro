@@ -12,6 +12,7 @@ import {
   SITE_URL,
   businessIdentifiers,
   getSameAs,
+  resolveGtmId,
 } from '../lib/site';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -72,10 +73,7 @@ const {
 } = Astro.props;
 
 const SITE   = SITE_URL;
-// PUBLIC_ prefix required for Astro to expose the variable client-side.
-// Set in Cloudflare Pages → Settings → Environment variables (Production + Preview).
-// Without this var the GTM snippet is omitted entirely — no placeholder requests.
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
+const GTM_ID = resolveGtmId();
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 const GSC_VERIFICATION = import.meta.env.GSC_VERIFICATION ?? '';
 
@@ -154,37 +152,27 @@ const localBusinessSchema = {
       />
     )}
 
-    <!-- ── Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) ── -->
-    {GTM_ID && (
-      <>
-        {/* dataLayer initialised with page context BEFORE GTM loads.
-            GTM triggers can read page_type/suburb/service/industry without
-            extra configuration or custom dimensions setup. */}
-        <script is:inline define:vars={{ pageType, suburb, service, industry }}>
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            page_type: pageType,
-            suburb:    suburb,
-            service:   service,
-            industry:  industry,
-          });
-        </script>
-        <script is:inline define:vars={{ GTM_ID }}>
-          (function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-            var f = d.getElementsByTagName(s)[0],
-              j = d.createElement(s),
-              dl = l !== 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-          })(window, document, 'script', 'dataLayer', GTM_ID);
-        </script>
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-      </>
-    )}
+    <!-- dataLayer page context — pushed BEFORE GTM so triggers can read it. -->
+    <script is:inline define:vars={{ pageType, suburb, service, industry }}>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        page_type: pageType,
+        suburb:    suburb,
+        service:   service,
+        industry:  industry,
+      });
+    </script>
+    <!-- Google Tag Manager -->
+    <script is:inline define:vars={{ GTM_ID }}>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',GTM_ID);
+    </script>
+    <!-- End Google Tag Manager -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
     <!-- ── Google Search Console verification ────────────────────────── -->
     {GSC_VERIFICATION && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
@@ -221,17 +209,10 @@ const localBusinessSchema = {
     class="bg-white text-slate-700 antialiased"
     style="font-family: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;"
   >
-    <!-- ── GTM noscript fallback (omitted when GTM_ID is unset) ─────── -->
-    {GTM_ID && (
-      <noscript>
-        <iframe
-          src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-          height="0"
-          width="0"
-          style="display:none;visibility:hidden"
-        ></iframe>
-      </noscript>
-    )}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <!-- ── Skip to content (accessibility) ──────────────────────────── -->
     <a

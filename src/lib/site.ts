@@ -38,6 +38,19 @@ export const LINKEDIN_URL =
   (import.meta.env.LINKEDIN_URL as string | undefined) ??
   '';
 
+/** Live GTM web container — installed on every page via BaseLayout + MainLayout. */
+export const GTM_CONTAINER_ID = 'GTM-MMNMHPTK';
+
+/**
+ * Resolve the GTM container ID. Empty values and the old GTM-XXXXXXX
+ * placeholder fall back to the live container so every page always loads GTM.
+ */
+export function resolveGtmId(): string {
+  const fromEnv = (import.meta.env.PUBLIC_GTM_ID as string | undefined)?.trim() ?? '';
+  if (!fromEnv || fromEnv === 'GTM-XXXXXXX') return GTM_CONTAINER_ID;
+  return fromEnv;
+}
+
 /** Profile URLs used in schema sameAs — GBP, Facebook, Instagram, LinkedIn (when configured). */
 export function getSameAs(): string[] {
   return [GOOGLE_BUSINESS_URL, FACEBOOK_URL, INSTAGRAM_URL, LINKEDIN_URL].filter(
