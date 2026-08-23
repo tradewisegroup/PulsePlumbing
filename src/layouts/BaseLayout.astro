@@ -30,6 +30,17 @@ export interface Props {
    * Pass a Service, Article, FAQPage, etc. here for page-specific markup.
    */
   schema?: Record<string, unknown>;
+  /**
+   * GTM/GA4 page context — pushed into dataLayer BEFORE the GTM snippet so
+   * triggers can segment without extra GTM configuration.
+   */
+  pageType?: 'home' | 'service' | 'industry' | 'location' | 'civil' | 'contact' | 'about' | 'careers' | 'testimonials' | 'knowledge-base';
+  /** Suburb name for location pages (e.g. "Loganholme") */
+  suburb?:   string;
+  /** Service slug for service pages (e.g. "blocked-drains") */
+  service?:  string;
+  /** Industry slug for industry pages (e.g. "childcare") */
+  industry?: string;
 }
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
@@ -43,10 +54,17 @@ const {
   noindex = false,
   heroImage,
   schema,
+  pageType  = '',
+  suburb    = '',
+  service   = '',
+  industry  = '',
 } = Astro.props;
 
-const SITE = 'https://pulseqld.com.au';
-const GTM_ID = import.meta.env.GTM_ID ?? 'GTM-XXXXXXX';
+const SITE   = 'https://pulseqld.com.au';
+// PUBLIC_ prefix required for Astro to expose the variable client-side.
+// Set in Cloudflare Pages → Settings → Environment variables (Production + Preview).
+// Without this var the GTM snippet is omitted entirely — no placeholder requests.
+const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
 const HUBSPOT_PORTAL_ID = import.meta.env.HUBSPOT_PORTAL_ID ?? '';
 const GSC_VERIFICATION = import.meta.env.GSC_VERIFICATION ?? '';
 
@@ -118,24 +136,37 @@ const localBusinessSchema = {
       />
     )}
 
-    <!-- ── Google Tag Manager ──────────────────────────────────────────── -->
-    <!-- Replace GTM-XXXXXXX with real container ID in .env.local          -->
-    <script is:inline define:vars={{ GTM_ID }}>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l !== 'dataLayer' ? '&l=' + l : '';
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', GTM_ID);
-    </script>
-
-    <!-- ── Preconnect (font is self-hosted — no Google Fonts round trip) ── -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <!-- ── Google Tag Manager (omitted entirely when PUBLIC_GTM_ID is unset) ── -->
+    {GTM_ID && (
+      <>
+        {/* dataLayer initialised with page context BEFORE GTM loads.
+            GTM triggers can read page_type/suburb/service/industry without
+            extra configuration or custom dimensions setup. */}
+        <script is:inline define:vars={{ pageType, suburb, service, industry }}>
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            page_type: pageType,
+            suburb:    suburb,
+            service:   service,
+            industry:  industry,
+          });
+        </script>
+        <script is:inline define:vars={{ GTM_ID }}>
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l !== 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, 'script', 'dataLayer', GTM_ID);
+        </script>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      </>
+    )}
 
     <!-- ── Google Search Console verification ────────────────────────── -->
     {GSC_VERIFICATION && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
@@ -208,15 +239,17 @@ const localBusinessSchema = {
     class="bg-white text-slate-700 antialiased"
     style="font-family: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;"
   >
-    <!-- ── GTM noscript fallback ─────────────────────────────────────── -->
-    <noscript>
-      <iframe
-        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      ></iframe>
-    </noscript>
+    <!-- ── GTM noscript fallback (omitted when GTM_ID is unset) ─────── -->
+    {GTM_ID && (
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+        ></iframe>
+      </noscript>
+    )}
 
     <!-- ── Skip to content (accessibility) ──────────────────────────── -->
     <a
