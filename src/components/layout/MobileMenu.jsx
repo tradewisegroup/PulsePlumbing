@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const NAV = [
   { label: 'Home',     href: '/' },
@@ -46,11 +47,12 @@ export default function MobileMenu() {
     <>
       {/* Hamburger button — always visible on small/medium screens */}
       <button
+        type="button"
         onClick={() => { setIsOpen((v) => !v); setOpenGroup(null); }}
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen}
         aria-controls="mobile-nav"
-        className="lg:hidden p-3 -mr-1 text-slate-600 hover:text-[#0172ae] active:text-[#0172ae] transition-colors rounded-lg touch-manipulation"
+        className="lg:hidden relative z-[60] p-3 -mr-1 text-slate-600 hover:text-[#0172ae] active:text-[#0172ae] transition-colors rounded-lg touch-manipulation"
       >
         {isOpen ? (
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -63,21 +65,21 @@ export default function MobileMenu() {
         )}
       </button>
 
-      {isOpen && (
+      {isOpen && typeof document !== 'undefined' && createPortal(
         <>
-          {/* Backdrop */}
+          {/* Portal to document.body — a backdrop-filter parent would
+              otherwise clip this fixed panel to the 64px header. */}
           <div
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[80] bg-black/50 backdrop-blur-sm lg:hidden"
             onClick={close}
             aria-hidden="true"
           />
 
-          {/* Slide-in panel */}
           <nav
             id="mobile-nav"
             role="navigation"
             aria-label="Main navigation"
-            className="fixed top-0 right-0 bottom-0 z-50 w-[min(320px,calc(100vw-48px))] bg-white shadow-2xl flex flex-col lg:hidden overflow-y-auto overscroll-contain"
+            className="fixed top-0 right-0 bottom-0 z-[90] w-[min(320px,calc(100vw-48px))] bg-white shadow-2xl flex flex-col lg:hidden overflow-y-auto overscroll-contain"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 shrink-0">
@@ -85,6 +87,7 @@ export default function MobileMenu() {
                 <img src="/images/logo-light.jpeg" alt="Pulse Plumbing, Gas & Civil" width={130} height={50} className="h-9 w-auto" />
               </a>
               <button
+                type="button"
                 onClick={close}
                 aria-label="Close menu"
                 className="p-2.5 text-slate-400 hover:text-slate-900 active:text-slate-900 transition-colors rounded-lg touch-manipulation"
@@ -200,7 +203,8 @@ export default function MobileMenu() {
               </a>
             </div>
           </nav>
-        </>
+        </>,
+        document.body,
       )}
     </>
   );
