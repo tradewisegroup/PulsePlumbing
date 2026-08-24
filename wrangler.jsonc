@@ -9,5 +9,20 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	// Create in the Cloudflare account that owns pulse-plumbing Pages:
+	//   npx wrangler d1 create pulse-leads
+	// then replace database_id with the printed UUID and
+	//   npx wrangler d1 migrations apply pulse-leads --remote
+	// Local/dev uses the same name via --local (no remote id required).
+	// API routes read the binding as env.DB from 'cloudflare:workers'
+	// (Astro 6 removed Astro.locals.runtime.env).
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "pulse-leads",
+			"database_id": "00000000-0000-0000-0000-000000000001",
+			"migrations_dir": "migrations"
+		}
+	]
 }

@@ -10,7 +10,11 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate-types": "wrangler types"
+    "generate-types": "wrangler types",
+    "d1:migrate:local": "wrangler d1 migrations apply pulse-leads --local",
+    "d1:migrate": "wrangler d1 migrations apply pulse-leads --remote",
+    "backfill-leads": "node --experimental-strip-types --no-warnings scripts/backfill-leads.ts",
+    "test:leads": "node --experimental-strip-types --no-warnings scripts/test-leads-store.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",

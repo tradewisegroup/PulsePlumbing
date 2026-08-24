@@ -26,6 +26,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import type { Attribution } from '../../lib/attribution';
 import { buildLead, leadRef } from '../../lib/lead';
+import { persistLeadFromModel } from '../../lib/leads-db';
 import { sendLeadNotification, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
@@ -163,6 +164,9 @@ export const POST: APIRoute = async ({ request }) => {
   const subjectSuffix = [data.service_type || 'General Enquiry', data.suburb, data.phone]
     .filter(Boolean)
     .join(' — ');
+
+  // ── D1 (queryable record — never blocks the email) ─────────────────────────
+  await persistLeadFromModel(lead);
 
   // ── Email (PRIMARY — hard failure) ─────────────────────────────────────────
   try {
