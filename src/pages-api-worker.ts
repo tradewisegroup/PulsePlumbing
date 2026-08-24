@@ -5,6 +5,7 @@
  * dist/client/_worker.js after build and only receives /api/* via _routes.json.
  */
 
+import { setWorkerEnv } from './lib/worker-env';
 import { POST as contactPost, OPTIONS as contactOptions } from './pages/api/contact';
 import { POST as civilPost, OPTIONS as civilOptions } from './pages/api/civil-contact';
 import { POST as scorecardPost, OPTIONS as scorecardOptions } from './pages/api/scorecard';
@@ -24,7 +25,8 @@ function normalize(pathname: string): string {
 }
 
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env?: Record<string, unknown>): Promise<Response> {
+    setWorkerEnv(env);
     const path = normalize(new URL(request.url).pathname);
     const route = routes[path];
     if (!route) {
