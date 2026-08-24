@@ -48,8 +48,18 @@ const INSERT_SQL = `
   )
 `;
 
-export function getLeadsDb(locals: App.Locals): D1Database | undefined {
-  return locals.runtime?.env?.DB;
+/**
+ * Astro 6 / @astrojs/cloudflare removed `Astro.locals.runtime.env`.
+ * Bindings are the same Worker `env` already used for Resend
+ * (`import { env } from 'cloudflare:workers'`).
+ */
+export async function getLeadsDb(): Promise<D1Database | undefined> {
+  try {
+    const { env } = await import('cloudflare:workers');
+    return (env as { DB?: D1Database }).DB;
+  } catch {
+    return undefined;
+  }
 }
 
 export function leadToRow(lead: Lead): LeadRow {
@@ -124,9 +134,11 @@ export async function persistLead(
   }
 }
 
-export async function persistLeadFromModel(
-  locals: App.Locals,
-  lead: Lead,
-): Promise<boolean> {
-  return persistLead(getLeadsDb(locals), leadToRow(lead));
+export async function persistLeadFromModel(lead: Lead): Promise<boolean> {
+  try {
+    return await persistLead(await getLeadsDb(), leadToRow(lead));
+  } catch (err) {
+    console.error('[d1] FAILED to persist lead — email will still send', lead.lead_ref, err);
+    return false;
+  }
 }

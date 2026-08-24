@@ -127,7 +127,7 @@ async function parseBody(request: Request): Promise<Record<string, string>> {
 export const OPTIONS: APIRoute = () =>
   new Response(null, { status: 204, headers: CORS_HEADERS });
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   // ── Parse ──────────────────────────────────────────────────────────────────
   let raw: Record<string, string>;
   try {
@@ -166,7 +166,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     .join(' — ');
 
   // ── D1 (queryable record — never blocks the email) ─────────────────────────
-  await persistLeadFromModel(locals, lead);
+  await persistLeadFromModel(lead);
 
   // ── Email (PRIMARY — hard failure) ─────────────────────────────────────────
   try {

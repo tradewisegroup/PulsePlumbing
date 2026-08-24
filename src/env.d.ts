@@ -19,10 +19,8 @@ interface CloudflareRuntimeEnv {
   JOBS_NOTIFY_TO?: string;
 }
 
-declare namespace App {
-  interface Locals {
-    runtime?: {
-      env?: CloudflareRuntimeEnv;
-    };
-  }
+// Bindings are read via `import { env } from 'cloudflare:workers'`
+// (Astro 6 removed Astro.locals.runtime.env).
+declare module 'cloudflare:workers' {
+  export const env: CloudflareRuntimeEnv;
 }

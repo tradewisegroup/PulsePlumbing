@@ -73,7 +73,7 @@ function validate(p: ScorecardPayload): string | null {
 export const OPTIONS: APIRoute = () =>
   new Response(null, { status: 204, headers: CORS_HEADERS });
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   // ── Parse ──────────────────────────────────────────────────────────────────
   let payload: ScorecardPayload;
   try {
@@ -108,7 +108,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     .join(' | ');
 
   // ── D1 (queryable record — never blocks the email) ─────────────────────────
-  await persistLead(getLeadsDb(locals), {
+  await persistLead(await getLeadsDb(), {
     lead_ref:           ref,
     created_at:         new Date().toISOString(),
     name:               'Scorecard lead',
