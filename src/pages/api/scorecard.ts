@@ -23,6 +23,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import type { Attribution } from '../../lib/attribution';
 import { leadRef } from '../../lib/lead';
+import { getLeadsDb, persistLead } from '../../lib/leads-db';
 import { sendLeadNotification, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
@@ -72,7 +73,7 @@ function validate(p: ScorecardPayload): string | null {
 export const OPTIONS: APIRoute = () =>
   new Response(null, { status: 204, headers: CORS_HEADERS });
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   // ── Parse ──────────────────────────────────────────────────────────────────
   let payload: ScorecardPayload;
   try {
@@ -105,6 +106,32 @@ export const POST: APIRoute = async ({ request }) => {
   const answers = Object.entries(payload.answers)
     .map(([q, pts]) => `${q}: ${pts} pts`)
     .join(' | ');
+
+  // ── D1 (queryable record — never blocks the email) ─────────────────────────
+  await persistLead(getLeadsDb(locals), {
+    lead_ref:           ref,
+    created_at:         new Date().toISOString(),
+    name:               'Scorecard lead',
+    company:            '',
+    email:              payload.email,
+    phone_e164:         '',
+    suburb:             '',
+    service_type:       'compliance-scorecard',
+    industry:           '',
+    message:            `Score ${payload.score}/10 — ${payload.risk}`,
+    source_form:        'compliance-scorecard',
+    first_source:       '',
+    first_medium:       '',
+    first_campaign:     '',
+    first_landing_page: pageUri,
+    first_seen_at:      '',
+    last_source:        '',
+    last_medium:        '',
+    last_campaign:      '',
+    gclid:              '',
+    converted_on:       pageUri,
+    ga_client_id:       '',
+  });
 
   // ── Email notification (PRIMARY — hard failure) ────────────────────────────
   try {

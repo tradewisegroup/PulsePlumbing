@@ -26,6 +26,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import type { Attribution } from '../../lib/attribution';
 import { buildLead, leadRef } from '../../lib/lead';
+import { persistLeadFromModel } from '../../lib/leads-db';
 import { sendLeadNotification, LEAD_NOTIFY_TO } from '../../lib/notify';
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
@@ -126,7 +127,7 @@ async function parseBody(request: Request): Promise<Record<string, string>> {
 export const OPTIONS: APIRoute = () =>
   new Response(null, { status: 204, headers: CORS_HEADERS });
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   // ── Parse ──────────────────────────────────────────────────────────────────
   let raw: Record<string, string>;
   try {
@@ -163,6 +164,9 @@ export const POST: APIRoute = async ({ request }) => {
   const subjectSuffix = [data.service_type || 'General Enquiry', data.suburb, data.phone]
     .filter(Boolean)
     .join(' — ');
+
+  // ── D1 (queryable record — never blocks the email) ─────────────────────────
+  await persistLeadFromModel(locals, lead);
 
   // ── Email (PRIMARY — hard failure) ─────────────────────────────────────────
   try {
