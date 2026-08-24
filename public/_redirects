@@ -1,4 +1,32 @@
 # Cloudflare Pages redirects
+
+# ── Legacy WordPress URLs ─────────────────────────────────────────────────────
+# The site these replace is still live at the apex domain and carries inbound
+# links and ranking. Without these, every one of them 404s the moment the apex
+# is pointed at Cloudflare.
+# Deliberately NOT redirected: /about and /contact — both exist as real pages.
+
+/our-services          /services                301
+/our-services/         /services                301
+/commercial-plumbing   /services/commercial     301
+/commercial-plumbing/  /services/commercial     301
+/residential-plumbing  /services/residential    301
+/residential-plumbing/ /services/residential    301
+/cctv-water-jetting    /services/drain-camera   301
+/cctv-water-jetting/   /services/drain-camera   301
+
+# /child-care-aged-care covered both verticals. Traffic lands on childcare,
+# which cross-links to /industries/aged-care near the top of the page.
+/child-care-aged-care  /industries/childcare    301
+/child-care-aged-care/ /industries/childcare    301
+
+# WordPress feeds
+/feed                  /                        301
+/feed/                 /                        301
+/comments/feed         /                        301
+/comments/feed/        /                        301
+
+# ── Internal consolidation ────────────────────────────────────────────────────
 # /locations/:suburb was the old rich-template URL (40 pages).
 # All content has been merged into /plumber-:suburb (146 pages).
 # These 301s preserve any inbound links and pass PageRank correctly.
