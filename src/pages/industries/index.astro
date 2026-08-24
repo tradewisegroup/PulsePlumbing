@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CallLink from '../../components/CallLink.astro';
 
 const title       = 'Industries We Serve | Pulse Plumbing, Gas & Civil';
 const description = 'Commercial plumbing, gas and civil services for retail, childcare, education, aged care, strata and property management across Brisbane, Logan, Gold Coast and Ipswich.';
@@ -77,11 +78,12 @@ const industries = [
       <h2 class="text-3xl font-bold text-white mb-4">Don't see your industry?</h2>
       <p class="text-blue-100 mb-8">We work across all commercial sectors. Get in touch to discuss your specific requirements.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="tel:0721504175"
-           data-track="call" data-call-number="office" data-call-location="footer"
-           class="inline-flex items-center justify-center gap-2 bg-white text-[#0172ae] font-bold px-8 py-4 rounded-full text-base transition-colors hover:bg-blue-50">
-          Call Office — 07 2150 4175
-        </a>
+        <CallLink
+          location="hero"
+          numberType="office"
+          class="inline-flex items-center justify-center gap-2 bg-white text-[#0172ae] font-bold px-8 py-4 rounded-full text-base transition-colors hover:bg-blue-50"
+          label="Call Office — 07 2150 4175"
+        />
         <a href="/contact"
            class="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-full text-base transition-colors">
           Get a Free Quote

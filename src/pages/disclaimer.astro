@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CallLink from '../components/CallLink.astro';
 
 const title = 'Disclaimer';
 const description = 'Website disclaimer for Pulse Plumbing & Gas — limitations on information accuracy, professional advice and liability under Australian Consumer Law.';
@@ -108,7 +109,7 @@ const updated = '20 April 2026';
         <ul>
           <li>For a gas emergency, call <strong>Jemena Gas Networks: 13 19 09</strong> (24/7)</li>
           <li>For a life-threatening emergency, call <strong>000</strong></li>
-          <li>For our after-hours plumbing response, call <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer"><strong>0452 188 420</strong></a></li>
+          <li>For our after-hours plumbing response, call <CallLink location="footer" numberType="emergency" staticNumber><strong>0452 188 420</strong></CallLink></li>
         </ul>
 
         <h2>9. Changes to This Disclaimer</h2>
@@ -122,7 +123,7 @@ const updated = '20 April 2026';
         </p>
         <ul>
           <li><strong>Email:</strong> <a href="mailto:admin@pulseqld.com.au">admin@pulseqld.com.au</a></li>
-          <li><strong>Phone:</strong> <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer">0452 188 420</a></li>
+          <li><strong>Phone:</strong> <CallLink location="footer" numberType="emergency" staticNumber>0452 188 420</CallLink></li>
         </ul>
 
       </div>

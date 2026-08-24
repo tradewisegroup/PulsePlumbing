@@ -1,0 +1,50 @@
+---
+/**
+ * Attributable tel: link. Renders the real office / emergency number
+ * server-side so the page never ships without a working dial target.
+ *
+ * DNI (dynamic number insertion) only runs on [data-dni="true"].
+ * Footer NAP and every JSON-LD telephone field stay static — pass
+ * staticNumber on footer links and never use this component in schema.
+ */
+import {
+  displayNumber,
+  telHref,
+  type CallLocation,
+  type CallNumberType,
+} from '../lib/call-numbers';
+
+export interface Props {
+  location: CallLocation;
+  numberType: CallNumberType;
+  class?: string;
+  label?: string;
+  staticNumber?: boolean;
+  ariaLabel?: string;
+}
+
+const {
+  location,
+  numberType,
+  class: className,
+  label,
+  staticNumber = false,
+  ariaLabel,
+} = Astro.props;
+
+const display = displayNumber(numberType);
+const href = telHref(numberType);
+const text = label ?? display;
+---
+
+<a
+  href={href}
+  class={className}
+  data-track="call"
+  data-call-location={location}
+  data-call-number={numberType}
+  {...(staticNumber ? {} : { 'data-dni': 'true' })}
+  aria-label={ariaLabel ?? `Call ${display}`}
+>
+  <slot>{text}</slot>
+</a>

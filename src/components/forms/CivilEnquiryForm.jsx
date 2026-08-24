@@ -255,7 +255,7 @@ export default function CivilEnquiryForm({ formId = '', initialProjectType = '' 
         <p className="text-slate-400 text-sm leading-relaxed mb-6">
           Thanks for your enquiry. A member of our civil team will review your project details and respond
           within one business day. For urgent matters, call us on{' '}
-          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
+          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" data-dni="true" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
         <a
           href="/civil"

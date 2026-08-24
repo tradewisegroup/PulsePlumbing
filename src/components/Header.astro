@@ -1,4 +1,5 @@
 ---
+import CallLink from './CallLink.astro';
 import { suburbsByRegion } from '../data/locations';
 
 const PHONE = '0452 188 420';
@@ -223,14 +224,16 @@ const locations = [
       </div>
 
       <!-- Phone — visible md+ -->
-      <a href="tel:0452188420"
-         data-track="call" data-call-number="emergency" data-call-location="header"
-         class="hidden md:flex items-center gap-2 text-sm font-semibold text-gray-200 hover:text-[#10a2d5] transition-colors">
+      <CallLink
+        location="header"
+        numberType="emergency"
+        class="hidden md:flex items-center gap-2 text-sm font-semibold text-gray-200 hover:text-[#10a2d5] transition-colors"
+      >
         <svg class="w-4 h-4 text-[#e12a39]" fill="currentColor" viewBox="0 0 20 20">
           <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
         </svg>
         {PHONE}
-      </a>
+      </CallLink>
 
       <!-- Book button -->
       <a href="/contact"
@@ -239,11 +242,12 @@ const locations = [
       </a>
 
       <!-- Emergency — mobile prominent -->
-      <a href={PHONE_HREF}
-         data-track="emergency-cta" data-call-number="emergency" data-call-location="header"
-         class="bg-[#e12a39] hover:bg-red-700 text-white text-sm font-bold px-4 py-2.5 rounded transition-colors sm:hidden">
-        Call Now
-      </a>
+      <CallLink
+        location="emergency"
+        numberType="emergency"
+        class="bg-[#e12a39] hover:bg-red-700 text-white text-sm font-bold px-4 py-2.5 rounded transition-colors sm:hidden"
+        label="Call Now"
+      />
 
       <!-- Hamburger -->
       <button type="button" id="mobile-menu-btn" class="lg:hidden p-2 text-gray-400 hover:text-white transition-colors" aria-label="Open menu">
@@ -302,12 +306,8 @@ const locations = [
       </div>
 
       <div class="pt-3 flex flex-col gap-2 pb-2">
-        <a href="tel:0452188420" data-track="emergency-cta" data-call-number="emergency" data-call-location="header" class="bg-[#e12a39] hover:bg-red-700 text-white font-bold text-sm px-4 py-3 rounded text-center transition-colors">
-          📞 Emergency — 0452 188 420
-        </a>
-        <a href="tel:0721504175" data-track="call" data-call-number="office" data-call-location="header" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold text-sm px-4 py-3 rounded text-center transition-colors">
-          Office — 07 2150 4175
-        </a>
+        <CallLink location="header" numberType="emergency" class="bg-[#e12a39] hover:bg-red-700 text-white font-bold text-sm px-4 py-3 rounded text-center transition-colors" label="📞 Emergency — 0452 188 420" />
+        <CallLink location="header" numberType="office" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold text-sm px-4 py-3 rounded text-center transition-colors" label="Office — 07 2150 4175" />
         <a href="/contact" class="bg-[#0172ae] hover:bg-[#10a2d5] text-white font-semibold text-sm px-4 py-3 rounded text-center transition-colors">
           Get a Quote
         </a>

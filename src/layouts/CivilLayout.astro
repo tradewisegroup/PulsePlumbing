@@ -17,6 +17,7 @@
  *  7. Civil footer   — ABN, QBCC, insurance, accreditations
  */
 import BaseLayout from './BaseLayout.astro';
+import CallLink from '../components/CallLink.astro';
 import CapabilityModal from '../components/forms/CapabilityModal.jsx';
 import Schema from '../components/seo/Schema.astro';
 import {
@@ -622,11 +623,11 @@ const pageSchema = {
 
           <!-- Contact methods -->
           <div class="space-y-3 mb-8">
-            <a
-              href={PHONE_HREF}
-              data-track="call" data-call-number="emergency" data-call-location="hero"
+            <CallLink
+              location="hero"
+              numberType="emergency"
               class="flex items-center gap-3 group"
-              aria-label={`Call civil team on ${PHONE}`}
+              ariaLabel={`Call civil team on ${PHONE}`}
             >
               <div class="w-8 h-8 rounded-lg bg-[#0172ae]/20 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0172ae]/30 transition-colors">
                 <svg class="w-4 h-4 text-[#0172ae]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -637,7 +638,7 @@ const pageSchema = {
                 <div class="text-sm font-bold text-white group-hover:text-[#7ab8f5] transition-colors">{PHONE}</div>
                 <div class="text-xs text-white/40">Civil enquiries — business hours</div>
               </div>
-            </a>
+            </CallLink>
 
             <a
               href={`mailto:${EMAIL}`}
@@ -697,7 +698,7 @@ const pageSchema = {
             <div>ABN: 62 652 712 699</div>
             <div>Brisbane, Queensland, Australia</div>
             <div>
-              <a href={`tel:${PHONE_HREF.replace('tel:','')}`} data-track="call" data-call-number="emergency" data-call-location="footer" class="hover:text-white transition-colors">{PHONE}</a>
+              <CallLink location="footer" numberType="emergency" staticNumber class="hover:text-white transition-colors">{PHONE}</CallLink>
             </div>
             <div>
               <a href={`mailto:${EMAIL}`} class="text-[#0172ae] hover:text-[#7ab8f5] transition-colors">{EMAIL}</a>

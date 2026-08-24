@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CallLink from '../components/CallLink.astro';
 import QuoteForm from '../components/forms/QuoteForm.jsx';
 
 const title = 'Contact Us — Get a Free Quote';
@@ -38,9 +39,11 @@ const contactSchema = {
             <h2 class="text-xl font-bold text-[#000000] mb-5">Contact details</h2>
             <div class="space-y-4">
 
-              <a href="tel:0452188420"
-                 data-track="call" data-call-number="emergency" data-call-location="hero"
-                 class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl p-4 hover:border-[#0172ae] transition-colors group">
+              <CallLink
+                location="hero"
+                numberType="emergency"
+                class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl p-4 hover:border-[#0172ae] transition-colors group"
+              >
                 <div class="w-10 h-10 rounded-lg bg-[#0172ae]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0172ae]/15 transition-colors">
                   <svg class="w-5 h-5 text-[#0172ae]" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
@@ -51,7 +54,7 @@ const contactSchema = {
                   <p class="font-bold text-[#000000] group-hover:text-[#0172ae] transition-colors">0452 188 420</p>
                   <p class="text-xs text-slate-500 mt-0.5">Available 24/7 for emergencies</p>
                 </div>
-              </a>
+              </CallLink>
 
               <a href="mailto:admin@pulseqld.com.au"
                  class="flex items-start gap-4 bg-white border border-[#D1D5DB] rounded-xl p-4 hover:border-[#0172ae] transition-colors group">

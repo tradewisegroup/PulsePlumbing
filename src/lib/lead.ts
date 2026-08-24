@@ -19,7 +19,7 @@ const BASE32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
  * 5 × 5 bits = 25 bits from the first 32 bits of the UUID → ~33M combinations.
  * This is OUR reference — it must not be derived from any third-party system ID.
  */
-export function leadRef(): string {
+export function leadRef(prefix = 'PW'): string {
   const hex = crypto.randomUUID().replace(/-/g, '').slice(0, 8); // 32 bits
   let n     = parseInt(hex, 16) >>> 0;                           // safe: 32-bit uint
   let chars = '';
@@ -27,7 +27,7 @@ export function leadRef(): string {
     chars = BASE32[n & 31] + chars;
     n     = n >>> 5;
   }
-  return 'PW-' + chars;
+  return prefix + '-' + chars;
 }
 
 // ─── Phone normalisation ──────────────────────────────────────────────────────

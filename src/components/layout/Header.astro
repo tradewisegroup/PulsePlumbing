@@ -1,10 +1,7 @@
 ---
+import CallLink from '../CallLink.astro';
 import MobileMenu from './MobileMenu.jsx';
-
-const PHONE        = '07 2150 4175';
-const PHONE_HREF   = 'tel:0721504175';
-const AFTER_HOURS  = '0452 188 420';
-const AFTER_HREF   = 'tel:0452188420';
+import { EMERGENCY_PHONE, OFFICE_PHONE } from '../../lib/site';
 
 const services = [
   { label: 'Maintenance Plumbing', href: '/services/maintenance-plumbing', desc: 'Scheduled & reactive maintenance',
@@ -59,20 +56,24 @@ const industries = [
 
       <!-- Right: both phone numbers -->
       <div class="flex items-center gap-4">
-        <a href={PHONE_HREF}
-           class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
-           aria-label={`Office: ${PHONE}`}
-           data-track="call" data-call-number="office" data-call-location="header">
+        <CallLink
+          location="header"
+          numberType="office"
+          class="flex items-center gap-1.5 font-bold text-white hover:text-blue-100 transition-colors"
+          ariaLabel={`Office: ${OFFICE_PHONE}`}
+        >
           <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-          <span class="hidden sm:inline text-white/60 text-xs mr-0.5">Office</span>{PHONE}
-        </a>
-        <a href={AFTER_HREF}
-           class="hidden sm:flex items-center gap-1.5 font-medium text-white/70 hover:text-white transition-colors"
-           aria-label={`After hours: ${AFTER_HOURS}`}
-           data-track="call" data-call-number="emergency" data-call-location="header">
+          <span class="hidden sm:inline text-white/60 text-xs mr-0.5">Office</span>{OFFICE_PHONE}
+        </CallLink>
+        <CallLink
+          location="header"
+          numberType="emergency"
+          class="hidden sm:flex items-center gap-1.5 font-medium text-white/70 hover:text-white transition-colors"
+          ariaLabel={`After hours: ${EMERGENCY_PHONE}`}
+        >
           <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-          <span class="text-white/50 text-xs mr-0.5">After hours</span>{AFTER_HOURS}
-        </a>
+          <span class="text-white/50 text-xs mr-0.5">After hours</span>{EMERGENCY_PHONE}
+        </CallLink>
       </div>
     </div>
   </div>
@@ -224,23 +225,17 @@ const industries = [
           </a>
 
           <!-- Emergency phone — always visible on mobile -->
-          <a
-            href={AFTER_HREF}
-            class="
-              lg:hidden flex items-center gap-1.5
-              bg-[#f19329] hover:bg-[#d97d1a]
-              text-white text-xs font-bold
-              rounded-full px-3 py-2
-              transition-colors
-            "
-            aria-label={`After hours — call ${AFTER_HOURS}`}
-            data-track="emergency-cta" data-call-number="emergency" data-call-location="header"
+          <CallLink
+            location="emergency"
+            numberType="emergency"
+            class="lg:hidden flex items-center gap-1.5 bg-[#f19329] hover:bg-[#d97d1a] text-white text-xs font-bold rounded-full px-3 py-2 transition-colors"
+            ariaLabel={`After hours — call ${EMERGENCY_PHONE}`}
           >
             <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
             </svg>
             <span>Emergency</span>
-          </a>
+          </CallLink>
 
           <!-- Hamburger / close — React island handles its own toggle state -->
           <MobileMenu client:load />

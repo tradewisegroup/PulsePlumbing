@@ -254,7 +254,7 @@ export default function CivilRFQForm({ formId = '' }) {
         </p>
         <p className="text-slate-400 text-sm leading-relaxed mb-3">
           For urgent infrastructure matters, call us directly on{' '}
-          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
+          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" data-dni="true" className="font-semibold text-[#0172ae] hover:underline">0452 188 420</a>.
         </p>
         {leadRef && (
           <p className="text-xs text-slate-500 mb-6">
