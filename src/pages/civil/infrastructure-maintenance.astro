@@ -52,7 +52,7 @@ const MAINTENANCE_CONTRACTS = [
   },
   {
     type: 'Annual Maintenance Contract',
-    description: 'Comprehensive annual maintenance contract covering scheduled CCTV, preventive jetting, emergency response and reactive maintenance. Reporting aligned to ISO 55000 asset management principles and your asset management plan structure.',
+    description: 'Comprehensive annual maintenance contract covering scheduled CCTV, preventive jetting, emergency response and reactive maintenance. Reporting formatted to your asset management plan structure.',
     clients: 'Councils, water utilities, large commercial property owners and asset managers',
   },
 ];
@@ -211,7 +211,7 @@ const schema = {
             Our maintenance programmes are aligned to WSAA WSA 05:2013 (Conduit Inspection Reporting Code of Australia), providing the national standard for CCTV inspection and condition reporting of buried pipelines. WRC defect codes used in our condition reports are directly compatible with the coding systems used by Queensland councils and water utilities in their asset management systems.
           </p>
           <p class="text-white/65 text-base leading-relaxed">
-            Asset management reporting is structured to align with ISO 55000 principles — providing councils and asset managers with the condition evidence needed to support long-term financial planning, maintenance scheduling and renewal capital programmes. All maintenance documentation is provided in the format required by your procurement and reporting obligations.
+            Asset management reporting provides councils and asset managers with the condition evidence needed to support long-term financial planning, maintenance scheduling and renewal capital programmes. All maintenance documentation is provided in the format required by your procurement and reporting obligations.
           </p>
         </div>
 
@@ -219,7 +219,6 @@ const schema = {
           {[
             { code: 'WSA 05:2013',    title: 'Conduit Inspection Reporting Code', note: 'National standard for CCTV inspection and condition reporting of buried pipelines' },
             { code: 'WRC Defect Coding', title: 'Water Research Centre',          note: 'International standard for pipe condition defect classification' },
-            { code: 'ISO 55000',       title: 'Asset Management',                 note: 'Framework for strategic civil infrastructure asset management reporting' },
             { code: 'AS 2865',         title: 'Confined Spaces',                  note: 'Safety requirements for confined space entry — manhole and pit access' },
           ].map(s => (
             <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-colors">
