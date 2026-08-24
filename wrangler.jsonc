@@ -5,7 +5,10 @@
 	"main": "@astrojs/cloudflare/entrypoints/server",
 	"assets": {
 		"directory": "./dist",
-		"binding": "ASSETS"
+		"binding": "ASSETS",
+		// Static 404.html was swallowing POST /api/* (empty 405) so the
+		// Worker never ran. Quote forms then showed a generic error.
+		"run_worker_first": ["/api/*"]
 	},
 	"observability": {
 		"enabled": true
