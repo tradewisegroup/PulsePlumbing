@@ -1,7 +1,25 @@
 # Cloudflare Pages redirects
+# Static WordPress URLs first — Google still lists these from the old site.
+# They only take effect once pulseqld.com.au (apex) is a Pages custom domain.
+
+# ── Old WordPress pages (from Yoast page-sitemap.xml) ────────────────────────
+/our-services             /services/                 301
+/our-services/            /services/                 301
+/commercial-plumbing      /services/commercial/      301
+/commercial-plumbing/     /services/commercial/      301
+/residential-plumbing     /services/residential/     301
+/residential-plumbing/    /services/residential/     301
+/child-care-aged-care     /industries/               301
+/child-care-aged-care/    /industries/               301
+/cctv-water-jetting       /services/drain-camera/    301
+/cctv-water-jetting/      /services/drain-camera/    301
+
+# Yoast sitemap URLs indexed / submitted in Search Console
+/sitemap_index.xml        /sitemap-index.xml         301
+/page-sitemap.xml         /sitemap-0.xml             301
+
+# ── Prior site IA ────────────────────────────────────────────────────────────
 # /locations/:suburb was the old rich-template URL (40 pages).
 # All content has been merged into /plumber-:suburb (146 pages).
-# These 301s preserve any inbound links and pass PageRank correctly.
-
-/locations/:suburb  /plumber-:suburb  301
-/privacy            /privacy-policy   301
+/locations/:suburb        /plumber-:suburb           301
+/privacy                  /privacy-policy            301
