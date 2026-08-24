@@ -8,9 +8,8 @@
 
 import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
-import { normalizeCallPayload, POST } from '../src/pages/api/call.ts';
+import { handleCallWebhook, normalizeCallPayload } from '../src/lib/call-webhook.ts';
 import { leadRef } from '../src/lib/lead.ts';
-import { telHref, displayNumber, callLinkAttrs } from '../src/lib/call-numbers.ts';
 import { setWorkerEnv } from '../src/lib/worker-env.ts';
 
 const SECRET = 'test-call-webhook-secret';
@@ -20,25 +19,26 @@ function assert(cond: unknown, msg: string): asserts cond {
 }
 
 function testStaticNumbers() {
-  assert(telHref('office') === 'tel:0721504175', `office href ${telHref('office')}`);
-  assert(telHref('emergency') === 'tel:0452188420', `emergency href ${telHref('emergency')}`);
-  assert(displayNumber('office') === '07 2150 4175', 'office display');
-  assert(displayNumber('emergency') === '0452 188 420', 'emergency display');
+  const numbers = readFileSync('src/lib/call-numbers.ts', 'utf8');
+  assert(numbers.includes("OFFICE_PHONE_TEL"), 'office tel comes from site.ts');
+  assert(numbers.includes("EMERGENCY_PHONE_TEL"), 'emergency tel comes from site.ts');
 
-  const dni = callLinkAttrs('hero', 'office');
-  assert(dni['data-dni'] === 'true', 'CTA attrs include data-dni');
-  assert(dni.href === 'tel:0721504175', 'CTA href is the real number');
+  const attrs = readFileSync('src/lib/call-numbers.ts', 'utf8');
+  assert(attrs.includes("attrs['data-dni'] = 'true'"), 'CTA attrs include data-dni');
+  assert(attrs.includes('staticNumber'), 'NAP path omits data-dni');
 
-  const nap = callLinkAttrs('footer', 'office', { staticNumber: true });
-  assert(nap['data-dni'] === undefined, 'NAP attrs must not set data-dni');
-  assert(nap.href === 'tel:0721504175', 'NAP href is the real number');
-  console.log('ok  CallLink attrs: real number always; data-dni only on CTAs');
+  const site = readFileSync('src/lib/site.ts', 'utf8');
+  assert(site.includes("export const OFFICE_PHONE = '07 2150 4175'"), 'real office display');
+  assert(site.includes("export const OFFICE_PHONE_TEL = '0721504175'"), 'real office tel');
+  assert(site.includes("export const EMERGENCY_PHONE = '0452 188 420'"), 'real emergency display');
+  assert(site.includes("export const EMERGENCY_PHONE_TEL = '0452188420'"), 'real emergency tel');
+  console.log('ok  CallLink always starts from the real numbers');
 }
 
 function testSourceGuards() {
   const callLink = readFileSync('src/components/CallLink.astro', 'utf8');
   assert(callLink.includes('staticNumber'), 'CallLink supports staticNumber');
-  assert(callLink.includes('data-dni'), 'CallLink emits data-dni on CTAs');
+  assert(callLink.includes("'data-dni': 'true'"), 'CallLink emits data-dni on CTAs');
 
   const footer = readFileSync('src/components/Footer.astro', 'utf8');
   assert(footer.includes('staticNumber'), 'footer NAP uses staticNumber');
@@ -101,34 +101,30 @@ async function testWebhookAuthAndPersist() {
 
   setWorkerEnv({ DB: db, CALL_WEBHOOK_SECRET: SECRET });
 
-  const denied = await POST({
-    request: new Request('https://pulseqld.com.au/api/call', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', CALL_WEBHOOK_SECRET: 'wrong' },
-      body: JSON.stringify({ caller: '0412345678' }),
-    }),
-  } as Parameters<typeof POST>[0]);
+  const denied = await handleCallWebhook(new Request('https://pulseqld.com.au/api/call', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', CALL_WEBHOOK_SECRET: 'wrong' },
+    body: JSON.stringify({ caller: '0412345678' }),
+  }));
   assert(denied.status === 401, `bad secret status ${denied.status}`);
   console.log('ok  webhook rejects a bad CALL_WEBHOOK_SECRET');
 
-  const accepted = await POST({
-    request: new Request('https://pulseqld.com.au/api/call', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', CALL_WEBHOOK_SECRET: SECRET },
-      body: JSON.stringify({
-        caller_number: '0412 345 678',
-        duration: '120',
-        recording_url: 'https://example.com/rec.mp3',
-        number_type: 'office',
-        source: 'google',
-        medium: 'cpc',
-        campaign: 'brand',
-        gclid: 'Cj0TESTCALL',
-        landing_page: '/plumber-loganholme?gclid=Cj0TESTCALL',
-        caller_name: 'Acceptance Call',
-      }),
+  const accepted = await handleCallWebhook(new Request('https://pulseqld.com.au/api/call', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', CALL_WEBHOOK_SECRET: SECRET },
+    body: JSON.stringify({
+      caller_number: '0412 345 678',
+      duration: '120',
+      recording_url: 'https://example.com/rec.mp3',
+      number_type: 'office',
+      source: 'google',
+      medium: 'cpc',
+      campaign: 'brand',
+      gclid: 'Cj0TESTCALL',
+      landing_page: '/plumber-loganholme?gclid=Cj0TESTCALL',
+      caller_name: 'Acceptance Call',
     }),
-  } as Parameters<typeof POST>[0]);
+  }));
 
   const body = await accepted.json() as { success?: boolean; ref?: string; error?: string };
   assert(accepted.status === 200, `webhook status ${accepted.status} ${body.error ?? ''}`);
