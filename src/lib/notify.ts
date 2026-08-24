@@ -22,12 +22,19 @@
 
 import { env } from 'cloudflare:workers';
 import type { Attribution } from './attribution';
+import { workerVar } from './worker-env';
 
 const FROM_EMAIL = 'Pulse Website <noreply@pulseqld.com.au>';
 
 function runtimeEnv(name: string, fallback = ''): string {
-  const fromCf = (env as unknown as Record<string, string | undefined>)[name];
-  if (fromCf) return String(fromCf);
+  const fromWorker = workerVar(name);
+  if (fromWorker) return fromWorker;
+  try {
+    const fromCf = (env as unknown as Record<string, string | undefined>)[name];
+    if (fromCf) return String(fromCf);
+  } catch {
+    // Pages _worker.js: cloudflare:workers env has no Pages secrets
+  }
   const fromVite = (import.meta.env as Record<string, string | undefined>)[name];
   if (fromVite) return fromVite;
   const fromProcess =

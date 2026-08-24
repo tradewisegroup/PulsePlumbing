@@ -4,6 +4,7 @@
  */
 
 import type { Lead } from './lead.ts';
+import { getWorkerEnv } from './worker-env.ts';
 
 export interface LeadRow {
   lead_ref:           string;
@@ -54,6 +55,8 @@ const INSERT_SQL = `
  * (`import { env } from 'cloudflare:workers'`).
  */
 export async function getLeadsDb(): Promise<D1Database | undefined> {
+  const fromWorker = getWorkerEnv().DB as D1Database | undefined;
+  if (fromWorker) return fromWorker;
   try {
     const { env } = await import('cloudflare:workers');
     return (env as { DB?: D1Database }).DB;
