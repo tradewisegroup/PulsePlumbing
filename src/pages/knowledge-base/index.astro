@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CallLink from '../../components/CallLink.astro';
 
 const title       = 'Plumbing & Civil Knowledge Base | Pulse Plumbing, Gas & Civil';
 const description = 'Expert guides on plumbing compliance, civil infrastructure, costs, and maintenance across South-East Queensland. Written by QBCC-licensed plumber Lachlan De Santis.';
@@ -145,11 +146,12 @@ function formatDate(d: Date) {
         <p class="text-sm text-slate-600">Our licensed team can advise — call or get a free quote online.</p>
       </div>
       <div class="flex items-center gap-3 flex-shrink-0">
-        <a href="tel:0721504175"
-           data-track="call" data-call-number="office" data-call-location="footer"
-           class="inline-flex items-center gap-2 border-2 border-[#0172ae] text-[#0172ae] font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-[#0172ae] hover:text-white transition-colors">
-          Call 07 2150 4175
-        </a>
+        <CallLink
+          location="hero"
+          numberType="office"
+          class="inline-flex items-center gap-2 border-2 border-[#0172ae] text-[#0172ae] font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-[#0172ae] hover:text-white transition-colors"
+          label="Call 07 2150 4175"
+        />
         <a href="/contact"
            class="inline-flex items-center gap-2 bg-[#0172ae] text-white font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-[#015d8e] transition-colors">
           Get a Quote

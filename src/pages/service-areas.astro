@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import CallLink from '../components/CallLink.astro';
 import { suburbsByRegion, suburbs } from '../data/locations';
 
 const title = 'Service Areas | Plumber Brisbane, Logan, Gold Coast & Ipswich | Pulse Plumbing & Gas';
@@ -80,14 +81,17 @@ const schema = {
         We cover a large area across South-East Queensland. If your suburb isn't listed, call us — we'll let you know if we can help.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="tel:0452188420"
-           data-track="emergency-cta" data-call-number="emergency" data-call-location="footer"
-           class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors">
+        <CallLink
+          location="hero"
+          numberType="emergency"
+          class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors"
+          label="Call 0452 188 420"
+        >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
           </svg>
           Call 0452 188 420
-        </a>
+        </CallLink>
         <a href="/contact"
            class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#0172ae] font-semibold px-8 py-4 rounded text-lg transition-colors">
           Send an Enquiry

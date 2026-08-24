@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CallLink from '../../components/CallLink.astro';
 
 const title       = 'Plumbing Tips & Industry Insights | Pulse Plumbing, Gas & Civil Blog';
 const description = 'Expert plumbing tips, compliance guides, and industry insights from the Pulse Plumbing, Gas & Civil team. Written by QBCC-licensed plumber Lachlan De Santis — serving Brisbane, Logan, Gold Coast and Ipswich.';
@@ -150,9 +151,7 @@ function formatDate(d: Date) {
         If you can't find what you're looking for, our team is available 24/7 — call us or send a message and we'll respond the same day.
       </p>
       <div class="flex flex-wrap justify-center gap-4">
-        <a href="tel:0452188420" data-track="emergency-cta" data-call-number="emergency" data-call-location="footer" class="inline-flex items-center gap-2 bg-[#f19329] hover:bg-[#d97f1e] text-white font-bold px-6 py-3 rounded transition-colors">
-          Call 0452 188 420
-        </a>
+        <CallLink location="hero" numberType="emergency" class="inline-flex items-center gap-2 bg-[#f19329] hover:bg-[#d97f1e] text-white font-bold px-6 py-3 rounded transition-colors" label="Call 0452 188 420" />
         <a href="/contact" class="inline-flex items-center gap-2 bg-[#0172ae] hover:bg-[#015d8e] text-white font-semibold px-6 py-3 rounded transition-colors">
           Send a Message
         </a>

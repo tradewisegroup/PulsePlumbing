@@ -14,7 +14,8 @@
     "d1:migrate:local": "wrangler d1 migrations apply pulse-leads --local",
     "d1:migrate": "wrangler d1 migrations apply pulse-leads --remote",
     "backfill-leads": "node --experimental-strip-types --no-warnings scripts/backfill-leads.ts",
-    "test:leads": "node --experimental-strip-types --no-warnings scripts/test-leads-store.ts"
+    "test:leads": "node --experimental-strip-types --no-warnings scripts/test-leads-store.ts",
+    "test:call": "node --experimental-strip-types --no-warnings scripts/test-call-tracking.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",

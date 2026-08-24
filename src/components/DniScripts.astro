@@ -1,0 +1,19 @@
+---
+/**
+ * Loads the call-tracking provider script (URL is env-only — switching
+ * AVANSER ↔ Delacon is a config change) and the DNI swapper.
+ * Disabled unless PUBLIC_CALL_TRACKING_ENABLED === 'true'.
+ */
+const enabled = import.meta.env.PUBLIC_CALL_TRACKING_ENABLED === 'true';
+const providerSrc = (import.meta.env.PUBLIC_CALL_TRACKING_SCRIPT as string | undefined)?.trim() ?? '';
+---
+
+{enabled && providerSrc && (
+  <script is:inline src={providerSrc} async defer></script>
+)}
+{enabled && (
+  <script>
+    import { initDni } from '../lib/dni';
+    initDni();
+  </script>
+)}

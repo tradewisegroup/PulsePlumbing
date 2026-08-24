@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CallLink from '../components/CallLink.astro';
 import Schema from '../components/seo/Schema.astro';
 import JobApplicationForm from '../components/forms/JobApplicationForm.jsx';
 
@@ -419,12 +420,16 @@ const cultureValues = [
           <!-- Contact alternative -->
           <div class="bg-white border border-[#D1D5DB] rounded-xl p-5 space-y-3">
             <p class="text-sm font-semibold text-[#000000]">Prefer to call?</p>
-            <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer" class="flex items-center gap-2.5 text-sm text-[#0172ae] hover:text-[#015d8e] font-semibold transition-colors">
+            <CallLink
+              location="hero"
+              numberType="emergency"
+              class="flex items-center gap-2.5 text-sm text-[#0172ae] hover:text-[#015d8e] font-semibold transition-colors"
+            >
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
               0452 188 420
-            </a>
+            </CallLink>
             <a href="mailto:admin@pulseqld.com.au" class="flex items-center gap-2.5 text-sm text-[#1a1a1a]/60 hover:text-[#0172ae] transition-colors">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>

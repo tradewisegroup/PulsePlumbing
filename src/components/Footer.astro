@@ -1,10 +1,6 @@
 ---
-import { ABN, EMAIL, FACEBOOK_URL, INSTAGRAM_URL, NSW_LICENCE, QBCC_LICENCE } from '../lib/site';
-
-const PHONE      = '07 2150 4175';
-const PHONE_HREF = 'tel:0721504175';
-const AFTER_HOURS = '0452 188 420';
-const AFTER_HREF  = 'tel:0452188420';
+import CallLink from './CallLink.astro';
+import { ABN, EMAIL, EMERGENCY_PHONE, FACEBOOK_URL, INSTAGRAM_URL, NSW_LICENCE, OFFICE_PHONE, QBCC_LICENCE } from '../lib/site';
 
 const services = [
   { label: 'Blocked Drains',            href: '/services/blocked-drains' },
@@ -44,11 +40,12 @@ const year = new Date().getFullYear();
       <p class="text-white font-semibold text-sm text-center sm:text-left">
         Plumbing emergency? We respond 24/7 — including nights, weekends &amp; public holidays.
       </p>
-      <a href={AFTER_HREF}
-         class="flex-shrink-0 bg-white text-[#f19329] font-bold text-sm px-5 py-2.5 rounded hover:bg-orange-50 transition-colors"
-         data-track="emergency-cta" data-call-number="emergency" data-call-location="footer">
-        Call After Hours — {AFTER_HOURS}
-      </a>
+      <CallLink
+        location="emergency"
+        numberType="emergency"
+        class="flex-shrink-0 bg-white text-[#f19329] font-bold text-sm px-5 py-2.5 rounded hover:bg-orange-50 transition-colors"
+        label={`Call After Hours — ${EMERGENCY_PHONE}`}
+      />
     </div>
   </div>
 
@@ -73,22 +70,28 @@ const year = new Date().getFullYear();
             Residential plumbing across Brisbane, Logan, Gold Coast and Ipswich. Commercial and civil across South-East Queensland and Northern NSW. Available 24/7.
           </p>
           <div class="space-y-2.5 text-sm">
-            <a href={PHONE_HREF}
-               class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors"
-               data-track="call" data-call-number="office" data-call-location="footer">
+            <CallLink
+              location="footer"
+              numberType="office"
+              staticNumber
+              class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors"
+            >
               <svg class="w-4 h-4 text-[#e12a39] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              {PHONE} <span class="text-white/35 text-xs ml-1">Office</span>
-            </a>
-            <a href={AFTER_HREF}
-               class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors"
-               data-track="call" data-call-number="emergency" data-call-location="footer">
+              {OFFICE_PHONE} <span class="text-white/35 text-xs ml-1">Office</span>
+            </CallLink>
+            <CallLink
+              location="footer"
+              numberType="emergency"
+              staticNumber
+              class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors"
+            >
               <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              {AFTER_HOURS} <span class="text-white/35 text-xs ml-1">After hours</span>
-            </a>
+              {EMERGENCY_PHONE} <span class="text-white/35 text-xs ml-1">After hours</span>
+            </CallLink>
             <a href={`mailto:${EMAIL}`}
                class="flex items-center gap-2.5 text-white/70 hover:text-white transition-colors">
               <svg class="w-4 h-4 text-[#0172ae] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CallLink from '../../components/CallLink.astro';
 
 const title = 'All Services | Pulse Plumbing & Gas';
 const description = 'Explore all plumbing and gas services offered by Pulse Plumbing & Gas across Brisbane, Logan, Gold Coast and Ipswich — available 24/7 including afterhours and weekends.';
@@ -131,14 +132,17 @@ const schema = {
       <h2 class="text-3xl font-bold text-white mb-4">Need a plumber now?</h2>
       <p class="text-blue-100 mb-8">Available 24/7 including afterhours and weekends across South-East Queensland.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="tel:0452188420"
-           data-track="emergency-cta" data-call-number="emergency" data-call-location="footer"
-           class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors">
+        <CallLink
+          location="emergency"
+          numberType="emergency"
+          class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded text-lg transition-colors"
+          label="Call Now — Emergency Response"
+        >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.773-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
           </svg>
           Call Now — Emergency Response
-        </a>
+        </CallLink>
         <a href="/contact"
            class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#046bd2] font-semibold px-8 py-4 rounded text-lg transition-colors">
           Get a Free Quote

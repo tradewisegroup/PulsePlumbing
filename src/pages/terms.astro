@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CallLink from '../components/CallLink.astro';
 
 const title = 'Terms of Use';
 const description = 'Terms of Use for the Pulse Plumbing & Gas website — your rights, our obligations, and the conditions governing use of pulseqld.com.au.';
@@ -43,7 +44,7 @@ const updated = '20 April 2026';
           <li><strong>QBCC Licence:</strong> 15384771</li>
           <li><strong>NSW Licence:</strong> 476430C</li>
           <li><strong>Email:</strong> <a href="mailto:admin@pulseqld.com.au">admin@pulseqld.com.au</a></li>
-          <li><strong>Phone:</strong> <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer">0452 188 420</a></li>
+          <li><strong>Phone:</strong> <CallLink location="footer" numberType="emergency" staticNumber>0452 188 420</CallLink></li>
         </ul>
 
         <h2>2. Acceptance of Terms</h2>
@@ -167,7 +168,7 @@ const updated = '20 April 2026';
         </p>
         <ul>
           <li><strong>Email:</strong> <a href="mailto:admin@pulseqld.com.au">admin@pulseqld.com.au</a></li>
-          <li><strong>Phone:</strong> <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer">0452 188 420</a></li>
+          <li><strong>Phone:</strong> <CallLink location="footer" numberType="emergency" staticNumber>0452 188 420</CallLink></li>
           <li><strong>Post:</strong> Pulse Plumbing and Gas Pty Ltd, South-East Queensland</li>
         </ul>
 

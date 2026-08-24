@@ -261,7 +261,7 @@ export default function QuoteForm({ initialService = '' }) {
         <p className="text-[#334155] text-sm leading-relaxed mb-3">
           Your quote request has been received. One of our licensed plumbers will be in touch shortly.
           For urgent jobs, call us directly on{' '}
-          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" className="font-bold text-[#0172ae] hover:underline">
+          <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="hero" data-dni="true" className="font-bold text-[#0172ae] hover:underline">
             0452 188 420
           </a>.
         </p>

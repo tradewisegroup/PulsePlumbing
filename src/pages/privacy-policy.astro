@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CallLink from '../components/CallLink.astro';
 
 const title = 'Privacy Policy';
 const description = 'Privacy Policy for Pulse Plumbing & Gas — how we collect, use, store and protect your personal information in accordance with the Privacy Act 1988 (Cth).';
@@ -42,7 +43,7 @@ const updated = '20 April 2026';
           <li><strong>ABN:</strong> 62 652 712 699</li>
           <li><strong>QBCC Licence:</strong> 15384771</li>
           <li><strong>Email:</strong> <a href="mailto:admin@pulseqld.com.au">admin@pulseqld.com.au</a></li>
-          <li><strong>Phone:</strong> <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer">0452 188 420</a></li>
+          <li><strong>Phone:</strong> <CallLink location="footer" numberType="emergency" staticNumber>0452 188 420</CallLink></li>
           <li><strong>Website:</strong> <a href="https://pulseqld.com.au">pulseqld.com.au</a></li>
         </ul>
 
@@ -183,7 +184,7 @@ const updated = '20 April 2026';
         </p>
         <ul>
           <li><strong>Email:</strong> <a href="mailto:admin@pulseqld.com.au">admin@pulseqld.com.au</a></li>
-          <li><strong>Phone:</strong> <a href="tel:0452188420" data-track="call" data-call-number="emergency" data-call-location="footer">0452 188 420</a></li>
+          <li><strong>Phone:</strong> <CallLink location="footer" numberType="emergency" staticNumber>0452 188 420</CallLink></li>
         </ul>
         <p>
           We will acknowledge your complaint within 5 business days and aim to resolve it within 30 days. If you are not satisfied with our response, you may lodge a complaint with the <strong>Office of the Australian Information Commissioner (OAIC)</strong>:
